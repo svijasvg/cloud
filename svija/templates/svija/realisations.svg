@@ -1,0 +1,6 @@
+{% autoescape off %}
+
+{{ svg  }}
+
+{% endautoescape %}
+

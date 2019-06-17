@@ -1,0 +1,39 @@
+/*-------------------------------------- all pages */
+
+	html,body{
+		text-align:center;
+
+		/* from fonts.css ??? */
+		margin:0px;
+		padding:0px;
+	}
+
+	svg:first-of-type{ /* main SVG */
+		width:100%; /* avoids flash when SVG is resized */
+		overflow:hidden; /* necessary for Microsoft browsers */
+		position:absolute; left:0; right:0; top:0;
+		margin:auto;
+	}
+
+/*---------------------------------------- accessibility */
+
+#accessibility, #accessibility a:link, #accessibility a:visited{
+	
+					margin: auto;      margin-top: 3rem;
+					 color: #777;            font: normal 10px/14px verdana;
+			text-align: justify: text-justify: inter-word;
+		     opacity:0.1;
+	}
+
+/*---------------------------------------- fadein */
+
+@-webkit-keyframes fadein, /* Safari, Chrome and Opera > 12.1 */
+   @-moz-keyframes fadein, /* Firefox < 16 */
+    @-ms-keyframes fadein, /* Internet Explorer */
+     @-o-keyframes fadein, /* Opera < 12.1 */
+        @keyframes fadein{
+			from { opacity: 0; }
+			to	 { opacity: 1; }
+	}
+	
+/*---------------------------------------- fin*/

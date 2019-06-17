@@ -1,0 +1,10 @@
+<h1>{{ page.page_text }}</h1>
+
+<ul>
+{% for content in page.content_set.all %}
+    <li>{{ content.content_text }} -- {{ content.votes }} vote{{ content.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'main:detail' page.id %}">Vote again?</a>
+

@@ -1,0 +1,13 @@
+<h1>{{ page.page_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'main:vote' page.id %}" method="post">
+{% csrf_token %}
+{% for content in page.content_set.all %}
+    <input type="radio" name="content" id="content{{ forloop.counter }}" value="{{ content.id }}" />
+    <label for="content{{ forloop.counter }}">{{ content.content_text }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>
+

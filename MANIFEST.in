@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+recursive-include svija/modules *
+recursive-include svija/static *
+recursive-include svija/templates *
+recursive-include docs *

@@ -1,0 +1,53 @@
+{% autoescape off %}<!--
+
+
+{{ comments }}
+
+
+--><html><head><meta charset="utf-8" />
+  <title> {{ title }} </title>
+  <meta {{ meta }} >
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+{{ fonts }}
+  <meta name="apple-mobile-web-app-title" content="{{ touch }}">
+  <meta property="og:image" content="/images/capture.jpg">
+  <script>
+
+{{ head_js }}
+{% include "svija/javascript/cookies.js" %}
+{% include "svija/javascript/rem.js" %}
+{% include "svija/javascript/choose_language.js" %}
+{% include "svija/javascript/responsive.js" %}
+{% include "svija/javascript/window_redraw.js" %}
+{% include "svija/javascript/tap_highlight.js" %}
+
+  </script>
+  <script src="/scripts/TweenMax-2.0.2.js"></script>
+
+<style>
+
+{% include "svija/stylesheets/stylesheet.css" %}
+{{ css }}
+
+</style></head><body>
+
+<div id=accessibility style="width:40%;">{{ accessibility }}</div>
+
+{{ svg  }}
+{{ html }}
+{{ form }}
+{% block token%}{% endblock %}
+{{ menu }}
+
+  <script>
+
+ua = '{{ analytics_id }}';
+{% include "svija/javascript/window_scroll.js" %}
+{% include "svija/javascript/google_analytics.js" %}
+{{ body_js }} 
+
+</script></body></html>{% endautoescape %}
+

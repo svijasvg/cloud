@@ -1,0 +1,18 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}" />
+
+<h1>this is main/templates/main/index.html</h1>
+<pre>this is just some useless text</pre>
+<hr>
+{% if latest_page_list %}
+    <ul>
+    {% for page in latest_page_list %}
+        <li><a href="{% url 'main:detail' page.id %}">{{ page.page_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No main are available.</p>
+{% endif %}
+<hr>
+
