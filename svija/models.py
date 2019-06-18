@@ -58,8 +58,8 @@ class Responsive(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
-     #deprecated:
-    overflow  = models.CharField(max_length=200, default='', verbose_name='total % overflow',blank=True,)
+    #deprecated:
+    #overflow  = models.CharField(max_length=200, default='', verbose_name='total % overflow',blank=True,)
     def __str__(self):
         return self.name
     class Meta:
@@ -198,7 +198,7 @@ class Page(models.Model):
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     shared = models.ForeignKey(Shared, default=0, on_delete=models.CASCADE, )
     template = models.ForeignKey(Template, default=0, on_delete=models.CASCADE, )
-    menu = models.ManyToManyField(Menu, default=0 )
+    menu = models.ManyToManyField(Menu, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
 
     # unused or meta

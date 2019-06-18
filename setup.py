@@ -9,11 +9,11 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-svija',
-    version='0.1',
+    version='2.0.6',
     packages=find_packages(),
     include_package_data=True,
-    license='BSD License',  # example license
-    description='A simple Django app to conduct Web-based svija.',
+    license='BSD License',
+    description='A CMS for web sites built with Adobe Illustrator pages.',
     long_description=README,
     url='https://docs.svija.com/',
     author='Andrew Swift',

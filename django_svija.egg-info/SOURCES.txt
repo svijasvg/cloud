@@ -13,6 +13,12 @@ svija/models.py
 svija/tests.py
 svija/urls.py
 svija/views.py
+svija/migrations/0001_initial.py
+svija/migrations/0002_remove_responsive_overflow.py
+svija/migrations/0003_auto_20190618_1015.py
+svija/migrations/0004_auto_20190618_1017.py
+svija/migrations/0005_auto_20190618_1018.py
+svija/migrations/__init__.py
 svija/modules/accessibility_links.py
 svija/modules/gmail.py.bk
 svija/modules/meta_canonical.py

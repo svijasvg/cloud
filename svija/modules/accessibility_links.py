@@ -12,7 +12,8 @@ def create(domain, pages):
         if canonical==True:
             prefix = page.prefix.path
             tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
-            results += tag.format(domain,prefix,page.url,page.access_name)
+            if page.url != 'missing':
+                results += tag.format(domain,prefix,page.url,page.access_name)
 
 #---------------------------------------- add capture
 

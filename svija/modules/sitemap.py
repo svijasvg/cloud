@@ -21,7 +21,8 @@ def create(domain, pages):
     for page in pages:
         if page.visitable == True:
           prefix = page.prefix
-          results += '\nhttp://'+domain+'/'+prefix.path+'/'+page.url
+          if page.url != 'missing':
+              results += '\nhttp://'+domain+'/'+prefix.path+'/'+page.url
     return results
 
 
