@@ -1,9 +1,10 @@
-from django.urls import path, re_path
 from . import views
-from django.views.generic import RedirectView
-from django.views import static
-#from svija import settings
 
+from django.urls import path, re_path
+
+from django.views import static
+from django.views.generic import RedirectView
+from django.views.decorators.cache import cache_page
 
 #https://stackoverflow.com/questions/17820980/how-can-i-load-a-static-font-file-for-use-with-pil-in-django
 import os
@@ -19,19 +20,9 @@ urlpatterns = [
     re_path(r'^(?P<path1>)$', views.HomePage),
     re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),
 
-#---------------------------------------- from tutorial
-
-#   path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-#   path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
-#   path('<int:page_id>/vote/', views.vote, name='vote'),
-
 #---------------------------------------- email sending
 
     path('<slug:lng>/mail', views.MailView),
-
-#---------------------------------------- main page view
-
-    path('<slug:path1>/<slug:path2>', views.PageView),
 
 #---------------------------------------- placed images (in Links folder)
 
@@ -45,25 +36,41 @@ urlpatterns = [
     path('robots.txt', views.RobotsView),
     path('sitemap.txt', views.SitemapView),
 
-#---------------------------------------- fonts
+#---------------------------------------- fonts, images & scripts
 # source_dir = responsive.source_dir
 
-    # https://stackoverflow.com/questions/18446922/make-two-directories-static-in-django
-    # url(r'^uploads/(?P<path>.*)$', static.serve, {'document_root': settings.BASE_DIR + "/uploads"}),
     re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
-
-#---------------------------------------- images folder
-
     re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
-
-#---------------------------------------- scripts folder
-
     re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/scripts"}),
 
+#---------------------------------------- main page view
+
+# https://docs.djangoproject.com/en/2.2/topics/cache/#the-per-view-cache
+# first need to change to per-view caching
+
+#   if request.GET.get('clear') == 'cache':
+#       if request.user.is_superuser:
+#           title = request.GET.get('flag') + ' - ' + title 
+#           cache.clear()
+
+    #path('<slug:path1>/<slug:path2>', views.PageView),
+    path('<slug:path1>/<slug:path2>', cache_page(60 * 15)(views.PageView)),
+
 ]
+
+# this whole idea can never work because urls.py is loaded first
+# instead, use a wrapper for the page view that checks the user
+# status then caches. Oops, that won't work because the view
+# will be cached, will never run the test.
+
+#if lambda request: request.user.is_superuser:
+#if request.user.is_superuser:
+#    del urlpatterns[-1]
+#    urlpatterns.append(path('<slug:path1>/<slug:path2>', views.PageView),)
+
 #---------------------------------------- 404 page
 
-# à priori it's in the svija urls.py that this happens
-#handler404 = 'views.error404'
+# project urls.py that this happens
+# handler404 = 'views.error404'
 
 #---------------------------------------- fin
