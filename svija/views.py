@@ -127,6 +127,9 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 from svija.models import Font
 
+def PageViewNew(request, path1, path2):
+    return HttpResponse("debugging message.")
+
 def PageView(request, path1, path2):
 
     #---------------------------------------- check fer redirect
@@ -444,3 +447,29 @@ def error404(request, *args, **kwargs):
     return response
 
 #------------------------------------- fin
+# https://docs.djangoproject.com/en/2.2/topics/cache/#the-per-view-cache
+# first need to change to per-view caching
+
+#   if request.GET.get('clear') == 'cache':
+#       if request.user.is_superuser:
+#           title = request.GET.get('flag') + ' - ' + title 
+#           cache.clear()
+
+
+#   path('<slug:path1>/<slug:path2>', cache_page(60 * 15)(views.PageView)),
+
+# this whole idea can never work because urls.py is loaded first
+# instead, use a wrapper for the page view that checks the user
+# status then caches. Oops, that won't work because the view
+# will be cached, will never run the test.
+
+#if lambda request: request.user.is_superuser:
+#if request.user.is_superuser:
+#    del urlpatterns[-1]
+#    urlpatterns.append(path('<slug:path1>/<slug:path2>', views.PageView),)
+
+#---------------------------------------- 404 page
+
+# project urls.py that this happens
+# handler404 = 'views.error404'
+
