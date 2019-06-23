@@ -31,7 +31,7 @@ urlpatterns = [
 
 #---------------------------------------- main page view
 
-    path('<slug:path1>/<slug:path2>', views.PageView),
+#   path('<slug:path1>/<slug:path2>', views.PageView),
 
 #---------------------------------------- placed images (in Links folder)
 
