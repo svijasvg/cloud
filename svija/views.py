@@ -127,6 +127,9 @@ from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 from svija.models import Font
 
+def PageViewNew(request, path1, path2):
+    return HttpResponse("debugging message.")
+
 def PageView(request, path1, path2):
 
     #---------------------------------------- check fer redirect

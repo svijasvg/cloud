@@ -45,7 +45,7 @@ urlpatterns = [
 
 #---------------------------------------- main page view
 
-#   path('<slug:path1>/<slug:path2>', views.PageViewNew),
+    path('<slug:path1>/<slug:path2>', views.PageViewNew),
 
 ]
 
