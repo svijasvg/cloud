@@ -138,6 +138,8 @@ class Settings(models.Model):
     robots = models.ForeignKey(Robots, default=0, on_delete=models.CASCADE, verbose_name='robots.txt')
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
+    cached        = models.BooleanField(default=False, verbose_name='cached for admins',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache for next visitor',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
 

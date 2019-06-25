@@ -173,8 +173,17 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
             if not cache_post and request.method == 'POST':
                 can_cache = False
+
             if request.user.is_superuser:
                 can_cache = False
+
+            settings = Settings.objects.all()[0]
+            if settings.cache_reset:
+                can_cache = False
+                settings.cache_reset = False
+                settings.save()
+            elif settings.cached: # cached even for superusers
+                can_cache = True
 
             if can_cache:
                 response = core_cache.get(CACHE_KEY, None)
