@@ -254,6 +254,7 @@ class Svg(models.Model):
     class Meta:
         verbose_name = "svg file"
         verbose_name_plural = "svg files"
+        ordering = ["order"]
 
 #---------------------------------------- redirects
 

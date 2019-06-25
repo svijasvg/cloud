@@ -409,16 +409,17 @@ def PageView(request, path1, path2):
     svg = ''
 
     for this_svg in all_svgs:
-        svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_svg.filename)
-
-        page_ratio = px_width/px_height # 1680/2600=0.6461538462
-
-        rem_width = final_width/10
-        rem_height = final_width/page_ratio/10
-
-        css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-        head_css += '\n\n' + css_dims
-        svg += '\n' + svg_content
+        if this_svg.active:
+            svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_svg.filename)
+    
+            page_ratio = px_width/px_height # 1680/2600=0.6461538462
+    
+            rem_width = final_width/10
+            rem_height = final_width/page_ratio/10
+    
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            head_css += '\n\n' + css_dims
+            svg += '\n' + svg_content
 
     #———————————————————————————————————————— page scripts
 
@@ -467,12 +468,12 @@ def PageView(request, path1, path2):
             if this_script.type == 'body JS' and this_script.active == True:
                 body_js += '\n' + this_script.content
 
-    #———————————————————————————————————————— query string stuff
+#   #———————————————————————————————————————— old cache clearing-scheme
 
-    if request.GET.get('clear') == 'cache':
-        if request.user.is_superuser:
-            title = request.GET.get('flag') + ' - ' + title 
-            cache.clear()
+#   if request.GET.get('clear') == 'cache':
+#       if request.user.is_superuser:
+#           title = request.GET.get('flag') + ' - ' + title 
+#           cache.clear()
 
     #———————————————————————————————————————— page settings
 
