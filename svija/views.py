@@ -85,8 +85,8 @@ def LinksView(request, path1, placed_file):
         prefix = settings.prefix
 
     responsive = prefix.responsive
-    source_dir = responsive.source_dir
-    response = SITE_ROOT +'/'+ source_dir +'/Links/'+ placed_file
+    source_dir = 'sync/' + responsive.source_dir
+    response = SITE_ROOT + source_dir +'/Links/'+ placed_file
 
 #   source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
     source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
@@ -389,7 +389,7 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— svg
 
-    source_dir = responsive.source_dir
+    source_dir = 'sync/' + responsive.source_dir
 
     if page.override:
         final_width = page.width
@@ -493,3 +493,4 @@ def PageView(request, path1, path2):
     return render(request, template, context)
 #   return render(request, template, {'context':context})
 
+#———————————————————————————————————————— fin
