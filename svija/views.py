@@ -51,7 +51,7 @@ def HomePage(request, path1):
     prefix = get_object_or_404(Prefix, path=path1)
     path2 = prefix.default
 
-    response = PageView(request, path1, path2,)
+    response = PageCacheCheck(request, path1, path2,)
     return response
 
 #———————————————————————————————————-- robots.txt
@@ -119,6 +119,26 @@ def MailView(request, lng):
     response = send_mail.send(Settings.objects.all()[0], lng, request.POST, ua)
 
     return HttpResponse(response)
+
+#———————————————————————————————————-- 404 error
+# https://websiteadvantage.com.au/404-Error-Handler-Checker
+
+# Links folder redirection breaks if the prefix does not exist
+# instead of defaulting to en, need to get site default language
+
+@never_cache
+def error404(request, *args, **kwargs):
+    path1 = request.path.split('/')[1]
+
+    try:
+        prefix = Prefix.objects.get(path=path1)
+    except ObjectDoesNotExist:
+        settings = Settings.objects.all()[0]
+        path1 = settings.prefix.path
+
+    response = PageView(request, path1, 'missing',)
+    response.status_code = 404
+    return response
 
 #———————————————————————————————————————— page (with embedded svg)
 
@@ -423,37 +443,80 @@ def PageView(request, path1, path2):
     return render(request, template, context)
 #   return render(request, template, {'context':context})
 
-#———————————————————————————————————-- 404 error
-# https://websiteadvantage.com.au/404-Error-Handler-Checker
+#———————————————————————————————————————— per-user cache
+# https://gist.github.com/caot/6480c39453f5d2fa86bf
 
-# Links folder redirection breaks if the prefix does not exist
-# instead of defaulting to en, need to get site default language
+from django.core.cache import cache as core_cache
 
-@never_cache
-def error404(request, *args, **kwargs):
-    path1 = request.path.split('/')[1]
+'''
+refer:
+    http://stackoverflow.com/questions/20146741/django-per-user-view-caching
+    https://djangosnippets.org/snippets/2524/
+'''
 
-    try:
-        prefix = Prefix.objects.get(path=path1)
-    except ObjectDoesNotExist:
-        settings = Settings.objects.all()[0]
-        path1 = settings.prefix.path
+        #if request.user.is_superuser:
 
-    response = PageView(request, path1, 'missing',)
-    response.status_code = 404
-    return response
+def cache_key(request):
+    q = getattr(request, request.method)
+    q.lists()
+    urlencode = q.urlencode(safe='()')
+
+    if request.user.is_anonymous:
+        user = 'anonymous'
+    else:
+        user = request.user.id
+
+    CACHE_KEY = 'view_cache_%s_%s_%s' % (request.path, user, urlencode)
+    return CACHE_KEY
+
+
+def cache_per_user_function(ttl=None, prefix=None, cache_post=False):
+    '''
+    Decorator which caches the view for each User
+    * ttl - the cache lifetime, do not send this parameter means that the cache
+      will last until the restart server or decide to remove it
+    * prefix - Prefix to use to store the response in the cache. If not informed,
+      it will be used 'view_cache _' + function.__ name__
+    * cache_post - Determine whether to make requests cache POST
+    * The caching for anonymous users is shared with everyone
+    
+    How to use it:
+    @cache_per_user_function(ttl=3600, cache_post=False)
+    def my_view(request):
+        return HttpResponse("LOL %s" % (request.user))
+    '''
+    def decorator(function):
+        def apply_cache(request, *args, **kwargs):
+            CACHE_KEY = cache_key(request)
+            # Gera a chave do cache
+            if prefix:
+                CACHE_KEY = '%s_%s' % (prefix, CACHE_KEY)
+
+            # Checks whether you can cache the request
+            if not cache_post and request.method == 'POST':
+                can_cache = False
+            else:
+                can_cache = True
+
+            if can_cache:
+                response = core_cache.get(CACHE_KEY, None)
+            else:
+                response = None
+
+            if not response:
+                response = function(request, *args, **kwargs)
+                if can_cache:
+                    core_cache.set(CACHE_KEY, response, ttl)
+            return response
+        return apply_cache
+    return decorator
 
 #———————————————————————————————————————— uncached page views
 # https://stackoverflow.com/questions/4808329/can-i-call-a-view-from-within-another-view
 
-@never_cache
-def PageViewNew(request, path1, path2):
+@cache_per_user_function(ttl=3600, cache_post=False)
+def PageCacheCheck(request, path1, path2):
     return PageView(request, path1, path2)
-#    return HttpResponse("debugging message.")
+#   return HttpResponse("debugging message.")
 
-#   if request.GET.get('clear') == 'cache':
-#       if request.user.is_superuser:
-#           title = request.GET.get('flag') + ' - ' + title 
-#           cache.clear()
-
-#———————————————————————————————————-- fin
+#———————————————————————————————————————— fin

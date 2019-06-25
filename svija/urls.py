@@ -15,10 +15,11 @@ SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 urlpatterns = [ 
-#---------------------------------------- default url's
+#---------------------------------------- main pages
 
-    re_path(r'^(?P<path1>)$', views.HomePage),
-    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),
+    re_path(r'^(?P<path1>)$', views.HomePage),                # root url
+    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),       # two letters followed by slash
+    path('<slug:path1>/<slug:path2>', views.PageCacheCheck),  # something/something
 
 #---------------------------------------- email sending
 
@@ -42,10 +43,6 @@ urlpatterns = [
     re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
     re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
     re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/scripts"}),
-
-#---------------------------------------- main page view
-
-    path('<slug:path1>/<slug:path2>', views.PageViewNew),
 
 ]
 
