@@ -139,7 +139,7 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
-    maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',)
+    maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
 
     # email settings
     mail_id          = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
@@ -246,6 +246,7 @@ class Svg(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
     order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.filename
     class Meta:

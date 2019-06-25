@@ -186,7 +186,7 @@ class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('order', 'filename',)
-    fields = ('filename',)
+    fields = ('filename','order','active',)
 
 #https://stackoverflow.com/questions/19807757/django-admin-inline-many-to-many-custom-fields
 class MenuInline(admin.TabularInline):
