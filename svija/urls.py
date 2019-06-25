@@ -19,7 +19,7 @@ urlpatterns = [
 
     re_path(r'^(?P<path1>)$', views.HomePage),                # root url
     re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),       # two letters followed by slash
-    path('<slug:path1>/<slug:path2>', views.PageCacheCheck),  # something/something
+    path('<slug:path1>/<slug:path2>', views.PageView),  # something/something
 
 #---------------------------------------- email sending
 
