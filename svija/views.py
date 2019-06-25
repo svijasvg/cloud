@@ -1,5 +1,5 @@
 #   return HttpResponse("debugging message.")
-#---------------------------------------- svija.views
+#———————————————————————————————————————— svija.views
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -27,7 +27,7 @@ import os
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 from django.contrib.staticfiles.views import serve
 
-#---------------------------------------- page (with embedded svg)
+#———————————————————————————————————————— page (with embedded svg)
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
 #path = os.path.abspath(os.path.join(os.path.dirname(__file__), './modules'))
@@ -39,7 +39,7 @@ if not path in sys.path: sys.path.insert(1, path)
 import svija 
 from django.db.models import Q
 
-#------------------------------------- / was requested
+#———————————————————————————————————————— / was requested
 
 from django.shortcuts import redirect
 def HomePage(request, path1):
@@ -54,7 +54,7 @@ def HomePage(request, path1):
     response = PageView(request, path1, path2,)
     return response
 
-#------------------------------------- robots.txt
+#———————————————————————————————————————— robots.txt
 
 from .models import Robots
 
@@ -63,7 +63,7 @@ def RobotsView(request):
     response = settings[0].robots.contents
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
-#------------------------------------- sitemap.txt
+#———————————————————————————————————————— sitemap.txt
 
 from modules import sitemap
 
@@ -73,7 +73,7 @@ def SitemapView(request):
     response = sitemap.create(domain, Page.objects.all())
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
-#---------------------------------------- placed images
+#———————————————————————————————————————— placed images
 # "Links/accueil-bg-15097511.jpg"
 
 def LinksView(request, path1, placed_file):
@@ -104,7 +104,7 @@ def LinksViewHome(request, placed_file):
     response = LinksView(request, path1, placed_file)
     return response
 
-#------------------------------------- send mail
+#———————————————————————————————————————— send mail
 
 from modules import send_mail
 
@@ -120,19 +120,86 @@ def MailView(request, lng):
 
     return HttpResponse(response)
 
-#---------------------------------------- page (with embedded svg)
+#———————————————————————————————————————— 404 error
+# https://websiteadvantage.com.au/404-Error-Handler-Checker
+
+# Links folder redirection breaks if the prefix does not exist
+# instead of defaulting to en, need to get site default language
+
+@never_cache
+def error404(request, *args, **kwargs):
+    path1 = request.path.split('/')[1]
+
+    try:
+        prefix = Prefix.objects.get(path=path1)
+    except ObjectDoesNotExist:
+        settings = Settings.objects.all()[0]
+        path1 = settings.prefix.path
+
+    response = PageView(request, path1, 'missing',)
+    response.status_code = 404
+    return response
+
+#———————————————————————————————————————— per-user cache
+# https://gist.github.com/caot/6480c39453f5d2fa86bf
+
+from django.core.cache import cache as core_cache
+
+def cache_key(request):
+    q = getattr(request, request.method)
+    q.lists()
+    urlencode = q.urlencode(safe='()')
+
+    return 'pageview_%s_%s' % (request.path, urlencode)
+
+def cache_per_user_function(ttl=None, cache_post=False):
+    '''
+    Decorator which caches the view for each User
+    * ttl - the cache lifetime, do not send this parameter means that the cache
+      will last until the restart server or decide to remove it
+    * cache_post - Determine whether to make requests cache POST
+    * The caching for anonymous users is shared with everyone
+    
+    How to use it:
+    @cache_per_user_function(ttl=3600, cache_post=False)
+    def my_view(request):
+        return HttpResponse("LOL %s" % (request.user))
+    '''
+    def decorator(function):
+        def apply_cache(request, *args, **kwargs):
+            CACHE_KEY = cache_key(request)
+            can_cache = True
+            response = None
+
+            if not cache_post and request.method == 'POST':
+                can_cache = False
+            if request.user.is_superuser:
+                can_cache = False
+
+            if can_cache:
+                response = core_cache.get(CACHE_KEY, None)
+
+            if not response:
+                response = function(request, *args, **kwargs)
+                if can_cache:
+                    core_cache.set(CACHE_KEY, response, ttl)
+
+            return response
+
+        return apply_cache
+    return decorator
+
+#———————————————————————————————————————— page (with embedded svg)
 
 from modules import svg_cleaner, meta_canonical, accessibility_links
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 from svija.models import Font
 
-def PageViewNew(request, path1, path2):
-    return HttpResponse("debugging message.")
-
+@cache_per_user_function(ttl=60*60*24, cache_post=False)
 def PageView(request, path1, path2):
 
-    #---------------------------------------- check fer redirect
+    #———————————————————————————————————————— check fer redirect
 
     try:
         redirect_obj = Redirect.objects.get(from_url=request.path, active=True)
@@ -143,7 +210,7 @@ def PageView(request, path1, path2):
     except ObjectDoesNotExist:
         rien = 0
 
-    #---------------------------------------- load objects
+    #———————————————————————————————————————— load objects
 
     prefix     = get_object_or_404(Prefix, path=path1)
     page       = get_object_or_404(Page, Q(prefix__path=path1) & Q(url=path2) & Q(visitable=True))
@@ -151,7 +218,7 @@ def PageView(request, path1, path2):
     settings   = Settings.objects.all()[0]
     language   = prefix.language
 
-    #---------------------------------------- if /en/ or /en/home then redirect to /
+    #———————————————————————————————————————— if /en/ or /en/home then redirect to /
 
     part_path = '/' + settings.prefix.path +'/'
     full_path = part_path + settings.prefix.default
@@ -161,7 +228,7 @@ def PageView(request, path1, path2):
         response.status_code = 301
         return response
 
-    #---------------------------------------- if /fr/accueil then redirect to /fr/
+    #———————————————————————————————————————— if /fr/accueil then redirect to /fr/
 
     part_path = '/' + path1 +'/'
     full_path = part_path + prefix.default
@@ -171,7 +238,7 @@ def PageView(request, path1, path2):
         response.status_code = 301
         return response
 
-    #---------------------------------------- context for template
+    #———————————————————————————————————————— context for template
 
     comments      = ''
     title         = ''
@@ -188,14 +255,14 @@ def PageView(request, path1, path2):
     analytics_id  = ''
     body_js       = ''
 
-    #---------------------------------------- the easy ones
+    #———————————————————————————————————————— the easy ones
 
     comments     = language.comment
     title        = page.title + ' ' + language.title
     touch        = language.touch
     analytics_id = settings.analytics_id
 
-    #---------------------------------------- meta tag
+    #———————————————————————————————————————— meta tag
 
     # just send necessary parts, not whole objects
     meta  = meta_canonical.create_canonical(
@@ -207,7 +274,7 @@ def PageView(request, path1, path2):
         path2,
     )
 
-    #---------------------------------------- fonts
+    #———————————————————————————————————————— fonts
     # should be first in CSS
 
     font_objs = Font.objects.all()
@@ -242,7 +309,7 @@ def PageView(request, path1, path2):
     link_str = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     fonts = link_str.format(('|').join(google_fonts))
 
-    #---------------------------------------- head JS
+    #———————————————————————————————————————— head JS
 
     dim_js = ''
 
@@ -270,11 +337,11 @@ def PageView(request, path1, path2):
 
     head_js += dim_js
 
-    #---------------------------------------- form-oriented language variables
+    #———————————————————————————————————————— form-oriented language variables
 
     # added down below if there is a form
 
-    form_js = '\n//---------------------------------------- mail form\n\n'
+    form_js = '\n//———————————————————————————————————————— mail form\n\n'
 
     form_js += 'var name_init = "'      + language.form_name       + '";\n'
     form_js += 'var address_init = "'   + language.form_email      + '";\n'
@@ -295,9 +362,9 @@ def PageView(request, path1, path2):
 
     form_js += 'var alert_email  = "'   + alert_email + '";\n'
     form_js += 'var alert_char   = "'   + alert_char  + '";\n'
-    form_js += '\n//---------------------------------------- /mail form\n\n'
+    form_js += '\n//———————————————————————————————————————— /mail form\n\n'
 
-    #---------------------------------------- shared scripts
+    #———————————————————————————————————————— shared scripts
 
     shared = page.shared.sharedscripts_set.all()  
 
@@ -311,7 +378,7 @@ def PageView(request, path1, path2):
         if this_script.type == 'body JS' and this_script.active == True:
             body_js += '\n' + this_script.content
 
-    #---------------------------------------- accessiblity/seo
+    #———————————————————————————————————————— accessiblity/seo
 
     text = page.access_text
     links = accessibility_links.create(settings.url, Page.objects.all())
@@ -320,7 +387,7 @@ def PageView(request, path1, path2):
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3} style="width:80%;height:2rem"></a>'
     accessibility = tag.format(text,links,settings.url,capture)
 
-    #---------------------------------------- svg
+    #———————————————————————————————————————— svg
 
     source_dir = responsive.source_dir
 
@@ -344,7 +411,7 @@ def PageView(request, path1, path2):
         head_css += '\n\n' + css_dims
         svg += '\n' + svg_content
 
-    #---------------------------------------- page scripts
+    #———————————————————————————————————————— page scripts
 
     html     = ''
     form     = ''
@@ -369,7 +436,7 @@ def PageView(request, path1, path2):
 
     if form != '': head_js += form_js
 
-    #---------------------------------------- menu
+    #———————————————————————————————————————— menu
 
     all_menus = page.menu.all()
     menu = ''
@@ -391,14 +458,14 @@ def PageView(request, path1, path2):
             if this_script.type == 'body JS' and this_script.active == True:
                 body_js += '\n' + this_script.content
 
-    #---------------------------------------- query string stuff
+    #———————————————————————————————————————— query string stuff
 
     if request.GET.get('clear') == 'cache':
         if request.user.is_superuser:
             title = request.GET.get('flag') + ' - ' + title 
             cache.clear()
 
-    #---------------------------------------- page settings
+    #———————————————————————————————————————— page settings
 
     template = page.template.filename
 
@@ -426,50 +493,4 @@ def PageView(request, path1, path2):
     return render(request, template, context)
 #   return render(request, template, {'context':context})
 
-#------------------------------------- 404 error
-# https://websiteadvantage.com.au/404-Error-Handler-Checker
-
-# Links folder redirection breaks if the prefix does not exist
-# instead of defaulting to en, need to get site default language
-
-@never_cache
-def error404(request, *args, **kwargs):
-    path1 = request.path.split('/')[1]
-
-    try:
-        prefix = Prefix.objects.get(path=path1)
-    except ObjectDoesNotExist:
-        settings = Settings.objects.all()[0]
-        path1 = settings.prefix.path
-
-    response = PageView(request, path1, 'missing',)
-    response.status_code = 404
-    return response
-
 #------------------------------------- fin
-# https://docs.djangoproject.com/en/2.2/topics/cache/#the-per-view-cache
-# first need to change to per-view caching
-
-#   if request.GET.get('clear') == 'cache':
-#       if request.user.is_superuser:
-#           title = request.GET.get('flag') + ' - ' + title 
-#           cache.clear()
-
-
-#   path('<slug:path1>/<slug:path2>', cache_page(60 * 15)(views.PageView)),
-
-# this whole idea can never work because urls.py is loaded first
-# instead, use a wrapper for the page view that checks the user
-# status then caches. Oops, that won't work because the view
-# will be cached, will never run the test.
-
-#if lambda request: request.user.is_superuser:
-#if request.user.is_superuser:
-#    del urlpatterns[-1]
-#    urlpatterns.append(path('<slug:path1>/<slug:path2>', views.PageView),)
-
-#---------------------------------------- 404 page
-
-# project urls.py that this happens
-# handler404 = 'views.error404'
-
