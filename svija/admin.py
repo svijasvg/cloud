@@ -141,7 +141,7 @@ class SettingsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'url', 'secure', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
+        ('main settings',   {'fields': ['robots', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
     ]   
 
@@ -186,7 +186,7 @@ class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('order', 'filename',)
-    fields = ('filename',)
+    fields = ('filename','order','active',)
 
 #https://stackoverflow.com/questions/19807757/django-admin-inline-many-to-many-custom-fields
 class MenuInline(admin.TabularInline):
