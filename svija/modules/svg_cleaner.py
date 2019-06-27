@@ -100,12 +100,24 @@ def clean(svg_source, svg_name):
             if line.find('font-family') > 0:
                 line_parts = line.split("'")
                 found_font = line_parts[1]
+                google_font = [x for x in fonts_goog if x.name == found_font]
+
+                # if it's not one of the google fonts in DB
+                if len(google_font) <= 0:
+#                    if found_font.find('italic') > -1:
+#                        sty = 'Italic'
+#                    elif found_font.find('oblique') > -1:
+#                        sty = 'Oblique'
+#                    elif found_font.find('normal') > -1:
+#                        sty = 'Normal'
+#                    elif found_font.find('normal') > -1:
+#                    else:
+                    fonts_found.append(found_font)
 
                 # if it's one of the google fonts in DB
-                text = [x for x in fonts_goog if x.name == found_font]
-                if len(text)>0:
-                    famly_given = "'" + text[0].family + "';"
-                    style_given = text[0].style.lower()
+                else:
+                    famly_given = "'" + google_font[0].family + "';"
+                    style_given = google_font[0].style.lower()
                     sty = ''
                     wgt = ''
 
@@ -155,7 +167,7 @@ def clean(svg_source, svg_name):
             font_obj = Font.objects.get(name = font_name)
             rien = 0
         except ObjectDoesNotExist:
-            p = Font.objects.create(name = font_name, active = False)
+            p = Font.objects.create(name = font_name, family='', style='', google= False, active = False)
             p.save
 
     return svg_ID, px_width, px_height, result
