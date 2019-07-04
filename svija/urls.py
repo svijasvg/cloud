@@ -15,15 +15,15 @@ SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 urlpatterns = [ 
+#---------------------------------------- email sending
+
+    path('<slug:lng>/mail', views.MailView),
+
 #---------------------------------------- main pages
 
     re_path(r'^(?P<path1>)$', views.HomePage),                # root url
     re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),       # two letters followed by slash
     path('<slug:path1>/<slug:path2>', views.PageView),  # something/something
-
-#---------------------------------------- email sending
-
-    path('<slug:lng>/mail', views.MailView),
 
 #---------------------------------------- placed images (in Links folder)
 
