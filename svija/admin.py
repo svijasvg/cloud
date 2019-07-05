@@ -257,4 +257,26 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
+#---------------------------------------- notes
+
+from .models import Note
+
+class NoteAdmin(admin.ModelAdmin):
+    list_filter = ('sort1', 'sort2',)
+
+    # display on parent page
+    list_display = ('name', 'sort1', 'sort2',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('meta',    {'fields': ['name','sort1', 'sort2',], }),
+        ('contents',    {'fields': ['contents',], }),
+    ]   
+
+    class Media:
+        js = ('ckeditor.js',) 
+
+admin.site.register(Note, NoteAdmin)
+
 #---------------------------------------- fin

@@ -280,4 +280,20 @@ class Font(models.Model):
     def __str__(self):
         return self.name
 
+#---------------------------------------- notes
+
+from ckeditor.fields import RichTextField
+
+class Note(models.Model):
+    name = models.CharField(max_length=200, default='')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+#   contents = models.TextField(max_length=20000, default='', verbose_name='note', blank=True,)
+    contents = RichTextField()
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "notes"
+        verbose_name_plural = "notes"
+
 #---------------------------------------- fin
