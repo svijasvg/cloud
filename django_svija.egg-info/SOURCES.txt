@@ -31,7 +31,6 @@ svija/modules/send_mail.py
 svija/modules/sitemap.py
 svija/modules/svg_cleaner.py
 svija/modules/__pycache__/accessibility_links.cpython-36.pyc
-svija/modules/__pycache__/gmail.cpython-36.pyc
 svija/modules/__pycache__/meta_canonical.cpython-36.pyc
 svija/modules/__pycache__/send_mail.cpython-36.pyc
 svija/modules/__pycache__/sitemap.cpython-36.pyc
