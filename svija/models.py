@@ -159,6 +159,25 @@ class Settings(models.Model):
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"
 
+#---------------------------------------- library scripts
+
+library_scripts=('head JS', 'body JS', 'body mixed', 'HTML', 'form', 'CSS',)
+
+class LibraryScript(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ["type", "name", "sort1", "sort2"]
+
 #-------------------------------------------------------------------------------- dep. on responsive & prefix
 
 #---------------------------------------- menu
@@ -202,6 +221,7 @@ class Page(models.Model):
     shared = models.ForeignKey(Shared, default=0, on_delete=models.CASCADE, )
     template = models.ForeignKey(Template, default=0, on_delete=models.CASCADE, )
     menu = models.ManyToManyField(Menu, blank=True)
+    library_script = models.ManyToManyField(LibraryScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
 
     # unused or meta

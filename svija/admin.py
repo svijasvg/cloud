@@ -147,6 +147,26 @@ class SettingsAdmin(admin.ModelAdmin):
 
 admin.site.register(Settings, SettingsAdmin)
 
+#---------------------------------------- library script admin
+
+from .models import LibraryScript
+
+class LibraryScriptAdmin(admin.ModelAdmin):
+
+    list_filter = ('type', 'sort1', 'sort2',)
+
+    # display on parent menu
+    list_display = ('name', 'sort1', 'sort2', 'type',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
+        ('content',        {'fields': ['content',                      ],}),
+    ]   
+
+admin.site.register(LibraryScript, LibraryScriptAdmin)
+
 #-------------------------------------------------------------------------------- dep. on responsive & prefix
 
 #---------------------------------------- menu admin
@@ -189,6 +209,13 @@ class SvgInline(admin.TabularInline):
     fields = ('filename','order','active',)
 
 #https://stackoverflow.com/questions/19807757/django-admin-inline-many-to-many-custom-fields
+class LibraryScriptInline(admin.TabularInline):
+    model = Page.library_script.through
+    extra = 0 
+    verbose_name = "library script"
+    verbose_name_plural = "library scripts"
+    classes = ['collapse']
+
 class MenuInline(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
@@ -200,6 +227,8 @@ class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "custom script"
+    verbose_name_plural = "custom scripts"
     classes = ['collapse']
 
 class PageAdmin(admin.ModelAdmin):
@@ -217,7 +246,7 @@ class PageAdmin(admin.ModelAdmin):
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, MenuInline, PageScriptsInline]
+    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
