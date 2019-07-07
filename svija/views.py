@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Language, Responsive, Robots, Template, Prefix, Settings
 from .models import Shared, SharedScripts 
 from .models import Menu, MenuScripts
-from .models import Page, PageScripts, Svg
+from .models import Page, PageScripts, LibraryScript, Svg
 from .models import Redirect
 
 from django.http import HttpResponse
@@ -446,6 +446,29 @@ def PageView(request, path1, path2):
             form += '\n' + this_script.content
 
     if form != '': head_js += form_js
+
+    #———————————————————————————————————————— library scripts
+
+#   html     = ''
+#   form     = ''
+
+    all_scripts = page.library_script.all()
+
+    for this_script in all_scripts:
+        if this_script.type == 'head JS':
+            head_js += '\n' + this_script.content
+
+        if this_script.type == 'body JS':
+            body_js += '\n' + this_script.content
+
+        if this_script.type == 'CSS':
+            head_css += '\n' + this_script.content
+
+        if this_script.type == 'HTML':
+            html += '\n' + this_script.content
+
+        if this_script.type == 'form':
+            form += '\n' + this_script.content
 
     #———————————————————————————————————————— menu
 
