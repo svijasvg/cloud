@@ -161,7 +161,7 @@ class Settings(models.Model):
 
 #---------------------------------------- library scripts
 
-library_scripts=('head JS', 'body JS', 'body mixed', 'HTML', 'form', 'CSS',)
+library_scripts=('head JS', 'body JS', 'raw', 'HTML', 'form', 'CSS',)
 
 class LibraryScript(models.Model):
 
