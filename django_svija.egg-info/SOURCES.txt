@@ -23,6 +23,13 @@ svija/migrations/0007_auto_20190625_1123.py
 svija/migrations/0008_auto_20190625_1134.py
 svija/migrations/0009_auto_20190625_1136.py
 svija/migrations/0010_auto_20190625_1359.py
+svija/migrations/0011_note.py
+svija/migrations/0012_auto_20190705_0859.py
+svija/migrations/0013_settings_active.py
+svija/migrations/0014_auto_20190706_1543.py
+svija/migrations/0015_auto_20190706_1548.py
+svija/migrations/0016_auto_20190707_1418.py
+svija/migrations/0017_auto_20190707_1454.py
 svija/migrations/__init__.py
 svija/modules/accessibility_links.py
 svija/modules/gmail.py.bk
@@ -36,6 +43,8 @@ svija/modules/__pycache__/send_mail.cpython-36.pyc
 svija/modules/__pycache__/sitemap.cpython-36.pyc
 svija/modules/__pycache__/svg_cleaner.cpython-36.pyc
 svija/static/svija/logo-admin.png
+svija/static/svija/scripts/TweenMax-2.0.2.js
+svija/templates/admin/base_site.html
 svija/templates/svija/debug.html
 svija/templates/svija/detail.html
 svija/templates/svija/index.html
