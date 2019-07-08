@@ -23,7 +23,7 @@ def clean(svg_source, svg_name):
     # if unspecified, ID will be filename with languager & extension removed (-en.svg)
     svg_ID = svg_name[:-7]
 
-    svg_source = os.path.abspath(os.path.dirname(__name__)) + '/' + svg_source + '/' + svg_name
+    #svg_source = os.path.abspath(os.path.dirname(__name__)) + '/' + svg_source + '/' + svg_name
 
     #------------------------------------- initialize values
 

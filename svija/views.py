@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Language, Responsive, Robots, Template, Prefix, Settings
 from .models import Shared, SharedScripts 
 from .models import Menu, MenuScripts
-from .models import Page, PageScripts, Svg
+from .models import Page, PageScripts, LibraryScript, Svg
 from .models import Redirect
 
 from django.http import HttpResponse
@@ -21,6 +21,7 @@ from django.core.files import File
 from django.core.cache import cache
 import os.path
 import sys
+import pathlib
 
 #from django.views import static
 import os
@@ -45,7 +46,7 @@ from django.shortcuts import redirect
 def HomePage(request, path1):
 
     if path1 == '':
-        settings = Settings.objects.all()[0]
+        settings = get_object_or_404(Settings,active=True)
         path1 = settings.prefix.path
 
     prefix = get_object_or_404(Prefix, path=path1)
@@ -59,8 +60,8 @@ def HomePage(request, path1):
 from .models import Robots
 
 def RobotsView(request):
-    settings = Settings.objects.all()
-    response = settings[0].robots.contents
+    settings = get_object_or_404(Settings,active=True)
+    response = settings.robots.contents
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— sitemap.txt
@@ -68,8 +69,8 @@ def RobotsView(request):
 from modules import sitemap
 
 def SitemapView(request):
-    settings = Settings.objects.all()
-    domain = settings[0].url
+    settings = get_object_or_404(Settings,active=True)
+    domain = settings.url
     response = sitemap.create(domain, Page.objects.all())
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
@@ -81,7 +82,7 @@ def LinksView(request, path1, placed_file):
     try:
         prefix = Prefix.objects.get(path=path1)
     except ObjectDoesNotExist:
-        settings = Settings.objects.all()[0]
+        settings = get_object_or_404(Settings,active=True)
         prefix = settings.prefix
 
     responsive = prefix.responsive
@@ -99,7 +100,7 @@ def LinksView(request, path1, placed_file):
     return HttpResponse(image_data, content_type='image/' + type)
 
 def LinksViewHome(request, placed_file):
-    settings = Settings.objects.all()[0]
+    settings = get_object_or_404(Settings,active=True)
     path1 = settings.prefix.path
     response = LinksView(request, path1, placed_file)
     return response
@@ -116,7 +117,8 @@ def MailView(request, lng):
     pfix = get_object_or_404(Prefix, path=lng)
     lng = pfix.language
 
-    response = send_mail.send(Settings.objects.all()[0], lng, request.POST, ua)
+    settings = get_object_or_404(Settings,active=True)
+    response = send_mail.send(settings, lng, request.POST, ua)
 
     return HttpResponse(response)
 
@@ -133,7 +135,7 @@ def error404(request, *args, **kwargs):
     try:
         prefix = Prefix.objects.get(path=path1)
     except ObjectDoesNotExist:
-        settings = Settings.objects.all()[0]
+        settings = get_object_or_404(Settings,active=True)
         path1 = settings.prefix.path
 
     response = PageView(request, path1, 'missing',)
@@ -177,7 +179,7 @@ def cache_per_user_function(ttl=None, cache_post=False):
             if request.user.is_superuser:
                 can_cache = False
 
-            settings = Settings.objects.all()[0]
+            settings = get_object_or_404(Settings,active=True)
             if settings.cache_reset:
                 can_cache = False
                 settings.cache_reset = False
@@ -224,7 +226,7 @@ def PageView(request, path1, path2):
     prefix     = get_object_or_404(Prefix, path=path1)
     page       = get_object_or_404(Page, Q(prefix__path=path1) & Q(url=path2) & Q(visitable=True))
     responsive = get_object_or_404(Responsive, name=prefix.responsive.name)
-    settings   = Settings.objects.all()[0]
+    settings   = get_object_or_404(Settings,active=True)
     language   = prefix.language
 
     #———————————————————————————————————————— if /en/ or /en/home then redirect to /
@@ -410,7 +412,14 @@ def PageView(request, path1, path2):
 
     for this_svg in all_svgs:
         if this_svg.active:
-            svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_svg.filename)
+
+            #—————— check if svg exists
+            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+            path = pathlib.Path(temp_source)
+            if not path.exists():
+                return error404(request)
+
+            svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
             page_ratio = px_width/px_height # 1680/2600=0.6461538462
     
@@ -446,20 +455,49 @@ def PageView(request, path1, path2):
 
     if form != '': head_js += form_js
 
+    #———————————————————————————————————————— library scripts
+
+#   html     = ''
+#   form     = ''
+
+    all_scripts = page.library_script.all()
+
+    for this_script in all_scripts:
+        if this_script.type == 'head JS':
+            head_js += '\n' + this_script.content
+
+        if this_script.type == 'body JS':
+            body_js += '\n' + this_script.content
+
+        if this_script.type == 'CSS':
+            head_css += '\n' + this_script.content
+
+        if this_script.type == 'HTML':
+            html += '\n' + this_script.content
+
+        if this_script.type == 'form':
+            form += '\n' + this_script.content
+
     #———————————————————————————————————————— menu
 
-    all_menus = page.menu.all()
+    all_svgs = page.menu.all()
     menu = ''
 
-    for this_menu in all_menus:
+    for this_svg in all_svgs:
 
-        svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_menu.filename)
+        #—————— check if svg exists
+        temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+        path = pathlib.Path(temp_source)
+        if not path.exists():
+            return error404(request)
+
+        svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
         css_dims = '#' + svg_ID + '{ width:' + str(px_width/10) + 'rem; height:' + str(px_height/10) + 'rem; }'
 
         head_css += '\n\n' + css_dims
         menu += '\n' + svg_content
 
-        all_scripts = this_menu.menuscripts_set.all()
+        all_scripts = this_svg.menuscripts_set.all()
         for this_script in all_scripts:
             if this_script.type == 'CSS' and this_script.active == True:
                 head_css += '\n' + this_script.content
