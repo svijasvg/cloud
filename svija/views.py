@@ -21,6 +21,7 @@ from django.core.files import File
 from django.core.cache import cache
 import os.path
 import sys
+import pathlib
 
 #from django.views import static
 import os
@@ -411,7 +412,14 @@ def PageView(request, path1, path2):
 
     for this_svg in all_svgs:
         if this_svg.active:
-            svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_svg.filename)
+
+            #—————— check if svg exists
+            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+            path = pathlib.Path(temp_source)
+            if not path.exists():
+                return error404(request)
+
+            svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
             page_ratio = px_width/px_height # 1680/2600=0.6461538462
     
@@ -472,18 +480,24 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— menu
 
-    all_menus = page.menu.all()
+    all_svgs = page.menu.all()
     menu = ''
 
-    for this_menu in all_menus:
+    for this_svg in all_svgs:
 
-        svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(source_dir, this_menu.filename)
+        #—————— check if svg exists
+        temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+        path = pathlib.Path(temp_source)
+        if not path.exists():
+            return error404(request)
+
+        svg_ID, px_width, px_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
         css_dims = '#' + svg_ID + '{ width:' + str(px_width/10) + 'rem; height:' + str(px_height/10) + 'rem; }'
 
         head_css += '\n\n' + css_dims
         menu += '\n' + svg_content
 
-        all_scripts = this_menu.menuscripts_set.all()
+        all_scripts = this_svg.menuscripts_set.all()
         for this_script in all_scripts:
             if this_script.type == 'CSS' and this_script.active == True:
                 head_css += '\n' + this_script.content
