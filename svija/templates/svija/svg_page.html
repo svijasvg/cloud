@@ -17,7 +17,7 @@
   <meta property="og:image" content="/images/capture.jpg">
   <script>
 
-{{ head_js }}
+{{ view_js }}
 {% include "svija/javascript/rem.js" %}
 {% include "svija/javascript/cookies.js" %}
 {% include "svija/javascript/choose_language.js" %}
@@ -47,6 +47,7 @@
   <script>
 
 ua = '{{ analytics_id }}';
+
 {% include "svija/javascript/window_scroll.js" %}
 {% include "svija/javascript/google_analytics.js" %}
 {{ body_js }} 

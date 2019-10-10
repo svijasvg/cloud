@@ -256,7 +256,7 @@ def PageView(request, path1, path2):
     meta          = ''
     fonts         = ''
     touch         = ''
-    head_js       = '//———————————————————————————————————————— svija generated\n\n'
+    view_js       = '//———————————————————————————————————————— svija generated\n\n'
     user_js       = ''
     head_css      = ''
     accessibility = ''
@@ -331,7 +331,7 @@ def PageView(request, path1, path2):
         page_url = 'http://'
 
     page_url += settings.url + '/' + path1 + '/' + path2
-    head_js += "var page_url = '" + page_url + "';\n"
+    view_js += "var page_url = '" + page_url + "';\n"
 
     if page.override:
         dim_js += '// overridden in page settings:\n'
@@ -347,7 +347,7 @@ def PageView(request, path1, path2):
         dim_js += 'var page_offsetx = '  + str(responsive.offsetx) + '; '
         dim_js += 'var page_offsety = '  + str(responsive.offsety) + '; \n'
 
-    head_js += dim_js
+    view_js += dim_js
 
     #———————————————————————————————————————— form-oriented language variables
 
@@ -379,6 +379,7 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— shared scripts
 
     user_js += '\n//———————————————————————————————————————— shared scripts\n'
+    body_js += '//———————————————————————————————————————— shared scripts'
 
     shared = page.shared.sharedscripts_set.all()  
 
@@ -390,7 +391,7 @@ def PageView(request, path1, path2):
             user_js += '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n' + this_script.content
+            body_js += '\n\n' + this_script.content
 
     #———————————————————————————————————————— accessiblity/seo
 
@@ -438,6 +439,7 @@ def PageView(request, path1, path2):
 #   html     = ''
 #   form     = ''
     user_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
 
     all_scripts = page.library_script.all()
 
@@ -462,6 +464,7 @@ def PageView(request, path1, path2):
     html     = ''
     form     = ''
     user_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
 
     all_scripts = page.pagescripts_set.all()
 
@@ -487,6 +490,9 @@ def PageView(request, path1, path2):
 
     all_svgs = page.menu.all()
     menu = ''
+
+    user_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
 
     for this_svg in all_svgs:
 
@@ -532,7 +538,7 @@ def PageView(request, path1, path2):
         'meta'          : meta,
         'fonts'         : fonts,
         'touch'         : touch,
-        'head_js'       : head_js,
+        'view_js'       : view_js,
         'user_js'       : user_js,
         'css'           : head_css,
         'accessibility' : accessibility,
