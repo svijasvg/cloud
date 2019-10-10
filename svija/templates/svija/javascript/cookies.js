@@ -1,4 +1,4 @@
-//---------------------------------------- begin cookies.js
+//———————————————————————————————————————— serverside: cookies.js
 
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
@@ -17,5 +17,3 @@ function getCookie(cname) {
   }
   return "";
 }
-
-//---------------------------------------- end cookies.js

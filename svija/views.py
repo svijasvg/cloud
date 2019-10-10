@@ -256,7 +256,7 @@ def PageView(request, path1, path2):
     meta          = ''
     fonts         = ''
     touch         = ''
-    head_js       = ''
+    head_js       = '\n//———————————————————————————————————————— page view\n\n'
     head_css      = ''
     accessibility = ''
     svg           = ''
@@ -377,6 +377,8 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— shared scripts
 
+    head_js += '\n\n//———————————————————————————————————————— shared scripts\n\n'
+
     shared = page.shared.sharedscripts_set.all()  
 
     for this_script in shared:
@@ -434,6 +436,7 @@ def PageView(request, path1, path2):
 
     html     = ''
     form     = ''
+    head_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
 
     all_scripts = page.pagescripts_set.all()
 

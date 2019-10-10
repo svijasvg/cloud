@@ -1,4 +1,4 @@
-//---------------------------------------- window_redraw.js
+//———————————————————————————————————————— serverside: window_redraw.js
 
 // need to do it only when it's not a vertical-only resize
 
@@ -50,5 +50,3 @@ function wn_ratio(){
 	var r = Math.round(w/h * wn_precision);
 	return r;
 }
-
-//---------------------------------------- /window_redraw.js

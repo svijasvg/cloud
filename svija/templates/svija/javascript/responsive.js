@@ -1,4 +1,4 @@
-//---------------------------------------- begin responsive.js
+//———————————————————————————————————————— serverside: responsive.js
 
 // mobile is portrait & desktop is landscape
 
@@ -45,5 +45,3 @@ if (isPort && !pgPort){
 if (!isPort && pgPort){
     location.href = '/' + languages['land'][lng] + '/' + pge;
     }
-
-//---------------------------------------- end responsive.js

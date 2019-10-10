@@ -1,3 +1,4 @@
+//———————————————————————————————————————— serverside: choose_language.js
 // javascript:chooseLanguage('/fr/');
 
 function chooseLanguage(flag){
