@@ -256,7 +256,8 @@ def PageView(request, path1, path2):
     meta          = ''
     fonts         = ''
     touch         = ''
-    head_js       = '\n//———————————————————————————————————————— page view\n\n'
+    head_js       = '//———————————————————————————————————————— svija generated\n\n'
+    user_js       = ''
     head_css      = ''
     accessibility = ''
     svg           = ''
@@ -317,7 +318,7 @@ def PageView(request, path1, path2):
 
     head_css = css_final + head_css
 
-    link_str = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
+    link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     fonts = link_str.format(('|').join(google_fonts))
 
     #———————————————————————————————————————— head JS
@@ -377,7 +378,7 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— shared scripts
 
-    head_js += '\n\n//———————————————————————————————————————— shared scripts\n\n'
+    user_js += '\n//———————————————————————————————————————— shared scripts\n'
 
     shared = page.shared.sharedscripts_set.all()  
 
@@ -386,7 +387,7 @@ def PageView(request, path1, path2):
             head_css += '\n' + this_script.content
 
         if this_script.type == 'head JS' and this_script.active == True:
-            head_js += '\n' + this_script.content
+            user_js += '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
             body_js += '\n' + this_script.content
@@ -432,17 +433,41 @@ def PageView(request, path1, path2):
             head_css += '\n\n' + css_dims
             svg += '\n' + svg_content
 
+    #———————————————————————————————————————— library scripts
+
+#   html     = ''
+#   form     = ''
+    user_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
+
+    all_scripts = page.library_script.all()
+
+    for this_script in all_scripts:
+        if this_script.type == 'head JS':
+            user_js += '\n' + this_script.content
+
+        if this_script.type == 'body JS':
+            body_js += '\n' + this_script.content
+
+        if this_script.type == 'CSS':
+            head_css += '\n' + this_script.content
+
+        if this_script.type == 'HTML':
+            html += '\n' + this_script.content
+
+        if this_script.type == 'form':
+            form += '\n' + this_script.content
+
     #———————————————————————————————————————— page scripts
 
     html     = ''
     form     = ''
-    head_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
+    user_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
 
     all_scripts = page.pagescripts_set.all()
 
     for this_script in all_scripts:
         if this_script.type == 'head JS' and this_script.active == True:
-            head_js += '\n' + this_script.content
+            user_js += '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
             body_js += '\n' + this_script.content
@@ -456,30 +481,7 @@ def PageView(request, path1, path2):
         if this_script.type == 'form' and this_script.active == True:
             form += '\n' + this_script.content
 
-    if form != '': head_js += form_js
-
-    #———————————————————————————————————————— library scripts
-
-#   html     = ''
-#   form     = ''
-
-    all_scripts = page.library_script.all()
-
-    for this_script in all_scripts:
-        if this_script.type == 'head JS':
-            head_js += '\n' + this_script.content
-
-        if this_script.type == 'body JS':
-            body_js += '\n' + this_script.content
-
-        if this_script.type == 'CSS':
-            head_css += '\n' + this_script.content
-
-        if this_script.type == 'HTML':
-            html += '\n' + this_script.content
-
-        if this_script.type == 'form':
-            form += '\n' + this_script.content
+    if form != '': user_js += form_js
 
     #———————————————————————————————————————— menu
 
@@ -505,7 +507,7 @@ def PageView(request, path1, path2):
             if this_script.type == 'CSS' and this_script.active == True:
                 head_css += '\n' + this_script.content
             if this_script.type == 'head JS' and this_script.active == True:
-                head_js += '\n' + this_script.content
+                user_js += '\n' + this_script.content
             if this_script.type == 'body JS' and this_script.active == True:
                 body_js += '\n' + this_script.content
 
@@ -531,6 +533,7 @@ def PageView(request, path1, path2):
         'fonts'         : fonts,
         'touch'         : touch,
         'head_js'       : head_js,
+        'user_js'       : user_js,
         'css'           : head_css,
         'accessibility' : accessibility,
         'svg'           : svg,

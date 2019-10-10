@@ -1,4 +1,4 @@
-//———————————————————————————————————————— serverside: cookies.js
+//———————————————————————————————————————— template: cookies.js
 
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
