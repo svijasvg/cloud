@@ -1,23 +1,26 @@
 /*———————————————————————————————————————— all pages */
 
-html,body{
+/*html,body{
   margin: 0px;
-}
+}*/
 
 html,body{ /* flash fix */
 	text-align:center;
+	margin:0px;
 	padding:0px;
 }
 
-svg:first-of-type{
+/* svg:first-of-type{
      width: 100%;   /* avoids flash when SVG is resized */
-  overflow: hidden; /* so MS browsers won't display content outside of artboard */
+/*  overflow: hidden; /* so MS browsers won't display content outside of artboard */
     /* margin: auto;   /* why is this here?                */
-}
+/*}*/
 
 svg:first-of-type{ /* flash fix */
+	width:100%;
+	overflow:hidden;
 	position:absolute; left:0; right:0; top:0;
-    margin: auto;   /* why is this here?                */
+	margin:auto;
 }
 
 /*————— positioning */
@@ -71,6 +74,9 @@ svg:first-of-type{ /* flash fix */
 }
 
 /*---------------------------------------- fonts FLASH FIX */
+
+@font-face { font-family:'Teko-Regular'; src:url('/fonts/Teko-Regular.woff') format('woff'); }
+@font-face { font-family:'Teko-Regular200'; src:url('/fonts/Teko-Regular200.woff') format('woff'); }
 
 @font-face { font-family:'Montserrat-Bold';
 src:url('/fonts/Montserrat-Bold.woff') format('woff'); }

@@ -4,5 +4,10 @@
 //	round to 2 decimals: 1.321px is rounded to 1.32px
 // <html> fontsize = one REM
 
-var ai_to_browser = window.innerWidth/page_visible_width;
-document.documentElement.style.fontSize = (10 * ai_to_browser) + 'px';
+//var ai_to_browser = window.innerWidth/page_visible_width;
+//document.documentElement.style.fontSize = (10 * ai_to_browser) + 'px';
+
+//flahs fix
+
+var ten_pixels = 10 * window.innerWidth/page_visible;
+document.documentElement.style.fontSize = ten_pixels + 'px';

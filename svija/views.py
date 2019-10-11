@@ -337,13 +337,13 @@ def PageView(request, path1, path2):
         dim_js += '// overridden in page settings:\n'
 
         dim_js += 'var page_width = '    + str(page.width  ) + '; '
-        dim_js += 'var page_visible_width = '  + str(page.visible) + '; \n'
+        dim_js += 'var page_visible= '  + str(page.visible) + '; \n'
         dim_js += 'var page_offsetx = '  + str(page.offsetx) + '; '
         dim_js += 'var page_offsety = '  + str(page.offsety) + '; \n'
 
     else:
         dim_js += 'var page_width = '    + str(responsive.width)   + '; '
-        dim_js += 'var page_visible_width = '  + str(responsive.visible) + '; \n'
+        dim_js += 'var page_visible= '  + str(responsive.visible) + '; \n'
         dim_js += 'var page_offsetx = '  + str(responsive.offsetx) + '; '
         dim_js += 'var page_offsety = '  + str(responsive.offsety) + '; \n'
 
