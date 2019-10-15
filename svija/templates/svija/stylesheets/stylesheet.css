@@ -1,45 +1,16 @@
 /*———————————————————————————————————————— all pages */
 
-/*html,body{
+html,body{
   margin: 0px;
-}*/
-
-html,body{ /* flash fix */
-	text-align:center;
-	margin:0px;
-	padding:0px;
 }
 
-/* svg:first-of-type{
+ svg:first-of-type{
      width: 100%;   /* avoids flash when SVG is resized */
-/*  overflow: hidden; /* so MS browsers won't display content outside of artboard */
-    /* margin: auto;   /* why is this here?                */
-/*}*/
-
-svg:first-of-type{ /* flash fix */
-	width:100%;
-	overflow:hidden;
-	position:absolute; left:0; right:0; top:0;
-	margin:auto;
+  overflow: hidden; /* so MS browsers won't display content outside of artboard */
 }
 
-/*————— positioning */
-
-/* <div id=acc_outer><div id=accessibility>({ accessibility })</div></div> */
-
-/*---------------------------------------- accessibility */
-
-#accessibility, #accessibility a:link, #accessibility a:visited{
-
-					margin: auto;      margin-top: 3rem;
-					 color: #777;            font: normal 10px/14px verdana;
-			text-align: justify: text-justify: inter-word;
-		     opacity:0.1;
-	}
-
-
-/*#accessibility{ /* positioning */
-/*       z-index: -1;
+#accessibility{ /* positioning */
+         z-index: -1;
         position: absolute;
            width: 80%;
           height: 80%;
@@ -53,56 +24,11 @@ svg:first-of-type{ /* flash fix */
           font: normal 10px/14px verdana;
     text-align: justify;
   text-justify: inter-word;
-         color: hsla(0, 0%,50%, 0.1);
+         color: hsla(0, 0%, 50%, 0.1);
 }
 
 #accessibility img{
     width: 100%;
    height: 1px;
   opacity: 0.1;
-} */
-
-/*————— fadein */
-
-@-webkit-keyframes fadein, /* Safari, Chrome and Opera > 12.1 */
-   @-moz-keyframes fadein, /* Firefox < 16 */
-    @-ms-keyframes fadein, /* Internet Explorer */
-     @-o-keyframes fadein, /* Opera < 12.1 */
-        @keyframes fadein{
-      from { opacity: 0; }
-      to   { opacity: 1; }
 }
-
-/*---------------------------------------- fonts FLASH FIX */
-
-@font-face { font-family:'Teko-Regular'; src:url('/fonts/Teko-Regular.woff') format('woff'); }
-@font-face { font-family:'Teko-Regular200'; src:url('/fonts/Teko-Regular200.woff') format('woff'); }
-
-@font-face { font-family:'Montserrat-Bold';
-src:url('/fonts/Montserrat-Bold.woff') format('woff'); }
-
-@font-face { font-family:'Montserrat-Regular';
-src:url('/fonts/Montserrat-Regular.woff') format('woff'); }
-
-@font-face { font-family:'Teko-Regular200';
-src:url('/fonts/Teko-Regular200.woff') format('woff'); }
-
-@font-face { font-family:'Teko-Regular';
-src:url('/fonts/Teko-Regular.woff') format('woff'); }
-
-/*-------------------------------------- body text */
-
-@font-face { font-family:'OpenSans-Light';
-src:url('/fonts/opensans-light-webfont.woff') format('woff'); }
-
-@font-face { font-family:'OpenSansLight-Italic';
-src:url('/fonts/opensans-lightitalic-webfont.woff') format('woff'); }
-
-@font-face { font-family:'OpenSans-Bold';
-src:url('/fonts/opensans-bold-webfont.woff') format('woff'); }
-
-@font-face { font-family:'OpenSans-BoldItalic';
-src:url('/fonts/opensans-bolditalic-webfont.woff') format('woff'); }
-
-/*---------------------------------------- /fonts */
-

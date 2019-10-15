@@ -18,23 +18,8 @@
   <script>
 
 {{ view_js }}
-
-fade5sec = "-webkit-transition:*s;-moz-transition:*s;-ms-transition:*s;-o-transition:*s;transition:*s;";
-
-function fadeIn(nm,s){
-	var fade = fade5sec.replace('*', s);
-	obj=document.getElementById(nm);
-	obj.style.cssText = 'opacity:1;'+fade;
-}
-
-function fadeOut(nm,s){
-	var fade = fade5sec.replace('*', s);
-	obj=document.getElementById(nm);
-	obj.style.cssText = 'opacity:0;'+fade;
-}
-
-{% include "svija/javascript/cookies.js" %}
 {% include "svija/javascript/rem.js" %}
+{% include "svija/javascript/cookies.js" %}
 {% include "svija/javascript/choose_language.js" %}
 {% include "svija/javascript/responsive.js" %}
 {% include "svija/javascript/window_redraw.js" %}
@@ -49,9 +34,11 @@ function fadeOut(nm,s){
 {% include "svija/stylesheets/stylesheet.css" %}
 {{ css }}
 
-</style></head><body>
+</style></head><body><script>
 
-<div id=accessibility style="width:40%;">{{ accessibility }}</div>
+{% include "svija/javascript/initial_scroll.js" %}
+
+</script><div id=accessibility>{{ accessibility }}</div>
 
 {{ svg  }}
 {{ html }}
@@ -63,9 +50,7 @@ function fadeOut(nm,s){
 
 ua = '{{ analytics_id }}';
 
-{% include "svija/javascript/window_scroll.js" %}
 {% include "svija/javascript/google_analytics.js" %}
 {{ body_js }} 
 
 </script></body></html>{% endautoescape %}
-

@@ -316,7 +316,7 @@ def PageView(request, path1, path2):
                 font_src = '/fonts/' + font_src
                 css_final += '\n'+ css_str.format(font_face, font_src, font_format)
 
-    #head_css = css_final + head_css
+    head_css = css_final + head_css
 
     link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     fonts = link_str.format(('|').join(google_fonts))
@@ -336,16 +336,16 @@ def PageView(request, path1, path2):
     if page.override:
         dim_js += '// overridden in page settings:\n'
 
-        dim_js += 'var page_width = '    + str(page.width  ) + '; '
-        dim_js += 'var page_visible= '  + str(page.visible) + '; \n'
-        dim_js += 'var page_offsetx = '  + str(page.offsetx) + '; '
-        dim_js += 'var page_offsety = '  + str(page.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(page.width  ) + '; '
+        dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
+        dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
+        dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
 
     else:
-        dim_js += 'var page_width = '    + str(responsive.width)   + '; '
-        dim_js += 'var page_visible= '  + str(responsive.visible) + '; \n'
-        dim_js += 'var page_offsetx = '  + str(responsive.offsetx) + '; '
-        dim_js += 'var page_offsety = '  + str(responsive.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(responsive.width)   + '; '
+        dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
+        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
+        dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
 
     view_js += dim_js
 
@@ -399,7 +399,7 @@ def PageView(request, path1, path2):
     links = accessibility_links.create(settings.url, Page.objects.all())
     capture = '/images/capture.jpg'
 
-    tag = '{0}\n\n{1}<a href=http://{2}><img src={3} style="width:80%;height:2rem"></a>'
+    tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     accessibility = tag.format(text,links,settings.url,capture)
 
     #———————————————————————————————————————— svg
