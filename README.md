@@ -5,9 +5,9 @@ Svija
 A set of tools for building web sites using Adobe Illustrator.
 The most important part is a CMS for managing pages and menus.
 
-Detailed documentation is in the "docs" directory.
+Detailed documentation is at **[docs.svija.com][1]**
 
-Visit https://svija.com for an overview of the project.
+Visit **[svija.com][2]** for an overview of the project.
 
 Quick start
 -----------
@@ -25,4 +25,10 @@ Quick start
 
    There are some other files to upload included in that repository.
 
-3. Visit https://docs.svija.com for detailed installation information.
+3. Visit [docs.svija.com][3] for detailed installation information.
+
+[1]: https://docs.svija.com "Visit the documentation site"
+[2]: https://svija.com "Visit the main site"
+[3]: https://docs.svija.com "Visit the documentation site"
+
+# https://daringfireball.net/projects/markdown/syntax
