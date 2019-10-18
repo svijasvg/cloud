@@ -25,9 +25,10 @@ Quick start
 
    There are some other files to upload included in that repository.
 
-3. Visit https://docs.svija.com for detailed installation information.
+3. Visit [docs.svija.com][3] for detailed installation information.
 
 [1]: https://docs.svija.com "Visit the documentation site"
 [2]: https://svija.com "Visit the main site"
+[3]: https://docs.svija.com "Visit the documentation site"
 
 # https://daringfireball.net/projects/markdown/syntax
