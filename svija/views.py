@@ -256,7 +256,8 @@ def PageView(request, path1, path2):
     meta          = ''
     fonts         = ''
     touch         = ''
-    head_js       = ''
+    view_js       = '//———————————————————————————————————————— svija generated\n\n'
+    user_js       = ''
     head_css      = ''
     accessibility = ''
     svg           = ''
@@ -317,7 +318,7 @@ def PageView(request, path1, path2):
 
     head_css = css_final + head_css
 
-    link_str = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
+    link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     fonts = link_str.format(('|').join(google_fonts))
 
     #———————————————————————————————————————— head JS
@@ -330,23 +331,23 @@ def PageView(request, path1, path2):
         page_url = 'http://'
 
     page_url += settings.url + '/' + path1 + '/' + path2
-    head_js += "var page_url = '" + page_url + "';\n"
+    view_js += "var page_url = '" + page_url + "';\n"
 
     if page.override:
         dim_js += '// overridden in page settings:\n'
 
-        dim_js += 'var page_width = '    + str(page.width  ) + '; '
-        dim_js += 'var page_visible = '  + str(page.visible) + '; \n'
-        dim_js += 'var page_offsetx = '  + str(page.offsetx) + '; '
-        dim_js += 'var page_offsety = '  + str(page.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(page.width  ) + '; '
+        dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
+        dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
+        dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
 
     else:
-        dim_js += 'var page_width = '    + str(responsive.width)   + '; '
-        dim_js += 'var page_visible = '  + str(responsive.visible) + '; \n'
-        dim_js += 'var page_offsetx = '  + str(responsive.offsetx) + '; '
-        dim_js += 'var page_offsety = '  + str(responsive.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(responsive.width)   + '; '
+        dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
+        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
+        dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
 
-    head_js += dim_js
+    view_js += dim_js
 
     #———————————————————————————————————————— form-oriented language variables
 
@@ -377,6 +378,9 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— shared scripts
 
+    user_js += '\n//———————————————————————————————————————— shared scripts\n'
+    body_js += '//———————————————————————————————————————— shared scripts'
+
     shared = page.shared.sharedscripts_set.all()  
 
     for this_script in shared:
@@ -384,10 +388,10 @@ def PageView(request, path1, path2):
             head_css += '\n' + this_script.content
 
         if this_script.type == 'head JS' and this_script.active == True:
-            head_js += '\n' + this_script.content
+            user_js += '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n' + this_script.content
+            body_js += '\n\n' + this_script.content
 
     #———————————————————————————————————————— accessiblity/seo
 
@@ -395,7 +399,7 @@ def PageView(request, path1, path2):
     links = accessibility_links.create(settings.url, Page.objects.all())
     capture = '/images/capture.jpg'
 
-    tag = '{0}\n\n{1}<a href=http://{2}><img src={3} style="width:80%;height:2rem"></a>'
+    tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     accessibility = tag.format(text,links,settings.url,capture)
 
     #———————————————————————————————————————— svg
@@ -430,41 +434,18 @@ def PageView(request, path1, path2):
             head_css += '\n\n' + css_dims
             svg += '\n' + svg_content
 
-    #———————————————————————————————————————— page scripts
-
-    html     = ''
-    form     = ''
-
-    all_scripts = page.pagescripts_set.all()
-
-    for this_script in all_scripts:
-        if this_script.type == 'head JS' and this_script.active == True:
-            head_js += '\n' + this_script.content
-
-        if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n' + this_script.content
-
-        if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n' + this_script.content
-
-        if this_script.type == 'HTML' and this_script.active == True:
-            html += '\n' + this_script.content
-
-        if this_script.type == 'form' and this_script.active == True:
-            form += '\n' + this_script.content
-
-    if form != '': head_js += form_js
-
     #———————————————————————————————————————— library scripts
 
 #   html     = ''
 #   form     = ''
+    user_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
 
     all_scripts = page.library_script.all()
 
     for this_script in all_scripts:
         if this_script.type == 'head JS':
-            head_js += '\n' + this_script.content
+            user_js += '\n' + this_script.content
 
         if this_script.type == 'body JS':
             body_js += '\n' + this_script.content
@@ -478,10 +459,40 @@ def PageView(request, path1, path2):
         if this_script.type == 'form':
             form += '\n' + this_script.content
 
+    #———————————————————————————————————————— page scripts
+
+    html     = ''
+    form     = ''
+    user_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
+
+    all_scripts = page.pagescripts_set.all()
+
+    for this_script in all_scripts:
+        if this_script.type == 'head JS' and this_script.active == True:
+            user_js += '\n' + this_script.content
+
+        if this_script.type == 'body JS' and this_script.active == True:
+            body_js += '\n' + this_script.content
+
+        if this_script.type == 'CSS' and this_script.active == True:
+            head_css += '\n' + this_script.content
+
+        if this_script.type == 'HTML' and this_script.active == True:
+            html += '\n' + this_script.content
+
+        if this_script.type == 'form' and this_script.active == True:
+            form += '\n' + this_script.content
+
+    if form != '': user_js += form_js
+
     #———————————————————————————————————————— menu
 
     all_svgs = page.menu.all()
     menu = ''
+
+    user_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
 
     for this_svg in all_svgs:
 
@@ -502,7 +513,7 @@ def PageView(request, path1, path2):
             if this_script.type == 'CSS' and this_script.active == True:
                 head_css += '\n' + this_script.content
             if this_script.type == 'head JS' and this_script.active == True:
-                head_js += '\n' + this_script.content
+                user_js += '\n' + this_script.content
             if this_script.type == 'body JS' and this_script.active == True:
                 body_js += '\n' + this_script.content
 
@@ -527,7 +538,8 @@ def PageView(request, path1, path2):
         'meta'          : meta,
         'fonts'         : fonts,
         'touch'         : touch,
-        'head_js'       : head_js,
+        'view_js'       : view_js,
+        'user_js'       : user_js,
         'css'           : head_css,
         'accessibility' : accessibility,
         'svg'           : svg,

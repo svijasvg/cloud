@@ -1,6 +1,7 @@
-//---------------------------------------- begin tap_highlight.js
-// necessary to remove gray touch highlight
+//———————————————————————————————————————— template: tap_highlight.js
 
-document.addEventListener("touchstart", function(){}, true); // -webkit-tap-highlight-color: rgba(100,0,0,0);
+// removes or modifies gray touch highlight on mobile
+// add CSS to set color
+// -webkit-tap-highlight-color: rgba(100,0,0,0);
 
-//---------------------------------------- end tap_highlight.js
+document.addEventListener("touchstart", function(){}, true);

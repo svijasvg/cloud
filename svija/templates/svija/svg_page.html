@@ -9,7 +9,7 @@
   <title> {{ title }} </title>
   <meta {{ meta }} >
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/><!-- minimum scale is for mobile Chrome horz scrolling -->
   <link rel="icon" href="/images/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 {{ fonts }}
@@ -17,16 +17,16 @@
   <meta property="og:image" content="/images/capture.jpg">
   <script>
 
-{{ head_js }}
-{% include "svija/javascript/cookies.js" %}
+{{ view_js }}
 {% include "svija/javascript/rem.js" %}
+{% include "svija/javascript/cookies.js" %}
 {% include "svija/javascript/choose_language.js" %}
 {% include "svija/javascript/responsive.js" %}
 {% include "svija/javascript/window_redraw.js" %}
 {% include "svija/javascript/tap_highlight.js" %}
+{{ user_js }}
 
   </script>
-  <!-- script src="/scripts/TweenMax-2.0.2.js"></script -->
   <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
 
 <style>
@@ -34,9 +34,11 @@
 {% include "svija/stylesheets/stylesheet.css" %}
 {{ css }}
 
-</style></head><body>
+</style></head><body><script>
 
-<div id=accessibility style="width:40%;">{{ accessibility }}</div>
+{% include "svija/javascript/initial_scroll.js" %}
+
+</script><div id=accessibility>{{ accessibility }}</div>
 
 {{ svg  }}
 {{ html }}
@@ -47,9 +49,8 @@
   <script>
 
 ua = '{{ analytics_id }}';
-{% include "svija/javascript/window_scroll.js" %}
+
 {% include "svija/javascript/google_analytics.js" %}
 {{ body_js }} 
 
 </script></body></html>{% endautoescape %}
-

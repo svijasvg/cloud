@@ -1,4 +1,4 @@
-//---------------------------------------- begin google_analytics.js
+//———————————————————————————————————————— template: google_analytics.js
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -7,5 +7,3 @@
 
   ga('create', ua, 'auto');
   ga('send', 'pageview');
-
-//---------------------------------------- end google_analytics.js
