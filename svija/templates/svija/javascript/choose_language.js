@@ -22,10 +22,10 @@ var bits = location.href.split('/');
 var cond3 = bits.length == 4;
 
 // condition: choice not same as default
-var cond4 = cky != language_code;
+var cond4 = cky != '/'+language_code+'/';
 
 // needs to be rewritten to use prefixes from DB
-var redir = '/'+cky+'/';
+var redir = cky;
 if (cond1 && cond2 && cond3 && cond4){
   location.href = redir;
 }
