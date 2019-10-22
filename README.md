@@ -1,11 +1,11 @@
-=====
-Svija
-=====
+————————————————————————————————————————
+Svija web sites with SVG instead of HTML
+————————————————————————————————————————
 
 A set of tools for building web sites using Adobe Illustrator.
-The most important part is a CMS for managing pages and menus.
+Includes a CMS for managing pages and menus.
 
-Detailed documentation is at **[docs.svija.com][1]**
+Detailed documentation is available at **[docs.svija.com][1]**
 
 Visit **[svija.com][2]** for an overview of the project.
 

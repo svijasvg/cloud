@@ -76,6 +76,8 @@ https://daringfireball.net/projects/markdown/syntax
 $ vi setup.py
 $ vi README.md
 $ vi svija/templates/admin/base_site.html (line 15)
+$ git commit -m "updated version number" -a
+$ git push origin master
 
 ———————————————————————————————————————— merge & switch to dev branch
 
