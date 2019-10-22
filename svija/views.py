@@ -327,8 +327,10 @@ def PageView(request, path1, path2):
 
 # language information
 
-    pfx = settings.prefix.path
-    view_js += 'var default_site_prefix = "' + pfx +'";\n'
+    cde = language.code
+    view_js += 'var language_code = "' + cde +'";\n'
+#   pfx = settings.prefix.path
+#   view_js += 'var default_site_prefix = "' + pfx +'";\n'
 
     if settings.secure:
         page_url = 'https://'
