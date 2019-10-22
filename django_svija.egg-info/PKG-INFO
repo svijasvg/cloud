@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-svija
-Version: 2.0.13
+Version: 2.0.14
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://docs.svija.com/
 Author: Andrew Swift
@@ -38,8 +38,6 @@ Description: =====
         [1]: https://docs.svija.com "Visit the documentation site"
         [2]: https://svija.com "Visit the main site"
         [3]: https://docs.svija.com "Visit the documentation site"
-        
-        # https://daringfireball.net/projects/markdown/syntax
         
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
