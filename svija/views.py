@@ -318,12 +318,19 @@ def PageView(request, path1, path2):
 
     head_css = css_final + head_css
 
+# need to check to make sure there is at least one font before adding the following
+
     link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     fonts = link_str.format(('|').join(google_fonts))
 
-    #———————————————————————————————————————— head JS
+    #———————————————————————————————————————— views.py generated JS
 
-    dim_js = ''
+# language information
+
+    cde = language.code
+    view_js += 'var language_code = "' + cde +'";\n'
+#   pfx = settings.prefix.path
+#   view_js += 'var default_site_prefix = "' + pfx +'";\n'
 
     if settings.secure:
         page_url = 'https://'
@@ -332,6 +339,8 @@ def PageView(request, path1, path2):
 
     page_url += settings.url + '/' + path1 + '/' + path2
     view_js += "var page_url = '" + page_url + "';\n"
+
+    dim_js = ''
 
     if page.override:
         dim_js += '// overridden in page settings:\n'

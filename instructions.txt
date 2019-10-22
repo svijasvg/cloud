@@ -1,0 +1,89 @@
+———————————————————————————————————————— to merge
+
+https://docs.svija.com/out-of-date/maintaining-svija
+
+Check out the branch you want to merge to (master), the, merge:
+
+$ git checkout master
+$ git merge dev --no-ff
+
+The --no-ff flag prevents git merge from executing a "fast-forward"
+if it detects that your current HEAD is an ancestor of the commit
+you're trying to merge.
+
+———————————————————————————————————————— increment version number
+
+version number is already ahead of live site
+will be updated at the end of the process
+
+———————————————————————————————————————— create installable version
+
+so that this version will be available
+in case of future compatibility problems:
+
+$ workon djangoEnv OR source Env/djangoEnv/bin/activate
+$ python setup.py sdist
+
+Add the new tarball to Git:
+$ git add dist/django-svija-2.0.8.tar.gz
+
+Commit the additions:
+$ git commit -m "added version 2.0.8" setup.py dist/django-svija-2.0.8.tar.gz
+
+Push the merged master to Github:
+$ git push origin master
+
+———————————————————————————————————————— back up live server
+
+on Linode, then make a data dump of each site with the svija version number:
+
+$ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+$ workon djangoEnv
+
+for each site:
+
+$ ./manage.py dumpdata > svija-2.0.10.json
+
+———————————————————————————————————————— site updates
+
+If there have been any changes to the site folder, they must be done before the Svija update:
+
+$ cd example
+$ vi example/settings.py
+
+$ pip install django-ckeditor
+$ sudo service uwsgi restart
+
+———————————————————————————————————————— update svija
+
+Installs Svija in the virtualenv, without the possibility of modifying the program.
+
+$ workon djangoEnv
+$ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
+
+To apply the migrations for each site:
+
+$ example/manage.py migrate
+$ example/manage.py collectstatic
+
+$ sudo service uwsgi restart
+
+———————————————————————————————————————— increment version number
+
+otherwise updating with Pip won’t work:
+
+$ vi setup.py
+$ vi README.md
+$ vi svija/templates/admin/base_site.html (line 15)
+
+———————————————————————————————————————— merge & switch to dev branch
+
+$ git checkout dev
+$ git merge master --no-ff
+$ git push -u
+
+———————————————————————————————————————— update docs.svija.com
+
+docs.svija.com/changelog
+
+———————————————————————————————————————— fin
