@@ -21,14 +21,14 @@ will be updated at the end of the process
 so that this version will be available
 in case of future compatibility problems:
 
-$ workon djangoEnv OR source Env/djangoEnv/bin/activate
+$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ python setup.py sdist
 
 Add the new tarball to Git:
-$ git add dist/django-svija-2.0.8.tar.gz
+$ git add dist/django-svija-2.0.13.tar.gz
 
 Commit the additions:
-$ git commit -m "added version 2.0.8" setup.py dist/django-svija-2.0.8.tar.gz
+$ git commit -m "added version 2.0.8" -a
 
 Push the merged master to Github:
 $ git push origin master
