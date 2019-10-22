@@ -30,5 +30,3 @@ Quick start
 [1]: https://docs.svija.com "Visit the documentation site"
 [2]: https://svija.com "Visit the main site"
 [3]: https://docs.svija.com "Visit the documentation site"
-
-# https://daringfireball.net/projects/markdown/syntax
