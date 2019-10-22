@@ -71,6 +71,7 @@ $ sudo service uwsgi restart
 ———————————————————————————————————————— increment version number
 
 otherwise updating with Pip won’t work:
+https://daringfireball.net/projects/markdown/syntax
 
 $ vi setup.py
 $ vi README.md
@@ -85,5 +86,12 @@ $ git push -u
 ———————————————————————————————————————— update docs.svija.com
 
 docs.svija.com/changelog
+
+———————————————————————————————————————— social media updates
+
+facebook
+twitter
+instagram
+linkedin
 
 ———————————————————————————————————————— fin
