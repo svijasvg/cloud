@@ -394,13 +394,13 @@ def PageView(request, path1, path2):
 
     for this_script in shared:
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n' + this_script.content
+            head_css += '\n/* ' + this_script.name + '*/\n' + this_script.content
 
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n' + this_script.content
+            user_js += '\n// ' + this_script.name + '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n\n' + this_script.content
+            body_js += '\n\n// ' + this_script.name + '\n' + this_script.content
 
     #———————————————————————————————————————— accessiblity/seo
 
@@ -457,19 +457,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS':
-            user_js += '\n' + this_script.content
+            user_js += '\n//' + this_script.name + '\n' + this_script.content
 
         if this_script.type == 'body JS':
-            body_js += '\n' + this_script.content
+            body_js += '\n//' + this_script.name + '\n' + this_script.content
 
         if this_script.type == 'CSS':
-            head_css += '\n' + this_script.content
+            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
 
         if this_script.type == 'HTML':
-            html += '\n' + this_script.content
+            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
 
         if this_script.type == 'form':
-            form += '\n' + this_script.content
+            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
 
     #———————————————————————————————————————— page scripts
 
@@ -482,19 +482,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n' + this_script.content
+            user_js += '\n// ' + this_script.name + '\n' + this_script.content
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n' + this_script.content
+            body_js += '\n// ' + this_script.name + '\n' + this_script.content
 
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n' + this_script.content
+            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
 
         if this_script.type == 'HTML' and this_script.active == True:
-            html += '\n' + this_script.content
+            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
 
         if this_script.type == 'form' and this_script.active == True:
-            form += '\n' + this_script.content
+            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
 
     if form != '': user_js += form_js
 
@@ -532,11 +532,11 @@ def PageView(request, path1, path2):
         all_scripts = this_svg.menuscripts_set.all()
         for this_script in all_scripts:
             if this_script.type == 'CSS' and this_script.active == True:
-                head_css += '\n' + this_script.content
+                head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
             if this_script.type == 'head JS' and this_script.active == True:
-                user_js += '\n' + this_script.content
+                user_js += '\n// ' + this_script.name + '\n' + this_script.content
             if this_script.type == 'body JS' and this_script.active == True:
-                body_js += '\n' + this_script.content
+                body_js += '\n// ' + this_script.name + '\n' + this_script.content
 
 #   #———————————————————————————————————————— old cache clearing-scheme
 
