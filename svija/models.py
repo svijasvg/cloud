@@ -273,8 +273,8 @@ class Svg(models.Model):
     def __str__(self):
         return self.filename
     class Meta:
-        verbose_name = "svg file"
-        verbose_name_plural = "svg files"
+        verbose_name = "SVG file"
+        verbose_name_plural = "SVG files"
         ordering = ["order"]
 
 #---------------------------------------- redirects
