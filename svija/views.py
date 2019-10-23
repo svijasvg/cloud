@@ -435,8 +435,8 @@ def PageView(request, path1, path2):
             svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
             if svg_width > specified_width:
-                svg_width = specified_width
                 page_ratio = svg_height/svg_width
+                svg_width = specified_width
                 svg_height = round(specified_width * page_ratio)
 
             rem_width = svg_width/10
@@ -515,7 +515,16 @@ def PageView(request, path1, path2):
             return error404(request)
 
         svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-        css_dims = '#' + svg_ID + '{ width:' + str(svg_width/10) + 'rem; height:' + str(svg_height/10) + 'rem; }'
+
+        if svg_width > specified_width:
+            page_ratio = svg_height/svg_width
+            svg_width = specified_width
+            svg_height = round(specified_width * page_ratio)
+
+        rem_width = svg_width/10
+        rem_height = svg_height/10
+
+        css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
 
         head_css += '\n\n' + css_dims
         menu += '\n' + svg_content
