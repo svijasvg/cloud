@@ -56,7 +56,7 @@ $ sudo service uwsgi restart
 
 Installs Svija in the virtualenv, without the possibility of modifying the program.
 
-$ workon djangoEnv
+$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
 
 To apply the migrations for each site:

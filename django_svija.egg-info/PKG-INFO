@@ -6,9 +6,9 @@ Home-page: https://docs.svija.com/
 Author: Andrew Swift
 Author-email: andrew@svija.com
 License: BSD License
-Description: ————————————————————————————————————————
+Description: ----------------------------------------
         Svija web sites with SVG instead of HTML
-        ————————————————————————————————————————
+        ----------------------------------------
         
         A set of tools for building web sites using Adobe Illustrator.
         Includes a CMS for managing pages and menus.
