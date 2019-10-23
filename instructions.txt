@@ -25,12 +25,10 @@ $ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ python setup.py sdist
 
 Add the new tarball to Git:
-$ git add dist/django-svija-2.0.13.tar.gz
+$ git add dist/django-svija-2.0.15.tar.gz
 
-Commit the additions:
-$ git commit -m "added version 2.0.8" -a
-
-Push the merged master to Github:
+Commit the additions and push:
+$ git commit -m "added version 2.0.15" -a
 $ git push origin master
 
 ———————————————————————————————————————— back up live server
@@ -58,7 +56,7 @@ $ sudo service uwsgi restart
 
 Installs Svija in the virtualenv, without the possibility of modifying the program.
 
-$ workon djangoEnv
+$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
 
 To apply the migrations for each site:
