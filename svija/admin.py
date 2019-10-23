@@ -227,8 +227,8 @@ class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "custom script"
-    verbose_name_plural = "custom scripts"
+    verbose_name = "user script"
+    verbose_name_plural = "user scripts"
     classes = ['collapse']
 
 class PageAdmin(admin.ModelAdmin):
