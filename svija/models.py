@@ -228,7 +228,7 @@ class Page(models.Model):
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
     pub_date    = models.DateTimeField(default=datetime.now, blank=True)
-    url    = models.CharField(max_length=200, default='', verbose_name='URL (follows prefix)')
+    url    = models.CharField(max_length=200, default='', verbose_name='slug (follows prefix)')
 
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)

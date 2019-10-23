@@ -240,7 +240,7 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('PREFIX & URL',       {'fields': ['visitable', 'prefix','url',],                                          }),
+        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
         ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
