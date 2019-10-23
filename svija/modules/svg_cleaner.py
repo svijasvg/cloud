@@ -95,27 +95,18 @@ def clean(svg_source, svg_name):
             parts = line.split('.st')
             line = '\t.st' + svg_ID + parts[1]
 
-            #----- find fonts
-            #----- .st24{font-family:'Roboto-Light';}
+            #------------------------------ find fonts
+            #------ .st24{font-family:'Roboto-Light';}
+            #-----------------------------------------
+
             if line.find('font-family') > 0:
                 line_parts = line.split("'")
                 found_font = line_parts[1]
+
+                # if it is a google font already in DB
+                # replace Illustrator-style def with Google's
                 google_font = [x for x in fonts_goog if x.name == found_font]
-
-                # if it's not one of the google fonts in DB
-                if len(google_font) <= 0:
-#                    if found_font.find('italic') > -1:
-#                        sty = 'Italic'
-#                    elif found_font.find('oblique') > -1:
-#                        sty = 'Oblique'
-#                    elif found_font.find('normal') > -1:
-#                        sty = 'Normal'
-#                    elif found_font.find('normal') > -1:
-#                    else:
-                    fonts_found.append(found_font)
-
-                # if it's one of the google fonts in DB
-                else:
+                if len(google_font) > 0:
                     famly_given = "'" + google_font[0].family + "';"
                     style_given = google_font[0].style.lower()
                     sty = ''
@@ -140,6 +131,46 @@ def clean(svg_source, svg_name):
                     line_parts[1] = line_parts[1][0:-1]
                     line = "".join(line_parts)
 
+                # if it's a woff font already in DB
+                # then the styles are already correct (SHOULD BE)
+                woff_font = [x for x in fonts_woff if x.name == found_font]
+                if len(woff_font) > 0:
+                    do_nothing = True
+
+                # font is not in DB
+                if len(woff_font) <= 0 and len(google_font) <= 0:
+                    font_to_replace = fonts[0]
+                    new_weight = ''
+                    new_style = ''
+
+                    # weights
+                    if found_font.lower().find('bold') > -1:
+                        new_weight = 'Bold'
+                    elif found_font.lower().find('semibold') > -1:
+                        new_weight = 'SemiBold'
+                    elif found_font.lower().find('light') > -1:
+                        new_weight = 'Light'
+                    elif found_font.lower().find('regular') > -1:
+                        new_weight = 'Regular'
+
+                    # styles
+                    elif found_font.lower().find('italic') > -1:
+                        new_style = 'Italic'
+                    elif found_font.lower().find('oblique') > -1:
+                        new_style = 'Oblique'
+                    elif found_font.lower().find('normal') > -1:
+                        new_style = 'Normal'
+                    else:
+                        something = False
+
+# need to remove "regular" "-regular" etc. from family
+
+                    font_to_replace.name = found_font
+                    font_to_replace.family = found_font
+                    font_to_replace.style = new_weight+new_style
+                    font_to_replace.source = 'missing'
+                    fonts_found.append(font_to_replace)
+
         #---------------------------------- replace style applications
         # class= st2 › staccueil_fr2
 
@@ -162,12 +193,13 @@ def clean(svg_source, svg_name):
   #----------------------------------------- check font table
   # https://stackoverflow.com/questions/14676613/how-to-import-google-web-font-in-css-file
 
-    for font_name in fonts_found:
+    # add fonts that were not already in DB to DB
+    for each_font in fonts_found:
         try:
-            font_obj = Font.objects.get(name = font_name)
+            font_obj = Font.objects.get(name = each_font.name)
             rien = 0
         except ObjectDoesNotExist:
-            p = Font.objects.create(name = font_name, family='', style='', google= False, active = False)
+            p = Font.objects.create(name = each_font.name, family = each_font.family, style=each_font.style, source=each_font.source, google=False, active=False)
             p.save
 
     return svg_ID, px_width, px_height, result
