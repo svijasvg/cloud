@@ -27,5 +27,5 @@ var cond4 = cky != '/'+language_code+'/';
 // needs to be rewritten to use prefixes from DB
 var redir = cky;
 if (cond1 && cond2 && cond3 && cond4){
-  location.href = redir;
+  location.href = redir.slice(1);
 }

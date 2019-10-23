@@ -73,7 +73,7 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name','filename', )
+    list_display = ('name','description', 'filename', )
     save_on_top = True
     save_as = True
 
@@ -227,8 +227,8 @@ class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "custom script"
-    verbose_name_plural = "custom scripts"
+    verbose_name = "user script"
+    verbose_name_plural = "user scripts"
     classes = ['collapse']
 
 class PageAdmin(admin.ModelAdmin):
@@ -240,7 +240,7 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('PREFIX & URL',       {'fields': ['visitable', 'prefix','url',],                                          }),
+        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
         ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
