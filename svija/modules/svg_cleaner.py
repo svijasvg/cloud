@@ -16,185 +16,117 @@ import os, re, io
 from svija.models import Font
 from django.core.exceptions import ObjectDoesNotExist
 
-# given path to source file & name (need to figure out what to pass exactly)
+def clean(svg_path, svg_name):
 
-def clean(svg_source, svg_name):
+    # if unspecified, ID will be filename with extension removed (-en.svg)
+    svg_ID         = svg_name[:-4]
+    add_ID         = True
+    width = height = 0
+    line_number    = -1
+    final_svg      = ''
+    new_fonts, fonts_file, fonts_goog = [], [], []
 
-    # if unspecified, ID will be filename with languager & extension removed (-en.svg)
-    svg_ID = svg_name[:-7]
+    #———————————————————————————————————— list of woff & google fonts in DB
+    # could be rewritten in three lines
 
-    #svg_source = os.path.abspath(os.path.dirname(__name__)) + '/' + svg_source + '/' + svg_name
-
-    #————————————————————————————————————- initialize values
-
-    width = 0
-    height = 0
-    line_number = -1
-    result = ''
-    fonts_found = []
-    fonts_woff = []
-    fonts_goog = []
-
-    #————————————————————————————————————- list of woff & google fonts
-
-    fonts = Font.objects.all()
-    for this_font in fonts:
+    fonts_db = Font.objects.all()
+    for this_font in fonts_db:
         if this_font.google:
             fonts_goog.append(this_font)
         else:
-            fonts_woff.append(this_font)
+            fonts_file.append(this_font)
 
-    #————————————————————————————————————- read contents of SVG, split into lines
-
-    with open(svg_source, 'r', encoding='utf-8') as f:
+    with open(svg_path, 'r', encoding='utf-8') as f:
         raw_svg = f.read()
         svg_lines = raw_svg.split('\n')
 
-    #————————————————————————————————————- process the SVG line by line
+    #———————————————————————————————————— main loop to process SVG line by line
 
     while True:
 
         line_number = line_number + 1
         if line_number == len(svg_lines): break # we're done
+
         line = svg_lines[line_number - 1]
-
-        #————————————————————————————————-- if the AI xml header is there delete it
-
         if line[0:5] == '<?xml': continue
         if line[0:4] == '<!--': continue
 
-        #———————————————————————————————— if already ID don't need new ID
+        #———————————————————————————————— if svg has an ID, use it
 
+        # single-layer AI docs have svg ID named for layer
+        # <svg version="1.1" id="Layer_1" xmlns="http:
         if line[0:4] == '<svg':
             if line.find('id="') > 0:
-                svg_ID = ''
+                parts = line.split('"')
+                svg_ID = parts[3]
+                add_ID = False
 
-        #———————————————————————————————— remove pixel dimensions if any
+        #———————————————————————————————— get dimensions from viewbox value in svg tag
 
-        if line[2:9] == 'viewBox':
+        # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
+        #	 height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
 
-            #————————————————————————————-- remove pixel dimensions if any
-
-            if line.find('px" ') > 0:
-                parts = line.split('px" ')
-                line = '\t ' + parts[-1]
-
-            #————————————————————————————-- extract dimensions from viewBox
-
-            parts = line.split('"')
-            viewBox = parts[1]
+        if line.find('viewBox') > 0:
+            parts1 = line.split('viewBox="')
+            parts2 = parts1[1].split('" ')
+            viewBox = parts2[0]
             dimensions = viewBox.split(' ')
             px_width = float(dimensions[2])
             px_height = float(dimensions[3])
 
-        #————————————————————————————————-- replace style definitions
-        #————————————————————————————————-- .st10 creates conflict when multiple svg's on a page
-        #————————————————————————————————-- replaced with .st[SVG ID]10
+        #————————————————————————————————— find fonts
+        # .stLayer_12{font-family:'Signika-Regular';}
+        #————————————————————————————————————————————
+
+        if line[1:4] == '.st' and line.find('font-family') > 0:
+            line_parts = line.split("'")
+            css_ref = line_parts[1]
+
+            # if it is a google font already in DB
+            # replace Illustrator-style def with Google's
+            google_font = [x for x in fonts_goog if x.name == css_ref]
+            woff_font = [x for x in fonts_file if x.name == css_ref]
+
+            if len(google_font) > 0:
+                line_parts[1] = redefine_styles(google_font, line_parts[1])
+                line = ''.join(line_parts)
+
+            # if it's not a woff font already in DB the add it
+            elif len(woff_font) <= 0:
+                # should be a better way to do this
+                font_to_replace = Font()
+                new_font = create_new_font(css_ref, font_to_replace)
+                new_fonts.append(new_font)
+
+        #———————————————————————————————— replace style definitions at top of SVG
+        #———————————————————————————————— and style applications in body of SVG
 
         if line[1:4] == '.st':
             parts = line.split('.st')
             line = '\t.st' + svg_ID + parts[1]
 
-            #————————————————————————————-- find fonts
-            #————-- .st24{font-family:'Roboto-Light';}
-            #————————————————————————————————————————-
-
-            if line.find('font-family') > 0:
-                line_parts = line.split("'")
-                found_font = line_parts[1]
-
-                # if it is a google font already in DB
-                # replace Illustrator-style def with Google's
-                google_font = [x for x in fonts_goog if x.name == found_font]
-                if len(google_font) > 0:
-                    famly_given = "'" + google_font[0].family + "';"
-                    style_given = google_font[0].style.lower()
-                    sty = ''
-                    wgt = ''
-
-                    if style_given.find('italic') > -1:
-                        sty = 'font-style:italic;'
-                        wgt = style_given.replace('italic','')
-                    elif style_given.find('oblique') > -1:
-                        sty = 'font-style:oblique;'
-                        wgt = style_given.replace('oblique','')
-                    elif style_given.find('normal') > -1:
-                        sty = 'font-style:normal;'
-                        wgt = style_given.replace('normal','')
-                    else:
-                        wgt = style_given
-
-                    if wgt != '':
-                        wgt = 'font-weight:' + wgt + ';'
-
-                    line_parts[1] = famly_given + wgt + sty
-                    line_parts[1] = line_parts[1][0:-1]
-                    line = "".join(line_parts)
-
-                # if it's a woff font already in DB
-                # then the styles are already correct (SHOULD BE)
-                woff_font = [x for x in fonts_woff if x.name == found_font]
-                if len(woff_font) > 0:
-                    do_nothing = True
-
-                # font is not in DB
-                if len(woff_font) <= 0 and len(google_font) <= 0:
-                    font_to_replace = fonts[0]
-                    fonts_found.append(complicated_function(found_font, font_to_replace))
-
-#                   font_to_replace = fonts[0]
-#                   new_weight = ''
-#                   new_style = ''
-
-#                   # weights
-#                   if found_font.lower().find('bold') > -1:
-#                       new_weight = 'Bold'
-#                   elif found_font.lower().find('semibold') > -1:
-#                       new_weight = 'SemiBold'
-#                   elif found_font.lower().find('light') > -1:
-#                       new_weight = 'Light'
-#                   elif found_font.lower().find('regular') > -1:
-#                       new_weight = 'Regular'
-
-#                   # styles
-#                   elif found_font.lower().find('italic') > -1:
-#                       new_style = 'Italic'
-#                   elif found_font.lower().find('oblique') > -1:
-#                       new_style = 'Oblique'
-#                   elif found_font.lower().find('normal') > -1:
-#                       new_style = 'Normal'
-#                   else:
-#                       something = False
-#                   font_to_replace.name = found_font
-#                   font_to_replace.family = found_font
-#                   font_to_replace.style = new_weight+new_style
-#                   font_to_replace.source = 'missing'
-#                   fonts_found.append(font_to_replace)
-
-        #————————————————————————————————-- replace style applications
-        # class= st2 › staccueil_fr2
-
         if line.find('class="st') > 0:
             line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
 
-        #————————————————————————————————-- get id if specified
+        #———————————————————————————————— get id if specified
+        #———————————————————————————————— AI file with layer name "id example"
 
         if line[1:10] == 'g id="id_': svg_ID = line[10:-2]
 
-     #————————————————————————————————-- print this line
+     #———————————————————————————————— add line into final SVG
 
-        result += '\n' + line;
+        final_svg += '\n' + line;
 
-  #————————————————————————————————————————- add new ID if necessary
+  #———————————————————————————————————————— add new ID if necessary
 
-    if svg_ID != '':
-        result = result.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
+    if add_ID:
+        final_svg = final_svg.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
 
-  #————————————————————————————————————————- check font table
+  #———————————————————————————————————————— check font table
   # https://stackoverflow.com/questions/14676613/how-to-import-google-web-font-in-css-file
 
     # add fonts that were not already in DB to DB
-    for each_font in fonts_found:
+    for each_font in new_fonts:
         try:
             font_obj = Font.objects.get(name = each_font.name)
             rien = 0
@@ -202,13 +134,11 @@ def clean(svg_source, svg_name):
             p = Font.objects.create(name = each_font.name, family = each_font.family, style=each_font.style, source=each_font.source, google=False, active=False)
             p.save
 
-    return svg_ID, px_width, px_height, result
+    return svg_ID, px_width, px_height, final_svg
 
 #———————————————————————————————————————— functions
-# if len(woff_font) <= 0 and len(google_font) <= 0:
-#     fonts_found.append(comlicated_function(found_font))
 
-def complicated_function(css_ref, new_font):
+def create_new_font(css_ref, new_font):
 
     name = family = css_ref
     weight = style = width = ''
@@ -253,4 +183,40 @@ def complicated_function(css_ref, new_font):
 
 # http://dev.svija.com/en/print
 # not finding "'Signika-Regular';"
+# 	.stLayer_12{font-family:'Signika-Regular';}
+
+#———————————————————————————————————————— google font function
+# line_parts[1] = redefine_styles(google_font, line_parts[1])
+
+def redefine_styles(google_font, style_string):
+
+    famly_given = "'" + google_font[0].family + "';"
+    style_given = google_font[0].style.lower()
+
+    # these are not currently used
+    weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
+    styles = ['Normal','Italic','Oblique',]
+    widths = ['Condensed', 'Extended',]
+
+    sty = wgt = ''
+
+    if style_given.find('italic') > -1:
+        sty = 'font-style:italic;'
+        wgt = style_given.replace('italic','')
+    elif style_given.find('oblique') > -1:
+        sty = 'font-style:oblique;'
+        wgt = style_given.replace('oblique','')
+    elif style_given.find('normal') > -1:
+        sty = 'font-style:normal;'
+        wgt = style_given.replace('normal','')
+    else:
+        wgt = style_given
+
+    if wgt != '':
+        wgt = 'font-weight:' + wgt + ';'
+
+    style_string = famly_given + wgt + sty
+    style_string = style_string[0:-1]
+    return style_string
+
 #———————————————————————————————————————— fin
