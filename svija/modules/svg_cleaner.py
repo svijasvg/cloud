@@ -209,8 +209,27 @@ def clean(svg_source, svg_name):
 #     fonts_found.append(comlicated_function(found_font))
 
 def complicated_function(found_font, font_to_replace):
+
+    font_to_replace.name = found_font
+    font_to_replace.family = found_font
+    font_to_replace.source = 'PLEASE ACTIVATE'
+
+    weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight' 'Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
+    styles = ['Normal','Italic','Oblique',]
+    widths = ['Condensed', 'Extended',]
+
     new_weight = ''
     new_style = ''
+
+    for this_one in weights:
+        if found_font.lower().find(this_one.lower()) > -1:
+            new_weight = this_one
+
+#           found_font = re.sub(
+#               r"(?i)^.*interfaceOpDataFile.*$",
+#               "interfaceOpDataFile %s" % fileIn,
+#               found_font
+#           )
 
     # weights
     if found_font.lower().find('bold') > -1:
@@ -232,12 +251,11 @@ def complicated_function(found_font, font_to_replace):
     else:
         something = False
 
-# need to remove "regular" "-regular" etc. from family
+    weight_style = new_weight+new_style
+    if weight_style == '':
+        weight_style = 'Regular'
 
-    font_to_replace.name = found_font
-    font_to_replace.family = found_font
-    font_to_replace.style = new_weight+new_style
-    font_to_replace.source = 'missing'
+    font_to_replace.style = weight_style
     return font_to_replace
 
 #———————————————————————————————————————— fin
