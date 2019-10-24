@@ -291,7 +291,7 @@ class Redirect(models.Model):
 #---------------------------------------- fonts
 
 class Font(models.Model): 
-    name   = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)
