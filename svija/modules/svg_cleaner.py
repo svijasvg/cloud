@@ -208,54 +208,49 @@ def clean(svg_source, svg_name):
 # if len(woff_font) <= 0 and len(google_font) <= 0:
 #     fonts_found.append(comlicated_function(found_font))
 
-def complicated_function(found_font, font_to_replace):
+def complicated_function(css_ref, new_font):
 
-    font_to_replace.name = found_font
-    font_to_replace.family = found_font
-    font_to_replace.source = 'PLEASE ACTIVATE'
+    name = family = css_ref
+    weight = style = width = ''
+    source = 'PLEASE ACTIVATE'
 
-    weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight' 'Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
+    weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
     styles = ['Normal','Italic','Oblique',]
     widths = ['Condensed', 'Extended',]
 
-    new_weight = ''
-    new_style = ''
-
     for this_one in weights:
-        if found_font.lower().find(this_one.lower()) > -1:
-            new_weight = this_one
+        if css_ref.lower().find(this_one.lower()) > -1:
+            weight = this_one
+            regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
+            family = regx.sub('', family)
+            break
 
-#           found_font = re.sub(
-#               r"(?i)^.*interfaceOpDataFile.*$",
-#               "interfaceOpDataFile %s" % fileIn,
-#               found_font
-#           )
+    for this_one in styles:
+        if css_ref.lower().find(this_one.lower()) > -1:
+            style = this_one
+            regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
+            family = regx.sub('', family)
+            break
 
-    # weights
-    if found_font.lower().find('bold') > -1:
-        new_weight = 'Bold'
-    elif found_font.lower().find('semibold') > -1:
-        new_weight = 'SemiBold'
-    elif found_font.lower().find('light') > -1:
-        new_weight = 'Light'
-    elif found_font.lower().find('regular') > -1:
-        new_weight = 'Regular'
+    for this_one in widths:
+        if css_ref.lower().find(this_one.lower()) > -1:
+            width = this_one
+            regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
+            family = regx.sub('', family)
+            break
 
-    # styles
-    elif found_font.lower().find('italic') > -1:
-        new_style = 'Italic'
-    elif found_font.lower().find('oblique') > -1:
-        new_style = 'Oblique'
-    elif found_font.lower().find('normal') > -1:
-        new_style = 'Normal'
-    else:
-        something = False
+    # change OpenSans to Open Sans
+    regx = re.compile(r'([a-z])([A-Z])')
+    family = regx.sub(r'\1 \2', family)
 
-    weight_style = new_weight+new_style
+    weight_style = weight + style + width
     if weight_style == '':
         weight_style = 'Regular'
 
-    font_to_replace.style = weight_style
-    return font_to_replace
+    new_font.name, new_font.family, new_font.style, new_font.source = name, family, weight_style, source
 
+    return new_font
+
+# http://dev.svija.com/en/print
+# not finding "'Signika-Regular';"
 #———————————————————————————————————————— fin
