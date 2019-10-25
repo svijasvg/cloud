@@ -136,7 +136,7 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'robots', 'prefix', 'cached', 'pub_date','active',)
+    list_display = ('url', 'active', 'robots', 'prefix', 'cached', 'pub_date',)
     save_on_top = True
     save_as = True
 
