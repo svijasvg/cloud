@@ -399,13 +399,13 @@ def PageView(request, path1, path2):
 
     for this_script in shared:
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n/* ' + this_script.name + '*/\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n// ' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n\n// ' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
     #———————————————————————————————————————— accessiblity/seo
 
@@ -462,19 +462,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS':
-            user_js += '\n//' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS':
-            body_js += '\n//' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'CSS':
-            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'HTML':
-            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            html += add_script('html', this_script.name, this_script.content)
 
         if this_script.type == 'form':
-            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            form += add_script('html', this_script.name, this_script.content)
 
     #———————————————————————————————————————— page scripts
 
@@ -487,19 +487,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n// ' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n// ' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'HTML' and this_script.active == True:
-            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            html += add_script('html', this_script.name, this_script.content)
 
         if this_script.type == 'form' and this_script.active == True:
-            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            form += add_script('html', this_script.name, this_script.content)
 
     if form != '': user_js += form_js
 
@@ -537,11 +537,11 @@ def PageView(request, path1, path2):
         all_scripts = this_svg.menuscripts_set.all()
         for this_script in all_scripts:
             if this_script.type == 'CSS' and this_script.active == True:
-                head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+                head_css += add_script('css', this_script.name, this_script.content)
             if this_script.type == 'head JS' and this_script.active == True:
-                user_js += '\n// ' + this_script.name + '\n' + this_script.content
+                user_js += add_script('js', this_script.name, this_script.content)
             if this_script.type == 'body JS' and this_script.active == True:
-                body_js += '\n// ' + this_script.name + '\n' + this_script.content
+                body_js += add_script('js', this_script.name, this_script.content)
 
     #———————————————————————————————————————— page settings
 
@@ -571,5 +571,29 @@ def PageView(request, path1, path2):
 
     return render(request, template, context)
 #   return render(request, template, {'context':context})
+
+#———————————————————————————————————————— used in PageView
+# see line 395
+
+def add_script(kind, name, content):
+    if len(content) < 100 and '\r' not in content and content.count('.') == 1:
+    # is a single line (no carriage returns)
+    # if content has 1 period
+    # is a single line (no carriage returns)
+    # remove leading slash
+    # create path
+    # content = read file or return error
+
+        content = '// read file: ' + os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
+
+#   with open(temp_source, 'r', encoding='utf-8') as f:
+#       raw_svg = f.read()
+#       svg_lines = raw_svg.split('\n')
+
+    return {
+        'html': '\n<!-- ' + name + ' -->\n' + content,
+        'css' : '\n/* '   + name + ' */\n'  + content,
+        'js'  : '\n// '   + name + '\n'     + content,
+    }[kind]
 
 #———————————————————————————————————————— fin
