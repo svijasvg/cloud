@@ -575,25 +575,24 @@ def PageView(request, path1, path2):
 #———————————————————————————————————————— used in PageView
 # see line 395
 
+# need to have associate array of beginning & ending comments
+
 def add_script(kind, name, content):
     if len(content) < 100 and '\r' not in content and content.count('.') == 1:
-    # is a single line (no carriage returns)
-    # if content has 1 period
-    # is a single line (no carriage returns)
-    # remove leading slash
-    # create path
-    # content = read file or return error
-
-        content = '// read file: ' + os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
-
-#   with open(temp_source, 'r', encoding='utf-8') as f:
-#       raw_svg = f.read()
-#       svg_lines = raw_svg.split('\n')
+        content = content.strip('/')
+        source_path = os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
+        path = pathlib.Path(source_path)
+        if not path.exists():
+            content = 'file not found: ' + content
+        else:
+            name = 'file: ' + name
+            with open(source_path, 'r', encoding='utf-8') as f:
+                content = f.read()
 
     return {
-        'html': '\n<!-- ' + name + ' -->\n' + content,
-        'css' : '\n/* '   + name + ' */\n'  + content,
-        'js'  : '\n// '   + name + '\n'     + content,
+        'html': '\n\n<!-- ' + name + ' -->\n' + content,
+        'css' : '\n\n/* '   + name + ' */\n'  + content,
+        'js'  : '\n\n// '   + name + '\n'     + content,
     }[kind]
 
 #———————————————————————————————————————— fin
