@@ -33,7 +33,7 @@ $ git push origin master
 
 ———————————————————————————————————————— back up live server
 
-on Linode, then make a data dump of each site with the svija version number:
+on Linode, then do a dumpdata for each site with the svija version number:
 
 $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
