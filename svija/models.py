@@ -138,8 +138,8 @@ class Settings(models.Model):
     robots = models.ForeignKey(Robots, default=0, on_delete=models.CASCADE, verbose_name='robots.txt')
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
-    cached        = models.BooleanField(default=False, verbose_name='admins see cache',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache',)
+    cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
     active        = models.BooleanField(default=False, verbose_name='active',)
@@ -291,7 +291,7 @@ class Redirect(models.Model):
 #---------------------------------------- fonts
 
 class Font(models.Model): 
-    name   = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)

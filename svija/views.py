@@ -142,10 +142,10 @@ def error404(request, *args, **kwargs):
     response.status_code = 404
     return response
 
-#———————————————————————————————————————— per-user cache
+#———————————————————————————————————————— page caching (applied to Page view below)
 # https://gist.github.com/caot/6480c39453f5d2fa86bf
 
-from django.core.cache import cache as core_cache
+from django.core.cache import cache as memcache
 
 def cache_key(request):
     q = getattr(request, request.method)
@@ -154,49 +154,54 @@ def cache_key(request):
 
     return 'pageview_%s_%s' % (request.path, urlencode)
 
+'''
+https://gist.github.com/caot/6480c39453f5d2fa86bf
+
+Decorator which caches the view for each User
+* ttl - the cache lifetime, do not send this parameter means that the cache will last until the restart server or decide to remove it
+* cache_post - Determine whether to make requests cache POST
+* The caching for anonymous users is shared with everyone
+
+How to use it:
+@cache_per_user_function(ttl=3600, cache_post=False)
+def my_view(request):
+    return HttpResponse("LOL %s" % (request.user))
+'''
+
 def cache_per_user_function(ttl=None, cache_post=False):
-    '''
-    Decorator which caches the view for each User
-    * ttl - the cache lifetime, do not send this parameter means that the cache
-      will last until the restart server or decide to remove it
-    * cache_post - Determine whether to make requests cache POST
-    * The caching for anonymous users is shared with everyone
-    
-    How to use it:
-    @cache_per_user_function(ttl=3600, cache_post=False)
-    def my_view(request):
-        return HttpResponse("LOL %s" % (request.user))
-    '''
     def decorator(function):
         def apply_cache(request, *args, **kwargs):
             CACHE_KEY = cache_key(request)
-            can_cache = True
-            response = None
+            return_cached_content = True
+            page_content = None
 
             if not cache_post and request.method == 'POST':
-                can_cache = False
+                return_cached_content = False
 
             if request.user.is_superuser:
-                can_cache = False
+                return_cached_content = False
 
             settings = get_object_or_404(Settings,active=True)
-            if settings.cache_reset:
-                can_cache = False
+
+            # contains two reelevant settings : reset cache for everyone, and admins see cached content
+
+            if settings.cache_reset: # cache should be emptied
                 settings.cache_reset = False
                 settings.save()
+                memcache.clear()
+                return_cached_content = False
             elif settings.cached: # cached even for superusers
-                can_cache = True
+                return_cached_content = True
 
-            if can_cache:
-                response = core_cache.get(CACHE_KEY, None)
+            if return_cached_content:
+                page_content = memcache.get(CACHE_KEY, None)
 
-            if not response:
-                response = function(request, *args, **kwargs)
-                if can_cache:
-                    core_cache.set(CACHE_KEY, response, ttl)
+            if not page_content:
+                page_content = function(request, *args, **kwargs)
+                if return_cached_content:
+                    memcache.set(CACHE_KEY, page_content, ttl)
 
-            return response
-
+            return page_content
         return apply_cache
     return decorator
 
@@ -394,13 +399,13 @@ def PageView(request, path1, path2):
 
     for this_script in shared:
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n/* ' + this_script.name + '*/\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n// ' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n\n// ' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
     #———————————————————————————————————————— accessiblity/seo
 
@@ -457,19 +462,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS':
-            user_js += '\n//' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS':
-            body_js += '\n//' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'CSS':
-            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'HTML':
-            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            html += add_script('html', this_script.name, this_script.content)
 
         if this_script.type == 'form':
-            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            form += add_script('html', this_script.name, this_script.content)
 
     #———————————————————————————————————————— page scripts
 
@@ -482,19 +487,19 @@ def PageView(request, path1, path2):
 
     for this_script in all_scripts:
         if this_script.type == 'head JS' and this_script.active == True:
-            user_js += '\n// ' + this_script.name + '\n' + this_script.content
+            user_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'body JS' and this_script.active == True:
-            body_js += '\n// ' + this_script.name + '\n' + this_script.content
+            body_js += add_script('js', this_script.name, this_script.content)
 
         if this_script.type == 'CSS' and this_script.active == True:
-            head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+            head_css += add_script('css', this_script.name, this_script.content)
 
         if this_script.type == 'HTML' and this_script.active == True:
-            html += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            html += add_script('html', this_script.name, this_script.content)
 
         if this_script.type == 'form' and this_script.active == True:
-            form += '\n<!-- ' + this_script.name + ' -->\n' + this_script.content
+            form += add_script('html', this_script.name, this_script.content)
 
     if form != '': user_js += form_js
 
@@ -532,18 +537,11 @@ def PageView(request, path1, path2):
         all_scripts = this_svg.menuscripts_set.all()
         for this_script in all_scripts:
             if this_script.type == 'CSS' and this_script.active == True:
-                head_css += '\n/* ' + this_script.name + ' */\n' + this_script.content
+                head_css += add_script('css', this_script.name, this_script.content)
             if this_script.type == 'head JS' and this_script.active == True:
-                user_js += '\n// ' + this_script.name + '\n' + this_script.content
+                user_js += add_script('js', this_script.name, this_script.content)
             if this_script.type == 'body JS' and this_script.active == True:
-                body_js += '\n// ' + this_script.name + '\n' + this_script.content
-
-#   #———————————————————————————————————————— old cache clearing-scheme
-
-#   if request.GET.get('clear') == 'cache':
-#       if request.user.is_superuser:
-#           title = request.GET.get('flag') + ' - ' + title 
-#           cache.clear()
+                body_js += add_script('js', this_script.name, this_script.content)
 
     #———————————————————————————————————————— page settings
 
@@ -573,5 +571,28 @@ def PageView(request, path1, path2):
 
     return render(request, template, context)
 #   return render(request, template, {'context':context})
+
+#———————————————————————————————————————— used in PageView
+# see line 395
+
+# need to have associate array of beginning & ending comments
+
+def add_script(kind, name, content):
+    if len(content) < 100 and '\r' not in content and content.count('.') == 1:
+        content = content.strip('/')
+        source_path = os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
+        path = pathlib.Path(source_path)
+        if not path.exists():
+            content = 'file not found: ' + content
+        else:
+            name = 'file: ' + name
+            with open(source_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+    return {
+        'html': '\n\n<!-- ' + name + ' -->\n' + content,
+        'css' : '\n\n/* '   + name + ' */\n'  + content,
+        'js'  : '\n\n// '   + name + '\n'     + content,
+    }[kind]
 
 #———————————————————————————————————————— fin
