@@ -33,7 +33,7 @@ $ git push origin master
 
 ———————————————————————————————————————— back up live server
 
-on Linode, then make a data dump of each site with the svija version number:
+on Linode, then do a dumpdata each site with the svija version number:
 
 $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
@@ -72,7 +72,7 @@ otherwise updating with Pip won’t work:
 https://daringfireball.net/projects/markdown/syntax
 
 $ vi setup.py
-$ vi README.md
+$ vi readme.md (no version number but it needs updating)
 $ vi svija/templates/admin/base_site.html (line 15)
 $ git commit -m "updated version number" -a
 $ git push origin master
