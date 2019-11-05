@@ -316,7 +316,7 @@ class Page(models.Model):
     access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
-    suppress_modules = models.BooleanField(default=True, verbose_name='suppress default modules (in Responsive)',)
+    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules (in Responsive)',)
     menu = models.ManyToManyField(Menu, blank=True)
     module = models.ManyToManyField(Module, through='PageModules')
 

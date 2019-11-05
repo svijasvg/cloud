@@ -261,13 +261,14 @@ def PageView(request, path1, path2):
     meta          = ''
     fonts         = ''
     touch         = ''
-    view_js       = '//———————————————————————————————————————— svija generated\n\n'
+    view_js       = ''
     user_js       = ''
     head_css      = ''
     accessibility = ''
     svg           = ''
     html          = ''
     form          = ''
+    module        = ''
     menu          = ''
     analytics_id  = ''
     body_js       = ''
@@ -330,7 +331,7 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— views.py generated JS
 
-# language information
+    # language information
 
     cde = language.code
     view_js += 'var language_code = "' + cde +'";\n'
@@ -503,7 +504,47 @@ def PageView(request, path1, path2):
 
     if form != '': user_js += form_js
 
-    #———————————————————————————————————————— menu
+    #———————————————————————————————————————— modules
+
+    if page.suppress_modules == False:
+        all_svgs = prefix.module.all()
+    
+        user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+        body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+
+        for this_svg in all_svgs:
+    
+            #—————— check if svg exists
+            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+            path = pathlib.Path(temp_source)
+            if not path.exists():
+                return error404(request)
+    
+            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
+    
+            if svg_width > specified_width:
+                page_ratio = svg_height/svg_width
+                svg_width = specified_width
+                svg_height = round(specified_width * page_ratio)
+    
+            rem_width = svg_width/10
+            rem_height = svg_height/10
+    
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+    
+            head_css += '\n\n' + css_dims
+            module += '\n' + svg_content
+    
+            all_scripts = this_svg.modulescripts_set.all()
+            for this_script in all_scripts:
+                if this_script.type == 'CSS' and this_script.active == True:
+                    head_css += add_script('css', this_script.name, this_script.content)
+                if this_script.type == 'head JS' and this_script.active == True:
+                    user_js += add_script('js', this_script.name, this_script.content)
+                if this_script.type == 'body JS' and this_script.active == True:
+                    body_js += add_script('js', this_script.name, this_script.content)
+
+    #———————————————————————————————————————— menus
 
     all_svgs = page.menu.all()
     menu = ''
@@ -564,6 +605,7 @@ def PageView(request, path1, path2):
         'svg'           : svg,
         'html'          : html,
         'form'          : form,
+        'module'        : module,
         'menu'          : menu,
         'analytics_id'  : analytics_id,
         'body_js'       : body_js

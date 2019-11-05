@@ -66,7 +66,7 @@ def clean(svg_path, svg_name):
         # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
         #	 height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
 
-        if line.find('viewBox') > 0:
+        if line_number < 5 and line.find('viewBox') > 0:
             parts1 = line.split('viewBox="')
             parts2 = parts1[1].split('" ')
             viewBox = parts2[0]
