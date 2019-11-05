@@ -98,23 +98,23 @@ class RobotsAdmin(admin.ModelAdmin):
 admin.site.register(Robots, RobotsAdmin)
 
 #---------------------------------------- template · no dependencies
-#
-#from .models import Template
-#class TemplateAdmin(admin.ModelAdmin):
-#
-#    # display on parent template
-#    list_display = ('name','description', 'filename', )
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('Name & Filename (in svija/templates)', {'fields': ['name','filename','description', ],}),
-#    ]   
-#
-#admin.site.register(Template, TemplateAdmin)
-#
-##---------------------------------------- Shared · no dependencies
-#
+
+from .models import Template
+class TemplateAdmin(admin.ModelAdmin):
+
+    # display on parent template
+    list_display = ('name','description', 'filename', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('Name & Filename (in svija/templates)', {'fields': ['name','filename','description', ],}),
+    ]   
+
+admin.site.register(Template, TemplateAdmin)
+
+#---------------------------------------- Shared · no dependencies
+
 #from .models import Shared, SharedScripts
 #class SharedScriptsInline(admin.TabularInline):
 #    model = SharedScripts
