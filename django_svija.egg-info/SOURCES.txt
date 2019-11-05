@@ -1,6 +1,5 @@
 LICENSE
 MANIFEST.in
-README.md
 setup.py
 django_svija.egg-info/PKG-INFO
 django_svija.egg-info/SOURCES.txt
@@ -30,6 +29,17 @@ svija/migrations/0014_auto_20190706_1543.py
 svija/migrations/0015_auto_20190706_1548.py
 svija/migrations/0016_auto_20190707_1418.py
 svija/migrations/0017_auto_20190707_1454.py
+svija/migrations/0018_auto_20191105_1343.py
+svija/migrations/0019_auto_20191105_1359.py
+svija/migrations/0020_auto_20191105_1403.py
+svija/migrations/0021_pagemodules.py
+svija/migrations/0022_page_module.py
+svija/migrations/0023_auto_20191105_1422.py
+svija/migrations/0024_auto_20191105_1424.py
+svija/migrations/0025_auto_20191105_1434.py
+svija/migrations/0026_auto_20191105_1438.py
+svija/migrations/0027_auto_20191105_1438.py
+svija/migrations/0028_auto_20191105_1505.py
 svija/migrations/__init__.py
 svija/modules/accessibility_links.py
 svija/modules/gmail.py.bk
@@ -45,6 +55,7 @@ svija/modules/__pycache__/svg_cleaner.cpython-36.pyc
 svija/static/svija/logo-admin.png
 svija/static/svija/scripts/TweenMax-2.0.2.js
 svija/templates/admin/base_site.html
+svija/templates/svija/.debug.html.un~
 svija/templates/svija/debug.html
 svija/templates/svija/detail.html
 svija/templates/svija/index.html

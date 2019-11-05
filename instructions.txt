@@ -1,50 +1,56 @@
 ———————————————————————————————————————— to merge
 
-https://docs.svija.com/out-of-date/maintaining-svija
+      https://docs.svija.com/out-of-date/maintaining-svija
 
-Check out the branch you want to merge to (master), the, merge:
+      Check out the branch you want to merge to (master), the, merge:
 
 $ git checkout master
 $ git merge dev --no-ff
 
-The --no-ff flag prevents git merge from executing a "fast-forward"
-if it detects that your current HEAD is an ancestor of the commit
-you're trying to merge.
+      The --no-ff flag prevents git merge from executing a "fast-forward"
+      if it detects that your current HEAD is an ancestor of the commit
+      you're trying to merge.
 
 ———————————————————————————————————————— increment version number
 
-version number is already ahead of live site
-will be updated at the end of the process
+      version number is already ahead of live site
+      will be updated at the end of the process
 
 ———————————————————————————————————————— create installable version
 
-so that this version will be available
-in case of future compatibility problems:
+      so that this version will be available
+      in case of future compatibility problems:
 
 $ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ python setup.py sdist
 
-Add the new tarball to Git:
+      Add the new tarball to Git:
+
 $ git add dist/django-svija-2.0.15.tar.gz
 
-Commit the additions and push:
+      Commit the additions and push:
+
 $ git commit -m "added version 2.0.15" -a
 $ git push origin master
 
 ———————————————————————————————————————— back up live server
 
-on Linode, then do a dumpdata each site with the svija version number:
+      on Linode, get version number from end of line 15 in template
+      then do a dumpdata each site with the svija version number
+      then do a cloud backup
 
 $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
 
-for each site:
+      for each site:
 
-$ ./manage.py dumpdata > svija-2.0.10.json
+$ ./manage.py dumpdata > svija-2.0.17.json
+
+https://cloud.linode.com
 
 ———————————————————————————————————————— site updates
 
-If there have been any changes to the site folder, they must be done before the Svija update:
+      If there have been any changes to the site folder, they must be done before the Svija update:
 
 $ cd example
 $ vi example/settings.py
@@ -54,12 +60,12 @@ $ sudo service uwsgi restart
 
 ———————————————————————————————————————— update svija
 
-Installs Svija in the virtualenv, without the possibility of modifying the program.
+      Installs Svija in the virtualenv, without the possibility of modifying the program.
 
 $ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
 
-To apply the migrations for each site:
+      To apply the migrations for each site:
 
 $ example/manage.py migrate
 $ example/manage.py collectstatic
@@ -68,8 +74,8 @@ $ sudo service uwsgi restart
 
 ———————————————————————————————————————— increment version number
 
-otherwise updating with Pip won’t work:
-https://daringfireball.net/projects/markdown/syntax
+      otherwise updating with Pip won’t work:
+      https://daringfireball.net/projects/markdown/syntax
 
 $ vi setup.py
 $ vi readme.md (no version number but it needs updating)
@@ -89,7 +95,7 @@ docs.svija.com/changelog
 
 ———————————————————————————————————————— social media updates
 
-find a nice picture or make an ad to accompany the update, then
+      find a nice picture or make an ad to accompany the update, then
 
 facebook.com/svijasvg
 twitter/svijasvg
