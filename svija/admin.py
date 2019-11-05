@@ -286,8 +286,8 @@ class LibraryScriptInline(admin.TabularInline):
 class MenuInlinePage(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
-    verbose_name = "module"
-    verbose_name_plural = "modules"
+    verbose_name = "menu"
+    verbose_name_plural = "menus"
     classes = ['collapse']
 
 from .models import PageScripts
@@ -299,6 +299,13 @@ class PageScriptsInline(admin.TabularInline):
     verbose_name_plural = "user scripts"
     classes = ['collapse']
 
+class ModuleInlinePage(admin.TabularInline):
+    model = Page.module.through
+    extra = 0 
+    fields = ('module', 'order', 'active',)
+    verbose_name = "module"
+    verbose_name_plural = "modules"
+
 class PageAdmin(admin.ModelAdmin):
     list_filter = ('prefix', 'menu', 'visitable','template', )
 
@@ -308,13 +315,14 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','override_modules',],                            }),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','suppress_modules',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
         ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
+    inlines = [ModuleInlinePage, SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
+    #inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

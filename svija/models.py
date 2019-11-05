@@ -121,6 +121,7 @@ class Template(models.Model):
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='subfolder & filename',)
     description = models.CharField(max_length=200, default='', blank=True)
+    active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
 
@@ -315,8 +316,9 @@ class Page(models.Model):
     access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
-    override_modules = models.BooleanField(default=True, verbose_name='override modules (in responsive)',)
+    suppress_modules = models.BooleanField(default=True, verbose_name='suppress default modules (in Responsive)',)
     menu = models.ManyToManyField(Menu, blank=True)
+    module = models.ManyToManyField(Module, through='PageModules')
 
     override= models.BooleanField(default=False, verbose_name='override responsive',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
@@ -357,5 +359,11 @@ class Svg(models.Model):
         verbose_name = "SVG file"
         verbose_name_plural = "SVG files"
         ordering = ["order"]
+
+class PageModules(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
 
 #———————————————————————————————————————— fin
