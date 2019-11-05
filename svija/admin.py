@@ -2,12 +2,64 @@
 
 from django.contrib import admin
 
-#-------------------------------------------------------------------------------- no dependencies
+#---------------------------------------- redirects · no dependencies
 
-#---------------------------------------- language
+from .models import Redirect
+class RedirectAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_filter = ('active', )
+    list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], }),
+    ]   
+
+admin.site.register(Redirect, RedirectAdmin)
+
+#---------------------------------------- fonts · no dependencies
+
+from .models import Font
+class FontAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_filter = ('active', 'google', 'family', )
+    list_display = ('name', 'family', 'style', 'source', 'google', 'active', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('font info',    {'fields': ['name','source', 'family', 'style', 'google', 'active',], }),
+    ]   
+
+admin.site.register(Font, FontAdmin)
+
+#---------------------------------------- notes · no dependencies
+
+from .models import Note
+class NoteAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_filter = ('sort1', 'sort2',)
+    list_display = ('name', 'sort1', 'sort2',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('meta',    {'fields': ['name','sort1', 'sort2',], }),
+        ('contents',    {'fields': ['contents',], }),
+    ]   
+
+    class Media:
+        js = ('ckeditor.js',) 
+
+admin.site.register(Note, NoteAdmin)
+
+#---------------------------------------- language · no dependencies
 
 from .models import Language
-
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
@@ -26,28 +78,9 @@ class LanguageAdmin(admin.ModelAdmin):
 
 admin.site.register(Language, LanguageAdmin)
 
-#---------------------------------------- responsive
-
-from .models import Responsive
-
-class ResponsiveAdmin(admin.ModelAdmin):
-
-    # display on parent page
-    list_display = ('name', 'canonical', 'source_dir', 'description')
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
-        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
-    ]   
-
-admin.site.register(Responsive, ResponsiveAdmin)
-
-#---------------------------------------- robots
+#---------------------------------------- robots · no dependencies
 
 from .models import Robots
-
 class RobotsAdmin(admin.ModelAdmin):
 
     # display on parent page
@@ -64,12 +97,9 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#-------------------------------------------------------------------------------- dep. on responsive
-
-#---------------------------------------- template
+#---------------------------------------- template · no dependencies
 
 from .models import Template
-
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
@@ -83,10 +113,9 @@ class TemplateAdmin(admin.ModelAdmin):
 
 admin.site.register(Template, TemplateAdmin)
 
-#---------------------------------------- Shared
+#---------------------------------------- shared scripts · no dependencies
 
 from .models import Shared, SharedScripts
-
 class SharedScriptsInline(admin.TabularInline):
     model = SharedScripts
     extra = 0 
@@ -95,24 +124,115 @@ class SharedScriptsInline(admin.TabularInline):
 class SharedAdmin(admin.ModelAdmin):
 
     # display on parent scripts
-#   list_display = ('name', 'responsive',)
     list_display = ('name', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-#       ('Scripts Name', {'fields': ['name', 'responsive',],}),
         ('Scripts Name', {'fields': ['name', ],}),
     ]   
     inlines = [SharedScriptsInline]
 
 admin.site.register(Shared, SharedAdmin)
 
-#-------------------------------------------------------------------------------- dep. on responsive & language
+#---------------------------------------- library scripts · no dependencies
 
-#---------------------------------------- prefix
+from .models import LibraryScript
+class LibraryScriptAdmin(admin.ModelAdmin):
+
+    # display on parent menu
+    list_filter = ('type', 'sort1', 'sort2',)
+    list_display = ('name', 'sort1', 'sort2', 'type',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
+        ('content',        {'fields': ['content',                      ],}),
+    ]   
+
+admin.site.register(LibraryScript, LibraryScriptAdmin)
+
+#---------------------------------------- responsive · no dependencies
+
+from .models import Responsive
+class ResponsiveAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('name', 'canonical', 'source_dir', 'description')
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+    ]   
+
+admin.site.register(Responsive, ResponsiveAdmin)
+
+#---------------------------------------- menus · no dependencies
+
+from .models import MenuScripts
+class MenuScriptsInline(admin.TabularInline):
+    model = MenuScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+from .models import Menu
+class MenuAdmin(admin.ModelAdmin):
+
+    # display on parent menu
+    list_filter = ('active', 'sort1', 'sort2', )
+    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
+    ]   
+
+    inlines = [MenuScriptsInline]
+
+admin.site.register(Menu, MenuAdmin)
+
+#---------------------------------------- modules · no dependencies
+
+from .models import ModuleScripts
+class ModuleScriptsInline(admin.TabularInline):
+    model = ModuleScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+from .models import Module
+class ModuleAdmin(admin.ModelAdmin):
+
+    # display on parent module
+    list_filter = ('active', 'sort1', 'sort2', )
+    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
+    ]   
+
+    inlines = [ModuleScriptsInline]
+
+admin.site.register(Module, ModuleAdmin)
+
+#---------------------------------------- prefix · depends on responsive & language
 
 from .models import Prefix
+class ModuleInlinePrefix(admin.TabularInline):
+    model = Prefix.module.through
+    extra = 0 
+    fields = ('module', 'prefix', 'order', 'active',)
+    verbose_name = "module"
+    verbose_name_plural = "modules"
 
 class PrefixAdmin(admin.ModelAdmin):
 
@@ -125,14 +245,13 @@ class PrefixAdmin(admin.ModelAdmin):
         ('display name', {'fields': ['path', 'responsive', 'language','default',],}),
     ]   
 
+    inlines = [ModuleInlinePrefix, ]
+
 admin.site.register(Prefix, PrefixAdmin)
 
-#-------------------------------------------------------------------------------- dep. on prefix & robots
-
-#---------------------------------------- settings
+#---------------------------------------- settings · depends on robots & prefix
 
 from .models import Settings
-
 class SettingsAdmin(admin.ModelAdmin):
 
     # display on parent page
@@ -147,68 +266,16 @@ class SettingsAdmin(admin.ModelAdmin):
 
 admin.site.register(Settings, SettingsAdmin)
 
-#---------------------------------------- library script admin
-
-from .models import LibraryScript
-
-class LibraryScriptAdmin(admin.ModelAdmin):
-
-    list_filter = ('type', 'sort1', 'sort2',)
-
-    # display on parent menu
-    list_display = ('name', 'sort1', 'sort2', 'type',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
-        ('content',        {'fields': ['content',                      ],}),
-    ]   
-
-admin.site.register(LibraryScript, LibraryScriptAdmin)
-
-#-------------------------------------------------------------------------------- dep. on responsive & prefix
-
-#---------------------------------------- menu admin
-
-from .models import Menu, MenuScripts
-
-class MenuScriptsInline(admin.TabularInline):
-    model = MenuScripts
-    extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
-
-class MenuAdmin(admin.ModelAdmin):
-
-    # display on parent menu
-    list_display = ('name', 'responsive', 'prefix')
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('NAME & FILENAME', {'fields': ['name', 'prefix','filename', 'responsive',],}),
-    ]   
-
-    inlines = [MenuScriptsInline]
-
-admin.site.register(Menu, MenuAdmin)
-
-#-------------------------------------------------------------------------------- dep. on prefix, template & menu
-
 #---------------------------------------- page
 
-from .models import Svg, Page, PageScripts
-
-
+from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('order', 'filename',)
     fields = ('filename','order','active',)
 
-#https://stackoverflow.com/questions/19807757/django-admin-inline-many-to-many-custom-fields
+from .models import Page
 class LibraryScriptInline(admin.TabularInline):
     model = Page.library_script.through
     extra = 0 
@@ -216,13 +283,14 @@ class LibraryScriptInline(admin.TabularInline):
     verbose_name_plural = "library scripts"
     classes = ['collapse']
 
-class MenuInline(admin.TabularInline):
+class MenuInlinePage(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
-    verbose_name = "menu file"
-    verbose_name_plural = "menu files"
-    #classes = ['collapse']
+    verbose_name = "menu"
+    verbose_name_plural = "menus"
+    classes = ['collapse']
 
+from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
@@ -231,8 +299,15 @@ class PageScriptsInline(admin.TabularInline):
     verbose_name_plural = "user scripts"
     classes = ['collapse']
 
+class ModuleInlinePage(admin.TabularInline):
+    model = Page.module.through
+    extra = 0 
+    fields = ('module', 'order', 'active',)
+    verbose_name = "module"
+    verbose_name_plural = "modules"
+
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'menu', 'visitable','template', )
+    list_filter = ('prefix', 'visitable','template', )
 
     # display on parent page
     list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'pub_date',)
@@ -240,72 +315,15 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','suppress_modules',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
         ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
+    inlines = [ModuleInlinePage, SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
+    #inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
-
-#---------------------------------------- redirects
-
-from .models import Redirect
-
-class RedirectAdmin(admin.ModelAdmin):
-    list_filter = ('active', )
-
-    # display on parent page
-    list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], }),
-    ]   
-
-admin.site.register(Redirect, RedirectAdmin)
-
-#---------------------------------------- fonts
-
-from .models import Font
-
-class FontAdmin(admin.ModelAdmin):
-    list_filter = ('active', 'google', 'family', )
-
-    # display on parent page
-    list_display = ('name', 'family', 'style', 'source', 'google', 'active', )
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'google', 'active',], }),
-    ]   
-
-admin.site.register(Font, FontAdmin)
-
-#---------------------------------------- notes
-
-from .models import Note
-
-class NoteAdmin(admin.ModelAdmin):
-    list_filter = ('sort1', 'sort2',)
-
-    # display on parent page
-    list_display = ('name', 'sort1', 'sort2',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('meta',    {'fields': ['name','sort1', 'sort2',], }),
-        ('contents',    {'fields': ['contents',], }),
-    ]   
-
-    class Media:
-        js = ('ckeditor.js',) 
-
-admin.site.register(Note, NoteAdmin)
 
 #---------------------------------------- fin
