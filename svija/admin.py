@@ -78,43 +78,26 @@ class LanguageAdmin(admin.ModelAdmin):
 
 admin.site.register(Language, LanguageAdmin)
 
-#---------------------------------------- responsive · no dependencies
+#---------------------------------------- robots · no dependencies
 
-#from .models import Responsive
-#class ResponsiveAdmin(admin.ModelAdmin):
-#
-#    # display on parent page
-#    list_display = ('name', 'canonical', 'source_dir', 'description')
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
-#        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
-#    ]   
-#
-#admin.site.register(Responsive, ResponsiveAdmin)
-#
-##---------------------------------------- robots · no dependencies
-#
-#from .models import Robots
-#class RobotsAdmin(admin.ModelAdmin):
-#
-#    # display on parent page
-#    list_display = ('name', 'contents' )
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('name & file contents',{'fields': ['name', 'contents', ]}),
-#    ]   
-#    verbose_name = "robots.txt"
-#
-#    verbose_name_plural = "robots.txt"
-#
-#admin.site.register(Robots, RobotsAdmin)
-#
-##---------------------------------------- template · no dependencies
+from .models import Robots
+class RobotsAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('name', 'contents' )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('name & file contents',{'fields': ['name', 'contents', ]}),
+    ]   
+    verbose_name = "robots.txt"
+
+    verbose_name_plural = "robots.txt"
+
+admin.site.register(Robots, RobotsAdmin)
+
+#---------------------------------------- template · no dependencies
 #
 #from .models import Template
 #class TemplateAdmin(admin.ModelAdmin):
@@ -170,6 +153,23 @@ admin.site.register(Language, LanguageAdmin)
 #    ]   
 #
 #admin.site.register(LibraryScript, LibraryScriptAdmin)
+#
+#---------------------------------------- responsive · no dependencies
+
+#from .models import Responsive
+#class ResponsiveAdmin(admin.ModelAdmin):
+#
+#    # display on parent page
+#    list_display = ('name', 'canonical', 'source_dir', 'description')
+#    save_on_top = True
+#    save_as = True
+#
+#    fieldsets = [ 
+#        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+#        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+#    ]   
+#
+#admin.site.register(Responsive, ResponsiveAdmin)
 #
 ##---------------------------------------- menus · no dependencies
 #
