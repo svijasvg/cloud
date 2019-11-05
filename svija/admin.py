@@ -283,7 +283,7 @@ class LibraryScriptInline(admin.TabularInline):
     verbose_name_plural = "library scripts"
     classes = ['collapse']
 
-class MenuInline(admin.TabularInline):
+class MenuInlinePage(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
     verbose_name = "module"
@@ -314,7 +314,7 @@ class PageAdmin(admin.ModelAdmin):
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
