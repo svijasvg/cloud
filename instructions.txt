@@ -67,6 +67,7 @@ $ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django
 
       To apply the migrations for each site:
 
+$ example/manage.py makemigrations (once per server)
 $ example/manage.py migrate
 $ example/manage.py collectstatic
 
