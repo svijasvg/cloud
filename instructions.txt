@@ -35,14 +35,18 @@ $ git push origin master
 
 ———————————————————————————————————————— back up live server
 
-      on Linode, then do a dumpdata each site with the svija version number:
+      on Linode, get version number from end of line 15 in template
+      then do a dumpdata each site with the svija version number
+      then do a cloud backup
 
 $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
 
       for each site:
 
-$ ./manage.py dumpdata > svija-2.0.10.json
+$ ./manage.py dumpdata > svija-2.0.17.json
+
+https://cloud.linode.com
 
 ———————————————————————————————————————— site updates
 
