@@ -6,9 +6,9 @@ from django.contrib import admin
 
 from .models import Redirect
 class RedirectAdmin(admin.ModelAdmin):
-    list_filter = ('active', )
 
     # display on parent page
+    list_filter = ('active', )
     list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
     save_on_top = True
     save_as = True
@@ -23,9 +23,9 @@ admin.site.register(Redirect, RedirectAdmin)
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
-    list_filter = ('active', 'google', 'family', )
 
     # display on parent page
+    list_filter = ('active', 'google', 'family', )
     list_display = ('name', 'family', 'style', 'source', 'google', 'active', )
     save_on_top = True
     save_as = True
@@ -40,9 +40,9 @@ admin.site.register(Font, FontAdmin)
 
 from .models import Note
 class NoteAdmin(admin.ModelAdmin):
-    list_filter = ('sort1', 'sort2',)
 
     # display on parent page
+    list_filter = ('sort1', 'sort2',)
     list_display = ('name', 'sort1', 'sort2',)
     save_on_top = True
     save_as = True
@@ -113,92 +113,92 @@ class TemplateAdmin(admin.ModelAdmin):
 
 admin.site.register(Template, TemplateAdmin)
 
-#---------------------------------------- Shared · no dependencies
+#---------------------------------------- shared scripts · no dependencies
 
-#from .models import Shared, SharedScripts
-#class SharedScriptsInline(admin.TabularInline):
-#    model = SharedScripts
-#    extra = 0 
-#    fields = ('type', 'active', 'order', 'name', 'content',)
-#
-#class SharedAdmin(admin.ModelAdmin):
-#
-#    # display on parent scripts
-#    list_display = ('name', )
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('Scripts Name', {'fields': ['name', ],}),
-#    ]   
-#    inlines = [SharedScriptsInline]
-#
-#admin.site.register(Shared, SharedAdmin)
-#
-##---------------------------------------- library scripts · no dependencies
-#
-#from .models import LibraryScript
-#class LibraryScriptAdmin(admin.ModelAdmin):
-#
-#    list_filter = ('type', 'sort1', 'sort2',)
-#
-#    # display on parent menu
-#    list_display = ('name', 'sort1', 'sort2', 'type',)
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
-#        ('content',        {'fields': ['content',                      ],}),
-#    ]   
-#
-#admin.site.register(LibraryScript, LibraryScriptAdmin)
-#
+from .models import Shared, SharedScripts
+class SharedScriptsInline(admin.TabularInline):
+    model = SharedScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+
+class SharedAdmin(admin.ModelAdmin):
+
+    # display on parent scripts
+    list_display = ('name', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('Scripts Name', {'fields': ['name', ],}),
+    ]   
+    inlines = [SharedScriptsInline]
+
+admin.site.register(Shared, SharedAdmin)
+
+#---------------------------------------- library scripts · no dependencies
+
+from .models import LibraryScript
+class LibraryScriptAdmin(admin.ModelAdmin):
+
+    # display on parent menu
+    list_filter = ('type', 'sort1', 'sort2',)
+    list_display = ('name', 'sort1', 'sort2', 'type',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
+        ('content',        {'fields': ['content',                      ],}),
+    ]   
+
+admin.site.register(LibraryScript, LibraryScriptAdmin)
+
 #---------------------------------------- responsive · no dependencies
 
-#from .models import Responsive
-#class ResponsiveAdmin(admin.ModelAdmin):
-#
-#    # display on parent page
-#    list_display = ('name', 'canonical', 'source_dir', 'description')
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
-#        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
-#    ]   
-#
-#admin.site.register(Responsive, ResponsiveAdmin)
-#
-##---------------------------------------- menus · no dependencies
-#
-#from .models import Menu, MenuScripts
-#
-#class MenuScriptsInline(admin.TabularInline):
-#    model = MenuScripts
-#    extra = 0 
-#    fields = ('type', 'active', 'order', 'name', 'content',)
-#    verbose_name = "script"
-#    verbose_name_plural = "scripts"
-#
-#class MenuAdmin(admin.ModelAdmin):
-#
-#    # display on parent menu
-#    list_display = ('name', 'filename',)
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('NAME & FILENAME', {'fields': ['name', 'filename', ],}),
-#    ]   
-#
-#    inlines = [MenuScriptsInline]
-#
-#admin.site.register(Menu, MenuAdmin)
-#
-##---------------------------------------- prefix · depends on responsive & language
-#
+from .models import Responsive
+class ResponsiveAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('name', 'canonical', 'source_dir', 'description')
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+    ]   
+
+admin.site.register(Responsive, ResponsiveAdmin)
+
+#---------------------------------------- menus · no dependencies
+
+from .models import MenuScripts
+class MenuScriptsInline(admin.TabularInline):
+    model = MenuScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+from .models import Menu
+class MenuAdmin(admin.ModelAdmin):
+
+    # display on parent menu
+    list_filter = ('active', 'sort1', 'sort2', )
+    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
+    ]   
+
+    inlines = [MenuScriptsInline]
+
+admin.site.register(Menu, MenuAdmin)
+
+#---------------------------------------- prefix · depends on responsive & language
+
 #from .models import Prefix
 #class PrefixAdmin(admin.ModelAdmin):
 #

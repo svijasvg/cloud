@@ -137,7 +137,7 @@ class Menu(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ["responsive__name", "prefix__path", "name"]
+        ordering = ['name', 'active', 'sort1', 'sort2',]
 
 menu_scripts=('head JS', 'body JS', 'CSS',)
 
