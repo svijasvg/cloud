@@ -58,6 +58,9 @@ class Responsive(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
+    img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='image resolution multiplier')
+    img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
+
     #deprecated:
     #overflow  = models.CharField(max_length=200, default='', verbose_name='total % overflow',blank=True,)
     def __str__(self):
@@ -132,6 +135,8 @@ class Prefix(models.Model):
 
 #---------------------------------------- settings
 
+backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
+
 class Settings(models.Model):
 
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, verbose_name='default prefix')
@@ -143,6 +148,10 @@ class Settings(models.Model):
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
     active        = models.BooleanField(default=False, verbose_name='active',)
+
+    # backup settings
+    backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
+    backup_next     = models.BooleanField(default=False, verbose_name='backup on next visit',)
 
     # email settings
     mail_id          = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
@@ -188,6 +197,10 @@ class Menu(models.Model):
     filename = models.CharField(max_length=200, default='', blank=True)
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
+
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
 
     def __unicode__(self):
         return self.name
@@ -238,6 +251,7 @@ class Page(models.Model):
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
     override= models.BooleanField(default=False, verbose_name='override responsive',)
+    override_modules = models.BooleanField(default=True, verbose_name='override modules (in responsive)',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
