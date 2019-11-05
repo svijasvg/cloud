@@ -199,88 +199,88 @@ admin.site.register(Menu, MenuAdmin)
 
 #---------------------------------------- prefix · depends on responsive & language
 
-#from .models import Prefix
-#class PrefixAdmin(admin.ModelAdmin):
-#
-#    # display on parent menu
-#    list_display = ('path', 'default', 'responsive', 'language')
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('display name', {'fields': ['path', 'responsive', 'language','default',],}),
-#    ]   
-#
-#admin.site.register(Prefix, PrefixAdmin)
-#
-##---------------------------------------- settings · depends on robots & prefix
-#
-#from .models import Settings
-#class SettingsAdmin(admin.ModelAdmin):
-#
-#    # display on parent page
-#    list_display = ('url', 'active', 'robots', 'prefix', 'cached', 'pub_date',)
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
-#        ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
-#    ]   
-#
-#admin.site.register(Settings, SettingsAdmin)
-#
-##---------------------------------------- page
-#
-#from .models import Svg
-#
-#class SvgInline(admin.TabularInline):
-#    model = Svg
-#    extra = 0 
-#    #fields = ('order', 'filename',)
-#    fields = ('filename','order','active',)
-#
-#from .models import Page
-#class LibraryScriptInline(admin.TabularInline):
-#    model = Page.library_script.through
-#    extra = 0 
-#    verbose_name = "library script"
-#    verbose_name_plural = "library scripts"
-#    classes = ['collapse']
-#
-#class MenuInline(admin.TabularInline):
-#    model = Page.menu.through
-#    extra = 0 
-#    verbose_name = "menu file"
-#    verbose_name_plural = "menu files"
-#    #classes = ['collapse']
-#
-#from .models import PageScripts
-#class PageScriptsInline(admin.TabularInline):
-#    model = PageScripts
-#    extra = 0 
-#    fields = ('type', 'active', 'order', 'name', 'content',)
-#    verbose_name = "user script"
-#    verbose_name_plural = "user scripts"
-#    classes = ['collapse']
-#
-#class PageAdmin(admin.ModelAdmin):
-#    list_filter = ('prefix', 'menu', 'visitable','template', )
-#
-#    # display on parent page
-#    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'pub_date',)
-#    save_on_top = True
-#    save_as = True
-#
-#    fieldsets = [ 
-#        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
-#        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-#        ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
-#        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
-#    ]   
-#
-#    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
-#
-#admin.site.register(Page, PageAdmin)
-#
-##---------------------------------------- fin
+from .models import Prefix
+class PrefixAdmin(admin.ModelAdmin):
+
+    # display on parent menu
+    list_display = ('path', 'default', 'responsive', 'language')
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('display name', {'fields': ['path', 'responsive', 'language','default',],}),
+    ]   
+
+admin.site.register(Prefix, PrefixAdmin)
+
+#---------------------------------------- settings · depends on robots & prefix
+
+from .models import Settings
+class SettingsAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('url', 'active', 'robots', 'prefix', 'cached', 'pub_date',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
+        ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
+    ]   
+
+admin.site.register(Settings, SettingsAdmin)
+
+#---------------------------------------- page
+
+from .models import Svg
+
+class SvgInline(admin.TabularInline):
+    model = Svg
+    extra = 0 
+    #fields = ('order', 'filename',)
+    fields = ('filename','order','active',)
+
+from .models import Page
+class LibraryScriptInline(admin.TabularInline):
+    model = Page.library_script.through
+    extra = 0 
+    verbose_name = "library script"
+    verbose_name_plural = "library scripts"
+    classes = ['collapse']
+
+class MenuInline(admin.TabularInline):
+    model = Page.menu.through
+    extra = 0 
+    verbose_name = "menu file"
+    verbose_name_plural = "menu files"
+    #classes = ['collapse']
+
+from .models import PageScripts
+class PageScriptsInline(admin.TabularInline):
+    model = PageScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "user script"
+    verbose_name_plural = "user scripts"
+    classes = ['collapse']
+
+class PageAdmin(admin.ModelAdmin):
+    list_filter = ('prefix', 'menu', 'visitable','template', )
+
+    # display on parent page
+    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'pub_date',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
+        ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
+        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
+    ]   
+
+    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
+
+admin.site.register(Page, PageAdmin)
+
+#---------------------------------------- fin
