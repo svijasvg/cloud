@@ -12,9 +12,47 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
-#———————————————————————————————————————————————————————————————————————————————— no dependencies
+#———————————————————————————————————————— redirects · no dependencies
 
-#———————————————————————————————————————— language
+class Redirect(models.Model): 
+    active = models.BooleanField(default=True, verbose_name='active',)
+    from_url = models.CharField(max_length=200, default='', verbose_name='from URL')
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='to prefix, http or https')
+    to_page = models.CharField(max_length=200, default='', verbose_name='to page or domain')
+
+    def __str__(self):
+        return self.from_url
+
+#———————————————————————————————————————— fonts · no dependencies
+
+class Font(models.Model): 
+    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
+    family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
+    style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)
+    google = models.BooleanField(default=True, verbose_name='Google font',)
+    active = models.BooleanField(default=True, verbose_name='active',)
+
+    def __str__(self):
+        return self.name
+
+#———————————————————————————————————————— notes · no dependencies
+
+from ckeditor.fields import RichTextField
+
+class Note(models.Model):
+    name = models.CharField(max_length=200, default='')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+#   contents = models.TextField(max_length=20000, default='', verbose_name='note', blank=True,)
+    contents = RichTextField()
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "notes"
+        verbose_name_plural = "notes"
+
+#———————————————————————————————————————— language · no dependencies
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -44,7 +82,7 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
-#———————————————————————————————————————— responsive
+#———————————————————————————————————————— responsive · no dependencies
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -61,14 +99,12 @@ class Responsive(models.Model):
     img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='image resolution multiplier')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
-    #deprecated:
-    #overflow  = models.CharField(max_length=200, default='', verbose_name='total % overflow',blank=True,)
     def __str__(self):
         return self.name
     class Meta:
         verbose_name_plural = "Responsive"
 
-#———————————————————————————————————————— robots
+#———————————————————————————————————————— robots · no dependencies
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -79,9 +115,7 @@ class Robots(models.Model):
         verbose_name = "Robots.txt"
         verbose_name_plural = "Robots.txt"
 
-#———————————————————————————————————————————————————————————————————————————————— dep. on responsive
-
-#———————————————————————————————————————— template
+#———————————————————————————————————————— template · no dependencies
 
 class Template(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -90,7 +124,7 @@ class Template(models.Model):
     def __str__(self):
         return self.name
 
-#———————————————————————————————————————— scripts
+#———————————————————————————————————————— shared scripts · dependent on responsive
 
 class Shared(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
@@ -117,16 +151,31 @@ class SharedScripts(models.Model):
         verbose_name_plural = "shared scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————————————————————————————————————————————— dep. on responsive & language
+#———————————————————————————————————————— library scripts · no dependencies
 
-#———————————————————————————————————————— menu
+library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
+
+class LibraryScript(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ["type", "name", "sort1", "sort2"]
+
+#———————————————————————————————————————— menu · no dependencies
 
 class Menu(models.Model):
 
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True)
-#    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
-#    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
 
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
@@ -155,7 +204,7 @@ class MenuScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— prefix
+#———————————————————————————————————————— prefix · uses responsive & language
 
 class Prefix(models.Model):
     path = models.CharField(max_length=2, default='')
@@ -168,9 +217,7 @@ class Prefix(models.Model):
     class Meta:
         verbose_name_plural = "Prefixes"
 
-#———————————————————————————————————————————————————————————————————————————————— dep. on prefix
-
-#———————————————————————————————————————— settings
+#———————————————————————————————————————— site settings · uses prefix & robots
 
 backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
 
@@ -205,30 +252,7 @@ class Settings(models.Model):
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"
 
-#———————————————————————————————————————— library scripts
-
-library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
-
-class LibraryScript(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ["type", "name", "sort1", "sort2"]
-
-#———————————————————————————————————————————————————————————————————————————————— dep. on responsive & prefix
-
-#———————————————————————————————————————————————————————————————————————————————— dep. on prefix, template & menu
-
-#———————————————————————————————————————— page
+#———————————————————————————————————————— page · uses shared, template & prefix
 
 class Page(models.Model): 
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
@@ -292,45 +316,5 @@ class Svg(models.Model):
         verbose_name = "SVG file"
         verbose_name_plural = "SVG files"
         ordering = ["order"]
-
-#———————————————————————————————————————— redirects
-
-class Redirect(models.Model): 
-    active = models.BooleanField(default=True, verbose_name='active',)
-    from_url = models.CharField(max_length=200, default='', verbose_name='from URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='to prefix, http or https')
-    to_page = models.CharField(max_length=200, default='', verbose_name='to page or domain')
-
-    def __str__(self):
-        return self.from_url
-
-#———————————————————————————————————————— fonts
-
-class Font(models.Model): 
-    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
-    family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)
-    google = models.BooleanField(default=True, verbose_name='Google font',)
-    active = models.BooleanField(default=True, verbose_name='active',)
-
-    def __str__(self):
-        return self.name
-
-#———————————————————————————————————————— notes
-
-from ckeditor.fields import RichTextField
-
-class Note(models.Model):
-    name = models.CharField(max_length=200, default='')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-#   contents = models.TextField(max_length=20000, default='', verbose_name='note', blank=True,)
-    contents = RichTextField()
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "notes"
-        verbose_name_plural = "notes"
 
 #———————————————————————————————————————— fin
