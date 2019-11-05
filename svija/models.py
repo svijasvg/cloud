@@ -1,9 +1,9 @@
-#---------------------------------------- comments
+#———————————————————————————————————————— comments
 
 # on_delete
 #https://stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
-#---------------------------------------- svg_page.models
+#———————————————————————————————————————— svg_page.models
 
 from django.db import models
 import datetime
@@ -12,9 +12,9 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
-#-------------------------------------------------------------------------------- no dependencies
+#———————————————————————————————————————————————————————————————————————————————— no dependencies
 
-#---------------------------------------- language
+#———————————————————————————————————————— language
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -44,7 +44,7 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
-#---------------------------------------- responsive
+#———————————————————————————————————————— responsive
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -68,7 +68,7 @@ class Responsive(models.Model):
     class Meta:
         verbose_name_plural = "Responsive"
 
-#---------------------------------------- robots
+#———————————————————————————————————————— robots
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -79,9 +79,9 @@ class Robots(models.Model):
         verbose_name = "Robots.txt"
         verbose_name_plural = "Robots.txt"
 
-#-------------------------------------------------------------------------------- dep. on responsive
+#———————————————————————————————————————————————————————————————————————————————— dep. on responsive
 
-#---------------------------------------- template
+#———————————————————————————————————————— template
 
 class Template(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -90,7 +90,7 @@ class Template(models.Model):
     def __str__(self):
         return self.name
 
-#---------------------------------------- scripts
+#———————————————————————————————————————— scripts
 
 class Shared(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
@@ -117,23 +117,60 @@ class SharedScripts(models.Model):
         verbose_name_plural = "shared scripts"
         ordering = ["order"]
 
-#-------------------------------------------------------------------------------- dep. on responsive & language
+#———————————————————————————————————————————————————————————————————————————————— dep. on responsive & language
 
-#---------------------------------------- prefix
+#———————————————————————————————————————— menu
+
+class Menu(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    filename = models.CharField(max_length=200, default='', blank=True)
+#    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
+#    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
+
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ["responsive__name", "prefix__path", "name"]
+
+menu_scripts=('head JS', 'body JS', 'CSS',)
+
+class MenuScripts(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*menu_scripts), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "extra script"
+        verbose_name_plural = "extra scripts"
+        ordering = ["order"]
+
+#———————————————————————————————————————— prefix
 
 class Prefix(models.Model):
     path = models.CharField(max_length=2, default='')
     default = models.CharField(max_length=20, default='', verbose_name='default page')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
     language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
+    menu = models.ManyToManyField(Menu, blank=True)
     def __str__(self):
         return self.path
     class Meta:
         verbose_name_plural = "Prefixes"
 
-#-------------------------------------------------------------------------------- dep. on prefix
+#———————————————————————————————————————————————————————————————————————————————— dep. on prefix
 
-#---------------------------------------- settings
+#———————————————————————————————————————— settings
 
 backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
 
@@ -168,7 +205,7 @@ class Settings(models.Model):
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"
 
-#---------------------------------------- library scripts
+#———————————————————————————————————————— library scripts
 
 library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
 
@@ -187,53 +224,16 @@ class LibraryScript(models.Model):
     class Meta:
         ordering = ["type", "name", "sort1", "sort2"]
 
-#-------------------------------------------------------------------------------- dep. on responsive & prefix
+#———————————————————————————————————————————————————————————————————————————————— dep. on responsive & prefix
 
-#---------------------------------------- menu
+#———————————————————————————————————————————————————————————————————————————————— dep. on prefix, template & menu
 
-class Menu(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True)
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
-
-    active = models.BooleanField(default=True, verbose_name='active',)
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ["responsive__name", "prefix__path", "name"]
-
-menu_scripts=('head JS', 'body JS', 'CSS',)
-
-class MenuScripts(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*menu_scripts), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "extra script"
-        verbose_name_plural = "extra scripts"
-        ordering = ["order"]
-
-#-------------------------------------------------------------------------------- dep. on prefix, template & menu
-
-#---------------------------------------- page
+#———————————————————————————————————————— page
 
 class Page(models.Model): 
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     shared = models.ForeignKey(Shared, default=0, on_delete=models.CASCADE, )
     template = models.ForeignKey(Template, default=0, on_delete=models.CASCADE, )
-    menu = models.ManyToManyField(Menu, blank=True)
     library_script = models.ManyToManyField(LibraryScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
 
@@ -250,8 +250,10 @@ class Page(models.Model):
     access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
-    override= models.BooleanField(default=False, verbose_name='override responsive',)
     override_modules = models.BooleanField(default=True, verbose_name='override modules (in responsive)',)
+    menu = models.ManyToManyField(Menu, blank=True)
+
+    override= models.BooleanField(default=False, verbose_name='override responsive',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
@@ -291,7 +293,7 @@ class Svg(models.Model):
         verbose_name_plural = "SVG files"
         ordering = ["order"]
 
-#---------------------------------------- redirects
+#———————————————————————————————————————— redirects
 
 class Redirect(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -302,7 +304,7 @@ class Redirect(models.Model):
     def __str__(self):
         return self.from_url
 
-#---------------------------------------- fonts
+#———————————————————————————————————————— fonts
 
 class Font(models.Model): 
     name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
@@ -315,7 +317,7 @@ class Font(models.Model):
     def __str__(self):
         return self.name
 
-#---------------------------------------- notes
+#———————————————————————————————————————— notes
 
 from ckeditor.fields import RichTextField
 
@@ -331,4 +333,4 @@ class Note(models.Model):
         verbose_name = "notes"
         verbose_name_plural = "notes"
 
-#---------------------------------------- fin
+#———————————————————————————————————————— fin
