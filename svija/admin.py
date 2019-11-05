@@ -200,6 +200,12 @@ admin.site.register(Menu, MenuAdmin)
 #---------------------------------------- prefix · depends on responsive & language
 
 from .models import Prefix
+class ModuleInlinePrefix(admin.TabularInline):
+    model = Prefix.menu.through
+    extra = 0 
+    verbose_name = "module"
+    verbose_name_plural = "modules"
+
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
@@ -210,6 +216,8 @@ class PrefixAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('display name', {'fields': ['path', 'responsive', 'language','default',],}),
     ]   
+
+    inlines = [ModuleInlinePrefix, ]
 
 admin.site.register(Prefix, PrefixAdmin)
 
@@ -233,7 +241,6 @@ admin.site.register(Settings, SettingsAdmin)
 #---------------------------------------- page
 
 from .models import Svg
-
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
@@ -248,12 +255,12 @@ class LibraryScriptInline(admin.TabularInline):
     verbose_name_plural = "library scripts"
     classes = ['collapse']
 
-class MenuInline(admin.TabularInline):
+class ModuleInline(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
-    verbose_name = "menu file"
-    verbose_name_plural = "menu files"
-    #classes = ['collapse']
+    verbose_name = "module"
+    verbose_name_plural = "modules"
+    classes = ['collapse']
 
 from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
@@ -273,13 +280,13 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('PREFIX & SLUG',      {'fields': ['visitable', 'prefix','url',],                                          }),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','override_modules',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
         ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, ModuleInline, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
