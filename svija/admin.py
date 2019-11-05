@@ -197,12 +197,40 @@ class MenuAdmin(admin.ModelAdmin):
 
 admin.site.register(Menu, MenuAdmin)
 
+#---------------------------------------- modules · no dependencies
+
+from .models import ModuleScripts
+class ModuleScriptsInline(admin.TabularInline):
+    model = ModuleScripts
+    extra = 0 
+    fields = ('type', 'active', 'order', 'name', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+from .models import Module
+class ModuleAdmin(admin.ModelAdmin):
+
+    # display on parent module
+    list_filter = ('active', 'sort1', 'sort2', )
+    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
+    ]   
+
+    inlines = [ModuleScriptsInline]
+
+admin.site.register(Module, ModuleAdmin)
+
 #---------------------------------------- prefix · depends on responsive & language
 
 from .models import Prefix
 class ModuleInlinePrefix(admin.TabularInline):
-    model = Prefix.menu.through
+    model = Prefix.module.through
     extra = 0 
+    fields = ('module', 'prefix', 'order', 'active',)
     verbose_name = "module"
     verbose_name_plural = "modules"
 
@@ -255,7 +283,7 @@ class LibraryScriptInline(admin.TabularInline):
     verbose_name_plural = "library scripts"
     classes = ['collapse']
 
-class ModuleInline(admin.TabularInline):
+class MenuInline(admin.TabularInline):
     model = Page.menu.through
     extra = 0 
     verbose_name = "module"
@@ -286,7 +314,7 @@ class PageAdmin(admin.ModelAdmin):
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [SvgInline, ModuleInline, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, MenuInline, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

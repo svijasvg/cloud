@@ -204,6 +204,40 @@ class MenuScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
+#———————————————————————————————————————— module · no dependencies
+
+class Module(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    filename = models.CharField(max_length=200, default='', blank=True)
+
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['name', 'active', 'sort1', 'sort2',]
+
+module_scripts=('head JS', 'body JS', 'CSS',)
+
+class ModuleScripts(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "extra script"
+        verbose_name_plural = "extra scripts"
+        ordering = ["order"]
+
 #———————————————————————————————————————— prefix · uses responsive & language
 
 class Prefix(models.Model):
@@ -212,10 +246,17 @@ class Prefix(models.Model):
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
     language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
     menu = models.ManyToManyField(Menu, blank=True)
+    module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
     class Meta:
         verbose_name_plural = "Prefixes"
+
+class PrefixModules(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
 
 #———————————————————————————————————————— site settings · uses prefix & robots
 
