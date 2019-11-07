@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Language, Responsive, Robots, Template, Prefix, Settings
 from .models import Shared, SharedScripts 
 from .models import Module, ModuleScripts
-from .models import Page, PageScripts, LibraryScript, Svg
+from .models import Page, PageScripts, LibraryScript, Svg, PageModules
 from .models import Redirect
 
 from django.http import HttpResponse
@@ -416,22 +416,6 @@ def PageView(request, path1, path2):
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     accessibility = tag.format(text,links,settings.url,capture)
 
-    #———————————————————————————————————————— svg
-
-    source_dir = 'sync/' + responsive.source_dir
-
-    if page.override_dims:
-        specified_width = page.width
-    else:
-        specified_width = responsive.width
-
-    all_svgs  = page.svg_set.all()
-    svg = ''
-
-    thisThing = my_special_function(source_dir, all_svgs, specified_width)
-    svg += thisThing['svg']
-    head_css += thisThing['head_css']
-
     #———————————————————————————————————————— library scripts
 
 #   html     = ''
@@ -484,6 +468,22 @@ def PageView(request, path1, path2):
 
     if form != '': user_js += form_js
 
+    #———————————————————————————————————————— svg
+
+    source_dir = 'sync/' + responsive.source_dir
+
+    if page.override_dims:
+        specified_width = page.width
+    else:
+        specified_width = responsive.width
+
+    all_svgs  = page.svg_set.all()
+    svg = ''
+
+    thisThing = my_special_function(source_dir, all_svgs, specified_width)
+    svg += thisThing['svg']
+    head_css += thisThing['head_css']
+
     #———————————————————————————————————————— modules
 
     if page.suppress_modules == False:
@@ -497,6 +497,20 @@ def PageView(request, path1, path2):
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
         body_js += thisThing['body_js']
+
+    all_modules = page.pagemodules_set.all()
+    all_svgs = []
+    for this_module in all_modules: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
+        all_svgs.append(this_module.module)
+
+    user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+
+    thisThing = my_special_function(source_dir, all_svgs, specified_width)
+    svg += thisThing['svg']
+    head_css += thisThing['head_css']
+    user_js += thisThing['head_js']
+    body_js += thisThing['body_js']
 
     #———————————————————————————————————————— page settings
 
@@ -557,6 +571,8 @@ def my_special_function(source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
+#    some_svgs = {k:all_svgs[k] for k in ('active') if k}
+    
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
 
