@@ -38,8 +38,8 @@ admin.site.register(Font, FontAdmin)
 
 #---------------------------------------- notes · no dependencies
 
-from .models import Note
-class NoteAdmin(admin.ModelAdmin):
+from .models import Notes
+class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('sort1', 'sort2',)
@@ -55,7 +55,7 @@ class NoteAdmin(admin.ModelAdmin):
     class Media:
         js = ('ckeditor.js',) 
 
-admin.site.register(Note, NoteAdmin)
+admin.site.register(Notes, NotesAdmin)
 
 #---------------------------------------- language · no dependencies
 

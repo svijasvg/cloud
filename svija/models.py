@@ -40,7 +40,7 @@ class Font(models.Model):
 
 from ckeditor.fields import RichTextField
 
-class Note(models.Model):
+class Notes(models.Model):
     name = models.CharField(max_length=200, default='')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
