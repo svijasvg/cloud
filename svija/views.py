@@ -429,8 +429,8 @@ def PageView(request, path1, path2):
     svg = ''
 
     thisThing = my_special_function(source_dir, all_svgs, specified_width)
-    svg += thisThing[1]
-    head_css += thisThing[0]
+    svg += thisThing['svg']
+    head_css += thisThing['head_css']
 
     #———————————————————————————————————————— library scripts
 
@@ -604,9 +604,10 @@ def my_special_function(source_dir, all_svgs, specified_width):
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             head_css += '\n\n' + css_dims
             svg += '\n' + svg_content
-    results = []
-    results.append(head_css)
-    results.append(svg)
+    results = (
+        'head_css': head_css,
+        'svg': svg,
+    )
     return results
 
 #line 514:
