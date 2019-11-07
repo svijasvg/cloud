@@ -96,7 +96,7 @@ class Responsive(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
-    img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='image resolution multiplier')
+    img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
     def __str__(self):

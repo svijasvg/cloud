@@ -166,6 +166,7 @@ class ResponsiveAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+        ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
 admin.site.register(Responsive, ResponsiveAdmin)
