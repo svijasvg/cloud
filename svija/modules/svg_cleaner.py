@@ -98,7 +98,7 @@ def clean(svg_path, svg_name):
                 new_font = create_new_font(css_ref, font_to_replace)
                 new_fonts.append(new_font)
 
-        #———————————————————————————————— replace style definitions at top of SVG
+        #———————————————————————————————— replace '.st0' style definitions at top of SVG
         #———————————————————————————————— and style applications in body of SVG
 
         if line[1:4] == '.st':
@@ -107,6 +107,11 @@ def clean(svg_path, svg_name):
 
         if line.find('class="st') > 0:
             line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
+
+        #———————————————————————————————— replace '#SVGID_' definitions
+
+        if line.find('SVGID_') > 0:
+            line = re.sub(r'SVGID_', r''+svg_ID+'ID', line)
 
         #———————————————————————————————— get id if specified
         #———————————————————————————————— AI file with layer name "id example"
