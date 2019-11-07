@@ -492,37 +492,11 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        for this_svg in all_svgs:
-    
-            #—————— check if svg exists
-            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-            path = pathlib.Path(temp_source)
-            if not path.exists():
-                return error404(request)
-    
-            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-    
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
-    
-            rem_width = svg_width/10
-            rem_height = svg_height/10
-    
-            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-    
-            head_css += '\n\n' + css_dims
-            module += '\n' + svg_content
-    
-            all_scripts = this_svg.modulescripts_set.all()
-            for this_script in all_scripts:
-                if this_script.type == 'CSS' and this_script.active == True:
-                    head_css += add_script('css', this_script.name, this_script.content)
-                if this_script.type == 'head JS' and this_script.active == True:
-                    user_js += add_script('js', this_script.name, this_script.content)
-                if this_script.type == 'body JS' and this_script.active == True:
-                    body_js += add_script('js', this_script.name, this_script.content)
+        thisThing = my_special_function(source_dir, all_svgs, specified_width)
+        svg += thisThing['svg']
+        head_css += thisThing['head_css']
+        user_js += thisThing['head_js']
+        body_js += thisThing['body_js']
 
     #———————————————————————————————————————— page settings
 
@@ -577,11 +551,12 @@ def add_script(kind, name, content):
     }[kind]
 
 #———————————————————————————————————————— fin
-# line 431:
+# line 431, 495:
 
 def my_special_function(source_dir, all_svgs, specified_width):
-    svg = ''
-    head_css = ''
+
+    head_css = head_js = body_js = svg = ''
+
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
 
@@ -604,44 +579,25 @@ def my_special_function(source_dir, all_svgs, specified_width):
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             head_css += '\n\n' + css_dims
             svg += '\n' + svg_content
-    results = (
-        'head_css': head_css,
-        'svg': svg,
-    )
-    return results
 
-#line 514:
-#
-#        for this_svg in all_svgs:
-#    
-#            #—————— check if svg exists
-#            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-#            path = pathlib.Path(temp_source)
-#            if not path.exists():
-#                return error404(request)
-#    
-#            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-#    
-#            if svg_width > specified_width:
-#                page_ratio = svg_height/svg_width
-#                svg_width = specified_width
-#                svg_height = round(specified_width * page_ratio)
-#    
-#            rem_width = svg_width/10
-#            rem_height = svg_height/10
-#    
-#            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-#    
-#            head_css += '\n\n' + css_dims
-#            module += '\n' + svg_content
-#    
-#            all_scripts = this_svg.modulescripts_set.all()
-#            for this_script in all_scripts:
-#                if this_script.type == 'CSS' and this_script.active == True:
-#                    head_css += add_script('css', this_script.name, this_script.content)
-#                if this_script.type == 'head JS' and this_script.active == True:
-#                    user_js += add_script('js', this_script.name, this_script.content)
-#                if this_script.type == 'body JS' and this_script.active == True:
-#                    body_js += add_script('js', this_script.name, this_script.content)
+            try:
+                all_scripts = this_svg.modulescripts_set.all() # IN ORDER
+                for this_script in all_scripts:
+                    if this_script.type == 'CSS' and this_script.active == True:
+                        head_css += add_script('css', this_script.name, this_script.content) + 'booby'
+                    if this_script.type == 'head JS' and this_script.active == True:
+                        head_js += add_script('js', this_script.name, this_script.content) + 'booby'
+                    if this_script.type == 'body JS' and this_script.active == True:
+                        body_js += add_script('js', this_script.name, this_script.content) + 'booby'
+            except:
+                rien = 0
+
+    results = {
+        'head_css': head_css,
+        'head_js' : head_js,
+        'body_js' : body_js,
+        'svg'     : svg,
+    }
+    return results
 
 #———————————————————————————————————————— fin
