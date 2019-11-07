@@ -103,12 +103,12 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name','description', 'filename', )
+    list_display = ('name','default', 'active', 'description', 'filename', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name','filename','description', ],}),
+        ('Name & Filename (in svija/templates)', {'fields': ['name','default', 'active', 'filename','description', ],}),
     ]   
 
 admin.site.register(Template, TemplateAdmin)
@@ -283,13 +283,14 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','suppress_modules',],                            }),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-        ('dimensions',         {'fields': ['override_dims', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],                            }),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
     ]   
 
-    inlines = [ModuleInlinePage, SvgInline, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, ModuleInlinePage, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
