@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Language, Responsive, Robots, Template, Prefix, Settings
 from .models import Shared, SharedScripts 
-from .models import Menu, MenuScripts
+from .models import Module, ModuleScripts
 from .models import Page, PageScripts, LibraryScript, Svg
 from .models import Redirect
 
