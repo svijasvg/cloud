@@ -564,7 +564,8 @@ def my_special_function(source_dir, all_svgs, specified_width):
             temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
             path = pathlib.Path(temp_source)
             if not path.exists():
-                return error404(request)
+                svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
+                continue
 
             svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
