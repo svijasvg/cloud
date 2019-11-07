@@ -170,33 +170,6 @@ class ResponsiveAdmin(admin.ModelAdmin):
 
 admin.site.register(Responsive, ResponsiveAdmin)
 
-#---------------------------------------- menus · no dependencies
-
-from .models import MenuScripts
-class MenuScriptsInline(admin.TabularInline):
-    model = MenuScripts
-    extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
-
-from .models import Menu
-class MenuAdmin(admin.ModelAdmin):
-
-    # display on parent menu
-    list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
-    ]   
-
-    inlines = [MenuScriptsInline]
-
-admin.site.register(Menu, MenuAdmin)
-
 #---------------------------------------- modules · no dependencies
 
 from .models import ModuleScripts
@@ -283,13 +256,6 @@ class LibraryScriptInline(admin.TabularInline):
     verbose_name_plural = "library scripts"
     classes = ['collapse']
 
-class MenuInlinePage(admin.TabularInline):
-    model = Page.menu.through
-    extra = 0 
-    verbose_name = "menu"
-    verbose_name_plural = "menus"
-    classes = ['collapse']
-
 from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
@@ -321,8 +287,7 @@ class PageAdmin(admin.ModelAdmin):
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 
-    inlines = [ModuleInlinePage, SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
-    #inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
+    inlines = [ModuleInlinePage, SvgInline, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
