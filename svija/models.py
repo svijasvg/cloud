@@ -242,7 +242,7 @@ class Settings(models.Model):
 
     # backup settings
     backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
-    backup_next     = models.BooleanField(default=False, verbose_name='backup on next visit',)
+    backup_next     = models.BooleanField(default=False, verbose_name='back up on next visit',)
 
     # email settings
     mail_id          = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
@@ -281,10 +281,10 @@ class Page(models.Model):
     access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
-    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules (in Responsive)',)
+    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
 
-    override= models.BooleanField(default=False, verbose_name='override responsive',)
+    override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')

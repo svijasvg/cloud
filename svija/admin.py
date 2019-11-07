@@ -235,6 +235,7 @@ class SettingsAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
+        ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Settings, SettingsAdmin)
@@ -276,14 +277,14 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ('prefix', 'visitable','template', )
 
     # display on parent page
-    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'pub_date',)
+    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'suppress_modules', 'pub_date',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','suppress_modules',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-        ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
+        ('dimensions',         {'fields': ['override_dims', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
     ]   
 

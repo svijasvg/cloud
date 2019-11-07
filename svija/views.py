@@ -347,7 +347,7 @@ def PageView(request, path1, path2):
 
     dim_js = ''
 
-    if page.override:
+    if page.override_dims:
         dim_js += '// overridden in page settings:\n'
 
         dim_js += 'var page_width = '     + str(page.width  ) + '; '
@@ -420,7 +420,7 @@ def PageView(request, path1, path2):
 
     source_dir = 'sync/' + responsive.source_dir
 
-    if page.override:
+    if page.override_dims:
         specified_width = page.width
     else:
         specified_width = responsive.width
