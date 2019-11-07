@@ -275,7 +275,7 @@ class ModuleInlinePage(admin.TabularInline):
     verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'visitable','template', )
+    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
     list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'suppress_modules', 'pub_date',)
