@@ -573,13 +573,11 @@ def my_special_function(flag, ordering, source_dir, all_svgs, specified_width):
     head_css = head_js = body_js = svg = ''
 
     if len(ordering) > 0:
-        all_svgs = ()
-    else:
-        head_js += '// xxx 579 ' +flag + ' ' + 'xxx\n'
+        all_svgs = []
 
     for dooby in ordering:
         if dooby.active:
-            head_js += '// xxx 582 ' +flag + ' ' + dooby.module.name + 'xxx\n'
+            all_svgs.append(dooby.module)
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
