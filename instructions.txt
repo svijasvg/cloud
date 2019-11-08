@@ -39,10 +39,10 @@ $ git push origin master
       then do a dumpdata each site with the svija version number
       then do a cloud backup
 
-$ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+$ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
 
-      for each site:
+      in each site directory:
 
 $ ./manage.py dumpdata > svija-2.0.17.json
 
@@ -55,9 +55,6 @@ https://cloud.linode.com
 $ cd example
 $ vi example/settings.py
 
-$ pip install django-ckeditor
-$ sudo service uwsgi restart
-
 ———————————————————————————————————————— update svija
 
       Installs Svija in the virtualenv, without the possibility of modifying the program.
@@ -67,6 +64,7 @@ $ pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django
 
       To apply the migrations for each site:
 
+$ example/manage.py makemigrations svija (once per server)
 $ example/manage.py migrate
 $ example/manage.py collectstatic
 
