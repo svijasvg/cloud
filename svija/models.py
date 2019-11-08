@@ -145,33 +145,6 @@ class LibraryScript(models.Model):
     class Meta:
         ordering = ["type", "name", "sort1", "sort2"]
 
-#———————————————————————————————————————— shared scripts · dependent on responsive
-
-class Shared(models.Model):
-    name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "Shared Scripts"
-        verbose_name_plural = "Shared Scripts"
-
-shared_scripts=('CSS', 'head JS', 'body JS',)
-
-class SharedScripts(models.Model):
-    scripts = models.ForeignKey(Shared, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*shared_scripts), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "shared script"
-        verbose_name_plural = "shared scripts"
-        ordering = ["order"]
-
 #———————————————————————————————————————— module · no dependencies
 
 class Module(models.Model):
@@ -204,6 +177,33 @@ class ModuleScripts(models.Model):
     class Meta:
         verbose_name = "extra script"
         verbose_name_plural = "extra scripts"
+        ordering = ["order"]
+
+#———————————————————————————————————————— shared scripts · dependent on responsive
+
+class Shared(models.Model):
+    name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "Shared Scripts"
+        verbose_name_plural = "Shared Scripts"
+
+shared_scripts=('CSS', 'head JS', 'body JS',)
+
+class SharedScripts(models.Model):
+    scripts = models.ForeignKey(Shared, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*shared_scripts), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "shared script"
+        verbose_name_plural = "shared scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— prefix · uses responsive & language

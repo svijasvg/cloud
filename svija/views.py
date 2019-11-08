@@ -571,6 +571,9 @@ def my_special_function(ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
+    for humpy in ordering:
+        head_js += '// xxx' + str(humpy.order) + 'xxx\n'
+
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
@@ -601,11 +604,11 @@ def my_special_function(ordering, source_dir, all_svgs, specified_width):
                 all_scripts = this_svg.modulescripts_set.all() # IN ORDER
                 for this_script in all_scripts:
                     if this_script.type == 'CSS' and this_script.active == True:
-                        head_css += add_script('css', this_script.name, this_script.content) + 'booby'
+                        head_css += add_script('css', this_script.name, this_script.content)
                     if this_script.type == 'head JS' and this_script.active == True:
-                        head_js += add_script('js', this_script.name, this_script.content) + 'booby'
+                        head_js += add_script('js', this_script.name, this_script.content)
                     if this_script.type == 'body JS' and this_script.active == True:
-                        body_js += add_script('js', this_script.name, this_script.content) + 'booby'
+                        body_js += add_script('js', this_script.name, this_script.content)
             except:
                 rien = 0
 
