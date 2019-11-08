@@ -480,9 +480,10 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = my_special_function((), source_dir, all_svgs, specified_width)
+    thisThing = my_special_function('page svg', (), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
+    view_js  += thisThing['head_js']
 
     #———————————————————————————————————————— modules
 
@@ -492,7 +493,7 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = my_special_function(page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
+        thisThing = my_special_function('prefix modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
         svg += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
@@ -506,7 +507,7 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = my_special_function(prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
+    thisThing = my_special_function('page modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -567,28 +568,23 @@ def add_script(kind, name, content):
 #———————————————————————————————————————— fin
 # line 431, 495:
 
-def my_special_function(ordering, source_dir, all_svgs, specified_width):
+def my_special_function(flag, ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
-    for humpy in ordering:
-        head_js += '// xxx' + str(humpy.module.name) + 'xxx\n'
-        
-    if len(ordering) == 0:
-        head_js += '// xxx' + ' lenght0 ' + 'xxx\n'
+    head_js += '// xxx ' +flag + ', ordering length: ' + str(len(ordering)) + 'xxx\n'
+    if len(ordering) > 0:
+        all_svgs = ()
+    else:
+        head_js += '// xxx ' +flag + ' ' + 'xxx\n'
+
+    for dooby in ordering:
+        head_js += '// xxx ' +flag + ' ' + dooby.module.name + 'xxx\n'
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
-        doit = False
-        if len(ordering)==0 and this_svg.active:
-            doit = True
-        else:
-            head_js += '// xxx' + ' working ' + 'xxx\n'
-            
-# need a statement here to see if this_svg is active in ordering
-
-        if doit:
+        if this_svg.active:
             #—————— check if svg exists
             temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
             path = pathlib.Path(temp_source)
