@@ -572,13 +572,23 @@ def my_special_function(ordering, source_dir, all_svgs, specified_width):
     head_css = head_js = body_js = svg = ''
 
     for humpy in ordering:
-        head_js += '// xxx' + str(humpy.order) + 'xxx\n'
+        head_js += '// xxx' + str(humpy.module.name) + 'xxx\n'
+        
+    if len(ordering) == 0:
+        head_js += '// xxx' + ' lenght0 ' + 'xxx\n'
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
-        if this_svg.active:
+        doit = False
+        if len(ordering)==0 and this_svg.active:
+            doit = True
+        else:
+            head_js += '// xxx' + ' working ' + 'xxx\n'
+            
+# need a statement here to see if this_svg is active in ordering
 
+        if doit:
             #—————— check if svg exists
             temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
             path = pathlib.Path(temp_source)
