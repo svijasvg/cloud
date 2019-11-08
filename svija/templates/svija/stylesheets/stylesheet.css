@@ -9,6 +9,10 @@ html,body{
   overflow: hidden; /* so MS browsers won't display content outside of artboard */
 }
 
+svg{ /* un-positioned elements draw first by default, screwing up z index */
+    position:relative;
+}
+
 #accessibility{ /* positioning */
          z-index: -1;
         position: absolute;
