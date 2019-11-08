@@ -170,14 +170,14 @@ class ModuleScripts(models.Model):
     type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
     class Meta:
         verbose_name = "extra script"
         verbose_name_plural = "extra scripts"
-        ordering = ["order"]
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— shared scripts · dependent on responsive
 
@@ -222,14 +222,14 @@ class Prefix(models.Model):
 class PrefixModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
         verbose_name = "module"
         verbose_name_plural = "modules"
-        ordering = ["order"]
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— site settings · uses prefix & robots
 
@@ -322,25 +322,25 @@ class PageScripts(models.Model):
 class Svg(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.filename
     class Meta:
         verbose_name = "SVG file"
         verbose_name_plural = "SVG files"
-        ordering = ["order"]
+        ordering = ["zindex"]
 
 class PageModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='load zindex')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
         verbose_name = "module"
         verbose_name_plural = "modules"
-        ordering = ["order"]
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— fin

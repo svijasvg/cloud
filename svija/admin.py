@@ -177,7 +177,7 @@ from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'active', 'zindex', 'name', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -204,7 +204,7 @@ from .models import Prefix
 class ModuleInlinePrefix(admin.TabularInline):
     model = Prefix.module.through
     extra = 0 
-    fields = ('module', 'prefix', 'order', 'active',)
+    fields = ('module', 'prefix', 'zindex', 'active',)
     verbose_name = "module"
     verbose_name_plural = "modules"
 
@@ -247,8 +247,8 @@ from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
-    #fields = ('order', 'filename',)
-    fields = ('filename','order','active',)
+    #fields = ('zindex', 'filename',)
+    fields = ('filename','zindex','active',)
 
 from .models import Page
 class LibraryScriptInline(admin.TabularInline):
@@ -270,7 +270,7 @@ class PageScriptsInline(admin.TabularInline):
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
     extra = 0 
-    fields = ('module', 'order', 'active',)
+    fields = ('module', 'zindex', 'active',)
     verbose_name = "module"
     verbose_name_plural = "modules"
 
