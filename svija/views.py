@@ -493,7 +493,7 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = my_special_function('prefix modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
+        thisThing = my_special_function('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
         svg += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
@@ -507,7 +507,7 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = my_special_function('page modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
+    thisThing = my_special_function('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -572,14 +572,14 @@ def my_special_function(flag, ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
-    head_js += '// xxx ' +flag + ', ordering length: ' + str(len(ordering)) + 'xxx\n'
     if len(ordering) > 0:
         all_svgs = ()
     else:
-        head_js += '// xxx ' +flag + ' ' + 'xxx\n'
+        head_js += '// xxx 579 ' +flag + ' ' + 'xxx\n'
 
     for dooby in ordering:
-        head_js += '// xxx ' +flag + ' ' + dooby.module.name + 'xxx\n'
+        if dooby.active:
+            head_js += '// xxx 582 ' +flag + ' ' + dooby.module.name + 'xxx\n'
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
