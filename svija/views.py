@@ -1,44 +1,47 @@
 #   return HttpResponse("debugging message.")
 #———————————————————————————————————————— svija.views
 
-from django.http import HttpResponseRedirect
+from django.contrib.staticfiles.views import serve
+from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
+from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.views.decorators.cache import never_cache
-from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Language, Responsive, Robots, Template, Prefix, Settings
-from .models import Shared, SharedScripts 
-from .models import Menu, MenuScripts
-from .models import Page, PageScripts, LibraryScript, Svg
-from .models import Redirect
-
-from django.http import HttpResponse
-from django.template import loader
-from django.http import Http404
-from django.core.files import File
-from django.core.cache import cache
+import os
 import os.path
 import sys
 import pathlib
 
-#from django.views import static
-import os
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
-from django.contrib.staticfiles.views import serve
+import svija 
+
+# no dependencies
+from .models import Redirect, Font, Notes, Language, Responsive, Robots
+from .models import Template, LibraryScript, Module, ModuleScripts
+
+# dependent on responsive
+from .models import Shared, SharedScripts
+
+# dependent on responsive & languagee
+from .models import Prefix, PrefixModules
+
+# dependent on prefix & robots
+from .models import Settings
+
+# dependent on shared, template & prefix
+from .models import Page, PageScripts, Svg, PageModules
 
 #———————————————————————————————————————— page (with embedded svg)
 
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
-#path = os.path.abspath(os.path.join(os.path.dirname(__file__), './modules'))
-if not path in sys.path: sys.path.insert(1, path)
 
-#add the path to the module to sys.path before the import statement which raises the exception within the offending pr
-#add the path to the module to myproject.wsgi for applications using WSGI,
-#import modules
-import svija 
-from django.db.models import Q
+if not path in sys.path: sys.path.insert(1, path)
 
 #———————————————————————————————————————— / was requested
 
@@ -56,8 +59,6 @@ def HomePage(request, path1):
     return response
 
 #———————————————————————————————————————— robots.txt
-
-from .models import Robots
 
 def RobotsView(request):
     settings = get_object_or_404(Settings,active=True)
@@ -210,7 +211,6 @@ def cache_per_user_function(ttl=None, cache_post=False):
 from modules import svg_cleaner, meta_canonical, accessibility_links
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
-from svija.models import Font
 
 @cache_per_user_function(ttl=60*60*24, cache_post=False)
 def PageView(request, path1, path2):
@@ -269,7 +269,6 @@ def PageView(request, path1, path2):
     html          = ''
     form          = ''
     module        = ''
-    menu          = ''
     analytics_id  = ''
     body_js       = ''
 
@@ -348,7 +347,7 @@ def PageView(request, path1, path2):
 
     dim_js = ''
 
-    if page.override:
+    if page.override_dims:
         dim_js += '// overridden in page settings:\n'
 
         dim_js += 'var page_width = '     + str(page.width  ) + '; '
@@ -417,41 +416,6 @@ def PageView(request, path1, path2):
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     accessibility = tag.format(text,links,settings.url,capture)
 
-    #———————————————————————————————————————— svg
-
-    source_dir = 'sync/' + responsive.source_dir
-
-    if page.override:
-        specified_width = page.width
-    else:
-        specified_width = responsive.width
-
-    all_svgs  = page.svg_set.all()
-    svg = ''
-
-    for this_svg in all_svgs:
-        if this_svg.active:
-
-            #—————— check if svg exists
-            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-            path = pathlib.Path(temp_source)
-            if not path.exists():
-                return error404(request)
-
-            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-    
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
-
-            rem_width = svg_width/10
-            rem_height = svg_height/10
-    
-            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-            head_css += '\n\n' + css_dims
-            svg += '\n' + svg_content
-
     #———————————————————————————————————————— library scripts
 
 #   html     = ''
@@ -504,6 +468,23 @@ def PageView(request, path1, path2):
 
     if form != '': user_js += form_js
 
+    #———————————————————————————————————————— svg
+
+    source_dir = 'sync/' + responsive.source_dir
+
+    if page.override_dims:
+        specified_width = page.width
+    else:
+        specified_width = responsive.width
+
+    all_svgs  = page.svg_set.all()
+    svg = ''
+
+    thisThing = my_special_function('page svg', (), source_dir, all_svgs, specified_width)
+    svg += thisThing['svg']
+    head_css += thisThing['head_css']
+    view_js  += thisThing['head_js']
+
     #———————————————————————————————————————— modules
 
     if page.suppress_modules == False:
@@ -512,77 +493,25 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        for this_svg in all_svgs:
-    
-            #—————— check if svg exists
-            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-            path = pathlib.Path(temp_source)
-            if not path.exists():
-                return error404(request)
-    
-            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-    
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
-    
-            rem_width = svg_width/10
-            rem_height = svg_height/10
-    
-            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-    
-            head_css += '\n\n' + css_dims
-            module += '\n' + svg_content
-    
-            all_scripts = this_svg.modulescripts_set.all()
-            for this_script in all_scripts:
-                if this_script.type == 'CSS' and this_script.active == True:
-                    head_css += add_script('css', this_script.name, this_script.content)
-                if this_script.type == 'head JS' and this_script.active == True:
-                    user_js += add_script('js', this_script.name, this_script.content)
-                if this_script.type == 'body JS' and this_script.active == True:
-                    body_js += add_script('js', this_script.name, this_script.content)
+        thisThing = my_special_function('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
+        svg += thisThing['svg']
+        head_css += thisThing['head_css']
+        user_js += thisThing['head_js']
+        body_js += thisThing['body_js']
 
-    #———————————————————————————————————————— menus
+    all_modules = page.pagemodules_set.all()
+    all_svgs = []
+    for this_module in all_modules: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
+        all_svgs.append(this_module.module)
 
-    all_svgs = page.menu.all()
-    menu = ''
+    user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    user_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
-    body_js += '\n\n//———————————————————————————————————————— menu scripts\n\n'
-
-    for this_svg in all_svgs:
-
-        #—————— check if svg exists
-        temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-        path = pathlib.Path(temp_source)
-        if not path.exists():
-            return error404(request)
-
-        svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-
-        if svg_width > specified_width:
-            page_ratio = svg_height/svg_width
-            svg_width = specified_width
-            svg_height = round(specified_width * page_ratio)
-
-        rem_width = svg_width/10
-        rem_height = svg_height/10
-
-        css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-
-        head_css += '\n\n' + css_dims
-        menu += '\n' + svg_content
-
-        all_scripts = this_svg.menuscripts_set.all()
-        for this_script in all_scripts:
-            if this_script.type == 'CSS' and this_script.active == True:
-                head_css += add_script('css', this_script.name, this_script.content)
-            if this_script.type == 'head JS' and this_script.active == True:
-                user_js += add_script('js', this_script.name, this_script.content)
-            if this_script.type == 'body JS' and this_script.active == True:
-                body_js += add_script('js', this_script.name, this_script.content)
+    thisThing = my_special_function('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
+    svg += thisThing['svg']
+    head_css += thisThing['head_css']
+    user_js += thisThing['head_js']
+    body_js += thisThing['body_js']
 
     #———————————————————————————————————————— page settings
 
@@ -606,7 +535,6 @@ def PageView(request, path1, path2):
         'html'          : html,
         'form'          : form,
         'module'        : module,
-        'menu'          : menu,
         'analytics_id'  : analytics_id,
         'body_js'       : body_js
     }
@@ -636,5 +564,64 @@ def add_script(kind, name, content):
         'css' : '\n\n/* '   + name + ' */\n'  + content,
         'js'  : '\n\n// '   + name + '\n'     + content,
     }[kind]
+
+#———————————————————————————————————————— fin
+# line 431, 495:
+
+def my_special_function(flag, ordering, source_dir, all_svgs, specified_width):
+
+    head_css = head_js = body_js = svg = ''
+
+    if len(ordering) > 0:
+        all_svgs = []
+
+    for dooby in ordering:
+        if dooby.active:
+            all_svgs.append(dooby.module)
+
+#    some_svgs = {k:all_svgs[k] for k in ('active') if k}
+    
+    for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
+        if this_svg.active:
+            #—————— check if svg exists
+            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+            path = pathlib.Path(temp_source)
+            if not path.exists():
+                svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
+                continue
+
+            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
+    
+            if svg_width > specified_width:
+                page_ratio = svg_height/svg_width
+                svg_width = specified_width
+                svg_height = round(specified_width * page_ratio)
+
+            rem_width = svg_width/10
+            rem_height = svg_height/10
+    
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            head_css += '\n\n' + css_dims
+            svg += '\n' + svg_content
+
+            try:
+                all_scripts = this_svg.modulescripts_set.all() # IN ORDER
+                for this_script in all_scripts:
+                    if this_script.type == 'CSS' and this_script.active == True:
+                        head_css += add_script('css', this_script.name, this_script.content)
+                    if this_script.type == 'head JS' and this_script.active == True:
+                        head_js += add_script('js', this_script.name, this_script.content)
+                    if this_script.type == 'body JS' and this_script.active == True:
+                        body_js += add_script('js', this_script.name, this_script.content)
+            except:
+                rien = 0
+
+    results = {
+        'head_css': head_css,
+        'head_js' : head_js,
+        'body_js' : body_js,
+        'svg'     : svg,
+    }
+    return results
 
 #———————————————————————————————————————— fin

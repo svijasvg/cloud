@@ -40,7 +40,7 @@ class Font(models.Model):
 
 from ckeditor.fields import RichTextField
 
-class Note(models.Model):
+class Notes(models.Model):
     name = models.CharField(max_length=200, default='')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
@@ -96,7 +96,7 @@ class Responsive(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
-    img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='image resolution multiplier')
+    img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
     def __str__(self):
@@ -122,8 +122,62 @@ class Template(models.Model):
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='subfolder & filename',)
     description = models.CharField(max_length=200, default='', blank=True)
     active = models.BooleanField(default=True, verbose_name='active',)
+    default = models.BooleanField(default=False, verbose_name='default',)
     def __str__(self):
         return self.name
+
+#———————————————————————————————————————— library scripts · no dependencies
+
+library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
+
+class LibraryScript(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ["type", "name", "sort1", "sort2"]
+
+#———————————————————————————————————————— module · no dependencies
+
+class Module(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    filename = models.CharField(max_length=200, default='', blank=True)
+
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['name', 'active', 'sort1', 'sort2',]
+
+module_scripts=('head JS', 'body JS', 'CSS',)
+
+class ModuleScripts(models.Model):
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    zindex = models.IntegerField(default=0, verbose_name='z index')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "extra script"
+        verbose_name_plural = "extra scripts"
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— shared scripts · dependent on responsive
 
@@ -152,93 +206,6 @@ class SharedScripts(models.Model):
         verbose_name_plural = "shared scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— library scripts · no dependencies
-
-library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
-
-class LibraryScript(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ["type", "name", "sort1", "sort2"]
-
-#———————————————————————————————————————— menu · no dependencies
-
-class Menu(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True)
-
-    active = models.BooleanField(default=True, verbose_name='active',)
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['name', 'active', 'sort1', 'sort2',]
-
-menu_scripts=('head JS', 'body JS', 'CSS',)
-
-class MenuScripts(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*menu_scripts), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "extra script"
-        verbose_name_plural = "extra scripts"
-        ordering = ["order"]
-
-#———————————————————————————————————————— module · no dependencies
-
-class Module(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True)
-
-    active = models.BooleanField(default=True, verbose_name='active',)
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['name', 'active', 'sort1', 'sort2',]
-
-module_scripts=('head JS', 'body JS', 'CSS',)
-
-class ModuleScripts(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "extra script"
-        verbose_name_plural = "extra scripts"
-        ordering = ["order"]
-
 #———————————————————————————————————————— prefix · uses responsive & language
 
 class Prefix(models.Model):
@@ -246,7 +213,6 @@ class Prefix(models.Model):
     default = models.CharField(max_length=20, default='', verbose_name='default page')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
     language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
-    menu = models.ManyToManyField(Menu, blank=True)
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
@@ -256,8 +222,14 @@ class Prefix(models.Model):
 class PrefixModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.module.name
+    class Meta:
+        verbose_name = "module"
+        verbose_name_plural = "modules"
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— site settings · uses prefix & robots
 
@@ -277,7 +249,7 @@ class Settings(models.Model):
 
     # backup settings
     backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
-    backup_next     = models.BooleanField(default=False, verbose_name='backup on next visit',)
+    backup_next     = models.BooleanField(default=False, verbose_name='back up on next visit',)
 
     # email settings
     mail_id          = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
@@ -316,11 +288,10 @@ class Page(models.Model):
     access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
     access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
 
-    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules (in Responsive)',)
-    menu = models.ManyToManyField(Menu, blank=True)
+    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
 
-    override= models.BooleanField(default=False, verbose_name='override responsive',)
+    override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
@@ -351,19 +322,25 @@ class PageScripts(models.Model):
 class Svg(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.filename
     class Meta:
         verbose_name = "SVG file"
         verbose_name_plural = "SVG files"
-        ordering = ["order"]
+        ordering = ["zindex"]
 
 class PageModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    order = models.IntegerField(default=0, verbose_name='load order')
+    zindex = models.IntegerField(default=0, verbose_name='load zindex')
     active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.module.name
+    class Meta:
+        verbose_name = "module"
+        verbose_name_plural = "modules"
+        ordering = ["zindex"]
 
 #———————————————————————————————————————— fin

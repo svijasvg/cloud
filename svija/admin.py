@@ -38,8 +38,8 @@ admin.site.register(Font, FontAdmin)
 
 #---------------------------------------- notes · no dependencies
 
-from .models import Note
-class NoteAdmin(admin.ModelAdmin):
+from .models import Notes
+class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('sort1', 'sort2',)
@@ -55,7 +55,7 @@ class NoteAdmin(admin.ModelAdmin):
     class Media:
         js = ('ckeditor.js',) 
 
-admin.site.register(Note, NoteAdmin)
+admin.site.register(Notes, NotesAdmin)
 
 #---------------------------------------- language · no dependencies
 
@@ -103,12 +103,12 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name','description', 'filename', )
+    list_display = ('name','default', 'active', 'description', 'filename', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name','filename','description', ],}),
+        ('Name & Filename (in svija/templates)', {'fields': ['name','default', 'active', 'filename','description', ],}),
     ]   
 
 admin.site.register(Template, TemplateAdmin)
@@ -166,36 +166,10 @@ class ResponsiveAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+        ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
 admin.site.register(Responsive, ResponsiveAdmin)
-
-#---------------------------------------- menus · no dependencies
-
-from .models import MenuScripts
-class MenuScriptsInline(admin.TabularInline):
-    model = MenuScripts
-    extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
-
-from .models import Menu
-class MenuAdmin(admin.ModelAdmin):
-
-    # display on parent menu
-    list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
-    ]   
-
-    inlines = [MenuScriptsInline]
-
-admin.site.register(Menu, MenuAdmin)
 
 #---------------------------------------- modules · no dependencies
 
@@ -203,7 +177,7 @@ from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'active', 'zindex', 'name', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -230,7 +204,7 @@ from .models import Prefix
 class ModuleInlinePrefix(admin.TabularInline):
     model = Prefix.module.through
     extra = 0 
-    fields = ('module', 'prefix', 'order', 'active',)
+    fields = ('module', 'prefix', 'zindex', 'active',)
     verbose_name = "module"
     verbose_name_plural = "modules"
 
@@ -262,6 +236,7 @@ class SettingsAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
+        ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Settings, SettingsAdmin)
@@ -272,8 +247,8 @@ from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
-    #fields = ('order', 'filename',)
-    fields = ('filename','order','active',)
+    #fields = ('zindex', 'filename',)
+    fields = ('filename','zindex','active',)
 
 from .models import Page
 class LibraryScriptInline(admin.TabularInline):
@@ -281,13 +256,6 @@ class LibraryScriptInline(admin.TabularInline):
     extra = 0 
     verbose_name = "library script"
     verbose_name_plural = "library scripts"
-    classes = ['collapse']
-
-class MenuInlinePage(admin.TabularInline):
-    model = Page.menu.through
-    extra = 0 
-    verbose_name = "menu"
-    verbose_name_plural = "menus"
     classes = ['collapse']
 
 from .models import PageScripts
@@ -302,27 +270,27 @@ class PageScriptsInline(admin.TabularInline):
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
     extra = 0 
-    fields = ('module', 'order', 'active',)
+    fields = ('module', 'zindex', 'active',)
     verbose_name = "module"
     verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'visitable','template', )
+    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
-    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'pub_date',)
+    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'suppress_modules', 'pub_date',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url','suppress_modules',],                            }),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],                            }),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-        ('dimensions',         {'fields': ['override', 'width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],                            }),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
     ]   
 
-    inlines = [ModuleInlinePage, SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
-    #inlines = [SvgInline, MenuInlinePage, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, ModuleInlinePage, LibraryScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
