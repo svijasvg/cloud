@@ -126,6 +126,25 @@ class Template(models.Model):
     def __str__(self):
         return self.name
 
+#———————————————————————————————————————— library scripts · no dependencies
+
+library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
+
+class LibraryScript(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ["type", "name", "sort1", "sort2"]
+
 #———————————————————————————————————————— shared scripts · dependent on responsive
 
 class Shared(models.Model):
@@ -152,25 +171,6 @@ class SharedScripts(models.Model):
         verbose_name = "shared script"
         verbose_name_plural = "shared scripts"
         ordering = ["order"]
-
-#———————————————————————————————————————— library scripts · no dependencies
-
-library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
-
-class LibraryScript(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ["type", "name", "sort1", "sort2"]
 
 #———————————————————————————————————————— module · no dependencies
 
@@ -224,6 +224,12 @@ class PrefixModules(models.Model):
     prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
     order = models.IntegerField(default=0, verbose_name='load order')
     active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.module.name
+    class Meta:
+        verbose_name = "module"
+        verbose_name_plural = "modules"
+        ordering = ["order"]
 
 #———————————————————————————————————————— site settings · uses prefix & robots
 
@@ -330,5 +336,11 @@ class PageModules(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     order = models.IntegerField(default=0, verbose_name='load order')
     active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.module.name
+    class Meta:
+        verbose_name = "module"
+        verbose_name_plural = "modules"
+        ordering = ["order"]
 
 #———————————————————————————————————————— fin

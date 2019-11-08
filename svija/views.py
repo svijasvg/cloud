@@ -1,44 +1,47 @@
 #   return HttpResponse("debugging message.")
 #———————————————————————————————————————— svija.views
 
-from django.http import HttpResponseRedirect
+from django.contrib.staticfiles.views import serve
+from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
+from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.views.decorators.cache import never_cache
-from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Language, Responsive, Robots, Template, Prefix, Settings
-from .models import Shared, SharedScripts 
-from .models import Module, ModuleScripts
-from .models import Page, PageScripts, LibraryScript, Svg, PageModules
-from .models import Redirect
-
-from django.http import HttpResponse
-from django.template import loader
-from django.http import Http404
-from django.core.files import File
-from django.core.cache import cache
+import os
 import os.path
 import sys
 import pathlib
 
-#from django.views import static
-import os
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
-from django.contrib.staticfiles.views import serve
+import svija 
+
+# no dependencies
+from .models import Redirect, Font, Notes, Language, Responsive, Robots
+from .models import Template, LibraryScript, Module, ModuleScripts
+
+# dependent on responsive
+from .models import Shared, SharedScripts
+
+# dependent on responsive & languagee
+from .models import Prefix, PrefixModules
+
+# dependent on prefix & robots
+from .models import Settings
+
+# dependent on shared, template & prefix
+from .models import Page, PageScripts, Svg, PageModules
 
 #———————————————————————————————————————— page (with embedded svg)
 
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
-#path = os.path.abspath(os.path.join(os.path.dirname(__file__), './modules'))
-if not path in sys.path: sys.path.insert(1, path)
 
-#add the path to the module to sys.path before the import statement which raises the exception within the offending pr
-#add the path to the module to myproject.wsgi for applications using WSGI,
-#import modules
-import svija 
-from django.db.models import Q
+if not path in sys.path: sys.path.insert(1, path)
 
 #———————————————————————————————————————— / was requested
 
@@ -56,8 +59,6 @@ def HomePage(request, path1):
     return response
 
 #———————————————————————————————————————— robots.txt
-
-from .models import Robots
 
 def RobotsView(request):
     settings = get_object_or_404(Settings,active=True)
@@ -210,7 +211,6 @@ def cache_per_user_function(ttl=None, cache_post=False):
 from modules import svg_cleaner, meta_canonical, accessibility_links
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
-from svija.models import Font
 
 @cache_per_user_function(ttl=60*60*24, cache_post=False)
 def PageView(request, path1, path2):
@@ -480,7 +480,7 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = my_special_function(source_dir, all_svgs, specified_width)
+    thisThing = my_special_function((), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
 
@@ -492,7 +492,7 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = my_special_function(source_dir, all_svgs, specified_width)
+        thisThing = my_special_function(page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
         svg += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
@@ -506,7 +506,7 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = my_special_function(source_dir, all_svgs, specified_width)
+    thisThing = my_special_function(prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -567,7 +567,7 @@ def add_script(kind, name, content):
 #———————————————————————————————————————— fin
 # line 431, 495:
 
-def my_special_function(source_dir, all_svgs, specified_width):
+def my_special_function(ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
