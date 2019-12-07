@@ -60,6 +60,7 @@ class Language(models.Model):
     touch = models.CharField(max_length=100, default='', verbose_name='iPhone icon name',)
     email = models.CharField(max_length=100, default='', verbose_name='destination email',)
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
+    flag = models.CharField(max_length=1, default='', blank=True, verbose_name='flag emoji',)
 
     form_name       = models.CharField(max_length=100, default='', verbose_name='name field',)
     form_email      = models.CharField(max_length=100, default='', verbose_name='email field',)
@@ -166,7 +167,7 @@ class Module(models.Model):
 module_scripts=('head JS', 'body JS', 'CSS',)
 
 class ModuleScripts(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
     type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -183,7 +184,7 @@ class ModuleScripts(models.Model):
 
 class Shared(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
     def __str__(self):
         return self.name
     class Meta:
@@ -193,7 +194,7 @@ class Shared(models.Model):
 shared_scripts=('CSS', 'head JS', 'body JS',)
 
 class SharedScripts(models.Model):
-    scripts = models.ForeignKey(Shared, on_delete=models.CASCADE)
+    scripts = models.ForeignKey(Shared, on_delete=models.PROTECT)
     type = models.CharField(max_length=255, default='', choices=Choices(*shared_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -211,8 +212,8 @@ class SharedScripts(models.Model):
 class Prefix(models.Model):
     path = models.CharField(max_length=2, default='')
     default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, )
-    language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
+    language = models.ForeignKey(Language, default=0, on_delete=models.PROTECT, )
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
@@ -220,8 +221,8 @@ class Prefix(models.Model):
         verbose_name_plural = "Prefixes"
 
 class PrefixModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    prefix = models.ForeignKey(Prefix, on_delete=models.PROTECT)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
@@ -237,8 +238,8 @@ backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
 
 class Settings(models.Model):
 
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, verbose_name='default prefix')
-    robots = models.ForeignKey(Robots, default=0, on_delete=models.CASCADE, verbose_name='robots.txt')
+    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default prefix')
+    robots = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
@@ -270,10 +271,10 @@ class Settings(models.Model):
 
 class Page(models.Model): 
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
-    shared = models.ForeignKey(Shared, default=0, on_delete=models.CASCADE, )
-    template = models.ForeignKey(Template, default=0, on_delete=models.CASCADE, )
+    shared = models.ForeignKey(Shared, default=0, on_delete=models.PROTECT, )
+    template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     library_script = models.ManyToManyField(LibraryScript, blank=True)
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.CASCADE, )
+    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
@@ -307,7 +308,7 @@ class Page(models.Model):
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
 
 class PageScripts(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.PROTECT)
     type = models.CharField(max_length=255, default='', choices=Choices(*page_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -320,7 +321,7 @@ class PageScripts(models.Model):
         ordering = ["order"]
 
 class Svg(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.PROTECT)
     filename = models.CharField(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -332,8 +333,8 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    page = models.ForeignKey(Page, on_delete=models.PROTECT)
     zindex = models.IntegerField(default=0, verbose_name='load zindex')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
