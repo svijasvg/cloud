@@ -27,10 +27,12 @@ urlpatterns = [
 
 #---------------------------------------- placed images (in Links folder)
 
-    re_path(r'^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksView),
+#   re_path(r'(?i)^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksView),
+    re_path(r'(?i)^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$', views.LinksView),
 
     # special case of home page which has no /en/
-    re_path(r'^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksViewHome),
+#   re_path(r'(?i)^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksViewHome),
+    re_path(r'(?i)^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$', views.LinksViewHome),
 
 #---------------------------------------- txt views
 
