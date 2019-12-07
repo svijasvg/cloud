@@ -76,7 +76,7 @@ def SitemapView(request):
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— placed images
-# "Links/accueil-bg-15097511.jpg"
+# "links/accueil-bg-15097511.jpg"
 
 def LinksView(request, path1, placed_file):
 
@@ -88,11 +88,11 @@ def LinksView(request, path1, placed_file):
 
     responsive = prefix.responsive
     source_dir = 'sync/' + responsive.source_dir
-    response = SITE_ROOT + source_dir +'/Links/'+ placed_file
+    response = SITE_ROOT + source_dir +'/links/'+ placed_file
 
 #   source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
     source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
-    source_dir += '/Links/' + placed_file
+    source_dir += '/links/' + placed_file
     bits = placed_file.split('.')
     type = bits[-1].lower()
     if type != 'png' and type != 'gif':
