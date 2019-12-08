@@ -36,15 +36,30 @@ class Font(models.Model):
     def __str__(self):
         return self.name
 
+#———————————————————————————————————————— help · no dependencies
+
+from ckeditor.fields import RichTextField
+
+class Help(models.Model):
+    name = models.CharField(max_length=200, default='')
+    cat1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
+    cat2 = models.CharField(max_length=100, default='', verbose_name='sub  category', blank=True,)
+    link = models.CharField(max_length=100, default='', verbose_name='link', blank=True,)
+    contents = RichTextField()
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "help article"
+        verbose_name_plural = "help articles"
+
 #———————————————————————————————————————— notes · no dependencies
 
 from ckeditor.fields import RichTextField
 
 class Notes(models.Model):
     name = models.CharField(max_length=200, default='')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-#   contents = models.TextField(max_length=20000, default='', verbose_name='note', blank=True,)
+    category = models.CharField(max_length=100, default='', verbose_name='category', blank=True,)
+    author = models.CharField(max_length=100, default='', verbose_name='author', blank=True,)
     contents = RichTextField()
     def __str__(self):
         return self.name
@@ -60,7 +75,7 @@ class Language(models.Model):
     touch = models.CharField(max_length=100, default='', verbose_name='iPhone icon name',)
     email = models.CharField(max_length=100, default='', verbose_name='destination email',)
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    flag = models.CharField(max_length=2, default='', blank=True, verbose_name='flag emoji',)
+    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
 
     form_name       = models.CharField(max_length=100, default='', verbose_name='name field',)
     form_email      = models.CharField(max_length=100, default='', verbose_name='email field',)
