@@ -36,19 +36,51 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
+#---------------------------------------- help · no dependencies
+
+"""
+Custom Help Text
+"""
+CONTENT_HELP_TEXT = ' '.join(['<p>Here is some multi-line help',
+                              'which is a long string so put',
+                              'into a list which is then joined',
+                              'with spaces. I can do fun things',
+                              'like have <strong>bold</strong>',
+                              'and some line breaks.<br/>'])
+
+from .models import Help
+class HelpAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_filter = ('cat1', 'cat2',)
+    list_display = ('name', 'cat1', 'cat2',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+				('test',    {'fields': ['name',], 'description': '<div class="help">%s</div>' % CONTENT_HELP_TEXT,}),
+        ('meta',    {'fields': ['cat1', 'cat2', 'link',], }),
+        ('contents',    {'fields': ['contents',], }),
+    ]   
+
+    class Media:
+        js = ('ckeditor.js',) 
+
+admin.site.register(Help, HelpAdmin)
+
 #---------------------------------------- notes · no dependencies
 
 from .models import Notes
 class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('sort1', 'sort2',)
-    list_display = ('name', 'sort1', 'sort2',)
+    list_filter = ('category', 'author',)
+    list_display = ('name', 'category', 'author',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('meta',    {'fields': ['name','sort1', 'sort2',], }),
+        ('meta',    {'fields': ['name','category', 'author',], }),
         ('contents',    {'fields': ['contents',], }),
     ]   
 
