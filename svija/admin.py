@@ -38,16 +38,6 @@ admin.site.register(Font, FontAdmin)
 
 #---------------------------------------- help · no dependencies
 
-"""
-Custom Help Text
-"""
-CONTENT_HELP_TEXT = ' '.join(['<p>Here is some multi-line help',
-                              'which is a long string so put',
-                              'into a list which is then joined',
-                              'with spaces. I can do fun things',
-                              'like have <strong>bold</strong>',
-                              'and some line breaks.<br/>'])
-
 from .models import Help
 class HelpAdmin(admin.ModelAdmin):
 
@@ -58,8 +48,7 @@ class HelpAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-				('test',    {'fields': ['name',], 'description': '<div class="help">%s</div>' % CONTENT_HELP_TEXT,}),
-        ('meta',    {'fields': ['cat1', 'cat2', 'link',], }),
+        ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], }),
         ('contents',    {'fields': ['contents',], }),
     ]   
 
@@ -274,6 +263,14 @@ class SettingsAdmin(admin.ModelAdmin):
 admin.site.register(Settings, SettingsAdmin)
 
 #---------------------------------------- page
+
+#french = ' '.join(['<p>Here is some multi-line help',
+#                              'which is a long string so put',
+#                              'into a list which is then joined',
+#                              'with spaces. I can do fun things',
+#                              'like have <strong>bold</strong>',
+#                              'and some line breaks.<br/>more text here'])
+#('test',    {'fields': ['name',], 'description': '<div class="help">%s</div>' % french,}),
 
 from .models import Svg
 class SvgInline(admin.TabularInline):

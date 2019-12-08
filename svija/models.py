@@ -22,6 +22,9 @@ class Forwards(models.Model):
 
     def __str__(self):
         return self.from_url
+    class Meta:
+        verbose_name = "forward"
+        verbose_name_plural = "forwards"
 
 #———————————————————————————————————————— fonts · no dependencies
 
