@@ -4,8 +4,8 @@ from django.contrib import admin
 
 #---------------------------------------- redirects · no dependencies
 
-from .models import Redirect
-class RedirectAdmin(admin.ModelAdmin):
+from .models import Forwards
+class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', )
@@ -17,7 +17,7 @@ class RedirectAdmin(admin.ModelAdmin):
         ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], }),
     ]   
 
-admin.site.register(Redirect, RedirectAdmin)
+admin.site.register(Forwards, ForwardsAdmin)
 
 #---------------------------------------- fonts · no dependencies
 
@@ -68,7 +68,7 @@ class LanguageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code',],}),
+        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('contact form', {'fields': ['email', 'form_name', 'form_email','form_status','form_send',],}),
         ('email params',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),

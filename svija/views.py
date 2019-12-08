@@ -21,7 +21,7 @@ import pathlib
 import svija 
 
 # no dependencies
-from .models import Redirect, Font, Notes, Language, Responsive, Robots
+from .models import Forwards, Font, Notes, Language, Responsive, Robots
 from .models import Template, LibraryScript, Module, ModuleScripts
 
 # dependent on responsive
@@ -218,7 +218,7 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— check fer redirect
 
     try:
-        redirect_obj = Redirect.objects.get(from_url=request.path, active=True)
+        redirect_obj = Forwards.objects.get(from_url=request.path, active=True)
         if redirect_obj.to_prefix[0:4] == 'http':
             return HttpResponseRedirect(redirect_obj.to_prefix + '://' + redirect_obj.to_page)
         else:

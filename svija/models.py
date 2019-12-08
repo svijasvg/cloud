@@ -14,7 +14,7 @@ from model_utils import Choices
 
 #———————————————————————————————————————— redirects · no dependencies
 
-class Redirect(models.Model): 
+class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='from URL')
     to_prefix = models.CharField(max_length=5, default='', verbose_name='to prefix, http or https')
@@ -60,7 +60,7 @@ class Language(models.Model):
     touch = models.CharField(max_length=100, default='', verbose_name='iPhone icon name',)
     email = models.CharField(max_length=100, default='', verbose_name='destination email',)
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    flag = models.CharField(max_length=1, default='', blank=True, verbose_name='flag emoji',)
+    flag = models.CharField(max_length=2, default='', blank=True, verbose_name='flag emoji',)
 
     form_name       = models.CharField(max_length=100, default='', verbose_name='name field',)
     form_email      = models.CharField(max_length=100, default='', verbose_name='email field',)
