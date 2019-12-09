@@ -46,6 +46,15 @@ svija/migrations/0031_auto_20191107_1118.py
 svija/migrations/0032_auto_20191107_1330.py
 svija/migrations/0033_auto_20191108_0848.py
 svija/migrations/0034_auto_20191108_1209.py
+svija/migrations/0035_auto_20191207_1516.py
+svija/migrations/0036_language_flag.py
+svija/migrations/0037_auto_20191207_1554.py
+svija/migrations/0038_auto_20191208_0816.py
+svija/migrations/0039_auto_20191208_0820.py
+svija/migrations/0040_auto_20191208_0825.py
+svija/migrations/0041_auto_20191208_0849.py
+svija/migrations/0042_auto_20191208_1412.py
+svija/migrations/0043_auto_20191208_1439.py
 svija/migrations/__init__.py
 svija/modules/accessibility_links.py
 svija/modules/gmail.py.bk
