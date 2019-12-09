@@ -33,18 +33,19 @@ $ git add dist/django-svija-2.0.19.tar.gz
 $ git commit -m "added version 2.0.19" -a
 $ git push origin master
 
-———————————————————————————————————————— back up live server
+———————————————————————————————————————— back up live & emane servers
 
       on Linode, get version number from end of line 15 in template
       then do a dumpdata each site with the svija version number
-      then do a cloud backup
 
 $ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 $ workon djangoEnv
 
       in each site directory:
 
-$ ./manage.py dumpdata > svija-2.0.17.json
+$ ./manage.py dumpdata > svija-2.0.18.json
+
+      THEN DO A CLOUD BACKUP
 
 https://cloud.linode.com
 
@@ -69,6 +70,8 @@ $ example/manage.py migrate
 $ example/manage.py collectstatic
 
 $ sudo service uwsgi restart
+
+CHECK IF SITES STILL WORK
 
 ———————————————————————————————————————— increment version number
 
