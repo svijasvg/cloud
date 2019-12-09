@@ -101,7 +101,7 @@ docs.svija.com/changelog
 
 facebook.com/svijasvg
 twitter/svijasvg
-instagram/svijasvg (make it 3x wide)
-linkedin/company/svijasvg
+instagram/svijasvg (make it 3x wide · has to be done on phone)
+linkedin/company/svijasvg (add image before text)
 
 ———————————————————————————————————————— fin
