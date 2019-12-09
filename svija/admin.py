@@ -4,8 +4,8 @@ from django.contrib import admin
 
 #---------------------------------------- redirects · no dependencies
 
-from .models import Redirect
-class RedirectAdmin(admin.ModelAdmin):
+from .models import Forwards
+class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', )
@@ -17,7 +17,7 @@ class RedirectAdmin(admin.ModelAdmin):
         ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], }),
     ]   
 
-admin.site.register(Redirect, RedirectAdmin)
+admin.site.register(Forwards, ForwardsAdmin)
 
 #---------------------------------------- fonts · no dependencies
 
@@ -36,19 +36,40 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
+#---------------------------------------- help · no dependencies
+
+from .models import Help
+class HelpAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_filter = ('cat1', 'cat2',)
+    list_display = ('name', 'cat1', 'cat2',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], }),
+        ('contents',    {'fields': ['contents',], }),
+    ]   
+
+    class Media:
+        js = ('ckeditor.js',) 
+
+admin.site.register(Help, HelpAdmin)
+
 #---------------------------------------- notes · no dependencies
 
 from .models import Notes
 class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('sort1', 'sort2',)
-    list_display = ('name', 'sort1', 'sort2',)
+    list_filter = ('category', 'author',)
+    list_display = ('name', 'category', 'author',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('meta',    {'fields': ['name','sort1', 'sort2',], }),
+        ('meta',    {'fields': ['name','category', 'author',], }),
         ('contents',    {'fields': ['contents',], }),
     ]   
 
@@ -63,12 +84,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'email',)
+    list_display = ('name', 'flag', 'code', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name & two-letter code', {'fields': ['name', 'code',],}),
+        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('contact form', {'fields': ['email', 'form_name', 'form_email','form_status','form_send',],}),
         ('email params',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
@@ -243,6 +264,12 @@ admin.site.register(Settings, SettingsAdmin)
 
 #---------------------------------------- page
 
+fr_basic = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
+fr_setup = ' '.join(["Paramètres de d'affichage"])
+fr_seo   = ' '.join(["Texte pour les moteurs de recherche"])
+fr_overr = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
+fr_dims  = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
+
 from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
@@ -283,11 +310,11 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],                            }),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],                            }),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],'description':fr_basic,}),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
+        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, LibraryScriptInline, PageScriptsInline]

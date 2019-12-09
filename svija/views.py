@@ -21,7 +21,7 @@ import pathlib
 import svija 
 
 # no dependencies
-from .models import Redirect, Font, Notes, Language, Responsive, Robots
+from .models import Forwards, Font, Notes, Language, Responsive, Robots
 from .models import Template, LibraryScript, Module, ModuleScripts
 
 # dependent on responsive
@@ -76,7 +76,7 @@ def SitemapView(request):
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— placed images
-# "Links/accueil-bg-15097511.jpg"
+# "links/accueil-bg-15097511.jpg"
 
 def LinksView(request, path1, placed_file):
 
@@ -88,11 +88,11 @@ def LinksView(request, path1, placed_file):
 
     responsive = prefix.responsive
     source_dir = 'sync/' + responsive.source_dir
-    response = SITE_ROOT + source_dir +'/Links/'+ placed_file
+    response = SITE_ROOT + source_dir +'/links/'+ placed_file
 
 #   source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
     source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
-    source_dir += '/Links/' + placed_file
+    source_dir += '/links/' + placed_file
     bits = placed_file.split('.')
     type = bits[-1].lower()
     if type != 'png' and type != 'gif':
@@ -218,7 +218,7 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— check fer redirect
 
     try:
-        redirect_obj = Redirect.objects.get(from_url=request.path, active=True)
+        redirect_obj = Forwards.objects.get(from_url=request.path, active=True)
         if redirect_obj.to_prefix[0:4] == 'http':
             return HttpResponseRedirect(redirect_obj.to_prefix + '://' + redirect_obj.to_page)
         else:
@@ -329,6 +329,10 @@ def PageView(request, path1, path2):
     fonts = link_str.format(('|').join(google_fonts))
 
     #———————————————————————————————————————— views.py generated JS
+
+    # version information
+
+    view_js += "var svija_version='2.0.19';\n"
 
     # language information
 

@@ -76,8 +76,9 @@ $ sudo service uwsgi restart
       https://daringfireball.net/projects/markdown/syntax
 
 $ vi setup.py
-$ vi readme.md (no version number but it needs updating)
+$ vi readme.md                            (no version number but it needs updating)
 $ vi svija/templates/admin/base_site.html (line 15)
+$ vi svija/views.py                       (search for svija_version)
 $ git commit -m "updated version number" -a
 $ git push origin master
 
