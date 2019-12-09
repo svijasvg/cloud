@@ -264,13 +264,11 @@ admin.site.register(Settings, SettingsAdmin)
 
 #---------------------------------------- page
 
-#french = ' '.join(['<p>Here is some multi-line help',
-#                              'which is a long string so put',
-#                              'into a list which is then joined',
-#                              'with spaces. I can do fun things',
-#                              'like have <strong>bold</strong>',
-#                              'and some line breaks.<br/>more text here'])
-#('test',    {'fields': ['name',], 'description': '<div class="help">%s</div>' % french,}),
+fr_basic = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
+fr_setup = ' '.join(["Paramètres de d'affichage"])
+fr_seo   = ' '.join(["Texte pour les moteurs de recherche"])
+fr_overr = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
+fr_dims  = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
 
 from .models import Svg
 class SvgInline(admin.TabularInline):
@@ -312,11 +310,11 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],                            }),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse']}),
-        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse']}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],                            }),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse']}),
+        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],'description':fr_basic,}),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
+        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, LibraryScriptInline, PageScriptsInline]
