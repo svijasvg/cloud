@@ -198,7 +198,7 @@ from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'active', 'zindex', 'name', 'content',)
+    fields = ('type', 'active', 'order', 'name', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
