@@ -339,7 +339,7 @@ class PageScripts(models.Model):
         ordering = ["order"]
 
 class Svg(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.PROTECT)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
