@@ -332,7 +332,7 @@ def PageView(request, path1, path2):
 
     # version information
 
-    view_js += "var svija_version='2.1.0';\n"
+    view_js += "var svija_version='2.1.1';\n"
 
     # language information
 
