@@ -352,7 +352,7 @@ class Svg(models.Model):
 
 class PageModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.PROTECT)
-    page = models.ForeignKey(Page, on_delete=models.PROTECT)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
