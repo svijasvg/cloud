@@ -326,7 +326,7 @@ class Page(models.Model):
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
 
 class PageScripts(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.PROTECT)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*page_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
