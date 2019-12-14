@@ -189,14 +189,14 @@ class ModuleScripts(models.Model):
     type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    zindex = models.IntegerField(default=0, verbose_name='z index')
+    order = models.IntegerField(default=0, verbose_name='load order')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
     class Meta:
         verbose_name = "extra script"
         verbose_name_plural = "extra scripts"
-        ordering = ["zindex"]
+        ordering = ["order"]
 
 #———————————————————————————————————————— shared scripts · dependent on responsive
 
@@ -339,7 +339,7 @@ class PageScripts(models.Model):
         ordering = ["order"]
 
 class Svg(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.PROTECT)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
