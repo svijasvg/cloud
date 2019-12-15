@@ -21,24 +21,14 @@ $ git checkout master && git merge dev --no-ff
       so that this version will be available
       in case of future compatibility problems:
 
-$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
-$ python setup.py sdist
+      script save_tar.sh
 
-      Add the new tarball to Git:
-
-$ git add dist/django-svija-2.1.0.tar.gz
-
-      Commit the additions and push:
-
-$ git commit -m "added version 2.1.0" -a
-$ git push origin master
+source ../Env/djangoEnv/bin/activate
+git add dist/django-svija-2.1.1.tar.gz
+git commit -m "added version 2.1.1" -a
+git push origin master
 
 ———————————————————————————————————————— back up live & emane servers
-
-      on Linode, get version number from end of line 15 in template
-      then do a dumpdata each site with the svija version number
-
-      NEXT TIME PUT THIS ALL IN A SCRIPT
 
       check version number:
 
@@ -48,53 +38,32 @@ $ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.h
 
 $ ./backup-data.sh
 
-PREVIOUSLY WAS
-$ workon djangoEnv
-
-      in each site directory:
-
-$ ./manage.py dumpdata > svija-2.0.19.json
-
-———————————————————————————————————————— cloud backup
-
-      THEN DO A CLOUD BACKUP
-
-https://cloud.linode.com
+      LINODE CLOUD BACKUP
 
 ———————————————————————————————————————— site updates
 
-      If there have been any changes to the site folder, they must be done before the Svija update:
-
-$ cd example
-$ vi example/settings.py
+      If there have been any changes to the project folder
+      they must be done before the Svija update
 
 ———————————————————————————————————————— update svija
 
-      Installs Svija in the virtualenv, without the possibility of modifying the program.
-
-$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
-$ chmod +x version-update.sh
-$ ./version-update.sh             see script below
+$ sudo ./version-update.sh
 
 CHECK IF SITES STILL WORK
 
+———————————————————————————————————————— merge & switch to dev branch
+
+$ git checkout dev && git merge master --no-ff && git push -u
+
 ———————————————————————————————————————— increment version number
 
-      otherwise updating with Pip won’t work:
-      https://daringfireball.net/projects/markdown/syntax
+$ vi readme.md   https://daringfireball.net/projects/markdown/syntax
 
 $ vi setup.py
-$ vi readme.md                            (no version number but it needs updating)
 $ vi svija/templates/admin/base_site.html (line 15)
 $ vi svija/views.py                       (search for svija_version)
 $ git commit -m "updated version number" -a
 $ git push origin master
-
-———————————————————————————————————————— merge & switch to dev branch
-
-$ git checkout dev
-$ git merge master --no-ff
-$ git push -u
 
 ———————————————————————————————————————— update docs.svija.com
 
