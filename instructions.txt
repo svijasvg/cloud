@@ -4,8 +4,8 @@
 
       Check out the branch you want to merge to (master), the, merge:
 
-$ git checkout master
-$ git merge dev --no-ff
+$ git status
+$ git checkout master && git merge dev --no-ff
 
       The --no-ff flag prevents git merge from executing a "fast-forward"
       if it detects that your current HEAD is an ancestor of the commit
@@ -40,12 +40,22 @@ $ git push origin master
 
       NEXT TIME PUT THIS ALL IN A SCRIPT
 
+      check version number:
+
 $ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+
+      run script
+
+$ ./backup-data.sh
+
+PREVIOUSLY WAS
 $ workon djangoEnv
 
       in each site directory:
 
 $ ./manage.py dumpdata > svija-2.0.19.json
+
+———————————————————————————————————————— cloud backup
 
       THEN DO A CLOUD BACKUP
 
@@ -64,7 +74,7 @@ $ vi example/settings.py
 
 $ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
 $ chmod +x version-update.sh
-$ ./version-update.sh
+$ ./version-update.sh             see script below
 
 CHECK IF SITES STILL WORK
 
@@ -98,6 +108,36 @@ facebook.com/svijasvg
 twitter/svijasvg
 instagram/svijasvg (make it 3x wide · has to be done on phone)
 linkedin/company/svijasvg (add image before text)
+
+———————————————————————————————————————— BACKUP-DATA.SH
+
+#!/bin/bash
+# backup-data.sh
+source Env/djangoEnv/bin/activate
+
+#———————————————————————————————————————— list of sites on this server
+
+    # badre/
+    # emane/
+    # jp/
+    # khalid/
+
+#———————————————————————————————————————— other sites
+
+cd badre
+./manage.py dumpdata > svija-2.0.xx.json
+cd ../emane
+./manage.py dumpdata > svija-2.0.xx.json
+cd ../jp
+./manage.py dumpdata > svija-2.0.xx.json
+cd ../khalid
+./manage.py dumpdata > svija-2.0.xx.json
+
+#———————————————————————————————————————— finish
+
+printf "\n   data export finished\n\n"
+
+#———————————————————————————————————————— fin
 
 ———————————————————————————————————————— VERSION-UPDATE.SH
 
