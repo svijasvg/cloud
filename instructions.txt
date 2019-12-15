@@ -53,9 +53,7 @@ CHECK IF SITES STILL WORK
 
 ———————————————————————————————————————— merge & switch to dev branch
 
-$ git checkout dev
-$ git merge master --no-ff
-$ git push -u
+$ git checkout dev && git merge master --no-ff && git push -u
 
 ———————————————————————————————————————— increment version number
 
