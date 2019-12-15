@@ -4,8 +4,8 @@
 
       Check out the branch you want to merge to (master), the, merge:
 
-$ git checkout master
-$ git merge dev --no-ff
+$ git status
+$ git checkout master && git merge dev --no-ff
 
       The --no-ff flag prevents git merge from executing a "fast-forward"
       if it detects that your current HEAD is an ancestor of the commit
