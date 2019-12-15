@@ -21,17 +21,12 @@ $ git checkout master && git merge dev --no-ff
       so that this version will be available
       in case of future compatibility problems:
 
-$ workon djangoEnv OR source ../Env/djangoEnv/bin/activate
-$ python setup.py sdist
+      script save_tar.sh
 
-      Add the new tarball to Git:
-
-$ git add dist/django-svija-2.1.0.tar.gz
-
-      Commit the additions and push:
-
-$ git commit -m "added version 2.1.0" -a
-$ git push origin master
+source ../Env/djangoEnv/bin/activate
+git add dist/django-svija-2.1.1.tar.gz
+git commit -m "added version 2.1.1" -a
+git push origin master
 
 ———————————————————————————————————————— back up live & emane servers
 
