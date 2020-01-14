@@ -1,0 +1,35 @@
+{% load static %}
+{% autoescape off %}<!--
+<html><head><meta charset="utf-8" />
+  <title> Animation Lab </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/><!-- minimum scale is for mobile Chrome horz scrolling -->
+  <link rel="icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <meta property="og:image" content="/images/capture.jpg">
+  <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
+</head><body>
+
+    <pre>{{ msg }} : Animation Lab</pre>
+
+<script>
+
+function button_function(){
+	updater('animation-lab');
+}
+
+function updater(obj_id){
+  var opener = window.opener;
+  if(opener) {
+    var oDom = opener.document;
+    var elem = oDom.getElementById(obj_id);
+    if (elem) {
+  		elem.style.border = '1px solid lime';
+    }
+  }
+}
+
+</script>
+
+<input type=button value='run test' onclick="button_function();">
+</body></html>{% endautoescape %}
