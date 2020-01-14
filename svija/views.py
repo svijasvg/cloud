@@ -60,10 +60,12 @@ def HomePage(request, path1):
 
 #———————————————————————————————————————— robots.txt
 
-def RobotsView(request):
-    settings = get_object_or_404(Settings,active=True)
-    response = settings.robots.contents
-    return HttpResponse(response, content_type='text/plain; charset=utf8')
+from view_includes import *
+
+#def RobotsView(request):
+#    settings = get_object_or_404(Settings,active=True)
+#    response = settings.robots.contents
+#    return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— sitemap.txt
 
