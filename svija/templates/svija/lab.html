@@ -12,7 +12,23 @@
 
     <pre>{{ msg }} : Animation Lab</pre>
 
+<input type=button value='run test' onclick="button_function();">
+<input type=button value='list SVGs' onclick="list_svgs();">
+<p><textarea id=feedback style="width:100%;height:300px;background-color:hsla(0,50%,50%,1);color:white;"></textarea>
+
 <script>
+//———————————————————————————————————————— list svg's
+
+  var opener = window.opener;
+  if(opener) {
+    var oDom = opener.document;
+    var divs = oDom.getElementsByTagName("svg");
+      for(var i = 0; i < divs.length; i++){
+         feedback.value += "\n" + divs[i].id;
+      }
+  }
+
+//———————————————————————————————————————— update opener with green border
 
 function button_function(){
 	updater('animation-lab');
@@ -29,7 +45,21 @@ function updater(obj_id){
   }
 }
 
+//———————————————————————————————————————— list svg's of parent window
+
+function list_svgs(){
+  var opener = window.opener;
+  if(opener) {
+    var oDom = opener.document;
+    var divs = oDom.getElementsByTagName("svg");
+      for(var i = 0; i < divs.length; i++){
+         feedback.value += "\n" + divs[i].id;
+      }
+  }
+}
+
+//———————————————————————————————————————— fin
+
 </script>
 
-<input type=button value='run test' onclick="button_function();">
 </body></html>{% endautoescape %}
