@@ -69,13 +69,13 @@ from view_includes import *
 
 #———————————————————————————————————————— sitemap.txt
 
-from modules import sitemap
-
-def SitemapView(request):
-    settings = get_object_or_404(Settings,active=True)
-    domain = settings.url
-    response = sitemap.create(domain, Page.objects.all())
-    return HttpResponse(response, content_type='text/plain; charset=utf8')
+#from modules import sitemap
+#
+#def SitemapView(request):
+#    settings = get_object_or_404(Settings,active=True)
+#    domain = settings.url
+#    response = sitemap.create(domain, Page.objects.all())
+#    return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— placed images
 # "links/accueil-bg-15097511.jpg"
