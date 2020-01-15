@@ -12,7 +12,10 @@
 
     <pre>{{ msg }} : Animation Lab</pre>
 
-<input type=button value='run test' onclick="button_function();">
+SVG: <select id=svg_list></select>
+ID: <select id=id_list></select>
+
+<p><input type=button value='run test' onclick="button_function();">
 <input type=button value='list SVGs' onclick="list_svgs();">
 <p><textarea id=feedback style="width:100%;height:300px;background-color:hsla(0,50%,50%,1);color:white;"></textarea>
 
@@ -58,8 +61,17 @@ function list_svgs(){
   }
 }
 
+daySelect = document.getElementById('svg_list');
+var opener = window.opener;
+if(opener) {
+  var oDom = opener.document;
+  var divs = oDom.getElementsByTagName("svg");
+    for(var i = 0; i < divs.length; i++){
+      if (divs[i].id != 'animation-lab')
+        daySelect.options[daySelect.options.length] = new Option(divs[i].id, divs[i].id);
+    }
+}
+
 //———————————————————————————————————————— fin
 
-</script>
-
-</body></html>{% endautoescape %}
+</script></body></html>{% endautoescape %}
