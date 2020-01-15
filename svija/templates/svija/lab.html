@@ -10,7 +10,7 @@
   <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
 </head><body>
 
-    <pre>{{ msg }} : Animation Lab</pre>
+    <!-- <h1>{{ msg }} : Animation Lab</h1> -->
 
 SVG: <select id=svg_list></select>
 ID: <select id=id_list></select>
@@ -20,56 +20,77 @@ ID: <select id=id_list></select>
 <p><textarea id=feedback style="width:100%;height:300px;background-color:hsla(0,50%,50%,1);color:white;"></textarea>
 
 <script>
-//———————————————————————————————————————— list svg's
 
-  var opener = window.opener;
-  if(opener) {
-    var oDom = opener.document;
-    var divs = oDom.getElementsByTagName("svg");
-      for(var i = 0; i < divs.length; i++){
-         feedback.value += "\n" + divs[i].id;
-      }
-  }
+//———————————————————————————————————————— verify we can access opener
 
-//———————————————————————————————————————— update opener with green border
+var opener = window.opener;
+if(opener)
+  var opener = opener.document;
+else
+  document.getElementsByTagName('body')[0].innerHTML = '<pre>Parent document not found.';
+
+//———————————————————————————————————————— pulldown menus
+
+svg_select = document.getElementById('svg_list');
+id_select = document.getElementById('id_list');
+
+//———————————————————————————————————————— temp: update home svg with green border
 
 function button_function(){
-	updater('animation-lab');
+	updater('home');
 }
 
 function updater(obj_id){
-  var opener = window.opener;
-  if(opener) {
-    var oDom = opener.document;
-    var elem = oDom.getElementById(obj_id);
-    if (elem) {
-  		elem.style.border = '1px solid lime';
-    }
+  var elem = opener.getElementById(obj_id);
+  if (elem) {
+		elem.style.border = '1px solid lime';
   }
+}
+
+//———————————————————————————————————————— temp: list svg's of parent window
+
+function list_svgs(){
+  var divs = opener.getElementsByTagName("svg");
+    for(var i = 0; i < divs.length; i++)
+       feedback.value += "\n" + divs[i].id;
 }
 
 //———————————————————————————————————————— list svg's of parent window
 
-function list_svgs(){
-  var opener = window.opener;
-  if(opener) {
-    var oDom = opener.document;
-    var divs = oDom.getElementsByTagName("svg");
-      for(var i = 0; i < divs.length; i++){
-         feedback.value += "\n" + divs[i].id;
-      }
+var all_svgs = opener.getElementsByTagName("svg");
+  for(var i = 0; i < all_svgs.length; i++){
+    if (all_svgs[i].id != 'animation-lab')
+      svg_select.options[svg_select.options.length] = new Option(all_svgs[i].id, all_svgs[i].id);
   }
+
+//———————————————————————————————————————— get children of object
+
+function getChilds(obj){
+  var arr=obj.childNodes;
+  obj_ids = new Array;
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i].id != undefined)
+      if (arr[i].id.substr(0,3) != 'id_' && arr[i].id != '')
+        obj_ids[obj_ids.length] = arr[i].id;
+    }
+  obj_ids.sort();
+  return obj_ids;
 }
 
-daySelect = document.getElementById('svg_list');
-var opener = window.opener;
-if(opener) {
-  var oDom = opener.document;
-  var divs = oDom.getElementsByTagName("svg");
-    for(var i = 0; i < divs.length; i++){
-      if (divs[i].id != 'animation-lab')
-        daySelect.options[daySelect.options.length] = new Option(divs[i].id, divs[i].id);
-    }
+//———————————————————————————————————————— update ID pulldown from selected SVG
+
+function update_ids(svg_id){
+  child_ids = getChilds(opener.getElementById(svg_id));
+  child_ids.forEach(element => {
+    id_select.options[id_select.options.length] = new Option(element,element);
+  });
+}
+
+//———————————————————————————————————————— list of id's
+
+if (svg_select.options.length == 1){
+  id = svg_select.options[svg_select.selectedIndex].value;
+  update_ids(id);
 }
 
 //———————————————————————————————————————— fin
