@@ -8,15 +8,21 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <meta property="og:image" content="/images/capture.jpg">
   <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
+  <style>
+
+    body{
+      font-family:Verdana;
+    }
+
+  </style>
 </head><body>
 
     <!-- <h1>{{ msg }} : Animation Lab</h1> -->
 
-SVG: <select id=svg_list></select>
-ID: <select id=id_list></select>
+SVG <select id=svg_list onchange="svg_change();"></select>
+ ID <select id=id_list  onchange="id_change();"></select>
+<input type=button value='change_border' onclick="id_change();">
 
-<p><input type=button value='run test' onclick="button_function();">
-<input type=button value='list SVGs' onclick="list_svgs();">
 <p><textarea id=feedback style="width:100%;height:300px;background-color:hsla(0,50%,50%,1);color:white;"></textarea>
 
 <script>
@@ -28,11 +34,6 @@ if(opener)
   var opener = opener.document;
 else
   document.getElementsByTagName('body')[0].innerHTML = '<pre>Parent document not found.';
-
-//———————————————————————————————————————— pulldown menus
-
-svg_select = document.getElementById('svg_list');
-id_select = document.getElementById('id_list');
 
 //———————————————————————————————————————— temp: update home svg with green border
 
@@ -47,22 +48,6 @@ function updater(obj_id){
   }
 }
 
-//———————————————————————————————————————— temp: list svg's of parent window
-
-function list_svgs(){
-  var divs = opener.getElementsByTagName("svg");
-    for(var i = 0; i < divs.length; i++)
-       feedback.value += "\n" + divs[i].id;
-}
-
-//———————————————————————————————————————— list svg's of parent window
-
-var all_svgs = opener.getElementsByTagName("svg");
-  for(var i = 0; i < all_svgs.length; i++){
-    if (all_svgs[i].id != 'animation-lab')
-      svg_select.options[svg_select.options.length] = new Option(all_svgs[i].id, all_svgs[i].id);
-  }
-
 //———————————————————————————————————————— get children of object
 
 function getChilds(obj){
@@ -70,7 +55,7 @@ function getChilds(obj){
   obj_ids = new Array;
   for(var i=0; i<arr.length; i++) {
     if(arr[i].id != undefined)
-      if (arr[i].id.substr(0,3) != 'id_' && arr[i].id != '')
+      if (arr[i].id.substr(0,3) != 'id_' && arr[i].id != '' && arr[i].id.substr(0,1) != '_')
         obj_ids[obj_ids.length] = arr[i].id;
     }
   obj_ids.sort();
@@ -80,18 +65,63 @@ function getChilds(obj){
 //———————————————————————————————————————— update ID pulldown from selected SVG
 
 function update_ids(svg_id){
+  clear_options(id_select);
   child_ids = getChilds(opener.getElementById(svg_id));
   child_ids.forEach(element => {
     id_select.options[id_select.options.length] = new Option(element,element);
   });
 }
 
-//———————————————————————————————————————— list of id's
+//———————————————————————————————————————— svg change & id change
 
-if (svg_select.options.length == 1){
+function svg_change(){
   id = svg_select.options[svg_select.selectedIndex].value;
   update_ids(id);
 }
+
+function id_change(){
+  id = id_select.options[id_select.selectedIndex].value;
+  active_object = opener.getElementById(id);
+  active_object.style.border = '12px solid lime';
+  feedback.value='object updated';
+}
+
+//———————————————————————————————————————— clear options
+
+function clear_options(select_obj) {
+    while (select_obj.options.length) {
+        select_obj.remove(0);
+    }
+}
+
+//———————————————————————————————————————— pulldown menus
+
+svg_select = document.getElementById('svg_list');
+id_select = document.getElementById('id_list');
+
+//———————————————————————————————————————— initial list of svg's
+
+var all_svgs = opener.getElementsByTagName("svg");
+obj_ids = new Array;
+
+for(var i = 0; i < all_svgs.length; i++)
+  if (all_svgs[i].id != 'animation-lab')
+      obj_ids[obj_ids.length] = all_svgs[i].id;
+
+obj_ids.sort();
+obj_ids.forEach(element => {
+  svg_select.options[svg_select.options.length] = new Option(element,element);
+});
+
+//———————————————————————————————————————— initial list of id's
+
+id = svg_select.options[svg_select.selectedIndex].value;
+update_ids(id);
+
+//———————————————————————————————————————— choose active object
+
+active_object = opener.getElementById(id);
+active_object.style.border = '1px solid lime';
 
 //———————————————————————————————————————— fin
 
