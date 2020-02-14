@@ -73,7 +73,7 @@ CHECK IF SITES STILL WORK
 
 ———————————————————————————————————————— merge & switch to dev branch
 
-copy the next line, then close this file:
+commit any changes, copy the next line, then close this file:
 
 $ git checkout dev && git merge master --no-ff -m "starting new version" && git push -u
 
