@@ -476,7 +476,7 @@ def PageView(request, path1, path2):
 
     if form != '': user_js += form_js
 
-    #———————————————————————————————————————— svg
+    #———————————————————————————————————————— load all svgs
 
     source_dir = 'sync/' + responsive.source_dir
 
@@ -488,7 +488,7 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = my_special_function('page svg', (), source_dir, all_svgs, specified_width)
+    thisThing = sort_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     view_js  += thisThing['head_js']
@@ -501,8 +501,8 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = my_special_function('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
-        svg += thisThing['svg']
+        thisThing = sort_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
+        module += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
         body_js += thisThing['body_js']
@@ -515,8 +515,8 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = my_special_function('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
-    svg += thisThing['svg']
+    thisThing = sort_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
+    module += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
     body_js += thisThing['body_js']
@@ -576,7 +576,7 @@ def add_script(kind, name, content):
 #———————————————————————————————————————— fin
 # line 431, 495:
 
-def my_special_function(flag, ordering, source_dir, all_svgs, specified_width):
+def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
 
