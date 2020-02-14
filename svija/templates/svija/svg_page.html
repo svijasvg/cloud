@@ -46,11 +46,19 @@
 {% block token%}{% endblock %}
 {{ module }}
 
-  <script>
+<script>
 
-ua = '{{ analytics_id }}';
-
-{% include "svija/javascript/google_analytics.js" %}
 {{ body_js }} 
 
-</script></body></html>{% endautoescape %}
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ analytics_id }}');
+</script>
+
+</body></html>{% endautoescape %}
