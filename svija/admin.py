@@ -212,7 +212,7 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'filename', 'sort1', 'sort2'],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'filename', 'sort1', 'sort2'],}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -310,7 +310,7 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['visitable', 'prefix','url',],'description':fr_basic,}),
+        ('BASIC SETUP',        {'fields': ['cache_reset', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
         ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),

@@ -1,5 +1,8 @@
 #---------------------------------------- canonical.py
+
 # inserts results: <meta [results] >
+#  <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
+
 import os
 from django.db.models import Q
 from svija.models import Prefix

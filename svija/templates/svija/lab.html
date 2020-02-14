@@ -1,0 +1,140 @@
+{% load static %}
+{% autoescape off %}<!--
+<html><head><meta charset="utf-8" />
+  <title> Animation Lab </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/><!-- minimum scale is for mobile Chrome horz scrolling -->
+  <link rel="icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <meta property="og:image" content="/images/capture.jpg">
+  <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
+  <style>
+
+    body{
+      font-family:Verdana;
+    }
+
+  </style>
+</head><body>
+
+    <!-- <h1>{{ msg }} : Animation Lab</h1> -->
+
+SVG <select id=svg_list onchange="svg_change();"></select>
+ ID <select id=id_list  onchange="id_change();"></select>
+<input type=button value='select' onclick="select_id();">
+
+<p><textarea id=feedback style="width:100%;height:300px;background-color:hsla(0,50%,50%,1);color:white;"></textarea>
+
+<script>
+
+//———————————————————————————————————————— verify we can access opener
+
+var opener = window.opener;
+if(opener)
+  var opener = opener.document;
+else
+  document.getElementsByTagName('body')[0].innerHTML = '<pre>Parent document not found.';
+
+//———————————————————————————————————————— temp: update home svg with green border
+
+function button_function(){
+	updater('home');
+}
+
+function updater(obj_id){
+  var elem = opener.getElementById(obj_id);
+  if (elem) {
+		elem.style.border = '1px solid lime';
+  }
+}
+
+//———————————————————————————————————————— get children of object
+// not working, only gets some of the id's
+
+function getChilds(obj){
+  var arr=obj.querySelectorAll('*');
+  obj_ids = new Array;
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i].id != undefined)
+      if (arr[i].id.substr(0,3) != 'id_' && arr[i].id != '' && arr[i].id.substr(0,1) != '_' && arr[i].id.substr(-1) != '_')
+        obj_ids[obj_ids.length] = arr[i].id;
+    }
+  obj_ids.sort();
+  return obj_ids;
+}
+
+//———————————————————————————————————————— update ID pulldown from selected SVG
+
+function update_ids(svg_id){
+  clear_options(id_select);
+  child_ids = getChilds(opener.getElementById(svg_id));
+  child_ids.forEach(element => {
+    id_select.options[id_select.options.length] = new Option(element,element);
+  });
+}
+
+//———————————————————————————————————————— svg change & id change
+
+function svg_change(){
+  id = svg_select.options[svg_select.selectedIndex].value;
+  update_ids(id);
+}
+
+function id_change(){
+  id = id_select.options[id_select.selectedIndex].value;
+  active_object = opener.getElementById(id);
+}
+
+//———————————————————————————————————————— button press
+
+function select_id(){
+  active_object.style.stroke = 'lime';
+  active_object.style.strokeWidth = '1px';
+  feedback.value='object selected';
+}
+
+//———————————————————————————————————————— clear options
+
+function clear_options(select_obj) {
+    while (select_obj.options.length) {
+        select_obj.remove(0);
+    }
+}
+
+//———————————————————————————————————————— pulldown menus
+
+svg_select = document.getElementById('svg_list');
+id_select = document.getElementById('id_list');
+
+//———————————————————————————————————————— initial list of svg's
+
+var all_svgs = opener.getElementsByTagName("svg");
+obj_ids = new Array;
+
+for(var i = 0; i < all_svgs.length; i++)
+  if (all_svgs[i].id != 'animation-lab')
+      obj_ids[obj_ids.length] = all_svgs[i].id;
+
+obj_ids.sort();
+obj_ids.forEach(element => {
+  svg_select.options[svg_select.options.length] = new Option(element,element);
+});
+
+//———————————————————————————————————————— initial list of id's
+
+svg_id = svg_select.options[svg_select.selectedIndex].value;
+update_ids(svg_id);
+
+//———————————————————————————————————————— choose active object
+
+id = id_select.options[id_select.selectedIndex].value;
+active_object = opener.getElementById(id);
+//active_object.style.stroke = 'lime';
+//active_object.style.strokeWidth = '12px';
+
+// need to set visibility & opacity (but remebero state)
+// need to set default style for marking & be able to modify it
+
+//———————————————————————————————————————— fin
+
+</script></body></html>{% endautoescape %}

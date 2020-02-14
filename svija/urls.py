@@ -36,6 +36,7 @@ urlpatterns = [
 
 #---------------------------------------- txt views
 
+    path('lab', views.LabView),
     path('robots.txt', views.RobotsView),
     path('sitemap.txt', views.SitemapView),
 
