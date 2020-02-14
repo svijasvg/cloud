@@ -284,6 +284,9 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— meta tag
 
     # just send necessary parts, not whole objects
+    # creates meta link to canonical page
+    #  <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
+
     meta  = meta_canonical.create_canonical(
         prefix,
         responsive,
@@ -299,8 +302,8 @@ def PageView(request, path1, path2):
     font_objs = Font.objects.all()
     css_str  = "@font-face {{ font-family:'{}'; src:url('{}'){}; }}"
     link_str = '\n  <link rel="stylesheet" href="{}" />'
-    css_final = ''
-    link_final = ''
+    font_css = ''
+    font_link = ''
     google_fonts = []
 
     for this_font in font_objs:
@@ -316,19 +319,18 @@ def PageView(request, path1, path2):
             elif font_src.find('woff2') > 0:
                 font_format = " format('woff2')"
                 font_src = '/fonts/' + font_src
-                css_final  += '\n'+ css_str.format(font_face, font_src, font_format)
+                font_css  += '\n'+ css_str.format(font_face, font_src, font_format)
 
             elif font_src.find('woff') > 0:  
                 font_format = " format('woff')"
                 font_src = '/fonts/' + font_src
-                css_final += '\n'+ css_str.format(font_face, font_src, font_format)
+                font_css += '\n'+ css_str.format(font_face, font_src, font_format)
 
-    head_css = css_final + head_css
+    head_css = font_css + head_css
 
-# need to check to make sure there is at least one font before adding the following
-
-    link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
-    fonts = link_str.format(('|').join(google_fonts))
+    if len(google_fonts) > 0:
+        link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
+        font_link = link_str.format(('|').join(google_fonts))
 
     #———————————————————————————————————————— views.py generated JS
 
@@ -531,7 +533,7 @@ def PageView(request, path1, path2):
         'comments'      : comments,
         'title'         : title,
         'meta'          : meta,
-        'fonts'         : fonts,
+        'fonts'         : font_link,
         'touch'         : touch,
         'view_js'       : view_js,
         'user_js'       : user_js,
