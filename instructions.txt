@@ -21,12 +21,12 @@ $ git checkout master && git merge dev --no-ff
       so that this version will be available
       in case of future compatibility problems:
 
-      script save_tar.sh
+script save_tar.sh
 
-workon djangoEnv or source ../Env/djangoEnv/bin/activate
+————— contains the following
 
-update version here:
-
+#../Env/djangoEnv/bin/activate
+workon djangoEnv
 git add dist/django-svija-2.1.2.tar.gz
 git commit -m "added version 2.1.2" -a
 git push origin master
