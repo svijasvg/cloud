@@ -1,14 +1,16 @@
 Metadata-Version: 1.1
 Name: django-svija
-Version: 2.1.0
+Version: 2.1.2
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://docs.svija.com/
 Author: Andrew Swift
 Author-email: andrew@svija.com
 License: BSD License
-Description: ----------------------------------------
-        Svija web sites with SVG instead of HTML
-        ----------------------------------------
+Description: -----------------------------------------
+        Svija: web sites with SVG instead of HTML
+        -----------------------------------------
+        
+        **This version requires migrations**
         
         A set of tools for building web sites using Adobe Illustrator.
         Includes a CMS for managing pages and menus.
@@ -17,27 +19,12 @@ Description: ----------------------------------------
         
         Visit **[svija.com][2]** for an overview of the project.
         
-        Quick start
-        -----------
-        
-        1. Add "svija" to your INSTALLED_APPS setting like this::
-        
-            INSTALLED_APPS = [
-                ...
-                'svija',
-            ]
-        
-        2. You'll need to modify your project settings and urls according to
-        
-            https://github.com/svija-svg/generic-site
-        
-           There are some other files to upload included in that repository.
-        
-        3. Visit [docs.svija.com][3] for detailed installation information.
+        If you're interested, we can help you set up a server for free.
+        Just go to our **[contact page][3]** and ask!
         
         [1]: https://docs.svija.com "Visit the documentation site"
         [2]: https://svija.com "Visit the main site"
-        [3]: https://docs.svija.com "Visit the documentation site"
+        [3]: https://svija.com/en/contact "Contact us"
         
 Platform: UNKNOWN
 Classifier: Environment :: Web Environment
