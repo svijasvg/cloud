@@ -1,3 +1,18 @@
+———————————————————————————————————————— back up live & emane servers
+
+      by doing this first, it will be done when you're ready to update
+
+      to check installed version number:
+
+$ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+
+      run script in www directory
+
+vi backup-data.sh (update version number)
+./backup-data.sh
+
+      DO LINODE CLOUD BACKUPS
+
 ———————————————————————————————————————— to merge
 
       https://docs.svija.com/out-of-date/maintaining-svija
@@ -36,31 +51,29 @@ git add dist/django-svija-2.1.2.tar.gz
 git commit -m "added version 2.1.2" -a
 git push origin master
 
-———————————————————————————————————————— back up live & emane servers
-
-      check version number:
-
-$ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
-
-      run script in www directory
-
-vi backup-data.sh (update version number)
-./backup-data.sh
-
-      DO LINODE CLOUD BACKUPS
-
-———————————————————————————————————————— site updates
+————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— server updates ————————————————————————————————————————
+————————————————————————————————————————————————————————————————————————————————————————————————
 
       If there have been any changes to the project folder
       they must be done before the Svija update
 
 ———————————————————————————————————————— update svija
 
-$ sudo ./version-update.sh
+ls MAKE SURE THERE ARE NO NEW SERVERS, OR ADD THEM TO SCRIPT
+
+vi ./version-update.sh
+sudo ./version-update.sh
 
 CHECK IF SITES STILL WORK
 
+————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— start new version —————————————————————————————————————
+————————————————————————————————————————————————————————————————————————————————————————————————
+
 ———————————————————————————————————————— merge & switch to dev branch
+
+copy the next line, then close this file:
 
 $ git checkout dev && git merge master --no-ff -m "starting new version" && git push -u
 
