@@ -2,6 +2,10 @@
 # backup-data.sh
 source Env/djangoEnv/bin/activate
 
+#———————————————————————————————————————— version number
+
+version="2.1.1"
+
 #———————————————————————————————————————— list of sites on this server
 
     # antretoise/
@@ -14,17 +18,17 @@ source Env/djangoEnv/bin/activate
 #———————————————————————————————————————— other sites
 
 cd antretoise
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 cd ../manik
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 cd ../onecutstudio
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 cd ../ozake
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 cd ../staffeur
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 cd ../svijasvg
-./manage.py dumpdata > svija-2.1.1.json
+./manage.py dumpdata > "svija-$version.json"
 
 #———————————————————————————————————————— finish
 

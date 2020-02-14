@@ -23,13 +23,13 @@ $ git checkout master && git merge dev --no-ff
 
       save_tar.sh & setup.py must be 775
 
-script save_tar.sh
+./save_tar.sh
 
 ————— contains the following
 
-#../Env/djangoEnv/bin/activate
-workon djangoEnv
-./setup.py sdist
+../Env/djangoEnv/bin/activate
+#workon djangoEnv doesn't work
+python setup.py sdist
 git add dist/django-svija-2.1.2.tar.gz
 git commit -m "added version 2.1.2" -a
 git push origin master
@@ -40,9 +40,10 @@ git push origin master
 
 $ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 
-      run script
+      run script in www directory
 
-$ ./backup-data.sh
+vi backup-data.sh (update version number)
+./backup-data.sh
 
       LINODE CLOUD BACKUP
 
