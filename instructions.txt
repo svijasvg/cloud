@@ -68,6 +68,16 @@ vi save_tar.sh
 ———————————————————————————————————————— server updates ————————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
 
+NOTE: THE LAST TIME I DID THIS, THE LIVE SERVER GAVE THE FOLLOWING MESSAGES:
+
+The directory '/home/limited/.cache/pip/http' or its parent directory is not owned by the current
+user and the cache has been disabled. Please check the permissions and owner of that directory.
+If executing pip with sudo, you may want sudo's -H flag.
+
+The directory '/home/limited/.cache/pip' or its parent directory is not owned by the current user
+and caching wheels has been disabled. check the permissions and owner of that directory. If
+executing pip with sudo, you may want sudo's -H flag.
+
       If there have been any changes to the project folder
       they must be done before the Svija update
 
