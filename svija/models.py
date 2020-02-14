@@ -170,6 +170,7 @@ class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
 
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
@@ -185,7 +186,7 @@ class Module(models.Model):
 module_scripts=('head JS', 'body JS', 'CSS',)
 
 class ModuleScripts(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -261,7 +262,7 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit DEPRECATED',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
     active        = models.BooleanField(default=False, verbose_name='active',)
@@ -293,6 +294,7 @@ class Page(models.Model):
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     library_script = models.ManyToManyField(LibraryScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
