@@ -104,8 +104,6 @@ git push origin master
 ———————————————————————————————————————— social media —————————————————————————————————————
 ———————————————————————————————————————————————————————————————————————————————————————————
 
-———————————————————————————————————————— social media updates
-
       find a nice picture or make an ad to accompany the update, then
 
 facebook.com/svijasvg
@@ -113,73 +111,6 @@ twitter/svijasvg
 instagram/svijasvg (make it 3x wide · has to be done on phone)
 linkedin/company/svijasvg (add image before text)
 
-———————————————————————————————————————— BACKUP-DATA.SH
-
-#!/bin/bash
-# backup-data.sh
-source Env/djangoEnv/bin/activate
-
-#———————————————————————————————————————— list of sites on this server
-
-    # badre/
-    # emane/
-    # jp/
-    # khalid/
-
-#———————————————————————————————————————— other sites
-
-cd badre
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../emane
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../jp
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../khalid
-./manage.py dumpdata > svija-2.0.xx.json
-
-#———————————————————————————————————————— finish
-
-printf "\n   data export finished\n\n"
-
-#———————————————————————————————————————— fin
-
-———————————————————————————————————————— VERSION-UPDATE.SH
-
-#!/bin/bash
-# version-update.sh
-source Env/djangoEnv/bin/activate
-
-#———————————————————————————————————————— list of sites on this server
-
-    # badre/
-    # emane/
-    # jp/
-    # khalid/
-
-#———————————————————————————————————————— update & make migrations
-
-pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
-
-#———————————————————————————————————————— other sites
-
-cd badre
-./manage.py makemigrations svija
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../emane
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../jp
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../khalid
-./manage.py migrate
-./manage.py collectstatic --noinput
-
-#———————————————————————————————————————— finish
-
-printf "\n   restarting uwsgi..."
-sudo service uwsgi restart
-printf "\n   finished\n\n"
-
-#———————————————————————————————————————— fin
+——————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— fin —————————————————————————————————————
+——————————————————————————————————————————————————————————————————————————————————
