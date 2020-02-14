@@ -2,6 +2,8 @@
 
       https://docs.svija.com/out-of-date/maintaining-svija
 
+      IF THERE ARE MIGRATIONS, INCLUDE THIS INFORMATION IN THE MERGE
+
       Check out the branch you want to merge to (master), the, merge:
 
 $ git status
@@ -45,7 +47,7 @@ $ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.h
 vi backup-data.sh (update version number)
 ./backup-data.sh
 
-      LINODE CLOUD BACKUP
+      DO LINODE CLOUD BACKUPS
 
 ———————————————————————————————————————— site updates
 
