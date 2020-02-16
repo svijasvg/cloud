@@ -1,3 +1,8 @@
+
+
+      now would be good time to set up a help table
+      and learn how to replace it with each version change
+
 ————————————————————————————————————————————————————————————————————————————————————————————————
 ———————————————————————————————————————— server backups ————————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
@@ -101,7 +106,7 @@ git checkout dev && git merge master --no-ff -m "starting new version" && git pu
 
         increment version number
 
-vi readme.md
+vi readme.md                                      mention if migrations are required
 vi setup.py
 vi save_tar.sh
 vi svija/templates/admin/base_site.html          (line 15)

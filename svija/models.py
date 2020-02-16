@@ -207,8 +207,8 @@ class Shared(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "Shared Scripts"
-        verbose_name_plural = "Shared Scripts"
+        verbose_name = "Sitewide Scripts"
+        verbose_name_plural = "Sitewide Scripts"
 
 shared_scripts=('CSS', 'head JS', 'body JS',)
 

@@ -150,7 +150,8 @@ class SharedAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': ['name', ],}),
+#       ('Scripts Name', {'fields': ['name', ],}),
+        ('Scripts Name', {'fields': ['name', ],'description': 'These are resources for all pages. They should not execute automatically.',}),
     ]   
     inlines = [SharedScriptsInline]
 
