@@ -1,5 +1,7 @@
 
 
+	ADD TARBALLS TO GIT
+
       now would be good time to set up a help table
       and learn how to replace it with each version change
 
