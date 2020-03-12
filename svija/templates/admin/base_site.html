@@ -5,7 +5,8 @@
 <!-- site_title|default:_('Django site admin') -->
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}"><img src=/images/logo-admin.png width=300 height=80><!--  site_header|default:_('Django administration') --></a></h1>
+<!-- <h1 id="site-name"><a href="{% url 'admin:index' %}"><img src=/images/logo-admin.png width=300 height=80></a></h1> -->
+<h1 id="site-name"><a href="{% url 'admin:index' %}"><img src={% static "svija/logo-admin.png" %} width=300 height=80><!--  site_header|default:_('Django administration') --></a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
