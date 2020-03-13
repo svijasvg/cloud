@@ -222,8 +222,8 @@ class SharedScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "shared script"
-        verbose_name_plural = "shared scripts"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— prefix · uses responsive & language
