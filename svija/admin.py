@@ -213,7 +213,7 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'filename', 'sort1', 'sort2'],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'sort1', 'sort2', 'filename',],}),
     ]   
 
     inlines = [ModuleScriptsInline]

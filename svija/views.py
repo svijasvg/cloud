@@ -576,7 +576,26 @@ def add_script(kind, name, content):
         'js'  : '\n\n// '   + name + '\n'     + content,
     }[kind]
 
-#———————————————————————————————————————— fin
+#———————————————————————————————————————— check if cache should be reset
+
+def reset_cache_flag(pages, modules, page_count, module_count):
+
+    if (page_count > 0):
+        for this_page in pages:
+           this_page.cache_reset = False
+           this_page.save()
+
+    if (module_count > 0):
+        for this_module in modules:
+           this_module.cache_reset = False
+           this_module.save()
+
+    if (page_count > 0 or module_count > 0):
+        return True
+    else:
+        return False
+
+#———————————————————————————————————————— sort SVG's & scripts
 # line 431, 495:
 
 def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
@@ -592,28 +611,31 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
+    head_css = head_js = body_js = svg = ''
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
-            #—————— check if svg exists
-            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-            path = pathlib.Path(temp_source)
-            if not path.exists():
-                svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
-                continue
+            if this_svg.filename != '':
 
-            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-    
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
+                #—————— check if svg exists
+                temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+                path = pathlib.Path(temp_source)
+                if not path.exists():
+                    svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
 
-            rem_width = svg_width/10
-            rem_height = svg_height/10
+                else:
+                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
-            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-            head_css += '\n\n' + css_dims
-            svg += '\n' + svg_content
+                if svg_width > specified_width:
+                    page_ratio = svg_height/svg_width
+                    svg_width = specified_width
+                    svg_height = round(specified_width * page_ratio)
+
+                rem_width = svg_width/10
+                rem_height = svg_height/10
+        
+                css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+                head_css += '\n\n' + css_dims
+                svg += '\n' + svg_content
 
             try:
                 all_scripts = this_svg.modulescripts_set.all() # IN ORDER
@@ -634,24 +656,5 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
         'svg'     : svg,
     }
     return results
-
-#———————————————————————————————————————— check if cache should be reset
-
-def reset_cache_flag(pages, modules, page_count, module_count):
-
-    if (page_count > 0):
-        for this_page in pages:
-           this_page.cache_reset = False
-           this_page.save()
-
-    if (module_count > 0):
-        for this_module in modules:
-           this_module.cache_reset = False
-           this_module.save()
-
-    if (page_count > 0 or module_count > 0):
-        return True
-    else:
-        return False
 
 #———————————————————————————————————————— fin

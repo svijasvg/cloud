@@ -169,7 +169,7 @@ class LibraryScript(models.Model):
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
 
     active = models.BooleanField(default=True, verbose_name='active',)
