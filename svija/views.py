@@ -184,13 +184,16 @@ def cache_per_user_function(ttl=None, cache_post=False):
             if request.user.is_superuser:
                 return_cached_content = False
 
+            #  admins see cached content?
             settings = get_object_or_404(Settings,active=True)
 
-            # contains two reelevant settings : reset cache for everyone, and admins see cached content
+            pages = Page.objects.filter(cache_reset=True)
+            page_count = Page.objects.filter(cache_reset=True).count()
 
-            if settings.cache_reset: # cache should be emptied
-                settings.cache_reset = False
-                settings.save()
+            modules = Module.objects.filter(cache_reset=True)
+            module_count = Module.objects.filter(cache_reset=True).count()
+
+            if reset_cache_flag(pages, modules, page_count, module_count):
                 memcache.clear()
                 return_cached_content = False
             elif settings.cached: # cached even for superusers
@@ -631,5 +634,24 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
         'svg'     : svg,
     }
     return results
+
+#———————————————————————————————————————— check if cache should be reset
+
+def reset_cache_flag(pages, modules, page_count, module_count):
+
+    if (page_count > 0):
+        for this_page in pages:
+           this_page.cache_reset = False
+           this_page.save()
+
+    if (module_count > 0):
+        for this_module in modules:
+           this_module.cache_reset = False
+           this_module.save()
+
+    if (page_count > 0 or module_count > 0):
+        return True
+    else:
+        return False
 
 #———————————————————————————————————————— fin
