@@ -26,13 +26,14 @@ urlpatterns = [
     path('<slug:path1>/<slug:path2>', views.PageView),  # something/something
 
 #---------------------------------------- placed images (in Links folder)
+# xlink:href="links/image.jpg"
 
 #   re_path(r'(?i)^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksView),
-    re_path(r'^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
+    re_path(r'^(?P<path1>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
 
     # special case of home page which has no /en/
 #   re_path(r'(?i)^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksViewHome),
-    re_path(r'^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
+    re_path(r'^links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
 
 #---------------------------------------- txt views
 
