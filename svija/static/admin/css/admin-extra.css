@@ -58,10 +58,10 @@ tr.model-module       { background-color:hsl(345, 85%, 60%); }
 
 tr.model-page   a:link,tr.model-page   a:visited,tr.model-page   a:active,
 tr.model-module a:link,tr.model-module a:visited,tr.model-module a:active
-  { color:black; }
+  { color:white; }
 
 tr.model-page   a:hover,
 tr.model-module a:hover
-  { color:white; }
+  { color:black; }
 
 /*———————————————————————————————————————— fin */
