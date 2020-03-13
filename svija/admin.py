@@ -43,7 +43,7 @@ class HelpAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('cat1', 'cat2',)
-    list_display = ('name', 'cat1', 'cat2',)
+    list_display = ('name', 'cat1', 'cat2','link',)
     save_on_top = True
     save_as = True
 
