@@ -1,4 +1,10 @@
 
+  update help content at dev.svija.com
+  export to json : ./manage.py dumpdata svija.help  --indent 4 >> help.json
+  copy to django-svija/svija/fixtues/help.json
+
+  for each site, when I do migrations & static, also do (in script)
+  ./manage.py loaddata help.json
 
 	ADD TARBALLS TO GIT
 
