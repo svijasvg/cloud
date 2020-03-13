@@ -625,17 +625,17 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
                 else:
                     svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
-                if svg_width > specified_width:
-                    page_ratio = svg_height/svg_width
-                    svg_width = specified_width
-                    svg_height = round(specified_width * page_ratio)
+                    if svg_width > specified_width:
+                        page_ratio = svg_height/svg_width
+                        svg_width = specified_width
+                        svg_height = round(specified_width * page_ratio)
 
-                rem_width = svg_width/10
-                rem_height = svg_height/10
+                    rem_width = svg_width/10
+                    rem_height = svg_height/10
         
-                css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-                head_css += '\n\n' + css_dims
-                svg += '\n' + svg_content
+                    css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+                    head_css += '\n\n' + css_dims
+                    svg += '\n' + svg_content
 
             try:
                 all_scripts = this_svg.modulescripts_set.all() # IN ORDER
