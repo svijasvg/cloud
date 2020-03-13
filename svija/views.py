@@ -303,7 +303,7 @@ def PageView(request, path1, path2):
     # should be first in CSS
 
     font_objs = Font.objects.all()
-    css_str  = "@font-face {{ font-family:'{}'; src:url('{}'){}; }}"
+    css_str  = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
     link_str = '\n  <link rel="stylesheet" href="{}" />'
     font_css = ''
     font_link = ''
@@ -321,12 +321,19 @@ def PageView(request, path1, path2):
 
             elif font_src.find('woff2') > 0:
                 font_format = " format('woff2')"
-                font_src = '/fonts/' + font_src
+                font_src = "url('/fonts/" + font_src
                 font_css  += '\n'+ css_str.format(font_face, font_src, font_format)
 
             elif font_src.find('woff') > 0:  
                 font_format = " format('woff')"
-                font_src = '/fonts/' + font_src
+                font_src = "url('/fonts/" + font_src
+                font_css += '\n'+ css_str.format(font_face, font_src, font_format)
+
+            elif font_src.find(',') > 0: # local fonts
+                # src: local('Arial'), local('Arial MT'), local('Arial Regular'); }
+                font_format = ''
+                locals = font_src.replace(', ',',').split(',')
+                font_src = "local('"+"'), local('".join(locals)
                 font_css += '\n'+ css_str.format(font_face, font_src, font_format)
 
     head_css = font_css + head_css
