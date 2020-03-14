@@ -1,4 +1,6 @@
 
+  make a new repository for updating, with the scripts taht are now on live server
+
   look at commit hisotory for feature updates
   update help content at dev.svija.com
   export to json : ./manage.py dumpdata svija.help  --indent 4 >> help.json
