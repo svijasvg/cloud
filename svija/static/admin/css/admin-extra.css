@@ -1,20 +1,45 @@
+:root {
+  --dark-gray: hsl(0, 0%,20%); 
+  --light-gray: hsl(0, 0%,70%); 
+  --default-button: hsla(0, 0%, 20%, 1.0); 
+  --default-button-bg: hsla(75, 100%, 50%, 1.0); 
+  --default-button-hover: hsla(75, 100%, 50%, 1.0); 
+  --default-button-hover-bg: hsla(0, 0%, 20%, 1.0); 
+
+  --active-button: hsla(0, 0%, 20%, 1.0); 
+  --active-button-bg: hsla(75, 100%, 50%, 1.0); 
+
+  --highlight: hsla(75, 100%, 50%, 1.0); 
+
+  --model-impt: hsla(0, 0%, 0%, 0.7);
+  --model-impt-hover: hsla(0, 0%, 0%, 1.0);
+  --model-hover: hsla(75, 100%, 30%, 1.0); 
+}
+
+#svija-admin-logo{ filter:
+  hue-rotate(77deg)
+  saturate(100%)
+  brightness(400%)
+  opacity(100%)
+;}
+
 /*———————————————————————————————————————— gray header bar */
 
 #header div#user-tools::after{content:' / v2.1.3'}
-#header { background-color:hsl(0,0%,20%); height:80px; }
+#header { background-color:var(--dark-gray); height:80px; }
 
-#header div#user-tools { color:hsl(345,100%,60%);} /* welcome */
-#header strong{ color:hsl(345,100%,60%);} /* user name */
+#header div#user-tools { color:var(--highlight);} /* welcome */
+#header strong{ color:var(--highlight);} /* user name */
 #header div#user-tools a:link, /* user tools links */
 #header div#user-tools a:visited
-  { color:hsl(345,100%,60%); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
+  { color:var(--highlight); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
 #header div#user-tools a:hover,
 #header div#user-tools a:active
   { color:hsl(345,100%,100%); border-bottom:1px solid hsla(0, 0%, 100%, 0.5); text-decoration:none;}
 
 /*———————————————————————————————————————— something */
 
-div.breadcrumbs { background-color:hsl(0,0%,20%); border-top:1px solid hsl(345,85%,60%); color:hsl(0, 0%,70%); }
+div.breadcrumbs { background-color:var(--dark-gray); border-top:1px solid var(--highlight); color:var(--light-gray); }
 div.breadcrumbs a:link,
 div.breadcrumbs a:visited
   { color:hsl(0,0%,70%); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
@@ -26,26 +51,36 @@ div.breadcrumbs a:hover
   { background:hsl(0,0%,20%); border-radius:5px; }
 
 a:link, a:visited { color: hsl(0,0%,50%); text-decoration: none; }
-a:focus, a:hover { color: hsl(345, 85%, 60%); }
+a:focus, a:hover { color: var(--model-hover); }
 a:focus { text-decoration: underline; }
 
-fieldset.collapsed .collapse-toggle { color:hsl(345, 85%, 60%); } /* show hidden fields */
+fieldset.collapsed .collapse-toggle { color:var(--highlight); } /* show hidden fields */
+
+/*———————————————————————————————————————— buttons */
 
 .button, input[type=submit], input[type=button], .submit-row input, a.button
   { background:hsla(345, 0%, 60%, 0.5); }
 
-.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover
-  { background:hsla(345, 85%, 60%, 1.0); }
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+  background:var(--active-button-bg);
+  color:var(--active-button);
+ }
 
-.button.default, input[type=submit].default, .submit-row input.default
-  { background:hsla(195, 80%, 40%, 1.0); }
+.button.default, input[type=submit].default, .submit-row input.default {
+  color:var(--default-button);
+  background:var(--default-button-bg);
+}
 
 /* save button hover */
-.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover
-  { background:hsla(195, 100%, 45%, 1.0); }
+.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+  color:var(--default-button-hover);
+  background:var(--default-button-hover-bg);
+}
+
+/*———————————————————————————————————————— message */
 
 ul.messagelist li /* message "The Site Settings "ant.ocstud.com" was changed successfully." */
-  { background:hsl(0,0%, 20%);  color:hsl(345,85%, 60%); border-top:1px solid hsl(345, 85%, 60%); }
+  { background:hsl(0,0%, 20%);  color:hsl(345,85%, 60%); border-top:1px solid var(--highlight); }
 
 /*———————————————————————————————————————— lists of settings */
 
@@ -54,14 +89,14 @@ tr.model-language,
 tr.model-responsive   { background-color:hsl(345, 0%, 90%); }
 
 tr.model-page,
-tr.model-module       { background-color:hsl(345, 85%, 60%); }
+tr.model-module       { background-color:var(--highlight); }
 
 tr.model-page   a:link,tr.model-page   a:visited,tr.model-page   a:active,
 tr.model-module a:link,tr.model-module a:visited,tr.model-module a:active
-  { color:white; }
+  { color:var(--model-impt); }
 
 tr.model-page   a:hover,
 tr.model-module a:hover
-  { color:black; }
+  { color:var(--model-impt-hover); }
 
 /*———————————————————————————————————————— fin */
