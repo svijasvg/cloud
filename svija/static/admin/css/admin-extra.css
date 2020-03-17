@@ -1,92 +1,159 @@
-:root {
-  --dark-gray: hsl(0, 0%,20%); 
-  --light-gray: hsl(0, 0%,70%); 
-  --default-button: hsla(0, 0%, 20%, 1.0); 
-  --default-button-bg: hsla(75, 100%, 50%, 1.0); 
-  --default-button-hover: hsla(75, 100%, 50%, 1.0); 
-  --default-button-hover-bg: hsla(0, 0%, 20%, 1.0); 
-
-  --active-button: hsla(0, 0%, 20%, 1.0); 
-  --active-button-bg: hsla(75, 100%, 50%, 1.0); 
-
-  --highlight: hsla(75, 100%, 50%, 1.0); 
-
-  --model-impt: hsla(0, 0%, 0%, 0.7);
-  --model-impt-hover: hsla(0, 0%, 0%, 1.0);
-  --model-hover: hsla(75, 100%, 30%, 1.0); 
-}
-
-#svija-admin-logo{ filter:
-  hue-rotate(77deg)
-  saturate(100%)
-  brightness(400%)
-  opacity(100%)
-;}
-
-/*———————————————————————————————————————— gray header bar */
+/*———————————————————————————————————————— version number */
 
 #header div#user-tools::after{content:' / v2.1.3'}
-#header { background-color:var(--dark-gray); height:80px; }
+
+/*———————————————————————————————————————— first dark gray header bar */
+
+:root { --dark-gray:  hsl(0, 0%,20%); }
+
+#header { background-color:var(--dark-gray); height:80px; border-bottom:1px solid var(--highlight);}
+#svija-admin-logo{ background-color:var(--highlight); }
+
+
+/*———————————————————————————————————————— small text at right of top bar */
 
 #header div#user-tools { color:var(--highlight);} /* welcome */
-#header strong{ color:var(--highlight);} /* user name */
-#header div#user-tools a:link, /* user tools links */
+#header strong         { color:var(--highlight);} /* user name */
+
+#header div#user-tools a:link,                    /* user tools links */
 #header div#user-tools a:visited
-  { color:var(--highlight); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
+
+                       { color:var(--highlight);
+                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
+                         text-decoration:none; }
+
 #header div#user-tools a:hover,
 #header div#user-tools a:active
-  { color:hsl(345,100%,100%); border-bottom:1px solid hsla(0, 0%, 100%, 0.5); text-decoration:none;}
 
-/*———————————————————————————————————————— something */
+                       { color:white;
+                         border-bottom:1px solid white; }
 
-div.breadcrumbs { background-color:var(--dark-gray); border-top:1px solid var(--highlight); color:var(--light-gray); }
+/*———————————————————————————————————————— second dark gray header bar */
+
+:root { --light-gray: hsl(0, 0%,90%); }
+
+div.breadcrumbs        { background-color:var(--dark-gray);
+                         color:var(--light-gray); }
+
 div.breadcrumbs a:link,
 div.breadcrumbs a:visited
-  { color:hsl(0,0%,70%); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
-div.breadcrumbs a:focus,
-div.breadcrumbs a:hover
-  { color:hsl(345,100%,100%); border-bottom:1px solid hsla(0, 0%, 100%, 0.5); text-decoration:none;}
 
-.module h2, .module caption, .inline-group h2 /* black bars in middle of page */
-  { background:hsl(0,0%,20%); border-radius:5px; }
+                       { color:hsl(0,0%,70%);
+                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
+                         text-decoration:none; }
 
-a:link, a:visited { color: hsl(0,0%,50%); text-decoration: none; }
-a:focus, a:hover { color: var(--model-hover); }
-a:focus { text-decoration: underline; }
+div.breadcrumbs a:hover,
+div.breadcrumbs a:active
+
+                       { color:white;
+                         border-bottom:1px solid white; }
+
+/*———————————————————————————————————————— message in new top bar */
+
+ul.messagelist li
+
+  { color:var(--dark-gray);
+    background:var(--highlight); }
+
+ul.messagelist li a
+
+  { color: var(--dark-gray);
+    font-weight:bold; }
+
+/*———————————————————————————————————————— black bars in middle of page */
+
+.module caption, /* bars on admin page & app/svija page */
+.module h2,      /* filter header, model detail header NEED TO FIX UPPERCASE SOMEWHERE */
+.inline-group h2 /* inline models headers */
+
+                       { background-color:var(--dark-gray);
+                         border-radius:5px;
+                         text-transform:uppercase; }
+
+/*———————————————————————————————————————— basic links & list of models*/
+
+:root {
+  --link:                var(--dark-gray); 
+  --link-hover:          black;
+}
+
+a:link, a:visited      { color: var(--link);
+                         text-decoration: none; }
+
+a:hover, a:active      { color: var(--link-hover);
+                         text-decoration: underline; }
+
+/*———————————————————————————————————————— initially-hidden fields */
 
 fieldset.collapsed .collapse-toggle { color:var(--highlight); } /* show hidden fields */
 
+/* module collapse collapsed */
+fieldset.module        { } /* main model settings (not inlines or collapsed */
+fieldset.collapse      { background-color:var(--light-gray); border-radius:5px; } /* background of hidden blocks when made visible */
+
+.module h2, .module caption, .inline-group h2,                                    /* background bar of uncollapsed module */
+fieldset.collapsed h2                                                             /* background bars of collapsed areas */
+
+                       { background-color:var(--dark-gray) !important;
+                         color:var(--light-gray) !important;
+                         border-radius:5px; }
+
+fieldset.collapsed .collapse-toggle                                               /* (SHOW) link */
+
+                       { color:var(--highlight)!important; }
+
+/*———————————————————————————————————————— help tip */
+
+div.description{
+  color:var(--dark-gray);
+  background-color:var(--light-gray);
+  opacity:0.7;
+  padding:5px 7px 7px 7px;
+  margin-left:20px;
+  border-radius:0px 0px 5px 5px;
+  display: inline-block;
+  font-size:14px;
+}
+
 /*———————————————————————————————————————— buttons */
 
-.button, input[type=submit], input[type=button], .submit-row input, a.button
-  { background:hsla(345, 0%, 60%, 0.5); }
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button
 
-.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
-  background:var(--active-button-bg);
-  color:var(--active-button);
- }
+  { color:var(--dark-gray);
+    background:var(--light-gray); }
 
-.button.default, input[type=submit].default, .submit-row input.default {
-  color:var(--default-button);
-  background:var(--default-button-bg);
-}
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+.submit-row input:hover,
+a.button:hover
 
-/* save button hover */
-.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
-  color:var(--default-button-hover);
-  background:var(--default-button-hover-bg);
-}
+  { color:var(--highlight-hover);
+    background:var(--highlight); }
 
-/*———————————————————————————————————————— message */
+.button.default,
+input[type=submit].default,
+.submit-row input.default
 
-ul.messagelist li /* message "The Site Settings "ant.ocstud.com" was changed successfully." */
-  { background:hsl(0,0%, 20%);  color:hsl(345,85%, 60%); border-top:1px solid var(--highlight); }
+  { color:var(--highlight-hover);
+    background:var(--highlight); }
+
+.button.default:hover,
+input[type=submit].default:hover,
+.submit-row input.default:hover
+
+  { color:var(--highlight);
+    background:var(--highlight-hover); }
 
 /*———————————————————————————————————————— lists of settings */
 
 tr.model-settings,
 tr.model-language,
-tr.model-responsive   { background-color:hsl(345, 0%, 90%); }
+tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
 
 tr.model-page,
 tr.model-module       { background-color:var(--highlight); }
@@ -97,6 +164,6 @@ tr.model-module a:link,tr.model-module a:visited,tr.model-module a:active
 
 tr.model-page   a:hover,
 tr.model-module a:hover
-  { color:var(--model-impt-hover); }
+  { color:var(--highlight-hover); }
 
 /*———————————————————————————————————————— fin */

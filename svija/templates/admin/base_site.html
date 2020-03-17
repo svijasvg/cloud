@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block title %}{{ title }} | Svija Admin{% endblock %}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/admn/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />{% endblock %}
 
 
 {% block branding %}
-  <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src={% static "admin/images/svija-admin-red.png" %} width=300 height=80></a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src="/admn/svija-admin-300x80.png" %} width=300 height=80></a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

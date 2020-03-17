@@ -44,6 +44,7 @@ urlpatterns = [
 #---------------------------------------- fonts, images & scripts
 # source_dir = responsive.source_dir
 
+    re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/admin"}),
     re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
     re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
     re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/scripts"}),
