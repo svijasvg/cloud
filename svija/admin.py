@@ -277,6 +277,7 @@ class SvgInline(admin.TabularInline):
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
+    verbose_name_plural = 'svg files · fichiers svg'
 
 from .models import Page
 class LibraryScriptInline(admin.TabularInline):
