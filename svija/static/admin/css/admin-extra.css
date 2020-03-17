@@ -2,9 +2,16 @@
 
 #header div#user-tools::after{content:' / v2.1.3'}
 
+/*———————————————————————————————————————— in sync/admin/stylesheet.css */
+
+/* :root {
+   --highlight:        hsl(75, 100%, 50%);
+   --highlight-hover:  hsl( 0,   0%,  0%); } */
+
 /*———————————————————————————————————————— first dark gray header bar */
 
-:root { --dark-gray:  hsl(0, 0%,20%); }
+:root { --dark-gray:  hsl(0, 0%,20%);
+        --light-gray: hsl(0, 0%,90%); }
 
 #header { background-color:var(--dark-gray); height:80px; border-bottom:1px solid var(--highlight);}
 #svija-admin-logo{ background-color:var(--highlight); }
@@ -30,7 +37,6 @@
 
 /*———————————————————————————————————————— second dark gray header bar */
 
-:root { --light-gray: hsl(0, 0%,90%); }
 
 div.breadcrumbs        { background-color:var(--dark-gray);
                          color:var(--light-gray); }
@@ -59,6 +65,16 @@ ul.messagelist li a
 
   { color: var(--dark-gray);
     font-weight:bold; }
+
+/*———————————————————————————————————————— top right "add page" bubble */
+
+.object-tools a.addlink {
+  color:var(--highlight);
+  background:var(--dark-gray);
+  border-radius:5px;
+  padding-top:6px;
+  padding-right:10px;
+}
 
 /*———————————————————————————————————————— black bars in middle of page */
 
@@ -115,6 +131,36 @@ div.description{
   font-size:14px;
 }
 
+/*———————————————————————————————————————— lists of settings */
+
+/* rounded corners on th (left) & td (right) · can't be used because
+   the cell above has a bottom border no matter what.                */
+
+/* tr th {border-radius:5px 0px 0px 5px;}
+   tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
+
+/*———————————————————————————————————————— modules & pages */
+
+tr.model-page, tr.model-module
+
+  { background-color:var(--highlight); border-radius:5px; }
+
+tr.model-page a:link,    tr.model-module a:link,
+tr.model-page a:visited, tr.model-module a:visited
+
+  { color:var(--dark-gray); }
+
+tr.model-page a:active, tr.model-module a:active
+tr.model-page a:hover,  tr.model-module a:hover
+
+  { color:var(--highlight-hover); }
+
+/*———————————————————————————————————————— other important settings */
+
+tr.model-settings,
+tr.model-language,
+tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
+
 /*———————————————————————————————————————— buttons */
 
 .button,
@@ -148,22 +194,5 @@ input[type=submit].default:hover,
 
   { color:var(--highlight);
     background:var(--highlight-hover); }
-
-/*———————————————————————————————————————— lists of settings */
-
-tr.model-settings,
-tr.model-language,
-tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
-
-tr.model-page,
-tr.model-module       { background-color:var(--highlight); }
-
-tr.model-page   a:link,tr.model-page   a:visited,tr.model-page   a:active,
-tr.model-module a:link,tr.model-module a:visited,tr.model-module a:active
-  { color:var(--model-impt); }
-
-tr.model-page   a:hover,
-tr.model-module a:hover
-  { color:var(--highlight-hover); }
 
 /*———————————————————————————————————————— fin */
