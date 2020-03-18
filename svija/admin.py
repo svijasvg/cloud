@@ -21,6 +21,8 @@ admin.site.register(Forwards, ForwardsAdmin)
 
 #---------------------------------------- fonts · no dependencies
 
+fr_bosic = ' '.join(["Source : nom Google, fichier woff/woff2 ou local1,local2 etc. pour polices standard"])
+
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
@@ -31,7 +33,8 @@ class FontAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], }),
+        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
+
     ]   
 
 admin.site.register(Font, FontAdmin)

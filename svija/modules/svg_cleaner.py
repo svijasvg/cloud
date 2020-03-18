@@ -149,7 +149,7 @@ def create_new_font(css_ref, new_font):
 
     name = family = css_ref
     weight = style = width = ''
-    source = 'PLEASE ACTIVATE'
+    source = 'SOURCE NEEDED'
 
     weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
     styles = ['Normal','Italic','Oblique',]

@@ -32,7 +32,7 @@ class Font(models.Model):
     name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)
+    source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='source', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
     active = models.BooleanField(default=True, verbose_name='include in page',)
 
