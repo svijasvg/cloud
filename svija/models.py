@@ -353,7 +353,7 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
