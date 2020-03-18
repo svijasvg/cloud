@@ -1,4 +1,5 @@
 
+  need to save templates table & import
   make a new repository for updating, with the scripts taht are now on live server
 
   look at commit hisotory for feature updates
