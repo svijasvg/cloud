@@ -533,7 +533,7 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— page settings
 
-    template = page.template.filename
+    template = 'svija/' + page.template.filename
 
     if form != '':
         template = template.replace('.html', '_token.html')
