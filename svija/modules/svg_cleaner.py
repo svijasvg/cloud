@@ -116,7 +116,9 @@ def clean(svg_path, svg_name):
         #———————————————————————————————— get id if specified
         #———————————————————————————————— AI file with layer name "id example"
 
-        if line[1:10] == 'g id="id_': svg_ID = line[10:-2]
+        if line[1:10] == 'g id="id_':
+            parts = line.split('"')
+            svg_ID = parts[1][3:]
 
      #———————————————————————————————— add line into final SVG
 

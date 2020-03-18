@@ -314,7 +314,7 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['cache_reset', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('readability',        {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
