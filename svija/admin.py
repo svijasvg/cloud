@@ -26,12 +26,12 @@ class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', 'google', 'family', )
-    list_display = ('name', 'family', 'style', 'source', 'google', 'active', )
+    list_display = ('name', 'family', 'style', 'source', 'active', 'google', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'google', 'active',], }),
+        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], }),
     ]   
 
 admin.site.register(Font, FontAdmin)
