@@ -15,6 +15,8 @@
       now would be good time to set up a help table
       and learn how to replace it with each version change
 
+the new version number will be: 2.1.3
+
 ————————————————————————————————————————————————————————————————————————————————————————————————
 ———————————————————————————————————————— server backups ————————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
@@ -23,7 +25,7 @@
 
       to check installed version number:
 
-$ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+$ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 
       run script in www directory
 
@@ -44,6 +46,7 @@ vi backup-data.sh (update version number)
 
       Check out the branch you want to merge to (master), then merge:
 
+$ git commit -m "updated instructions" instructions.txt
 $ git status
 $ git checkout master && git merge dev --no-ff
 
