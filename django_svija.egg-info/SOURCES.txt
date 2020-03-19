@@ -60,6 +60,10 @@ svija/migrations/0045_auto_20191214_0709.py
 svija/migrations/0046_auto_20191214_0814.py
 svija/migrations/0047_auto_20200214_0928.py
 svija/migrations/0048_auto_20200214_0934.py
+svija/migrations/0049_auto_20200313_1513.py
+svija/migrations/0050_auto_20200318_1655.py
+svija/migrations/0051_auto_20200318_1714.py
+svija/migrations/0052_auto_20200318_1740.py
 svija/migrations/__init__.py
 svija/modules/.meta_canonical.py.un~
 svija/modules/accessibility_links.py
@@ -73,7 +77,7 @@ svija/modules/__pycache__/meta_canonical.cpython-36.pyc
 svija/modules/__pycache__/send_mail.cpython-36.pyc
 svija/modules/__pycache__/sitemap.cpython-36.pyc
 svija/modules/__pycache__/svg_cleaner.cpython-36.pyc
-svija/static/svija/logo-admin.png
+svija/static/admin/css/admin-extra.css
 svija/static/svija/scripts/TweenMax-2.0.2.js
 svija/templates/admin/base_site.html
 svija/templates/svija/.lab.html.un~
@@ -83,8 +87,8 @@ svija/templates/svija/index.html
 svija/templates/svija/lab.html
 svija/templates/svija/realisations.svg
 svija/templates/svija/results.html
-svija/templates/svija/svg_page.html
-svija/templates/svija/svg_page_token.html
+svija/templates/svija/svija.html
+svija/templates/svija/svija_token.html
 svija/templates/svija/javascript/.google_analytics.js.un~
 svija/templates/svija/javascript/choose_language.js
 svija/templates/svija/javascript/cookies.js
