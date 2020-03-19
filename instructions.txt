@@ -10,8 +10,6 @@
   for each site, when I do migrations & static, also do (in script)
   ./manage.py loaddata help.json
 
-	ADD TARBALLS TO GIT
-
       now would be good time to set up a help table
       and learn how to replace it with each version change
 
@@ -56,6 +54,7 @@ $ git checkout master && git merge dev --no-ff
 
 ———————————————————————————————————————— update docs.svija.com
 
+github.com/svijasvg/django-svija/commits/master
 docs.svija.com/changelog
 
 ———————————————————————————————————————— version number
@@ -72,13 +71,12 @@ docs.svija.com/changelog
 
       save_tar.sh & setup.py must be 775
 
-vi save_tar.sh
+$ vi save_tar.sh
 ./save_tar.sh
 
       contains the following
 
-      ../Env/djangoEnv/bin/activate
-      #workon djangoEnv doesn't work
+      /var/www/Env/djangoEnv/bin/activate
       python setup.py sdist
       git add dist/django-svija-2.1.2.tar.gz
       git commit -m "added version 2.1.2" -a
