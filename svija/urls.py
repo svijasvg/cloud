@@ -26,13 +26,14 @@ urlpatterns = [
     path('<slug:path1>/<slug:path2>', views.PageView),  # something/something
 
 #---------------------------------------- placed images (in Links folder)
+# xlink:href="links/image.jpg"
 
 #   re_path(r'(?i)^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksView),
-    re_path(r'^(?P<path1>[\w-]+)/Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
+    re_path(r'^(?P<path1>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
 
     # special case of home page which has no /en/
 #   re_path(r'(?i)^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif|JPEG|JPG|PNG|GIF))$', views.LinksViewHome),
-    re_path(r'^Links/(?P<placed_file>[\w\-\ ]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
+    re_path(r'^links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
 
 #---------------------------------------- txt views
 
@@ -43,6 +44,7 @@ urlpatterns = [
 #---------------------------------------- fonts, images & scripts
 # source_dir = responsive.source_dir
 
+    re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/admin"}),
     re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
     re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
     re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/scripts"}),

@@ -32,9 +32,9 @@ class Font(models.Model):
     name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    source = models.CharField(max_length=100, default='', verbose_name='filename', blank=True)
+    source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='source', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
-    active = models.BooleanField(default=True, verbose_name='active',)
+    active = models.BooleanField(default=True, verbose_name='include in page',)
 
     def __str__(self):
         return self.name
@@ -169,7 +169,7 @@ class LibraryScript(models.Model):
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
 
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -207,8 +207,8 @@ class Shared(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "Shared Scripts"
-        verbose_name_plural = "Shared Scripts"
+        verbose_name = "Sitewide Scripts"
+        verbose_name_plural = "Sitewide Scripts"
 
 shared_scripts=('CSS', 'head JS', 'body JS',)
 
@@ -222,8 +222,8 @@ class SharedScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "shared script"
-        verbose_name_plural = "shared scripts"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— prefix · uses responsive & language
@@ -306,8 +306,8 @@ class Page(models.Model):
     title  = models.CharField(max_length=200, default='', blank=True)
 
     # accessibility/seo text
-    access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility link name')
-    access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
+    access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='readability link name')
+    access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='readabiliy content')
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
@@ -353,7 +353,7 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)

@@ -116,7 +116,9 @@ def clean(svg_path, svg_name):
         #———————————————————————————————— get id if specified
         #———————————————————————————————— AI file with layer name "id example"
 
-        if line[1:10] == 'g id="id_': svg_ID = line[10:-2]
+        if line[1:10] == 'g id="id_':
+            parts = line.split('"')
+            svg_ID = parts[1][3:]
 
      #———————————————————————————————— add line into final SVG
 
@@ -147,7 +149,7 @@ def create_new_font(css_ref, new_font):
 
     name = family = css_ref
     weight = style = width = ''
-    source = 'PLEASE ACTIVATE'
+    source = 'SOURCE NEEDED'
 
     weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
     styles = ['Normal','Italic','Oblique',]

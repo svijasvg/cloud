@@ -184,13 +184,16 @@ def cache_per_user_function(ttl=None, cache_post=False):
             if request.user.is_superuser:
                 return_cached_content = False
 
+            #  admins see cached content?
             settings = get_object_or_404(Settings,active=True)
 
-            # contains two reelevant settings : reset cache for everyone, and admins see cached content
+            pages = Page.objects.filter(cache_reset=True)
+            page_count = Page.objects.filter(cache_reset=True).count()
 
-            if settings.cache_reset: # cache should be emptied
-                settings.cache_reset = False
-                settings.save()
+            modules = Module.objects.filter(cache_reset=True)
+            module_count = Module.objects.filter(cache_reset=True).count()
+
+            if reset_cache_flag(pages, modules, page_count, module_count):
                 memcache.clear()
                 return_cached_content = False
             elif settings.cached: # cached even for superusers
@@ -300,7 +303,7 @@ def PageView(request, path1, path2):
     # should be first in CSS
 
     font_objs = Font.objects.all()
-    css_str  = "@font-face {{ font-family:'{}'; src:url('{}'){}; }}"
+    css_str  = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
     link_str = '\n  <link rel="stylesheet" href="{}" />'
     font_css = ''
     font_link = ''
@@ -318,12 +321,19 @@ def PageView(request, path1, path2):
 
             elif font_src.find('woff2') > 0:
                 font_format = " format('woff2')"
-                font_src = '/fonts/' + font_src
+                font_src = "url('/fonts/" + font_src
                 font_css  += '\n'+ css_str.format(font_face, font_src, font_format)
 
             elif font_src.find('woff') > 0:  
                 font_format = " format('woff')"
-                font_src = '/fonts/' + font_src
+                font_src = "url('/fonts/" + font_src
+                font_css += '\n'+ css_str.format(font_face, font_src, font_format)
+
+            elif font_src.find(',') > 0: # local fonts
+                # src: local('Arial'), local('Arial MT'), local('Arial Regular'); }
+                font_format = ''
+                locals = font_src.replace(', ',',').split(',')
+                font_src = "local('"+"'), local('".join(locals)
                 font_css += '\n'+ css_str.format(font_face, font_src, font_format)
 
     head_css = font_css + head_css
@@ -336,7 +346,7 @@ def PageView(request, path1, path2):
 
     # version information
 
-    view_js += "var svija_version='2.1.1';\n"
+    view_js += "var svija_version='2.1.3';\n"
 
     # language information
 
@@ -523,7 +533,7 @@ def PageView(request, path1, path2):
 
     #———————————————————————————————————————— page settings
 
-    template = page.template.filename
+    template = 'svija/' + page.template.filename
 
     if form != '':
         template = template.replace('.html', '_token.html')
@@ -573,7 +583,26 @@ def add_script(kind, name, content):
         'js'  : '\n\n// '   + name + '\n'     + content,
     }[kind]
 
-#———————————————————————————————————————— fin
+#———————————————————————————————————————— check if cache should be reset
+
+def reset_cache_flag(pages, modules, page_count, module_count):
+
+    if (page_count > 0):
+        for this_page in pages:
+           this_page.cache_reset = False
+           this_page.save()
+
+    if (module_count > 0):
+        for this_module in modules:
+           this_module.cache_reset = False
+           this_module.save()
+
+    if (page_count > 0 or module_count > 0):
+        return True
+    else:
+        return False
+
+#———————————————————————————————————————— sort SVG's & scripts
 # line 431, 495:
 
 def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
@@ -589,28 +618,31 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
+    head_css = head_js = body_js = svg = ''
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
-            #—————— check if svg exists
-            temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-            path = pathlib.Path(temp_source)
-            if not path.exists():
-                svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
-                continue
+            if this_svg.filename != '':
 
-            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
-    
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
+                #—————— check if svg exists
+                temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+                path = pathlib.Path(temp_source)
+                if not path.exists():
+                    svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
 
-            rem_width = svg_width/10
-            rem_height = svg_height/10
+                else:
+                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
     
-            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-            head_css += '\n\n' + css_dims
-            svg += '\n' + svg_content
+                    if svg_width > specified_width:
+                        page_ratio = svg_height/svg_width
+                        svg_width = specified_width
+                        svg_height = round(specified_width * page_ratio)
+
+                    rem_width = svg_width/10
+                    rem_height = svg_height/10
+        
+                    css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+                    head_css += '\n\n' + css_dims
+                    svg += '\n' + svg_content
 
             try:
                 all_scripts = this_svg.modulescripts_set.all() # IN ORDER

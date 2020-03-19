@@ -1,10 +1,31 @@
-———————————————————————————————————————— back up live & emane servers
+
+  need to save templates table & import
+  make a new repository for updating, with the scripts taht are now on live server
+
+  look at commit hisotory for feature updates
+  update help content at dev.svija.com
+  export to json : ./manage.py dumpdata svija.help  --indent 4 >> help.json
+  copy to django-svija/svija/fixtues/help.json
+
+  for each site, when I do migrations & static, also do (in script)
+  ./manage.py loaddata help.json
+
+	ADD TARBALLS TO GIT
+
+      now would be good time to set up a help table
+      and learn how to replace it with each version change
+
+the new version number will be: 2.1.3
+
+————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— server backups ————————————————————————————————————————
+————————————————————————————————————————————————————————————————————————————————————————————————
 
       by doing this first, it will be done when you're ready to update
 
       to check installed version number:
 
-$ vi Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
+$ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 
       run script in www directory
 
@@ -13,85 +34,105 @@ vi backup-data.sh (update version number)
 
       DO LINODE CLOUD BACKUPS
 
-———————————————————————————————————————— to merge
+—————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— merge to master ————————————————————————————————————————
+—————————————————————————————————————————————————————————————————————————————————————————————————
 
       https://docs.svija.com/out-of-date/maintaining-svija
 
       IF THERE ARE MIGRATIONS, INCLUDE THIS INFORMATION IN THE MERGE
 
-      Check out the branch you want to merge to (master), the, merge:
+      The merge comments will be the docs changelog text so write clearly
 
-$ git status
+      Check out the branch you want to merge to (master), then merge:
+
+$ git commit -m "updated instructions" instructions.txt
+$ git push -u
 $ git checkout master && git merge dev --no-ff
 
       The --no-ff flag prevents git merge from executing a "fast-forward"
       if it detects that your current HEAD is an ancestor of the commit
       you're trying to merge.
 
+———————————————————————————————————————— update docs.svija.com
+
+docs.svija.com/changelog
+
 ———————————————————————————————————————— version number
 
       version number is already ahead of live site
       will be updated at the end of the process
 
-———————————————————————————————————————— create installable version
+—————————————————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— installable version ————————————————————————————————————————
+—————————————————————————————————————————————————————————————————————————————————————————————————————
 
       so that this version will be available
       in case of future compatibility problems:
 
       save_tar.sh & setup.py must be 775
 
+vi save_tar.sh
 ./save_tar.sh
 
-————— contains the following
+      contains the following
 
-../Env/djangoEnv/bin/activate
-#workon djangoEnv doesn't work
-python setup.py sdist
-git add dist/django-svija-2.1.2.tar.gz
-git commit -m "added version 2.1.2" -a
-git push origin master
+      ../Env/djangoEnv/bin/activate
+      #workon djangoEnv doesn't work
+      python setup.py sdist
+      git add dist/django-svija-2.1.2.tar.gz
+      git commit -m "added version 2.1.2" -a
+      git push origin master
 
 ————————————————————————————————————————————————————————————————————————————————————————————————
 ———————————————————————————————————————— server updates ————————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
 
+NOTE: THE LAST TIME I DID THIS, THE LIVE SERVER GAVE THE FOLLOWING MESSAGES:
+
+The directory '/home/limited/.cache/pip/http' or its parent directory is not owned by the current
+user and the cache has been disabled. Please check the permissions and owner of that directory.
+If executing pip with sudo, you may want sudo's -H flag.
+
+The directory '/home/limited/.cache/pip' or its parent directory is not owned by the current user
+and caching wheels has been disabled. check the permissions and owner of that directory. If
+executing pip with sudo, you may want sudo's -H flag.
+
       If there have been any changes to the project folder
       they must be done before the Svija update
 
-———————————————————————————————————————— update svija
-
-ls MAKE SURE THERE ARE NO NEW SERVERS, OR ADD THEM TO SCRIPT
+      add any new sites
 
 vi ./version-update.sh
+
+      update the server
+
 sudo ./version-update.sh
 
-CHECK IF SITES STILL WORK
+      CHECK IF SITES STILL WORK
 
 ————————————————————————————————————————————————————————————————————————————————————————————————
 ———————————————————————————————————————— start new version —————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
 
-———————————————————————————————————————— merge & switch to dev branch
+        commit any changes, copy the next line, then close this file:
 
-copy the next line, then close this file:
+git checkout dev && git merge master --no-ff -m "starting new version" && git push -u
 
-$ git checkout dev && git merge master --no-ff -m "starting new version" && git push -u
+        increment version number
 
-———————————————————————————————————————— increment version number
+vi readme.md                                      mention if migrations are required
+vi setup.py
+vi save_tar.sh
+vi svija/templates/admin/base_site.html          (line 15)
+vi svija/views.py                                (search for svija_version)
 
-$ vi readme.md   https://daringfireball.net/projects/markdown/syntax
+git commit -m "updated version number" -a
+git push origin master
 
-$ vi setup.py
-$ vi svija/templates/admin/base_site.html (line 15)
-$ vi svija/views.py                       (search for svija_version)
-$ git commit -m "updated version number" -a
-$ git push origin master
-
-———————————————————————————————————————— update docs.svija.com
-
-docs.svija.com/changelog
-
-———————————————————————————————————————— social media updates
+———————————————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— social media —————————————————————————————————————
+———————————————————————————————————————————————————————————————————————————————————————————
 
       find a nice picture or make an ad to accompany the update, then
 
@@ -100,73 +141,6 @@ twitter/svijasvg
 instagram/svijasvg (make it 3x wide · has to be done on phone)
 linkedin/company/svijasvg (add image before text)
 
-———————————————————————————————————————— BACKUP-DATA.SH
-
-#!/bin/bash
-# backup-data.sh
-source Env/djangoEnv/bin/activate
-
-#———————————————————————————————————————— list of sites on this server
-
-    # badre/
-    # emane/
-    # jp/
-    # khalid/
-
-#———————————————————————————————————————— other sites
-
-cd badre
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../emane
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../jp
-./manage.py dumpdata > svija-2.0.xx.json
-cd ../khalid
-./manage.py dumpdata > svija-2.0.xx.json
-
-#———————————————————————————————————————— finish
-
-printf "\n   data export finished\n\n"
-
-#———————————————————————————————————————— fin
-
-———————————————————————————————————————— VERSION-UPDATE.SH
-
-#!/bin/bash
-# version-update.sh
-source Env/djangoEnv/bin/activate
-
-#———————————————————————————————————————— list of sites on this server
-
-    # badre/
-    # emane/
-    # jp/
-    # khalid/
-
-#———————————————————————————————————————— update & make migrations
-
-pip install git+https://github.com/svijasvg/django-svija.git@master#egg=django-svija --upgrade
-
-#———————————————————————————————————————— other sites
-
-cd badre
-./manage.py makemigrations svija
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../emane
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../jp
-./manage.py migrate
-./manage.py collectstatic --noinput
-cd ../khalid
-./manage.py migrate
-./manage.py collectstatic --noinput
-
-#———————————————————————————————————————— finish
-
-printf "\n   restarting uwsgi..."
-sudo service uwsgi restart
-printf "\n   finished\n\n"
-
-#———————————————————————————————————————— fin
+——————————————————————————————————————————————————————————————————————————————————
+———————————————————————————————————————— fin —————————————————————————————————————
+——————————————————————————————————————————————————————————————————————————————————

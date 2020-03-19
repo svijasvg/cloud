@@ -1,0 +1,198 @@
+/*———————————————————————————————————————— version number */
+
+#header div#user-tools::after{content:' / v2.1.3'}
+
+/*———————————————————————————————————————— in sync/admin/stylesheet.css */
+
+/* :root {
+   --color:        hsl(75, 100%, 50%);
+   --color-contrast:  hsl( 0,   0%,  0%); } */
+
+/*———————————————————————————————————————— first dark gray header bar */
+
+:root { --dark-gray:  hsl(0, 0%,20%);
+        --light-gray: hsl(0, 0%,90%); }
+
+#header { background-color:var(--dark-gray); height:80px; border-bottom:1px solid var(--color);}
+#svija-admin-logo{ background-color:var(--color); }
+
+
+/*———————————————————————————————————————— small text at right of top bar */
+
+#header div#user-tools { color:var(--color);} /* welcome */
+#header strong         { color:var(--color);} /* user name */
+
+#header div#user-tools a:link,                    /* user tools links */
+#header div#user-tools a:visited
+
+                       { color:var(--color);
+                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
+                         text-decoration:none; }
+
+#header div#user-tools a:hover,
+#header div#user-tools a:active
+
+                       { color:white;
+                         border-bottom:1px solid white; }
+
+/*———————————————————————————————————————— second dark gray header bar */
+
+
+div.breadcrumbs        { background-color:var(--dark-gray);
+                         color:var(--light-gray); }
+
+div.breadcrumbs a:link,
+div.breadcrumbs a:visited
+
+                       { color:hsl(0,0%,70%);
+                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
+                         text-decoration:none; }
+
+div.breadcrumbs a:hover,
+div.breadcrumbs a:active
+
+                       { color:white;
+                         border-bottom:1px solid white; }
+
+/*———————————————————————————————————————— message in new top bar */
+
+ul.messagelist li
+
+  { color:var(--dark-gray);
+    background:var(--color); }
+
+ul.messagelist li a
+
+  { color: var(--dark-gray);
+    font-weight:bold; }
+
+/*———————————————————————————————————————— top right "add page" bubble */
+
+.object-tools a.addlink {
+  color:var(--color);
+  background:var(--dark-gray);
+  border-radius:5px;
+  padding-top:6px;
+  padding-right:10px;
+}
+
+/*———————————————————————————————————————— black bars in middle of page */
+
+.module caption, /* bars on admin page & app/svija page */
+.module h2,      /* filter header, model detail header NEED TO FIX UPPERCASE SOMEWHERE */
+.inline-group h2 /* inline models headers */
+
+                       { background-color:var(--dark-gray);
+                         border-radius:5px;
+                         text-transform:uppercase; }
+
+/*———————————————————————————————————————— basic links & list of models*/
+
+:root {
+  --link:                var(--dark-gray); 
+  --link-hover:          black;
+}
+
+a:link, a:visited      { color: var(--link);
+                         text-decoration: none; }
+
+a:hover, a:active      { color: var(--link-hover);
+                         text-decoration: underline; }
+
+/*———————————————————————————————————————— initially-hidden fields */
+
+fieldset.collapsed .collapse-toggle { color:var(--color); } /* show hidden fields */
+
+/* module collapse collapsed */
+fieldset.module        { } /* main model settings (not inlines or collapsed */
+fieldset.collapse      { background-color:var(--light-gray); border-radius:5px; } /* background of hidden blocks when made visible */
+
+.module h2, .module caption, .inline-group h2,                                    /* background bar of uncollapsed module */
+fieldset.collapsed h2                                                             /* background bars of collapsed areas */
+
+                       { background-color:var(--dark-gray) !important;
+                         color:var(--light-gray) !important;
+                         border-radius:5px; }
+
+fieldset.collapsed .collapse-toggle                                               /* (SHOW) link */
+
+                       { color:var(--color)!important; }
+
+/*———————————————————————————————————————— help tip */
+
+div.description{
+  color:var(--dark-gray);
+  background-color:var(--light-gray);
+  opacity:0.7;
+  padding:5px 7px 7px 7px;
+  margin-left:20px;
+  border-radius:0px 0px 5px 5px;
+  display: inline-block;
+  font-size:14px;
+}
+
+/*———————————————————————————————————————— lists of settings */
+
+/* rounded corners on th (left) & td (right) · can't be used because
+   the cell above has a bottom border no matter what.                */
+
+/* tr th {border-radius:5px 0px 0px 5px;}
+   tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
+
+/*———————————————————————————————————————— modules & pages */
+
+tr.model-page, tr.model-module
+
+  { background-color:var(--color); border-radius:5px; }
+
+tr.model-page a:link,    tr.model-module a:link,
+tr.model-page a:visited, tr.model-module a:visited
+
+  { color:var(--dark-gray); }
+
+tr.model-page a:active, tr.model-module a:active
+tr.model-page a:hover,  tr.model-module a:hover
+
+  { color:var(--color-contrast); }
+
+/*———————————————————————————————————————— other important settings */
+
+tr.model-settings,
+tr.model-language,
+tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
+
+/*———————————————————————————————————————— buttons */
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button
+
+  { color:var(--dark-gray);
+    background:var(--light-gray); }
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+.submit-row input:hover,
+a.button:hover
+
+  { color:var(--color-contrast);
+    background:var(--color); }
+
+.button.default,
+input[type=submit].default,
+.submit-row input.default
+
+  { color:var(--color-contrast);
+    background:var(--color); }
+
+.button.default:hover,
+input[type=submit].default:hover,
+.submit-row input.default:hover
+
+  { color:var(--color);
+    background:var(--color-contrast); }
+
+/*———————————————————————————————————————— fin */

@@ -21,17 +21,20 @@ admin.site.register(Forwards, ForwardsAdmin)
 
 #---------------------------------------- fonts · no dependencies
 
+fr_bosic = ' '.join(["Source : nom Google, fichier woff/woff2 ou local1,local2 etc. pour polices standard"])
+
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', 'google', 'family', )
-    list_display = ('name', 'family', 'style', 'source', 'google', 'active', )
+    list_display = ('name', 'family', 'style', 'source', 'active', 'google', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'google', 'active',], }),
+        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
+
     ]   
 
 admin.site.register(Font, FontAdmin)
@@ -43,7 +46,7 @@ class HelpAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('cat1', 'cat2',)
-    list_display = ('name', 'cat1', 'cat2',)
+    list_display = ('name', 'cat1', 'cat2','link',)
     save_on_top = True
     save_as = True
 
@@ -150,7 +153,8 @@ class SharedAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': ['name', ],}),
+#       ('Scripts Name', {'fields': ['name', ],}),
+        ('Scripts Name', {'fields': ['name', ],'description': 'These are resources for all pages. They should not execute automatically.',}),
     ]   
     inlines = [SharedScriptsInline]
 
@@ -212,7 +216,7 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'filename', 'sort1', 'sort2'],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'sort1', 'sort2', 'filename',],}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -255,7 +259,7 @@ class SettingsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'cache_reset', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
+        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
         ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
@@ -276,6 +280,7 @@ class SvgInline(admin.TabularInline):
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
+    verbose_name_plural = 'svg files · fichiers svg'
 
 from .models import Page
 class LibraryScriptInline(admin.TabularInline):
@@ -312,7 +317,7 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['cache_reset', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility/SEO',  {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('readability',        {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   

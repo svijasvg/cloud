@@ -2,61 +2,12 @@
 {% load static %}
 
 {% block title %}{{ title }} | Svija Admin{% endblock %}
-<!-- site_title|default:_('Django site admin') -->
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/admn/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />{% endblock %}
+
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}"><img src=/images/logo-admin.png width=300 height=80><!--  site_header|default:_('Django administration') --></a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src="/admn/svija-admin-300x80.png" %} width=300 height=80></a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
-
-{% block extrahead %}<style> /* hsl(345, 85%, 60%) */
-
-    #header div#user-tools::after{content:' / v2.1.1'}
-
-    #header { background-color:hsl(0,0%,20%); height:80px; }
-
-    #header div#user-tools { color:hsl(345,100%,60%);} /* welcome */
-    #header strong{ color:hsl(345,100%,60%);} /* user name */
-    #header div#user-tools a:link, /* user tools links */
-    #header div#user-tools a:visited
-      { color:hsl(345,100%,60%); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
-    #header div#user-tools a:hover,
-    #header div#user-tools a:active
-      { color:hsl(345,100%,100%); border-bottom:1px solid hsla(0, 0%, 100%, 0.5); text-decoration:none;}
-
-    div.breadcrumbs { background-color:hsl(0,0%,20%); border-top:1px solid hsl(345,85%,60%); color:hsl(0, 0%,70%); }
-    div.breadcrumbs a:link,
-    div.breadcrumbs a:visited
-      { color:hsl(0,0%,70%); border-bottom:1px solid hsla(0, 0%, 100%, 0.0); text-decoration:none;}
-    div.breadcrumbs a:focus,
-    div.breadcrumbs a:hover
-      { color:hsl(345,100%,100%); border-bottom:1px solid hsla(0, 0%, 100%, 0.5); text-decoration:none;}
-
-    .module h2, .module caption, .inline-group h2 /* black bars in middle of page */
-      { background:hsl(0,0%,20%); border-radius:5px; }
-
-    a:link, a:visited { color: hsl(0,0%,50%); text-decoration: none; }
-    a:focus, a:hover { color: hsl(345, 85%, 60%); }
-    a:focus { text-decoration: underline; }
-
-    fieldset.collapsed .collapse-toggle { color:hsl(345, 85%, 60%); } /* show hidden fields */
-
-    .button, input[type=submit], input[type=button], .submit-row input, a.button
-      { background:hsla(345, 0%, 60%, 0.5); }
-
-    .button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover
-      { background:hsla(345, 85%, 60%, 1.0); }
-
-    .button.default, input[type=submit].default, .submit-row input.default
-      { background:hsla(195, 80%, 40%, 1.0); }
-
-    /* save button hover */
-    .button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover
-      { background:hsla(195, 100%, 45%, 1.0); }
-
-    ul.messagelist li /* message "The Site Settings "ant.ocstud.com" was changed successfully." */
-      { background:hsl(0,0%, 20%);  color:hsl(345,85%, 60%); border-top:1px solid hsl(345, 85%, 60%); }
-
-</style>{% endblock %}
-
