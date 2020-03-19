@@ -26,6 +26,8 @@ $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/ba
       check for new sites then
       run script in www directory
 
+GET GIT REPO FOR SCRIPTS, JUST KEEP SITE LIST
+
 $ vi backup-data.sh (update version number & add new sites)
 $ ./backup-data.sh
 
@@ -99,6 +101,8 @@ executing pip with sudo, you may want sudo's -H flag.
       they must be done before the Svija update
 
       add any new sites
+
+GET GIT REPO FOR SCRIPTS, JUST KEEP SITE LIST
 
 $ vi ./version-update.sh
 
