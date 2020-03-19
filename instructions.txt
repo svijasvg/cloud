@@ -119,14 +119,14 @@ git checkout dev && git merge master --no-ff -m "starting new version" && git pu
 
         increment version number
 
-vi readme.md                                      mention if migrations are required
-vi setup.py
-vi save_tar.sh
-vi svija/templates/admin/base_site.html          (line 15)
-vi svija/views.py                                (search for svija_version)
+:vsp readme.md                                      mention if migrations are required
+:vsp setup.py
+:vsp save_tar.sh
+:vsp svija/static/admin/css/admin-extra.css
+:vsp svija/views.py                                (search for svija_version)
 
-git commit -m "updated version number" -a
-git push origin master
+$ git commit -m "updated version number" -a
+$ git push -u
 
 ———————————————————————————————————————————————————————————————————————————————————————————
 ———————————————————————————————————————— social media —————————————————————————————————————
