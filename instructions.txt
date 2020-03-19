@@ -19,16 +19,15 @@ the new version number will be: 2.1.3
 ———————————————————————————————————————— server backups ————————————————————————————————————————
 ————————————————————————————————————————————————————————————————————————————————————————————————
 
-      by doing this first, it will be done when you're ready to update
-
-      to check installed version number:
+      check previoulsy-installed version number:
 
 $ vi /var/www/Env/djangoEnv/lib/python3.6/site-packages/svija/templates/admin/base_site.html
 
+      check for new sites then
       run script in www directory
 
-vi backup-data.sh (update version number)
-./backup-data.sh
+$ vi backup-data.sh (update version number & add new sites)
+$ ./backup-data.sh
 
       DO LINODE CLOUD BACKUPS
 
@@ -101,11 +100,11 @@ executing pip with sudo, you may want sudo's -H flag.
 
       add any new sites
 
-vi ./version-update.sh
+$ vi ./version-update.sh
 
       update the server
 
-sudo ./version-update.sh
+$ ./version-update.sh
 
       CHECK IF SITES STILL WORK
 
