@@ -305,9 +305,9 @@ class Page(models.Model):
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)
 
-    # accessibility/seo text
-    access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='readability link name')
-    access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='readabiliy content')
+    # search snippet
+    access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='page name')
+    access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='snippet content')
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
