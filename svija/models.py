@@ -74,29 +74,30 @@ class Notes(models.Model):
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
-    title = models.CharField(max_length=100, default='', verbose_name='page title',)
-    touch = models.CharField(max_length=100, default='', verbose_name='iPhone icon name',)
-    email = models.CharField(max_length=100, default='', verbose_name='destination email',)
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
 
-    form_name       = models.CharField(max_length=100, default='', verbose_name='name field',)
-    form_email      = models.CharField(max_length=100, default='', verbose_name='email field',)
-    form_status     = models.CharField(max_length=100, default='', verbose_name='status message',)
-    form_send       = models.CharField(max_length=100, default='', verbose_name='send button',)
-
-    form_sending    = models.CharField(max_length=100, default='', verbose_name='message while sending',)
-    form_rcvd       = models.CharField(max_length=100, default='', verbose_name='message once sent',)
-
-    form_alert_rcvd = models.CharField(max_length=100, default='', verbose_name='alert message sent',)
-    form_alert_fail = models.CharField(max_length=100, default='', verbose_name='alert send failed',)
+    title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
+    touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
     bcc = models.CharField(max_length=200, default='', verbose_name='bcc: field for contact form',blank=True,)
-    default = models.CharField(max_length=200, default='', verbose_name='sender when email fails verifcation',blank=True,)
-    no_email = models.CharField(max_length=200, default='', verbose_name='sender when only phone number is given',blank=True,)
+    default = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
+    no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
     subject = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='sending address in body',blank=True,)
-    comment       = models.TextField(max_length=5000, default='', verbose_name='source comments',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name='sending address in email body',blank=True,)
+
+    email           = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name label',)
+    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email label',)
+    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button label',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='default message value',)
+
+    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='message while sending',)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='message after sent',)
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='message sent alert',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='message failed alert',)
+
+    comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
 
     def __str__(self):
         return self.name

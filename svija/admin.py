@@ -94,10 +94,10 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('contact form', {'fields': ['email', 'form_name', 'form_email','form_status','form_send',],}),
-        ('email params',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('form messages', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',],}),
-        ('source comments',              {'fields': ['comment'], 'classes': ['collapse']}),
+        ('email parameters',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form information', {'fields': ['email', 'form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
+        ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
+        ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Language, LanguageAdmin)
