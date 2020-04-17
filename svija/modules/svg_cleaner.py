@@ -19,7 +19,7 @@ from django.core.exceptions import ObjectDoesNotExist
 def clean(svg_path, svg_name):
 
     # if unspecified, ID will be filename with extension removed (-en.svg)
-    svg_ID         = svg_name[:-4]
+    svg_ID         = name_cleanup(svg_name)
     add_ID         = True
     width = height = 0
     line_number    = -1
@@ -225,5 +225,13 @@ def redefine_styles(google_font, style_string):
     style_string = famly_given + wgt + sty
     style_string = style_string[0:-1]
     return style_string
+
+#———————————————————————————————————————— fin
+
+def name_cleanup(filename):
+# per.iod in na,me.svg
+  translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
+  filename = filename.translate(translation_table)
+  return filename[:-4]
 
 #———————————————————————————————————————— fin
