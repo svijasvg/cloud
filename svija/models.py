@@ -138,10 +138,10 @@ class Robots(models.Model):
 
 class Template(models.Model):
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='subfolder & filename',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='filename',)
     description = models.CharField(max_length=200, default='', blank=True)
     active = models.BooleanField(default=True, verbose_name='active',)
-    default = models.BooleanField(default=False, verbose_name='default',)
+    default = models.BooleanField(default=False, verbose_name='default (not implemented)',)
     def __str__(self):
         return self.name
 
