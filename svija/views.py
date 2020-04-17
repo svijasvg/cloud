@@ -213,7 +213,7 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from modules import svg_cleaner, meta_canonical, accessibility_links
+from modules import svg_cleaner, meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 
@@ -269,7 +269,7 @@ def PageView(request, path1, path2):
     view_js       = ''
     user_js       = ''
     head_css      = ''
-    accessibility = ''
+    snippet       = ''
     svg           = ''
     html          = ''
     form          = ''
@@ -425,14 +425,14 @@ def PageView(request, path1, path2):
         if this_script.type == 'body JS' and this_script.active == True:
             body_js += add_script('js', this_script.name, this_script.content)
 
-    #———————————————————————————————————————— accessiblity/seo
+    #———————————————————————————————————————— snippet
 
-    text = page.access_text
-    links = accessibility_links.create(settings.url, Page.objects.all())
+    text = page.snippet_text
+    links = make_snippet.create(settings.url, Page.objects.all())
     capture = '/images/capture.jpg'
 
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
-    accessibility = tag.format(text,links,settings.url,capture)
+    snippet = tag.format(text,links,settings.url,capture)
 
     #———————————————————————————————————————— library scripts
 
@@ -548,7 +548,7 @@ def PageView(request, path1, path2):
         'view_js'       : view_js,
         'user_js'       : user_js,
         'css'           : head_css,
-        'accessibility' : accessibility,
+        'snippet'       : snippet,
         'svg'           : svg,
         'html'          : html,
         'form'          : form,

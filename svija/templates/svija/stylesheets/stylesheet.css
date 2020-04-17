@@ -13,7 +13,7 @@ svg{ /* un-positioned elements draw first by default, screwing up z index */
     position:relative;
 }
 
-#accessibility{ /* positioning */
+#snippet{ /* positioning */
          z-index: -1;
         position: absolute;
            width: 80%;
@@ -24,14 +24,14 @@ svg{ /* un-positioned elements draw first by default, screwing up z index */
   pointer-events: none;
 }
 
-#accessibility, #accessibility a:link, #accessibility a:visited{
+#snippet, #snippet a:link, #snippet a:visited{
           font: normal 10px/14px verdana;
     text-align: justify;
   text-justify: inter-word;
          color: hsla(0, 0%, 50%, 0.1);
 }
 
-#accessibility img{
+#snippet img{
     width: 100%;
    height: 1px;
   opacity: 0.1;
