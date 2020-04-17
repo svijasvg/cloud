@@ -1,5 +1,6 @@
 //———————————————————————————————————————— template: window_redraw.js
-counter=0;
+
+// illustrator_pixel set in rem.js
 
 var wn_precision   =  50; // higher is more sensitive to redrawing
 

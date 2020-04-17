@@ -1,8 +1,6 @@
-/*———————————————————————————————————————— all pages */
+/*———————————————————————————————————————— global css */
 
-html,body{
-  margin: 0px;
-}
+html,body{ margin: 0px; }
 
  svg:first-of-type{
      width: 100%;   /* avoids flash when SVG is resized */
@@ -14,25 +12,14 @@ svg{ /* un-positioned elements draw first by default, screwing up z index */
 }
 
 #snippet{ /* positioning */
-         z-index: -1;
-        position: absolute;
-           width: 80%;
-          height: 80%;
-      margin-top: 5%;
-     margin-left: 30%;
+        position: absolute; left: 1rem; top: 1rem;
+           width: 20rem;  height: 20rem;
         overflow: hidden;
   pointer-events: none;
+         z-index: -999; 
 }
 
 #snippet, #snippet a:link, #snippet a:visited{
-          font: normal 10px/14px verdana;
-    text-align: justify;
-  text-justify: inter-word;
-         color: hsla(0, 0%, 50%, 0.1);
-}
-
-#snippet img{
-    width: 100%;
-   height: 1px;
-  opacity: 0.1;
+   font: normal 1rem/1.4rem verdana;
+  color: #999;
 }
