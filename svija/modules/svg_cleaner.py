@@ -105,16 +105,28 @@ def clean(svg_path, svg_name):
             parts = line.split('.st')
             line = '\t.st' + svg_ID + parts[1]
 
+        #———————————————————————————————— change <path class="st2" to <path class="st[id]2"
+
         if line.find('class="st') > 0:
             line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
 
-        #———————————————————————————————— replace '#SVGID_' definitions
+        #———————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
 
         if line.find('SVGID_') > 0:
-            line = re.sub(r'SVGID_', r''+svg_ID+'ID', line)
+            line = re.sub(r'SVGID_', r''+svg_ID+'_', line)
 
-        #———————————————————————————————— get id if specified
-        #———————————————————————————————— AI file with layer name "id example"
+        #———————————————————————————————— fix mixed text weight problem
+        #
+        # in the following, if the x value is not 0 I need to delete x & y coords
+        # <tspan x="400.88" y="147">some text</tspan>
+
+        # regex = tspan x=\"[1-9]
+        exp = r'tspan x=\"[1-9]'
+        regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
+        if (re.search(exp, line)):
+          line = regex.sub('tspan', line)
+
+        #———————————————————————————————— get id if layer like "id example" exists
 
         if line[1:10] == 'g id="id_':
             parts = line.split('"')
