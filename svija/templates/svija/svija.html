@@ -17,6 +17,8 @@
   <meta property="og:image" content="/images/capture.jpg">
   <script>
 
+page_loaded = false;
+
 {{ view_js }}
 {% include "svija/javascript/rem.js" %}
 {% include "svija/javascript/cookies.js" %}
@@ -59,6 +61,8 @@
   gtag('js', new Date());
 
   gtag('config', '{{ analytics_id }}');
+
+  page_loaded = true;
 </script>
 
 </body></html>{% endautoescape %}
