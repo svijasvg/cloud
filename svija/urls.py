@@ -21,9 +21,9 @@ urlpatterns = [
 
 #---------------------------------------- main pages
 
-    re_path(r'^(?P<path1>)$', views.HomePage),                # root url
-    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage),       # two letters followed by slash
-    path('<slug:path1>/<slug:path2>', views.PageView),  # something/something
+    re_path(r'^(?P<path1>)$', views.HomePage),          # root url
+    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage), # two letters followed by slash
+    path('<slug:path1>/<slug:path2>', views.PageView),  # prefix/slug
 
 #---------------------------------------- placed images (in Links folder)
 # xlink:href="links/image.jpg"
@@ -45,9 +45,10 @@ urlpatterns = [
 # source_dir = responsive.source_dir
 
     re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/admin"}),
+    re_path(r'^files/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/files"}),
     re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
     re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
-    re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/scripts"}),
+    re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/scripts"}),
 
 ]
 
