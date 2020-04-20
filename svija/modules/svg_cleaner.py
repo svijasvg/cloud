@@ -1,14 +1,12 @@
 #———————————————————————————————————————— svg.py
 #
-#        remove XML (1st two lines)
+#   remove 1st two lines of SVG (XML)
 #
-#        remove pixel dimensions if present
-#        equivalent of checking "responsive" in Illustrator
+#   add a unique ID based on filename if necessary
 #
-#        add a unique ID based on filename if necessary
+#   change generic CSS classes to unique classes
 #
-#        change generic st classes to unique classes
-#        based on filename
+#   update font definitions
 #
 #———————————————————————————————————————— program
 
@@ -26,15 +24,10 @@ def clean(file_path, file_name):
     final_svg      = ''
 
     #———————————————————————————————————— list of woff & google fonts in DB
-    # could be rewritten in three lines
 
-    new_fonts, fonts_file, fonts_goog = [], [], []
-    fonts_db = Font.objects.all()
-    for this_font in fonts_db:
-        if this_font.google:
-            fonts_goog.append(this_font)
-        else:
-            fonts_file.append(this_font)
+    goog_fonts    = Font.objects.filter(google=True)
+    file_fonts    = Font.objects.filter(google=False)
+    fonts_to_add  = []
 
     #———————————————————————————————————— read in the SVG file
 
@@ -94,16 +87,18 @@ def clean(file_path, file_name):
           line = regex.sub('tspan', line)
 
         #———————————————————————————————— get id if layer like "id example" exists
-        # note that this means the ID could change at the end, so .st[id]8 won't correspond
+                                        # note that this means the ID could change at the end,
+                                        # so .st[id]8 won't correspond
 
         if line[1:10] == 'g id="id_':
             parts = line.split('"')
             svg_ID = parts[1][3:]
 
         #————————————————————————————————— find fonts
-        # .stLayer_12{font-family:'Signika-Regular';}
-        #————————————————————————————————————————————
-
+                                         # .st2{font-family:'Signika-Regular';}
+                                         # google font: need to use google-style CSS
+                                         # missing font: need to add to fonts DB
+                                 
         if line[1:4] == '.st':
             if line.find('family') > 0:
                 line_parts = line.split("'")
@@ -111,19 +106,15 @@ def clean(file_path, file_name):
 
                 # if it is a google font already in DB
                 # replace Illustrator-style def with Google's
-                google_font = [x for x in fonts_goog if x.name == css_ref]
-                woff_font = [x for x in fonts_file if x.name == css_ref]
+                goog_font = [x for x in goog_fonts if x.name == css_ref]
 
-                if len(google_font) > 0:
-                    line_parts[1] = redefine_styles(google_font, line_parts[1])
+                if len(goog_font) > 0:
+                    line_parts[1] = update_css(goog_font, line_parts[1])
                     line = ''.join(line_parts)
-
-                # if it's not a woff font already in DB the add it
-                elif len(woff_font) <= 0:
-                    # should be a better way to do this
-                    font_to_replace = Font()
-                    new_font = create_new_font(css_ref, font_to_replace)
-                    new_fonts.append(new_font)
+                else:
+                    file_font = [x for x in file_fonts if x.name == css_ref]
+                    if len(file_font) <= 0:
+                        fonts_to_add.append(css_ref)
 
         #————————————————————————————— close main loop
 
@@ -131,22 +122,17 @@ def clean(file_path, file_name):
             final_svg += '\n' + line;
         line_number += 1
 
-    #—————————————————————————————————————— check font table
-    # https://stackoverflow.com/questions/14676613/how-to-import-google-web-font-in-css-file
+    #—————————————————————————————————————— add any missing fonts to DB
 
-    # add fonts that were not already in DB to DB
-    for each_font in new_fonts:
-        try:
-            font_obj = Font.objects.get(name = each_font.name)
-            rien = 0
-        except ObjectDoesNotExist:
-            p = Font.objects.create(name = each_font.name, family = each_font.family, style=each_font.style, source=each_font.source, google=False, active=False)
-            p.save
+    fonts_to_add = remove_duplicates(fonts_to_add)
+
+    for css_ref in fonts_to_add:
+        new_font = create_new_font(css_ref, Font())
+        p = Font.objects.create(name = new_font.name, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=False)
+        p.save
 
     #—————————————————————————————————————— add new ID if necessary
-
-    # only single-layer AI docs have an ID
-    # <svg version="1.1" id="Layer_1" xmlns="http:
+                                          # single-layer AI docs have ID with layer name
 
     if first_line.find('id="') > 0:
         parts = line.split('"')
@@ -154,13 +140,13 @@ def clean(file_path, file_name):
     else:
         first_line = first_line.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
 
-  #———————————————————————————————————————— return SVG ID, dimensions & contents
+    #—————————————————————————————————————— return SVG ID, dimensions & contents
 
     return svg_ID, px_width, px_height, first_line+final_svg
 
-#—————————————————————————————————————————————————— 
-#———————————————————————————————————————— functions
-#—————————————————————————————————————————————————— 
+#———————————————————————————————————————————————————————————————————————————————————————————
+#———————————————————————————————————————— functions ————————————————————————————————————————
+#———————————————————————————————————————————————————————————————————————————————————————————
 
 def create_new_font(css_ref, new_font):
 
@@ -210,9 +196,9 @@ def create_new_font(css_ref, new_font):
 # 	.stLayer_12{font-family:'Signika-Regular';}
 
 #———————————————————————————————————————— google font function
-# line_parts[1] = redefine_styles(google_font, line_parts[1])
+# line_parts[1] = update_css(google_font, line_parts[1])
 
-def redefine_styles(google_font, style_string):
+def update_css(google_font, style_string):
 
     famly_given = "'" + google_font[0].family + "';"
     style_given = google_font[0].style.lower()
@@ -250,5 +236,11 @@ def cleanup(filename):
   translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
   filename = filename.translate(translation_table)
   return filename[:-4]
+
+#———————————————————————————————————————— remove duplicates
+
+def remove_duplicates(font_array):
+    results = list( dict.fromkeys(font_array) )
+    return results
 
 #———————————————————————————————————————— fin
