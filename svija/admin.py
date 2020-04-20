@@ -28,12 +28,12 @@ class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', 'google', 'family', )
-    list_display = ('name', 'family', 'style', 'google', 'source', 'active', )
+    list_display = ('css', 'family', 'style', 'google', 'source', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
+        ('font info',    {'fields': ['css','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
 
     ]   
 

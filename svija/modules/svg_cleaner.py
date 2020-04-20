@@ -106,13 +106,13 @@ def clean(file_path, file_name):
 
                 # if it is a google font already in DB
                 # replace Illustrator-style def with Google's
-                goog_font = [x for x in goog_fonts if x.name == css_ref]
+                goog_font = [x for x in goog_fonts if x.css == css_ref]
 
                 if len(goog_font) > 0:
                     line_parts[1] = update_css(goog_font, line_parts[1])
                     line = ''.join(line_parts)
                 else:
-                    file_font = [x for x in file_fonts if x.name == css_ref]
+                    file_font = [x for x in file_fonts if x.css == css_ref]
                     if len(file_font) <= 0:
                         fonts_to_add.append(css_ref)
 
@@ -128,7 +128,7 @@ def clean(file_path, file_name):
 
     for css_ref in fonts_to_add:
         new_font = create_new_font(css_ref, Font())
-        p = Font.objects.create(name = new_font.name, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=False)
+        p = Font.objects.create(css = new_font.css, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=False)
         p.save
 
     #—————————————————————————————————————— add new ID if necessary
@@ -150,7 +150,7 @@ def clean(file_path, file_name):
 
 def create_new_font(css_ref, new_font):
 
-    name = family = css_ref
+    css = family = css_ref
     weight = style = width = ''
     source = 'SOURCE NEEDED'
 
@@ -187,7 +187,7 @@ def create_new_font(css_ref, new_font):
     if weight_style == '':
         weight_style = 'Regular'
 
-    new_font.name, new_font.family, new_font.style, new_font.source = name, family, weight_style, source
+    new_font.css, new_font.family, new_font.style, new_font.source = css, family, weight_style, source
 
     return new_font
 

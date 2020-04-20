@@ -29,7 +29,7 @@ class Forwards(models.Model):
 #———————————————————————————————————————— fonts · no dependencies
 
 class Font(models.Model): 
-    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
+    css    = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='source', blank=True)
@@ -292,7 +292,7 @@ class Settings(models.Model):
 class Page(models.Model): 
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     shared = models.ForeignKey(Shared, default=0, on_delete=models.PROTECT, )
-    template = models.ForeignKey(Template, default='live', on_delete=models.PROTECT, )
+    template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     library_script = models.ManyToManyField(LibraryScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)

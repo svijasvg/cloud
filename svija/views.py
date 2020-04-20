@@ -311,7 +311,7 @@ def PageView(request, path1, path2):
 
     for this_font in font_objs:
         if this_font.active:
-            font_face = this_font.name
+            font_face = this_font.css
             font_src  = this_font.source
 
             if this_font.google:
