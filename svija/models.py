@@ -37,7 +37,7 @@ class Font(models.Model):
     active = models.BooleanField(default=True, verbose_name='include',)
 
     def __str__(self):
-        return self.name
+        return self.css
 
 #———————————————————————————————————————— help · no dependencies
 
