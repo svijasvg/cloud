@@ -86,6 +86,14 @@ def clean(file_path, file_name):
         if (re.search(exp, line)):
           line = regex.sub('tspan', line)
 
+        # the problem is that I can't just tspan with x!=0. It has to be x!=0 & y!= previous y
+        # split line at tspan's
+        # for each bit
+        #    this bit main = store bit for reassembly
+        #    this bit coords = split at ", take sections 1 & 3
+        #    if first bit, skip
+        # 
+
         #———————————————————————————————— get id if layer like "id example" exists
                                         # note that this means the ID could change at the end,
                                         # so .st[id]8 won't correspond
