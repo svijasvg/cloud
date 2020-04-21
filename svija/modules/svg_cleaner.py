@@ -22,6 +22,7 @@ def clean(file_path, file_name):
     line_number    = 2
     first_line     = ''
     final_svg      = ''
+    debug          = 'working'
 
     #———————————————————————————————————— list of woff & google fonts in DB
 
@@ -77,23 +78,13 @@ def clean(file_path, file_name):
             line = re.sub(r'SVGID_', r''+svg_ID+'_', line)
 
         #———————————————————————————————— fix mixed text weight problem
-        #
-        # delete coords for <tspan x="400.88" y="147">some text</tspan>
+                                        # search for <tspan x="400.88" where x != 0
 
-        # regex = tspan x=\"[1-9]
         exp = r'tspan x=\"[1-9]'
         regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
         if (re.search(exp, line)):
-          line = regex.sub('tspan', line)
-
-        # the problem is that I can't just tspan with x!=0. It has to be x!=0 & y!= previous y
-        # split line at tspan's
-        # for each bit
-        #    this bit main = store bit for reassembly
-        #    this bit coords = split at ", take sections 1 & 3
-        #    if first bit, skip
-        # 
-
+            line = fix_bumps(line)
+  
         #———————————————————————————————— get id if layer like "id example" exists
                                         # note that this means the ID could change at the end,
                                         # so .st[id]8 won't correspond
@@ -150,6 +141,7 @@ def clean(file_path, file_name):
 
     #—————————————————————————————————————— return SVG ID, dimensions & contents
 
+#    return svg_ID, px_width, px_height, debug
     return svg_ID, px_width, px_height, first_line+final_svg
 
 #———————————————————————————————————————————————————————————————————————————————————————————
@@ -250,5 +242,39 @@ def cleanup(filename):
 def remove_duplicates(font_array):
     results = list( dict.fromkeys(font_array) )
     return results
+
+#———————————————————————————————————————— get x & y coords from string
+
+# input: x="331.245" y="490" class="sttspan...
+
+def get_x_y(str):
+    values = str.split("\"",4)
+    val_x = values[1]
+    val_y = values[3]
+    rest  = values[4]
+    return val_x, val_y, rest
+
+#———————————————————————————————————————— remove x & y coords from tspan
+
+# fixes problem where Safari cause text blocks to bump into each other
+# delete coords for <tspan x="400.88" y="147">some text</tspan>
+
+def fix_bumps(line):
+    blocks = line.split('<tspan ')
+    number_of_parts = len(blocks)
+
+    line = ''
+    for x in range (number_of_parts-1, 1, -1):
+        this_x, this_y, rest = get_x_y(blocks[x])
+
+        if this_x != 0:
+            prev_x, prev_y, rien  = get_x_y(blocks[x-1])
+            if this_y == prev_y:
+                blocks[x] = rest # strip coordinates from blocks[x]
+
+        line = "\n<tspan "+ blocks[x] + line
+
+    line = blocks[0] + '<tspan ' + blocks[1] + line
+    return line
 
 #———————————————————————————————————————— fin
