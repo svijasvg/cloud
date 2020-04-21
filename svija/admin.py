@@ -127,12 +127,12 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name','default', 'active', 'description', 'filename', )
+    list_display = ('name','active', 'description', 'filename', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name','default', 'active', 'filename','description', ],}),
+        ('Name & Filename (in svija/templates)', {'fields': ['name', 'active', 'filename','description', ],}),
     ]   
 
 admin.site.register(Template, TemplateAdmin)
