@@ -127,7 +127,7 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name', 'active', 'description', 'filename', )
+    list_display = ('name', 'display_order', 'active', 'description', 'filename', )
     save_on_top = True
     save_as = True
 
