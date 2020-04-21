@@ -23,8 +23,8 @@ class Forwards(models.Model):
     def __str__(self):
         return self.from_url
     class Meta:
-        verbose_name = "forward"
-        verbose_name_plural = "forwards"
+        verbose_name = "Redirects"
+        verbose_name_plural = "4.2 · Redirects"
 
 #———————————————————————————————————————— fonts · no dependencies
 
@@ -38,6 +38,9 @@ class Font(models.Model):
 
     def __str__(self):
         return self.css
+    class Meta:
+        verbose_name = "Font"
+        verbose_name_plural = "3.1 · Fonts"
 
 #———————————————————————————————————————— help · no dependencies
 
@@ -53,7 +56,7 @@ class Help(models.Model):
         return self.name
     class Meta:
         verbose_name = "help article"
-        verbose_name_plural = "help articles"
+        verbose_name_plural = "4.5 · Help"
 
 #———————————————————————————————————————— notes · no dependencies
 
@@ -68,7 +71,7 @@ class Notes(models.Model):
         return self.name
     class Meta:
         verbose_name = "notes"
-        verbose_name_plural = "notes"
+        verbose_name_plural = "4.4 · My Notes"
 
 #———————————————————————————————————————— language · no dependencies
 
@@ -104,6 +107,7 @@ class Language(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order']
+        verbose_name_plural = "1.2 · Languages"
 
 #———————————————————————————————————————— responsive · no dependencies
 
@@ -128,7 +132,7 @@ class Responsive(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order']
-        verbose_name_plural = "Responsive"
+        verbose_name_plural = "1.3 · Responsive Options"
 
 #———————————————————————————————————————— robots · no dependencies
 
@@ -139,7 +143,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "Robots.txt"
-        verbose_name_plural = "Robots.txt"
+        verbose_name_plural = "4.1· Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
@@ -154,6 +158,7 @@ class Template(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order']
+        verbose_name_plural = "4.3 · Templates"
 
 #———————————————————————————————————————— library scripts · no dependencies
 
@@ -173,6 +178,8 @@ class LibraryScript(models.Model):
         return self.name
     class Meta:
         ordering = ["type", "name", "sort1", "sort2"]
+        verbose_name = "Optional Scripts"
+        verbose_name_plural = "3.3 · Optional Scripts"
 
 #———————————————————————————————————————— module · no dependencies
 
@@ -193,6 +200,7 @@ class Module(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order', 'name', 'active', 'sort1', 'sort2',]
+        verbose_name_plural = "2.2 · Modules"
 
 module_scripts=('head JS', 'body JS', 'CSS',)
 
@@ -219,7 +227,7 @@ class Shared(models.Model):
         return self.name
     class Meta:
         verbose_name = "Sitewide Scripts"
-        verbose_name_plural = "Sitewide Scripts"
+        verbose_name_plural = "3.2 · Sitewide Scripts"
 
 shared_scripts=('CSS', 'head JS', 'body JS',)
 
@@ -234,7 +242,6 @@ class SharedScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "included script"
-        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— prefix · uses responsive & language
@@ -249,7 +256,7 @@ class Prefix(models.Model):
     def __str__(self):
         return self.path
     class Meta:
-        verbose_name_plural = "Prefixes"
+        verbose_name_plural = "1.4 · Prefix Codes"
         ordering = ['display_order']
 
 class PrefixModules(models.Model):
@@ -297,7 +304,7 @@ class Settings(models.Model):
         return self.url
     class Meta:
         verbose_name = "Site Settings"
-        verbose_name_plural = "Site Settings"
+        verbose_name_plural = "1.1 · Site Settings"
 
 #———————————————————————————————————————— page · uses shared, template & prefix
 
@@ -338,6 +345,7 @@ class Page(models.Model):
         return self.url
     class Meta:
         ordering = ['display_order', 'prefix', 'url', '-pub_date', ]
+        verbose_name_plural = "2.1 · Pages"
 
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
 
