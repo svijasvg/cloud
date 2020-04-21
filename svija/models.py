@@ -76,6 +76,7 @@ class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
@@ -101,11 +102,15 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['display_order']
 
 #———————————————————————————————————————— responsive · no dependencies
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='source directory',)
     meta_tag = models.CharField(max_length=200, default='', blank=True)
     description = models.CharField(max_length=200, default='', blank=True)
@@ -122,6 +127,7 @@ class Responsive(models.Model):
     def __str__(self):
         return self.name
     class Meta:
+        ordering = ['display_order']
         verbose_name_plural = "Responsive"
 
 #———————————————————————————————————————— robots · no dependencies
@@ -139,12 +145,15 @@ class Robots(models.Model):
 
 class Template(models.Model):
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='subfolder & filename',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='filename',)
     description = models.CharField(max_length=200, default='', blank=True)
     active = models.BooleanField(default=True, verbose_name='active',)
-    default = models.BooleanField(default=False, verbose_name='default',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['display_order']
 
 #———————————————————————————————————————— library scripts · no dependencies
 
@@ -172,6 +181,7 @@ class Module(models.Model):
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
@@ -182,7 +192,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['name', 'active', 'sort1', 'sort2',]
+        ordering = ['display_order', 'name', 'active', 'sort1', 'sort2',]
 
 module_scripts=('head JS', 'body JS', 'CSS',)
 
@@ -230,6 +240,7 @@ class SharedScripts(models.Model):
 #———————————————————————————————————————— prefix · uses responsive & language
 
 class Prefix(models.Model):
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     path = models.CharField(max_length=2, default='')
     default = models.CharField(max_length=20, default='', verbose_name='default page')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
@@ -239,6 +250,7 @@ class Prefix(models.Model):
         return self.path
     class Meta:
         verbose_name_plural = "Prefixes"
+        ordering = ['display_order']
 
 class PrefixModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.PROTECT)
@@ -290,6 +302,7 @@ class Settings(models.Model):
 #———————————————————————————————————————— page · uses shared, template & prefix
 
 class Page(models.Model): 
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     shared = models.ForeignKey(Shared, default=0, on_delete=models.PROTECT, )
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
@@ -324,7 +337,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ["-pub_date"]
+        ordering = ['display_order', 'prefix', 'url', '-pub_date', ]
 
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
 
