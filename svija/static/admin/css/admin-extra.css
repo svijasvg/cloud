@@ -13,9 +13,14 @@
 :root { --dark-gray:  hsl(0, 0%,20%);
         --light-gray: hsl(0, 0%,90%); }
 
-#header { background-color:var(--dark-gray); height:80px; border-bottom:1px solid var(--color);}
-#svija-admin-logo{ background-color:var(--color); }
+#header
+                       { background-color:var(--dark-gray);
+                         border-bottom:1px solid var(--color); }
 
+#svija-admin-logo
+
+                       { background-color:var(--color);
+                         margin:5px 0 5px -12px; }
 
 /*———————————————————————————————————————— small text at right of top bar */
 
@@ -36,7 +41,6 @@
                          border-bottom:1px solid white; }
 
 /*———————————————————————————————————————— second dark gray header bar */
-
 
 div.breadcrumbs        { background-color:var(--dark-gray);
                          color:var(--light-gray); }
