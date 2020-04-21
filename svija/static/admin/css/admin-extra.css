@@ -143,6 +143,16 @@ div.description{
 /* tr th {border-radius:5px 0px 0px 5px;}
    tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
 
+/*———————————————————————————————————————— most important settings */
+
+tr.model-settings,
+tr.model-language,
+tr.model-prefix,
+tr.model-responsive
+
+  { background-color:var(--light-gray);
+       border-radius:5px; }
+
 /*———————————————————————————————————————— modules & pages */
 
 tr.model-page, tr.model-module
@@ -159,11 +169,14 @@ tr.model-page a:hover,  tr.model-module a:hover
 
   { color:var(--color-contrast); }
 
-/*———————————————————————————————————————— other important settings */
+/*———————————————————————————————————————— other impt settings */
 
-tr.model-settings,
-tr.model-language,
-tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
+tr.model-font,
+tr.model-libraryscript,
+tr.model-shared
+
+  { background-color:var(--light-gray);
+       border-radius:5px; }
 
 /*———————————————————————————————————————— buttons */
 
