@@ -282,7 +282,7 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
-    tracking_on   = models.BooleanField(default=False, verbose_name='allow cookies unless opted out',)
+    tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
 
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit DEPRECATED',)
 

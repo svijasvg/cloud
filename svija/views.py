@@ -345,16 +345,21 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— views.py generated JS
 
     # version information
-
     view_js += "var svija_version='2.1.4';\n"
 
     # language information
-
     cde = language.code
     view_js += 'var language_code = "' + cde +'";\n'
 #   pfx = settings.prefix.path
 #   view_js += 'var default_site_prefix = "' + pfx +'";\n'
 
+    # accept cookies by default
+    if settings.tracking_on:
+        view_js += "var tracking_on = true;\n"
+    else:
+        view_js += "var tracking_on = false;\n"
+
+    # page url
     if settings.secure:
         page_url = 'https://'
     else:
@@ -363,6 +368,7 @@ def PageView(request, path1, path2):
     page_url += settings.url + '/' + path1 + '/' + path2
     view_js += "var page_url = '" + page_url + "';\n"
 
+    # page dimension information
     dim_js = ''
 
     if page.override_dims:
