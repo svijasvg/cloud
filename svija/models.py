@@ -282,7 +282,10 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
+    tracking_on   = models.BooleanField(default=False, verbose_name='allow cookies unless opted out',)
+
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit DEPRECATED',)
+
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
     active        = models.BooleanField(default=False, verbose_name='active',)
