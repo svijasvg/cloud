@@ -288,7 +288,7 @@ class Settings(models.Model):
 
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
-    active        = models.BooleanField(default=False, verbose_name='active',)
+    active        = models.BooleanField(default=False, verbose_name='site is online',)
 
     # backup settings
     backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
