@@ -261,7 +261,7 @@ class SettingsAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'prefix', 'analytics_id', 'tracking_on', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
-        ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
+#       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Settings, SettingsAdmin)
