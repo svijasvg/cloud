@@ -29,6 +29,16 @@ page_loaded = false;
 {{ user_js }}
 
   </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+  <script>
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+if (tracking_on)
+  gtag('config', '{{ analytics_id }}');
+
+  </script>
   <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
 
 <style>
@@ -52,17 +62,6 @@ page_loaded = false;
 
 {{ body_js }} 
 
-</script>
+page_loaded = true;
 
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', '{{ analytics_id }}');
-
-  page_loaded = true;
-</script>
-
-</body></html>{% endautoescape %}
+</script></body></html>{% endautoescape %}
