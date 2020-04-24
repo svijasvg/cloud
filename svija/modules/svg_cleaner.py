@@ -134,7 +134,7 @@ def clean(file_path, file_name):
                                           # single-layer AI docs have ID with layer name
 
     if first_line.find('id="') > 0:
-        parts = line.split('"')
+        parts = first_line.split('"')
         svg_ID = parts[3]
     else:
         first_line = first_line.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
