@@ -347,7 +347,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ['visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
+        ordering = ['visitable', 'display_order', '-prefix', 'url', '-pub_date', ]
         verbose_name_plural = "2.1 · Pages"
 
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
