@@ -23,21 +23,24 @@ class Forwards(models.Model):
     def __str__(self):
         return self.from_url
     class Meta:
-        verbose_name = "forward"
-        verbose_name_plural = "forwards"
+        verbose_name = "Redirects"
+        verbose_name_plural = "4.2 · Redirects"
 
 #———————————————————————————————————————— fonts · no dependencies
 
 class Font(models.Model): 
-    name   = models.CharField(max_length=100, default='', verbose_name='CSS reference')
+    css    = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='source', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
-    active = models.BooleanField(default=True, verbose_name='include in page',)
+    active = models.BooleanField(default=True, verbose_name='include',)
 
     def __str__(self):
-        return self.name
+        return self.css
+    class Meta:
+        verbose_name = "Font"
+        verbose_name_plural = "3.1 · Fonts"
 
 #———————————————————————————————————————— help · no dependencies
 
@@ -53,7 +56,7 @@ class Help(models.Model):
         return self.name
     class Meta:
         verbose_name = "help article"
-        verbose_name_plural = "help articles"
+        verbose_name_plural = "4.5 · Help"
 
 #———————————————————————————————————————— notes · no dependencies
 
@@ -68,43 +71,50 @@ class Notes(models.Model):
         return self.name
     class Meta:
         verbose_name = "notes"
-        verbose_name_plural = "notes"
+        verbose_name_plural = "4.4 · My Notes"
 
 #———————————————————————————————————————— language · no dependencies
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
-    title = models.CharField(max_length=100, default='', verbose_name='page title',)
-    touch = models.CharField(max_length=100, default='', verbose_name='iPhone icon name',)
-    email = models.CharField(max_length=100, default='', verbose_name='destination email',)
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    form_name       = models.CharField(max_length=100, default='', verbose_name='name field',)
-    form_email      = models.CharField(max_length=100, default='', verbose_name='email field',)
-    form_status     = models.CharField(max_length=100, default='', verbose_name='status message',)
-    form_send       = models.CharField(max_length=100, default='', verbose_name='send button',)
-
-    form_sending    = models.CharField(max_length=100, default='', verbose_name='message while sending',)
-    form_rcvd       = models.CharField(max_length=100, default='', verbose_name='message once sent',)
-
-    form_alert_rcvd = models.CharField(max_length=100, default='', verbose_name='alert message sent',)
-    form_alert_fail = models.CharField(max_length=100, default='', verbose_name='alert send failed',)
+    title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
+    touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
     bcc = models.CharField(max_length=200, default='', verbose_name='bcc: field for contact form',blank=True,)
-    default = models.CharField(max_length=200, default='', verbose_name='sender when email fails verifcation',blank=True,)
-    no_email = models.CharField(max_length=200, default='', verbose_name='sender when only phone number is given',blank=True,)
+    default = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
+    no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
     subject = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='sending address in body',blank=True,)
-    comment       = models.TextField(max_length=5000, default='', verbose_name='source comments',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name='sending address in email body',blank=True,)
+
+    email           = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name label',)
+    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email label',)
+    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button label',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='default message value',)
+
+    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='message while sending',)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='message after sent',)
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='message sent alert',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='message failed alert',)
+
+    comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
 
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['display_order']
+        verbose_name_plural = "1.2 · Languages"
 
 #———————————————————————————————————————— responsive · no dependencies
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='source directory',)
     meta_tag = models.CharField(max_length=200, default='', blank=True)
     description = models.CharField(max_length=200, default='', blank=True)
@@ -121,7 +131,8 @@ class Responsive(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name_plural = "Responsive"
+        ordering = ['display_order']
+        verbose_name_plural = "1.3 · Responsive Options"
 
 #———————————————————————————————————————— robots · no dependencies
 
@@ -132,18 +143,22 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "Robots.txt"
-        verbose_name_plural = "Robots.txt"
+        verbose_name_plural = "4.1· Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
 class Template(models.Model):
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='subfolder & filename',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='filename',)
     description = models.CharField(max_length=200, default='', blank=True)
     active = models.BooleanField(default=True, verbose_name='active',)
-    default = models.BooleanField(default=False, verbose_name='default',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ['active', 'display_order']
+        verbose_name_plural = "4.3 · Templates"
 
 #———————————————————————————————————————— library scripts · no dependencies
 
@@ -163,6 +178,8 @@ class LibraryScript(models.Model):
         return self.name
     class Meta:
         ordering = ["type", "name", "sort1", "sort2"]
+        verbose_name = "Optional Scripts"
+        verbose_name_plural = "3.3 · Optional Scripts"
 
 #———————————————————————————————————————— module · no dependencies
 
@@ -171,6 +188,7 @@ class Module(models.Model):
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
@@ -181,7 +199,8 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['name', 'active', 'sort1', 'sort2',]
+        ordering = ['active', 'display_order', 'name', 'sort1', 'sort2',]
+        verbose_name_plural = "2.2 · Modules"
 
 module_scripts=('head JS', 'body JS', 'CSS',)
 
@@ -208,7 +227,7 @@ class Shared(models.Model):
         return self.name
     class Meta:
         verbose_name = "Sitewide Scripts"
-        verbose_name_plural = "Sitewide Scripts"
+        verbose_name_plural = "3.2 · Sitewide Scripts"
 
 shared_scripts=('CSS', 'head JS', 'body JS',)
 
@@ -223,12 +242,12 @@ class SharedScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "included script"
-        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— prefix · uses responsive & language
 
 class Prefix(models.Model):
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     path = models.CharField(max_length=2, default='')
     default = models.CharField(max_length=20, default='', verbose_name='default page')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
@@ -237,7 +256,8 @@ class Prefix(models.Model):
     def __str__(self):
         return self.path
     class Meta:
-        verbose_name_plural = "Prefixes"
+        verbose_name_plural = "1.4 · Prefix Codes"
+        ordering = ['display_order']
 
 class PrefixModules(models.Model):
     module = models.ForeignKey(Module, on_delete=models.PROTECT)
@@ -262,10 +282,13 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
+    tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
+
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit DEPRECATED',)
+
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
-    active        = models.BooleanField(default=False, verbose_name='active',)
+    active        = models.BooleanField(default=False, verbose_name='site is online',)
 
     # backup settings
     backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
@@ -284,11 +307,12 @@ class Settings(models.Model):
         return self.url
     class Meta:
         verbose_name = "Site Settings"
-        verbose_name_plural = "Site Settings"
+        verbose_name_plural = "1.1 · Site Settings"
 
 #———————————————————————————————————————— page · uses shared, template & prefix
 
 class Page(models.Model): 
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     shared = models.ForeignKey(Shared, default=0, on_delete=models.PROTECT, )
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
@@ -305,9 +329,9 @@ class Page(models.Model):
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)
 
-    # accessibility/seo text
-    access_name = models.CharField(max_length=200, default='', blank=True, verbose_name='readability link name')
-    access_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='readabiliy content')
+    # search snippet
+    snippet_name = models.CharField(max_length=200, default='', blank=True, verbose_name='page name')
+    snippet_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='snippet content')
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
@@ -323,7 +347,8 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ["-pub_date"]
+        ordering = ['-visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
+        verbose_name_plural = "2.1 · Pages"
 
 page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
 

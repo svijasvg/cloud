@@ -28,12 +28,12 @@ class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', 'google', 'family', )
-    list_display = ('name', 'family', 'style', 'source', 'active', 'google', )
+    list_display = ('css', 'family', 'style', 'google', 'source', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['name','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
+        ('font info',    {'fields': ['css','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
 
     ]   
 
@@ -87,17 +87,17 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'flag', 'code', 'email',)
+    list_display = ('name', 'display_order', 'flag', 'code', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag',],}),
+        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag','display_order',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('contact form', {'fields': ['email', 'form_name', 'form_email','form_status','form_send',],}),
-        ('email params',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('form messages', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',],}),
-        ('source comments',              {'fields': ['comment'], 'classes': ['collapse']}),
+        ('email parameters',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form information', {'fields': ['email', 'form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
+        ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
+        ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Language, LanguageAdmin)
@@ -127,12 +127,12 @@ from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
 
     # display on parent template
-    list_display = ('name','default', 'active', 'description', 'filename', )
+    list_display = ('name', 'display_order', 'active', 'description', 'filename', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name','default', 'active', 'filename','description', ],}),
+        ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],}),
     ]   
 
 admin.site.register(Template, TemplateAdmin)
@@ -184,12 +184,12 @@ from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'canonical', 'source_dir', 'description')
+    list_display = ('name', 'display_order', 'canonical', 'source_dir', 'description')
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+        ('details',{'fields': ['name', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
         ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
@@ -211,12 +211,12 @@ class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'active', 'sort1', 'sort2', 'filename',)
+    list_display = ('name', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'sort1', 'sort2', 'filename',],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', 'sort1', 'sort2', 'filename',],}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -236,12 +236,12 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('path', 'default', 'responsive', 'language')
+    list_display = ('display_order', 'path', 'default', 'responsive', 'language')
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('display name', {'fields': ['path', 'responsive', 'language','default',],}),
+        ('display name', {'fields': ['display_order', 'path', 'responsive', 'language','default',],}),
     ]   
 
     inlines = [ModuleInlinePrefix, ]
@@ -259,9 +259,9 @@ class SettingsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'prefix', 'analytics_id', 'pub_date', 'maps_api_key',]}),
+        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'prefix', 'analytics_id', 'tracking_on', 'pub_date', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
-        ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
+#       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Settings, SettingsAdmin)
@@ -310,14 +310,14 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
-    list_display = ('url', 'prefix', 'title', 'template', 'visitable', 'suppress_modules', 'pub_date',)
+    list_display = ('url', 'prefix', 'display_order', 'title', 'visitable', 'suppress_modules', 'pub_date',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['cache_reset', 'visitable', 'prefix','url',],'description':fr_basic,}),
+        ('BASIC SETUP',        {'fields': ['cache_reset', 'display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('readability',        {'fields': ['access_name','access_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('search snippet',     {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   

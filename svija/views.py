@@ -213,7 +213,7 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from modules import svg_cleaner, meta_canonical, accessibility_links
+from modules import svg_cleaner, meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 
@@ -269,7 +269,7 @@ def PageView(request, path1, path2):
     view_js       = ''
     user_js       = ''
     head_css      = ''
-    accessibility = ''
+    snippet       = ''
     svg           = ''
     html          = ''
     form          = ''
@@ -311,7 +311,7 @@ def PageView(request, path1, path2):
 
     for this_font in font_objs:
         if this_font.active:
-            font_face = this_font.name
+            font_face = this_font.css
             font_src  = this_font.source
 
             if this_font.google:
@@ -345,16 +345,21 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— views.py generated JS
 
     # version information
-
-    view_js += "var svija_version='2.1.3';\n"
+    view_js += "var svija_version='2.1.4';\n"
 
     # language information
-
     cde = language.code
     view_js += 'var language_code = "' + cde +'";\n'
 #   pfx = settings.prefix.path
 #   view_js += 'var default_site_prefix = "' + pfx +'";\n'
 
+    # accept cookies by default
+    if settings.tracking_on:
+        view_js += "var tracking_on = true;\n"
+    else:
+        view_js += "var tracking_on = false;\n"
+
+    # page url
     if settings.secure:
         page_url = 'https://'
     else:
@@ -363,6 +368,7 @@ def PageView(request, path1, path2):
     page_url += settings.url + '/' + path1 + '/' + path2
     view_js += "var page_url = '" + page_url + "';\n"
 
+    # page dimension information
     dim_js = ''
 
     if page.override_dims:
@@ -425,14 +431,14 @@ def PageView(request, path1, path2):
         if this_script.type == 'body JS' and this_script.active == True:
             body_js += add_script('js', this_script.name, this_script.content)
 
-    #———————————————————————————————————————— accessiblity/seo
+    #———————————————————————————————————————— snippet
 
-    text = page.access_text
-    links = accessibility_links.create(settings.url, Page.objects.all())
+    text = page.snippet_text
+    links = make_snippet.create(settings.url, Page.objects.all())
     capture = '/images/capture.jpg'
 
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
-    accessibility = tag.format(text,links,settings.url,capture)
+    snippet = tag.format(text,links,settings.url,capture)
 
     #———————————————————————————————————————— library scripts
 
@@ -548,7 +554,7 @@ def PageView(request, path1, path2):
         'view_js'       : view_js,
         'user_js'       : user_js,
         'css'           : head_css,
-        'accessibility' : accessibility,
+        'snippet'       : snippet,
         'svg'           : svg,
         'html'          : html,
         'form'          : form,

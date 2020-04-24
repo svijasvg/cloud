@@ -1,6 +1,6 @@
 /*———————————————————————————————————————— version number */
 
-#header div#user-tools::after{content:' / v2.1.3'}
+#header div#user-tools::after{content:' / v2.1.4'}
 
 /*———————————————————————————————————————— in sync/admin/stylesheet.css */
 
@@ -13,9 +13,14 @@
 :root { --dark-gray:  hsl(0, 0%,20%);
         --light-gray: hsl(0, 0%,90%); }
 
-#header { background-color:var(--dark-gray); height:80px; border-bottom:1px solid var(--color);}
-#svija-admin-logo{ background-color:var(--color); }
+#header
+                       { background-color:var(--dark-gray);
+                         border-bottom:1px solid var(--color); }
 
+#svija-admin-logo
+
+                       { background-color:var(--color);
+                         margin:5px 0 5px -12px; }
 
 /*———————————————————————————————————————— small text at right of top bar */
 
@@ -36,7 +41,6 @@
                          border-bottom:1px solid white; }
 
 /*———————————————————————————————————————— second dark gray header bar */
-
 
 div.breadcrumbs        { background-color:var(--dark-gray);
                          color:var(--light-gray); }
@@ -139,6 +143,16 @@ div.description{
 /* tr th {border-radius:5px 0px 0px 5px;}
    tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
 
+/*———————————————————————————————————————— most important settings */
+
+tr.model-settings,
+tr.model-language,
+tr.model-prefix,
+tr.model-responsive
+
+  { background-color:var(--light-gray);
+       border-radius:5px; }
+
 /*———————————————————————————————————————— modules & pages */
 
 tr.model-page, tr.model-module
@@ -155,11 +169,14 @@ tr.model-page a:hover,  tr.model-module a:hover
 
   { color:var(--color-contrast); }
 
-/*———————————————————————————————————————— other important settings */
+/*———————————————————————————————————————— other impt settings */
 
-tr.model-settings,
-tr.model-language,
-tr.model-responsive   { background-color:var(--light-gray); border-radius:5px; }
+tr.model-font,
+tr.model-libraryscript,
+tr.model-shared
+
+  { background-color:var(--light-gray);
+       border-radius:5px; }
 
 /*———————————————————————————————————————— buttons */
 

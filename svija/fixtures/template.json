@@ -1,0 +1,24 @@
+[
+{
+    "model": "svija.template",
+    "pk": 2,
+    "fields": {
+        "name": "live",
+        "filename": "svija.html",
+        "description": "regular SVG page",
+        "active": true,
+        "default": true
+    }
+},
+{
+    "model": "svija.template",
+    "pk": 3,
+    "fields": {
+        "name": "debug",
+        "filename": "debug.html",
+        "description": "list all information",
+        "active": true,
+        "default": false
+    }
+}
+]

@@ -17,14 +17,26 @@
   <meta property="og:image" content="/images/capture.jpg">
   <script>
 
+page_loaded = false;
+
 {{ view_js }}
 {% include "svija/javascript/rem.js" %}
 {% include "svija/javascript/cookies.js" %}
 {% include "svija/javascript/choose_language.js" %}
 {% include "svija/javascript/responsive.js" %}
-{% include "svija/javascript/window_redraw.js" %}
+{% include "svija/javascript/on_resize.js" %}
 {% include "svija/javascript/tap_highlight.js" %}
 {{ user_js }}
+
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+  <script>
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+if (tracking_on)
+  gtag('config', '{{ analytics_id }}');
 
   </script>
   <script src="{% static 'svija/scripts/TweenMax-2.0.2.js' %}"></script>
@@ -38,7 +50,7 @@
 
 {% include "svija/javascript/initial_scroll.js" %}
 
-</script><div id=accessibility>{{ accessibility }}</div>
+</script><div id=snippet>{{ snippet }}</div>
 
 {{ svg  }}
 {{ html }}
@@ -50,15 +62,6 @@
 
 {{ body_js }} 
 
-</script>
+page_loaded = true;
 
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', '{{ analytics_id }}');
-</script>
-
-</body></html>{% endautoescape %}
+</script></body></html>{% endautoescape %}
