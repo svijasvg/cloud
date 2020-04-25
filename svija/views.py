@@ -345,7 +345,7 @@ def PageView(request, path1, path2):
     #———————————————————————————————————————— views.py generated JS
 
     # version information
-    view_js += "var svija_version='2.1.4';\n"
+    view_js += "var svija_version='2.1.5';\n"
 
     # language information
     cde = language.code
