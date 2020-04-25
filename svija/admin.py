@@ -236,12 +236,12 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('display_order', 'path', 'default', 'responsive', 'language')
+    list_display = ('path', 'display_order', 'responsive', 'language', 'default', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('display name', {'fields': ['display_order', 'path', 'responsive', 'language','default',],}),
+        ('display name', {'fields': ['path', 'display_order', 'responsive', 'language','default',],}),
     ]   
 
     inlines = [ModuleInlinePrefix, ]
