@@ -272,7 +272,8 @@ def fix_bumps(line):
             if this_y == prev_y:
                 blocks[x] = rest # strip coordinates from blocks[x]
 
-        line = "\n<tspan "+ blocks[x] + line
+        # adding a CR causes Firefox to add far too much whitespace
+        line = "<tspan "+ blocks[x] + line
 
     line = blocks[0] + '<tspan ' + blocks[1] + line
     return line
