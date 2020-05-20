@@ -11,6 +11,7 @@
 /*———————————————————————————————————————— first dark gray header bar */
 
 :root { --dark-gray:  hsl(0, 0%,20%);
+        --gray-text:  hsl(0, 0%,50%);
         --light-gray: hsl(0, 0%,90%); }
 
 #header
@@ -93,7 +94,7 @@ ul.messagelist li a
 /*———————————————————————————————————————— basic links & list of models*/
 
 :root {
-  --link:                var(--dark-gray); 
+  --link:                var(--gray-text); 
   --link-hover:          black;
 }
 
@@ -143,7 +144,7 @@ div.description{
 /* tr th {border-radius:5px 0px 0px 5px;}
    tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
 
-/*———————————————————————————————————————— most important settings */
+/*———————————————————————————————————————— 1st section: most important settings */
 
 tr.model-settings,
 tr.model-language,
@@ -153,23 +154,37 @@ tr.model-responsive
   { background-color:var(--light-gray);
        border-radius:5px; }
 
-/*———————————————————————————————————————— modules & pages */
+tr.model-settings   a:link, tr.model-settings   a:visited,
+tr.model-language   a:link, tr.model-language   a:visited,
+tr.model-prefix     a:link, tr.model-prefix     a:visited,
+tr.model-responsive a:link, tr.model-responsive a:visited
+
+  { color:var(--dark-gray); }
+
+tr.model-settings   a:hover, tr.model-settings   a:active,
+tr.model-language   a:hover, tr.model-language   a:active,
+tr.model-prefix     a:hover, tr.model-prefix     a:active,
+tr.model-responsive a:hover, tr.model-responsive a:active
+
+  { color:var(--dark-gray); }
+
+/*———————————————————————————————————————— 2nd section: modules & pages */
 
 tr.model-page, tr.model-module
 
   { background-color:var(--color); border-radius:5px; }
 
-tr.model-page a:link,    tr.model-module a:link,
-tr.model-page a:visited, tr.model-module a:visited
+tr.model-page   a:link, tr.model-page   a:visited,
+tr.model-module a:link, tr.model-module a:visited
 
   { color:var(--dark-gray); }
 
-tr.model-page a:active, tr.model-module a:active
-tr.model-page a:hover,  tr.model-module a:hover
+tr.model-page   a:hover, tr.model-page   a:active,
+tr.model-module a:hover, tr.model-module a:active
 
   { color:var(--color-contrast); }
 
-/*———————————————————————————————————————— other impt settings */
+/*———————————————————————————————————————— 3rd section: other impt settings */
 
 tr.model-font,
 tr.model-libraryscript,
@@ -177,6 +192,18 @@ tr.model-shared
 
   { background-color:var(--light-gray);
        border-radius:5px; }
+
+tr.model-font           a:link, tr.model-font          a:visited,
+tr.model-libraryscript  a:link, tr.model-libraryscript a:visited,
+tr.model-shared         a:link, tr.model-shared        a:visited
+
+  { color:var(--dark-gray); }
+
+tr.model-font          a:hover, tr.model-font          a:active,
+tr.model-libraryscript a:hover, tr.model-libraryscript a:active,
+tr.model-shared        a:hover, tr.model-shared        a:active
+
+  { color:var(--dark-gray); }
 
 /*———————————————————————————————————————— buttons */
 
