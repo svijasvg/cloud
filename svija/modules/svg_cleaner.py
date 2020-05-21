@@ -68,6 +68,12 @@ def clean(file_path, file_name):
             parts = line.split('.st')
             line = '\t.st' + svg_ID + parts[1]
 
+            #———————————————————————————— add P3 color definition
+            # fill:#FFFFFF, stroke:#9537FF
+
+            if line.find('fill:#') > 0 or line.find('stroke:#') > 0:
+                line = add_p3(line) 
+
         #———————————————————————————————— change <path class="st2" to <path class="st[id]2"
         #———————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
 
@@ -277,5 +283,45 @@ def fix_bumps(line):
 
     line = blocks[0] + '<tspan ' + blocks[1] + line
     return line
+
+#———————————————————————————————————————— add P3 color
+# adds definition after fill:#FFFFFF, stroke:#9537FF
+# called line 75
+
+def add_p3(line):
+    blocks = line.split('fill:#')
+    result = blocks[0]
+    for x in range(0,len(blocks)-1,2):
+        color = blocks[x+1][:6]
+        rest = blocks[x+1][6:]
+        p3 = hex_to_p3(color)
+        result += 'fill:#' + color + ';fill:color(display-p3 ' + p3 + ')'+rest 
+
+    blocks = result.split('stroke:#')
+    result = blocks[0]
+    for x in range(0,len(blocks)-1,2):
+        color = blocks[x+1][:6]
+        rest = blocks[x+1][6:]
+        p3 = hex_to_p3(color)
+        result += 'stroke:#' + color + ';stroke:color(display-p3 ' + p3 + ')'+rest 
+
+    return result
+
+#———————————————————————————————————————— convert hex color to P3 color
+
+def hex_to_p3(color):
+    r = hex_to_int(color[0:2])
+    g = hex_to_int(color[2:4])
+    b = hex_to_int(color[4:6])
+    return r + ' ' + g + ' ' + b
+
+#———————————————————————————————————————— convert hex value to 0-1 value
+
+def hex_to_int(hex):
+    hex = '0x'+hex
+    p3 = int(hex, 0)
+    result = p3
+    p3 = round(p3/255,3)
+    return str(p3)
 
 #———————————————————————————————————————— fin
