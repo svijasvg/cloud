@@ -670,4 +670,15 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
     }
     return results
 
+#———————————————————————————————————————— clear the cache
+
+def ClearCacheView(request):
+    if request.user.is_superuser:
+        memcache.clear()
+        return HttpResponse('<pre>Cache cleared.')
+    else:
+        response = PageView(request, '', 'missing',)
+        response.status_code = 404
+        return response
+
 #———————————————————————————————————————— fin

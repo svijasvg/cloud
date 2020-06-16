@@ -15,6 +15,10 @@ SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 urlpatterns = [ 
+#---------------------------------------- exact addresses
+
+    path('c', views.ClearCacheView),
+
 #---------------------------------------- email sending
 
     path('<slug:lng>/mail', views.MailView),
