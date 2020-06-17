@@ -51,26 +51,6 @@ def HomePage(request, path1):
     response = PageView(request, path1, path2,)
     return response
 
-#———————————————————————————————————————— 404 error
-# https://websiteadvantage.com.au/404-Error-Handler-Checker
-
-# Links folder redirection breaks if the prefix does not exist
-# instead of defaulting to en, need to get site default language
-
-@never_cache
-def error404(request, *args, **kwargs):
-    path1 = request.path.split('/')[1]
-
-    try:
-        prefix = Prefix.objects.get(path=path1)
-    except ObjectDoesNotExist:
-        settings = get_object_or_404(Settings,active=True)
-        path1 = settings.prefix.path
-
-    response = PageView(request, path1, 'missing',)
-    response.status_code = 404
-    return response
-
 #———————————————————————————————————————— page caching (applied to Page view below)
 # https://gist.github.com/caot/6480c39453f5d2fa86bf
 

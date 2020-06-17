@@ -17,4 +17,7 @@ from .LabView        import *
 from .RobotsView     import *
 from .SitemapView    import *
 
+# must be last
+from .Error404       import *
+
 #———————————————————————————————————————— fin
