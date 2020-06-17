@@ -14,7 +14,7 @@ import os, re, io
 from svija.models import Font
 from django.core.exceptions import ObjectDoesNotExist
 
-def clean(file_path, file_name):
+def clean(file_path, file_name, use_p3):
 
     # if unspecified, ID will be filename with extension removed (-en.svg)
     svg_ID         = cleanup(file_name)
@@ -71,8 +71,9 @@ def clean(file_path, file_name):
             #———————————————————————————— add P3 color definition
             # fill:#FFFFFF, stroke:#9537FF
 
-            if line.find('fill:#') > 0 or line.find('stroke:#') > 0:
-                line = add_p3(line) 
+            if use_p3:
+                if line.find('fill:#') > 0 or line.find('stroke:#') > 0:
+                    line = add_p3(line) 
 
         #———————————————————————————————— change <path class="st2" to <path class="st[id]2"
         #———————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"

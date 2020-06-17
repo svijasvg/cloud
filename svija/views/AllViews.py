@@ -163,7 +163,6 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from modules import svg_cleaner
 from modules import meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
@@ -562,6 +561,8 @@ def reset_cache_flag(pages, modules, page_count, module_count):
 #———————————————————————————————————————— sort SVG's & scripts
 # line 431, 495:
 
+from modules import svg_cleaner
+
 def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
 
     head_css = head_js = body_js = svg = ''
@@ -587,7 +588,7 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
                     svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
 
                 else:
-                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename)
+                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename, True) # use p3 color
     
                     if svg_width > specified_width:
                         page_ratio = svg_height/svg_width
@@ -620,18 +621,5 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
         'svg'     : svg,
     }
     return results
-
-#———————————————————————————————————————— clear the cache
-
-#rom modules import svg_cleaner, meta_canonical, make_snippet 
-
-#ef ClearCacheView(request):
-#   if request.user.is_superuser:
-#       memcache.clear()
-#       return HttpResponse('<pre>Cache cleared.')
-#   else:
-#       response = PageView(request, '', 'missing',)
-#       response.status_code = 404
-#       return response
 
 #———————————————————————————————————————— fin
