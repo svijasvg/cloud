@@ -60,7 +60,7 @@ def HomePage(request, path1):
 
 #———————————————————————————————————————— send mail
 
-from svija.modules import send_mail
+from modules import send_mail
 
 def MailView(request, lng):
     if request.method != 'POST': return HttpResponse(0)
@@ -164,7 +164,7 @@ def cache_per_user_function(ttl=None, cache_post=False):
 #———————————————————————————————————————— page (with embedded svg)
 
 from modules import svg_cleaner
-from svija.modules import meta_canonical, make_snippet 
+from modules import meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 
