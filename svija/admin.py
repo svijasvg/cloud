@@ -254,12 +254,12 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'active', 'robots', 'prefix', 'cached', 'pub_date',)
+    list_display = ('url', 'active', 'robots', 'prefix', 'cached',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'secure', 'url', 'cached', 'prefix', 'analytics_id', 'tracking_on', 'pub_date', 'maps_api_key',]}),
+        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'cached', 'p3_color', 'prefix', 'analytics_id', 'tracking_on', 'maps_api_key',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
