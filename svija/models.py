@@ -16,9 +16,9 @@ from model_utils import Choices
 
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
-    from_url = models.CharField(max_length=200, default='', verbose_name='from URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='to prefix, http or https')
-    to_page = models.CharField(max_length=200, default='', verbose_name='to page or domain')
+    from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='prefix, HTTP or HTTPS', blank=True)
+    to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     def __str__(self):
         return self.from_url

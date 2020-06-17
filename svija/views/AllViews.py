@@ -126,17 +126,6 @@ from django.shortcuts import redirect
 @cache_per_user_function(ttl=60*60*24, cache_post=False)
 def PageView(request, path1, path2):
 
-    #———————————————————————————————————————— check fer redirect
-
-    try:
-        redirect_obj = Forwards.objects.get(from_url=request.path, active=True)
-        if redirect_obj.to_prefix[0:4] == 'http':
-            return HttpResponseRedirect(redirect_obj.to_prefix + '://' + redirect_obj.to_page)
-        else:
-            return HttpResponseRedirect('/'+redirect_obj.to_prefix + '/' + redirect_obj.to_page)
-    except ObjectDoesNotExist:
-        rien = 0
-
     #———————————————————————————————————————— load objects
 
     prefix     = get_object_or_404(Prefix, path=path1)
