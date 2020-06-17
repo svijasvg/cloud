@@ -163,7 +163,8 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from svija.modules import svg_cleaner, meta_canonical, make_snippet 
+from modules import svg_cleaner
+from svija.modules import meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 
