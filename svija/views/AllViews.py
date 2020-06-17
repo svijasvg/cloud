@@ -233,6 +233,7 @@ def PageView(request, path1, path2):
     title        = page.title + ' ' + language.title
     touch        = language.touch
     analytics_id = settings.analytics_id
+    use_p3       = settings.p3_color
 
     #———————————————————————————————————————— meta tag
 
@@ -454,7 +455,7 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = sort_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width)
+    thisThing = sort_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     view_js  += thisThing['head_js']
@@ -467,7 +468,7 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = sort_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width)
+        thisThing = sort_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
         module += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
@@ -481,7 +482,7 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = sort_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width)
+    thisThing = sort_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
     module += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -563,7 +564,7 @@ def reset_cache_flag(pages, modules, page_count, module_count):
 
 from modules import svg_cleaner
 
-def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
+def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
 
     head_css = head_js = body_js = svg = ''
 
@@ -588,7 +589,7 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
                     svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
 
                 else:
-                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename, True) # use p3 color
+                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename, use_p3)
     
                     if svg_width > specified_width:
                         page_ratio = svg_height/svg_width
