@@ -1,16 +1,20 @@
-#———————————————————————————————————————— robots.txt
+#———————————————————————————————————————— __init__.py
 
+import os, sys
 
-#def RobotsView(request):
-#    settings = get_object_or_404(Settings,active=True)
-#    response = settings.robots.contents
-#    return HttpResponse(response, content_type='text/plain; charset=utf8')
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
+if not path in sys.path: sys.path.insert(1, path)
 
-from .LinksView import *
-from .AllViews import *
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
+
+#———————————————————————————————————————— all views
+
+from .LinksView      import *
+from .MailView       import *
+from .AllViews       import *
 from .ClearCacheView import *
-from .LabView import *
-from .RobotsView import *
-from .SitemapView import *
+from .LabView        import *
+from .RobotsView     import *
+from .SitemapView    import *
 
-#———————————————————————————————————————— sitemap.txt
+#———————————————————————————————————————— fin

@@ -36,13 +36,6 @@ from svija.models import Settings
 # dependent on shared, template & prefix
 from svija.models import Page, PageScripts, Svg, PageModules
 
-#———————————————————————————————————————— page (with embedded svg)
-
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
-path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
-
-if not path in sys.path: sys.path.insert(1, path)
-
 #———————————————————————————————————————— / was requested
 
 from django.shortcuts import redirect
@@ -57,23 +50,6 @@ def HomePage(request, path1):
 
     response = PageView(request, path1, path2,)
     return response
-
-#———————————————————————————————————————— send mail
-
-from modules import send_mail
-
-def MailView(request, lng):
-    if request.method != 'POST': return HttpResponse(0)
-
-    ua = request.META['HTTP_USER_AGENT']
-
-    pfix = get_object_or_404(Prefix, path=lng)
-    lng = pfix.language
-
-    settings = get_object_or_404(Settings,active=True)
-    response = send_mail.send(settings, lng, request.POST, ua)
-
-    return HttpResponse(response)
 
 #———————————————————————————————————————— 404 error
 # https://websiteadvantage.com.au/404-Error-Handler-Checker
