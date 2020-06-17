@@ -281,7 +281,7 @@ class Settings(models.Model):
     robots = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
-    p3_color      = models.BooleanField(default=True, verbose_name='use "display P3" color space where possible',)
+    p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default prefix')
 
