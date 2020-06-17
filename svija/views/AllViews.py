@@ -21,20 +21,20 @@ import pathlib
 import svija 
 
 # no dependencies
-from .models import Forwards, Font, Notes, Language, Responsive, Robots
-from .models import Template, LibraryScript, Module, ModuleScripts
+from svija.models import Forwards, Font, Notes, Language, Responsive, Robots
+from svija.models import Template, LibraryScript, Module, ModuleScripts
 
 # dependent on responsive
-from .models import Shared, SharedScripts
+from svija.models import Shared, SharedScripts
 
 # dependent on responsive & languagee
-from .models import Prefix, PrefixModules
+from svija.models import Prefix, PrefixModules
 
 # dependent on prefix & robots
-from .models import Settings
+from svija.models import Settings
 
 # dependent on shared, template & prefix
-from .models import Page, PageScripts, Svg, PageModules
+from svija.models import Page, PageScripts, Svg, PageModules
 
 #———————————————————————————————————————— page (with embedded svg)
 
@@ -58,59 +58,9 @@ def HomePage(request, path1):
     response = PageView(request, path1, path2,)
     return response
 
-#———————————————————————————————————————— robots.txt
-
-from view_includes import *
-
-#def RobotsView(request):
-#    settings = get_object_or_404(Settings,active=True)
-#    response = settings.robots.contents
-#    return HttpResponse(response, content_type='text/plain; charset=utf8')
-
-#———————————————————————————————————————— sitemap.txt
-
-#from modules import sitemap
-#
-#def SitemapView(request):
-#    settings = get_object_or_404(Settings,active=True)
-#    domain = settings.url
-#    response = sitemap.create(domain, Page.objects.all())
-#    return HttpResponse(response, content_type='text/plain; charset=utf8')
-
-#———————————————————————————————————————— placed images
-# "links/accueil-bg-15097511.jpg"
-
-def LinksView(request, path1, placed_file):
-
-    try:
-        prefix = Prefix.objects.get(path=path1)
-    except ObjectDoesNotExist:
-        settings = get_object_or_404(Settings,active=True)
-        prefix = settings.prefix
-
-    responsive = prefix.responsive
-    source_dir = 'sync/' + responsive.source_dir
-    response = SITE_ROOT + source_dir +'/links/'+ placed_file
-
-#   source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
-    source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
-    source_dir += '/links/' + placed_file
-    bits = placed_file.split('.')
-    type = bits[-1].lower()
-    if type != 'png' and type != 'gif':
-        type = 'jpg'
-    image_data = open(source_dir, "rb").read()
-    return HttpResponse(image_data, content_type='image/' + type)
-
-def LinksViewHome(request, placed_file):
-    settings = get_object_or_404(Settings,active=True)
-    path1 = settings.prefix.path
-    response = LinksView(request, path1, placed_file)
-    return response
-
 #———————————————————————————————————————— send mail
 
-from modules import send_mail
+from svija.modules import send_mail
 
 def MailView(request, lng):
     if request.method != 'POST': return HttpResponse(0)
@@ -213,7 +163,7 @@ def cache_per_user_function(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from modules import svg_cleaner, meta_canonical, make_snippet 
+from svija.modules import svg_cleaner, meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
 
@@ -672,13 +622,15 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width):
 
 #———————————————————————————————————————— clear the cache
 
-def ClearCacheView(request):
-    if request.user.is_superuser:
-        memcache.clear()
-        return HttpResponse('<pre>Cache cleared.')
-    else:
-        response = PageView(request, '', 'missing',)
-        response.status_code = 404
-        return response
+#rom modules import svg_cleaner, meta_canonical, make_snippet 
+
+#ef ClearCacheView(request):
+#   if request.user.is_superuser:
+#       memcache.clear()
+#       return HttpResponse('<pre>Cache cleared.')
+#   else:
+#       response = PageView(request, '', 'missing',)
+#       response.status_code = 404
+#       return response
 
 #———————————————————————————————————————— fin
