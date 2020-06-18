@@ -1,4 +1,5 @@
-#———————————————————————————————————————— robots.txt
+#———————————————————————————————————————— LabView.py
+# for animation lab, not finished
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render

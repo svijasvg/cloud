@@ -23,10 +23,13 @@ urlpatterns = [
 
     path('<slug:lng>/mail', views.MailView),
 
-#---------------------------------------- main pages
+#---------------------------------------- home pages
 
-    re_path(r'^(?P<path1>)$', views.HomePage),          # root url
-    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePage), # two letters followed by slash
+    re_path(r'^(?P<path1>)$', views.HomePageView),          # root url
+    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
+
+#---------------------------------------- regular pages
+
     path('<slug:path1>/<slug:path2>', views.PageView),  # prefix/slug
 
 #---------------------------------------- placed images (in Links folder)
@@ -55,3 +58,5 @@ urlpatterns = [
 ]
 
 #---------------------------------------- fin
+
+

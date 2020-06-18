@@ -18,7 +18,7 @@ def Error404(request, *args, **kwargs):
 
     requested = request.path[1:]
 
-    #———————————————————————————————————————— check fer redirect
+    #————— check fer redirect
 
     # 3 cases:
     # external site, starts with http or https

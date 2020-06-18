@@ -1,4 +1,5 @@
-#———————————————————————————————————————— /c for admins only
+#———————————————————————————————————————— ClearCacheView.py
+# /c clears cache, for admins only
 
 from django.core.cache import cache as memcache
 from django.http import HttpResponse

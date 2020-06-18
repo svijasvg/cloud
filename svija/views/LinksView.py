@@ -1,14 +1,14 @@
-#———————————————————————————————————————— placed images
+#———————————————————————————————————————— LinksView.py
 # "links/accueil-bg-15097511.jpg"
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
-import os
-import os.path
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 from django.core.exceptions import ObjectDoesNotExist
-from svija.models import Prefix, PrefixModules
-from svija.models import Settings
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+
+from svija.models import Prefix, PrefixModules, Settings
+
+import os
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 
 def LinksView(request, path1, placed_file):
 
@@ -22,7 +22,6 @@ def LinksView(request, path1, placed_file):
     source_dir = 'sync/' + responsive.source_dir
     response = SITE_ROOT + source_dir +'/links/'+ placed_file
 
-#   source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
     source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
     source_dir += '/links/' + placed_file
     bits = placed_file.split('.')
