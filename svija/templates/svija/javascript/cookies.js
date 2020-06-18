@@ -3,8 +3,14 @@
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
+
+  var name = cname + '=' + cvalue + '; ';
+  var expy = 'expires=' + d.toUTCString(); + '; ';
+  var domn = '; domain=' + window.location.hostname + '; ';
+  var path = '/; ';
+  var secr = 'secure;';
+
+  document.cookie = name + expy + domn + path + secr;
 }
 
 function getCookie(cname) {
@@ -17,3 +23,5 @@ function getCookie(cname) {
   }
   return "";
 }
+
+//———————————————————————————————————————— refresh existing cookie

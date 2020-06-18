@@ -17,7 +17,7 @@ from model_utils import Choices
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='prefix, HTTP or HTTPS', blank=True)
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='new prefix, HTTP or HTTPS', blank=True)
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     def __str__(self):
@@ -310,6 +310,8 @@ class Settings(models.Model):
 
 #———————————————————————————————————————— page · uses shared, template & prefix
 
+from ckeditor.fields import RichTextField
+
 class Page(models.Model): 
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
@@ -330,7 +332,8 @@ class Page(models.Model):
 
     # search snippet
     snippet_name = models.CharField(max_length=200, default='', blank=True, verbose_name='page name')
-    snippet_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='snippet content')
+#   snippet_text = models.TextField(max_length=50000, default='', blank=True, verbose_name='accessibility content')
+    snippet_text = RichTextField(verbose_name='accessibility content')
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')

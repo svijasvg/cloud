@@ -9,7 +9,7 @@ class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', )
-    list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
+    list_display = ('to_page', 'to_prefix', 'from_url', 'active', )
     save_on_top = True
     save_as = True
 
@@ -270,7 +270,7 @@ admin.site.register(Settings, SettingsAdmin)
 
 fr_basic = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
 fr_setup = ' '.join(["Paramètres de d'affichage"])
-fr_seo   = ' '.join(["Texte pour les moteurs de recherche"])
+fr_seo   = ' '.join(["Texte pour les non-voyants"])
 fr_overr = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
 fr_dims  = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
 
@@ -317,7 +317,7 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['cache_reset', 'display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('search snippet',     {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('accessibility text',     {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
