@@ -3,9 +3,9 @@
 from django.shortcuts import get_object_or_404
 from svija.models import Prefix, Settings
 from svija.views import PageView
-from modules import cache_functions
+from modules.cache_per_user import *
 
-@cache_functions.cache_per_user_function(ttl=60*60*24, cache_post=False)
+@cache_per_user(ttl=60*60*24, cache_post=False)
 def HomePageView(request, request_prefix):
 
     if request_prefix == '':
