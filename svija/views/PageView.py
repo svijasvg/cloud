@@ -115,10 +115,6 @@ def PageView(request, request_prefix, request_slug):
     html     += m
     form     += f
 
-    #———————————————————————————————————————— form-oriented language variables
-    # added to user js only if there is a form
-
-
     #———————————————————————————————————————— if there's a form, get form js
 
     if form != '':
