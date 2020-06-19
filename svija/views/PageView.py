@@ -42,7 +42,6 @@ from django.shortcuts import redirect
 
 #———————————————————————————————————————— page (with embedded svg)
 
-from modules import sort_svgs_scripts
 from modules import cache_functions, meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
@@ -324,11 +323,9 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = sart_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
-#   thisThing = sort_svgs_scripts.srt_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
+    thisThing = page_load_svgs('page', all_svgs, source_dir, specified_width, use_p3)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
-    view_js  += thisThing['head_js']
 
     #———————————————————————————————————————— modules
 
@@ -338,23 +335,21 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = sart_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
-#       thisThing = sort_svgs_scripts.srt_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+        thisThing = sart_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), all_svgs, source_dir, specified_width, use_p3)
         module += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
         body_js += thisThing['body_js']
+
+    user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
     all_modules = page.pagemodules_set.all()
     all_svgs = []
     for this_module in all_modules: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         all_svgs.append(this_module.module)
 
-    user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
-    body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
-
-    thisThing = sart_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
-#   thisThing = sort_svgs_scripts.srt_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+    thisThing = sart_svgs_scripts('page modules', page.pagemodules_set.all(), all_svgs, source_dir, specified_width, use_p3)
     module += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -412,15 +407,89 @@ def add_script(kind, name, content):
         'js'  : '\n\n// '   + name + '\n'     + content,
     }[kind]
 
+#———————————————————————————————————————— get 1 SVG & calculate sizes
+
+def get_single_svg(this_svg, source_dir, specified_width, use_p3):
+
+    head_css = svg = ''
+
+    if this_svg.filename == '':
+        head_css = '/* svg with missing filename */'
+        svg = '<!-- svg with missing filename */'
+
+    else:
+        #—————— check if svg exists
+        temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
+        path = pathlib.Path(temp_source)
+
+        if not path.exists():
+            svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
+ 
+        else:
+            svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename, use_p3)
+ 
+            if svg_width > specified_width:
+                page_ratio = svg_height/svg_width
+                svg_width = specified_width
+                svg_height = round(specified_width * page_ratio)
+ 
+            rem_width = svg_width/10
+            rem_height = svg_height/10
+ 
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            head_css += '\n\n' + css_dims
+            svg += '\n' + svg_content
+ 
+    results = {
+        'head_css': head_css,
+        'svg'     : svg,
+    }
+    return results
+
+#———————————————————————————————————————— sort SVG's & scripts
+
+from modules import svg_cleaner
+
+def page_load_svgs(label, all_svgs, source_dir, specified_width, use_p3):
+    
+    head_css = svg = ''
+
+    for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
+        if this_svg.active:
+            thisThing = get_single_svg(this_svg, source_dir, specified_width, use_p3)
+            svg += thisThing['svg']
+            head_css += thisThing['head_css']
+
+    results = {
+        'head_css': head_css,
+        'svg'     : svg,
+    }
+    return results
+
+#———————————————————————————————————————— fin
 #———————————————————————————————————————— sort SVG's & scripts
 # line 431, 495:
 
 from modules import svg_cleaner
 
-def sart_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
+# ordering
+# source_dir      : 'sync/' + responsive.source_dir
+# all_svgs        : prefix.module.all() for example
+# specified_width : responsive.width
+# use_p3          : boolean True or False
+
+def sart_svgs_scripts(label, ordering, all_svgs, source_dir, specified_width, use_p3):
+
+# if ordering exists (>0) all_svgs is canceled out, and ordering is used
+# so if I just send empty variables to the function it should still work
+
+# prefix.module.all()
+# prefix.prefixmodules_set.all()
 
     head_css = head_js = body_js = svg = ''
+#   head_css = "\n\n" + label + str(len(ordering)) + '::' + str(len(all_svgs)) + ':'
 
+    # if it's not the page, but the modules
     if len(ordering) > 0:
         all_svgs = []
 
@@ -430,31 +499,11 @@ def sart_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use
 
 #    some_svgs = {k:all_svgs[k] for k in ('active') if k}
     
-    head_css = head_js = body_js = svg = ''
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
-            if this_svg.filename != '':
-
-                #—————— check if svg exists
-                temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-                path = pathlib.Path(temp_source)
-                if not path.exists():
-                    svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
-
-                else:
-                    svg_ID, svg_width, svg_height, svg_content = svg_cleaner.clean(temp_source, this_svg.filename, use_p3)
-    
-                    if svg_width > specified_width:
-                        page_ratio = svg_height/svg_width
-                        svg_width = specified_width
-                        svg_height = round(specified_width * page_ratio)
-
-                    rem_width = svg_width/10
-                    rem_height = svg_height/10
-        
-                    css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-                    head_css += '\n\n' + css_dims
-                    svg += '\n' + svg_content
+            thisThing = get_single_svg(this_svg, source_dir, specified_width, use_p3)
+            svg += thisThing['svg']
+            head_css += thisThing['head_css']
 
             try:
 #           if hasattr(this_svg, 'modulescripts'):
