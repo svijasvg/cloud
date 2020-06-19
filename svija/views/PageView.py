@@ -22,7 +22,7 @@ from svija.models import Prefix, PrefixModules
 from svija.models import Settings
 from svija.models import Page, PageScripts, Svg, PageModules
 
-from modules import cache_functions, make_snippet 
+from modules import cache_functions
 from modules.meta_canonical import *
 from modules.sort_modules import *
 from modules.page_load_svgs import *
@@ -31,6 +31,7 @@ from modules.get_fonts import *
 from modules.generate_system_js import *
 from modules.generate_form_js import *
 from modules.generate_sitewide_js import *
+from modules.generate_accessibility import *
 
 from django.http import HttpResponsePermanentRedirect
 
@@ -110,12 +111,7 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— snippet
 
-    text = page.snippet_text
-    links = make_snippet.create(settings.url, Page.objects.all())
-    capture = '/images/capture.jpg'
-
-    tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
-    snippet = tag.format(text,links,settings.url,capture)
+    snippet = generate_accessibility(settings.url, Page.objects.all(), page)
 
     #———————————————————————————————————————— library scripts
 
