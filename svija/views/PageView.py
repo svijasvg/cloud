@@ -62,8 +62,18 @@ def PageView(request, request_prefix, request_slug):
     #———————————————————————————————————————— more context for template
 
     meta    = fonts    = font_link = system_js     = ''
-    user_js = head_css = snippet   = svg           = ''
-    html    = form     = module    = body_js       = ''
+    head_js = head_css = snippet   = svg           = ''
+    html    = form     = modules   = body_js       = ''
+
+    core_content = {
+        'css'     : '',
+        'head_js' : '',
+        'body_js' : '',
+        'svgs'    : '',
+        'html'    : '',
+        'form'    : '',
+        'modules' : '',
+    }
 
     #———————————————————————————————————————— meta tag
     # meta link to canonical page
@@ -85,9 +95,9 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— sitewide scripts
 
-    c, h, b, m, f = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
+    c, h, b, m, f = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
     head_css += c
-    user_js  += h
+    head_js  += h
     body_js  += b
     html     += m
     form     += f
@@ -98,27 +108,22 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— optional scripts
 
-    c, h, b, m, f = attribute_scripts('optional', page.library_script.all())
+    c, h, b, m, f = attribute_scripts(core_content, 'optional', page.library_script.all())
     head_css += c
-    user_js  += h
+    head_js  += h
     body_js  += b
     html     += m
     form     += f
 
     #———————————————————————————————————————— page scripts
 
-    c, h, b, m, f = attribute_scripts('page', page.pagescripts_set.all())
+    c, h, b, m, f = attribute_scripts(core_content, 'page', page.pagescripts_set.all())
 
     head_css += c
-    user_js  += h
+    head_js  += h
     body_js  += b
     html     += m
     form     += f
-
-    #———————————————————————————————————————— if there's a form, get form js
-
-    if form != '':
-        user_js += generate_form_js(language)
 
     #———————————————————————————————————————— load all page svgs
 
@@ -140,29 +145,47 @@ def PageView(request, request_prefix, request_slug):
 
     if page.suppress_modules == False:
     
-        user_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
+        head_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
 
-        c, h, b, s, m, f = sort_modules(prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
+        c, h, b, s, m, f = sort_modules(core_content, prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
         head_css += c
-        user_js  += h
+        head_js  += h
         body_js  += b
-        module   += s
+        modules  += s
         html     += m
         form     += f
 
-    user_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
+    head_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
 
     all_modules = page.pagemodules_set.all()
-    c, h, b, s, m, f = sort_modules(page.pagemodules_set.all(), source_dir, specified_width, use_p3)
+    c, h, b, s, m, f = sort_modules(core_content, page.pagemodules_set.all(), source_dir, specified_width, use_p3)
 
     head_css += c
-    user_js  += h
+    head_js  += h
     body_js  += b
-    module   += s
+    modules  += s
     html     += m
     form     += f
+
+    #———————————————————————————————————————— if there's a form, get form js
+    # default string localization
+
+    if form != '':
+        head_js += generate_form_js(language)
+
+    #———————————————————————————————————————— petit rappel
+
+#   core_content = {
+#       'css'     : '',
+#       'head_js' : '',
+#       'body_js' : '',
+#       'svgs'    : '',
+#       'html'    : '',
+#       'form'    : '',
+#       'modules' : '',
+#   }
 
     #———————————————————————————————————————— page settings
 
@@ -177,13 +200,13 @@ def PageView(request, request_prefix, request_slug):
         'fonts'         : font_link,
         'touch'         : touch,
         'system_js'     : system_js,
-        'user_js'       : user_js,
+        'head_js'       : head_js,
         'css'           : head_css,
-        'snippet'       : accessible,
+        'accessible'    : accessible,
         'svg'           : svg,
         'html'          : html,
         'form'          : form,
-        'module'        : module,
+        'modules'       : modules,
         'analytics_id'  : analytics_id,
         'body_js'       : body_js
     }

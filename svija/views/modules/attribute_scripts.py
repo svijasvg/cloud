@@ -2,7 +2,7 @@
 
 from modules.add_script import *
 
-def attribute_scripts(label, sitewide):
+def attribute_scripts(core_content, label, sitewide):
 
     head_css = '\n\n/*———————————————————————————————————————— ' + label + ' scripts */\n\n'
     head_js  = '\n\n//———————————————————————————————————————— ' + label + ' scripts\n\n'

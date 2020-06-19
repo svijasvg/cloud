@@ -11,7 +11,7 @@ svg{ /* un-positioned elements draw first by default, screwing up z index */
     position:relative;
 }
 
-#snippet{ /* positioning */
+#accessibility{ /* positioning */
         position: absolute; left: 1rem; top: 1rem;
            width: 20rem;  height: 20rem;
         overflow: hidden;
@@ -19,7 +19,7 @@ svg{ /* un-positioned elements draw first by default, screwing up z index */
          z-index: -999; 
 }
 
-#snippet, #snippet a:link, #snippet a:visited{
+#accessibility, #accessibility a:link, #accessibility a:visited{
    font: normal 1rem/1.4rem verdana;
   color: #999;
 }

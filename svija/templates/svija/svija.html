@@ -26,7 +26,7 @@ page_loaded = false;
 {% include "svija/javascript/responsive.js" %}
 {% include "svija/javascript/on_resize.js" %}
 {% include "svija/javascript/tap_highlight.js" %}
-{{ user_js }}
+{{ head_js }}
 
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
@@ -50,13 +50,13 @@ if (tracking_on)
 
 {% include "svija/javascript/initial_scroll.js" %}
 
-</script><div id=snippet>{{ snippet }}</div>
+</script><div id=accessibility>{{ accessible }}</div>
 
 {{ svg  }}
 {{ html }}
 {{ form }}
 {% block token%}{% endblock %}
-{{ module }}
+{{ modules }}
 
 <script>
 

@@ -7,7 +7,7 @@ from modules.svg_cleaner import *
 from modules.get_single_svg import *
 from modules.add_script import *
 
-def sort_modules(all_modules, source_dir, specified_width, use_p3):
+def sort_modules(core_content, all_modules, source_dir, specified_width, use_p3):
 
     head_css = head_js = body_js = svg = html = form = ''
 
