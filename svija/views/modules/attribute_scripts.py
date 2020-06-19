@@ -2,13 +2,13 @@
 
 from modules.add_script import *
 
-def generate_sitewide_js(sitewide):
+def attribute_scripts(label, sitewide):
 
-    head_css = '\n\n/*———————————————————————————————————————— optional scripts */\n\n'
-    head_js  = '\n\n//———————————————————————————————————————— optional scripts\n\n'
-    body_js  = '\n\n//———————————————————————————————————————— optional scripts\n\n'
-    html     = '\n\n<!-- ———————————————————————————————————————— optional scripts -->\n\n'
-    form     = '\n\n<!-- ———————————————————————————————————————— optional scripts -->\n\n'
+    head_css = '\n\n/*———————————————————————————————————————— ' + label + ' scripts */\n\n'
+    head_js  = '\n\n//———————————————————————————————————————— ' + label + ' scripts\n\n'
+    body_js  = '\n\n//———————————————————————————————————————— ' + label + ' scripts\n\n'
+    html     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
+    form     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
 
     for this_script in sitewide:
         if this_script.type == 'CSS' and this_script.active == True:

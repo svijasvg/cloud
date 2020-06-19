@@ -34,6 +34,7 @@ from modules.generate_sitewide_js import *
 from modules.generate_accessibility import *
 from modules.generate_optional_js import *
 from modules.generate_page_js import *
+from modules.attribute_scripts import *
 
 from django.http import HttpResponsePermanentRedirect
 
@@ -106,29 +107,29 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— sitewide scripts
 
-    c, h, b, m, f = generate_sitewide_js(page.shared.sharedscripts_set.all())
+    c, h, b, m, f = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
     head_css += c
     user_js  += h
     body_js  += b
-#   html     += m
-#   form     += f
+    html     += m
+    form     += f
 
-    #———————————————————————————————————————— snippet
+    #———————————————————————————————————————— accessibility
 
-    snippet = generate_accessibility(settings.url, Page.objects.all(), page)
+    accessible = generate_accessibility(settings.url, Page.objects.all(), page)
 
     #———————————————————————————————————————— optional scripts
 
-    c, h, b, m, f = generate_optional_js(page.library_script.all())
+    c, h, b, m, f = attribute_scripts('optional', page.library_script.all())
     head_css += c
     user_js  += h
     body_js  += b
-#   html     += m
-#   form     += f
+    html     += m
+    form     += f
 
     #———————————————————————————————————————— page scripts
 
-    c, h, b, m, f = generate_page_js(page.pagescripts_set.all())
+    c, h, b, m, f = attribute_scripts('page', page.pagescripts_set.all())
 
     head_css += c
     user_js  += h
@@ -202,7 +203,7 @@ def PageView(request, request_prefix, request_slug):
         'system_js'       : system_js,
         'user_js'       : user_js,
         'css'           : head_css,
-        'snippet'       : snippet,
+        'snippet'       : accessible,
         'svg'           : svg,
         'html'          : html,
         'form'          : form,
