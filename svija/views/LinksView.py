@@ -10,10 +10,10 @@ from svija.models import Prefix, PrefixModules, Settings
 import os
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
 
-def LinksView(request, path1, placed_file):
+def LinksView(request, request_prefix, placed_file):
 
     try:
-        prefix = Prefix.objects.get(path=path1)
+        prefix = Prefix.objects.get(path=request_prefix)
     except ObjectDoesNotExist:
         settings = get_object_or_404(Settings,active=True)
         prefix = settings.prefix
@@ -33,8 +33,8 @@ def LinksView(request, path1, placed_file):
 
 def LinksViewHome(request, placed_file):
     settings = get_object_or_404(Settings,active=True)
-    path1 = settings.prefix.path
-    response = LinksView(request, path1, placed_file)
+    request_prefix = settings.prefix.path
+    response = LinksView(request, request_prefix, placed_file)
     return response
 
 #———————————————————————————————————————— fin

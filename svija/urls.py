@@ -25,17 +25,17 @@ urlpatterns = [
 
 #---------------------------------------- home pages
 
-    re_path(r'^(?P<path1>)$', views.HomePageView),          # root url
-    re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
+    re_path(r'^(?P<request_prefix>)$', views.HomePageView),          # root url
+    re_path(r'^(?P<request_prefix>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
 
 #---------------------------------------- regular pages
 
-    path('<slug:path1>/<slug:path2>', views.PageView),  # prefix/slug
+    path('<slug:request_prefix>/<slug:request_slug>', views.PageView),  # prefix/slug
 
 #---------------------------------------- placed images (in Links folder)
 # xlink:href="links/image.jpg", in page at /fr/contact
 
-    re_path(r'^(?P<path1>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
+    re_path(r'^(?P<request_prefix>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
 
     # special case: home page, has no /en/
     re_path(r'^links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),

@@ -6,16 +6,16 @@ from svija.views import PageView
 from modules import cache_functions
 
 @cache_functions.cache_per_user_function(ttl=60*60*24, cache_post=False)
-def HomePageView(request, path1):
+def HomePageView(request, request_prefix):
 
-    if path1 == '':
+    if request_prefix == '':
         settings = get_object_or_404(Settings,active=True)
-        path1 = settings.prefix.path
+        request_prefix = settings.prefix.path
 
-    prefix = get_object_or_404(Prefix, path=path1)
-    path2 = prefix.default
+    prefix = get_object_or_404(Prefix, path=request_prefix)
+    request_slug = prefix.default
 
-    response = PageView(request, path1, path2,)
+    response = PageView(request, request_prefix, request_slug,)
     return response
 
 #———————————————————————————————————————— fin

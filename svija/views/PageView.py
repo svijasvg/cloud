@@ -1,85 +1,62 @@
 #   return HttpResponse("debugging message.")
 #———————————————————————————————————————— svija.views
 
+import os, os.path, sys, pathlib, svija 
+
 from django.contrib.staticfiles.views import serve
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.views.decorators.cache import never_cache
 
-import os
-import os.path
-import sys
-import pathlib
-
-import svija 
-
-# no dependencies
 from svija.models import Forwards, Font, Notes, Language, Responsive, Robots
 from svija.models import Template, LibraryScript, Module, ModuleScripts
-
-# dependent on responsive
 from svija.models import Shared, SharedScripts
-
-# dependent on responsive & languagee
 from svija.models import Prefix, PrefixModules
-
-# dependent on prefix & robots
 from svija.models import Settings
-
-# dependent on shared, template & prefix
 from svija.models import Page, PageScripts, Svg, PageModules
 
-#———————————————————————————————————————— / was requested
-
-from django.shortcuts import redirect
-
-#———————————————————————————————————————— page (with embedded svg)
-
 from modules import cache_functions, meta_canonical, make_snippet 
-from django.http import HttpResponsePermanentRedirect
-from django.shortcuts import redirect
-
 from modules.sort_modules import *
 from modules.page_load_svgs import *
 from modules.add_script import *
 
+from django.http import HttpResponsePermanentRedirect
+#———————————————————————————————————————— view definition
+
 @cache_functions.cache_per_user_function(ttl=60*60*24, cache_post=False)
-def PageView(request, path1, path2):
+def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— load objects
 
-    prefix     = get_object_or_404(Prefix, path=path1)
-    page       = get_object_or_404(Page, Q(prefix__path=path1) & Q(url=path2) & Q(visitable=True))
+    prefix     = get_object_or_404(Prefix, path=request_prefix)
+    page       = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
     responsive = get_object_or_404(Responsive, name=prefix.responsive.name)
-    settings   = get_object_or_404(Settings,active=True)
+    settings   = get_object_or_404(Settings, active=True)
     language   = prefix.language
 
-    #———————————————————————————————————————— if /en/ or /en/home then redirect to /
+    #————————————————————————————————————————  redirect if it's a default page (path not shown)
 
-    part_path = '/' + settings.prefix.path +'/'
-    full_path = part_path + settings.prefix.default
+    site_default_prefix = '/' + settings.prefix.path +'/'            # default prefix for site
+    site_default_slug   = settings.prefix.default                    # default slug for prefix
+    site_default_path   = site_default_prefix + site_default_slug    # default slug for prefix
 
-    if request.path == full_path or request.path == part_path:
-        response = redirect('/')
-        response.status_code = 301
-        return response
+    this_prefix         = '/' + request_prefix +'/'
+    this_prefix_default    = this_prefix + prefix.default
 
-    #———————————————————————————————————————— if /fr/accueil then redirect to /fr/
+    # if address corresponds to site default page
+    if request.path == site_default_path or request.path == site_default_prefix:
+        return HttpResponsePermanentRedirect('/')
 
-    part_path = '/' + path1 +'/'
-    full_path = part_path + prefix.default
-
-    if request.path == full_path:
-        response = redirect(part_path)
-        response.status_code = 301
-        return response
+    # if address corresponds to prefix default page
+    if request.path == this_prefix_default:
+        return HttpResponsePermanentRedirect(this_prefix)
 
     #———————————————————————————————————————— context for template
 
@@ -118,8 +95,8 @@ def PageView(request, path1, path2):
         responsive,
         language,
         settings.url,
-        path1,
-        path2,
+        request_prefix,
+        request_slug,
     )
 
     #———————————————————————————————————————— fonts
@@ -188,7 +165,7 @@ def PageView(request, path1, path2):
     else:
         page_url = 'http://'
 
-    page_url += settings.url + '/' + path1 + '/' + path2
+    page_url += settings.url + '/' + request_prefix + '/' + request_slug
     view_js += "var page_url = '" + page_url + "';\n"
 
     # page dimension information
@@ -324,8 +301,8 @@ def PageView(request, path1, path2):
     else:
         specified_width = responsive.width
 
-    all_svgs  = page.svg_set.all()
     svg = ''
+    all_svgs  = page.svg_set.all()
 
     thisThing = page_load_svgs(all_svgs, source_dir, specified_width, use_p3)
     svg += thisThing['svg']
@@ -335,17 +312,19 @@ def PageView(request, path1, path2):
 
     if page.suppress_modules == False:
     
-        user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
-        body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+        user_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
+        body_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
 
         thisThing = sort_modules(prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
         module += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
         body_js += thisThing['body_js']
+        html    += thisThing['html']
+        form    += thisThing['form']
 
-    user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
-    body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
+    user_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
+    body_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
 
     all_modules = page.pagemodules_set.all()
 
@@ -354,6 +333,8 @@ def PageView(request, path1, path2):
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
     body_js += thisThing['body_js']
+    html    += thisThing['html']
+    form    += thisThing['form']
 
     #———————————————————————————————————————— page settings
 
