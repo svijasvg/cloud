@@ -4,7 +4,7 @@ import os
 from modules import svg_cleaner
 import pathlib
 
-def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
+def srt_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
 
     head_css = head_js = body_js = svg = ''
 
@@ -20,6 +20,8 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use
     head_css = head_js = body_js = svg = ''
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
+
+            #———————————————————— if this object contains an SVG, get it
             if this_svg.filename != '':
 
                 #—————— check if svg exists
@@ -43,18 +45,24 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use
                     head_css += '\n\n' + css_dims
                     svg += '\n' + svg_content
 
-            try:
-                all_scripts = this_svg.modulescripts_set.all() # IN ORDER
-                for this_script in all_scripts:
-                    if this_script.type == 'CSS' and this_script.active == True:
-                        head_css += add_script('css', this_script.name, this_script.content)
-                    if this_script.type == 'head JS' and this_script.active == True:
-                        head_js += add_script('js', this_script.name, this_script.content)
-                    if this_script.type == 'body JS' and this_script.active == True:
-                        body_js += add_script('js', this_script.name, this_script.content)
-            except:
-                head_css += 'this_svg'
-                rien = 0
+            #———————————————————— handle all other fields
+#           try:
+                #all_scripts = this_svg.modulescripts_set.all() # IN ORDER
+                #for this_script in all_scripts:
+          
+            for this_script in this_svg.modulescripts:
+                if this_script.type == 'CSS' and this_script.active == True:
+                    head_css += add_script('css', this_script.name, this_script.content)
+                if this_script.type == 'head JS' and this_script.active == True:
+                    head_js += add_script('js', this_script.name, this_script.content)
+                if this_script.type == 'body JS' and this_script.active == True:
+                    body_js += add_script('js', this_script.name, this_script.content)
+#           except:
+#               head_css += 'this_svg'
+#               #all_scripts = this_svg.modulescripts_set.all() # IN ORDER
+#               rien = 0
+
+    #———————————————————— return the results
 
     results = {
         'head_css': head_css,

@@ -42,6 +42,7 @@ from django.shortcuts import redirect
 
 #———————————————————————————————————————— page (with embedded svg)
 
+from modules import sort_svgs_scripts
 from modules import cache_functions, meta_canonical, make_snippet 
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
@@ -323,7 +324,8 @@ def PageView(request, path1, path2):
     all_svgs  = page.svg_set.all()
     svg = ''
 
-    thisThing = sort_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
+    thisThing = sart_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
+#   thisThing = sort_svgs_scripts.srt_svgs_scripts('page svg', (), source_dir, all_svgs, specified_width, use_p3)
     svg += thisThing['svg']
     head_css += thisThing['head_css']
     view_js  += thisThing['head_js']
@@ -336,7 +338,8 @@ def PageView(request, path1, path2):
         user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-        thisThing = sort_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+        thisThing = sart_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+#       thisThing = sort_svgs_scripts.srt_svgs_scripts('prefix modules', prefix.prefixmodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
         module += thisThing['svg']
         head_css += thisThing['head_css']
         user_js += thisThing['head_js']
@@ -350,7 +353,8 @@ def PageView(request, path1, path2):
     user_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— module scripts\n\n'
 
-    thisThing = sort_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+    thisThing = sart_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
+#   thisThing = sort_svgs_scripts.srt_svgs_scripts('page modules', page.pagemodules_set.all(), source_dir, all_svgs, specified_width, use_p3)
     module += thisThing['svg']
     head_css += thisThing['head_css']
     user_js += thisThing['head_js']
@@ -413,7 +417,7 @@ def add_script(kind, name, content):
 
 from modules import svg_cleaner
 
-def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
+def sart_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use_p3):
 
     head_css = head_js = body_js = svg = ''
 
@@ -453,6 +457,7 @@ def sort_svgs_scripts(flag, ordering, source_dir, all_svgs, specified_width, use
                     svg += '\n' + svg_content
 
             try:
+#           if hasattr(this_svg, 'modulescripts'):
                 all_scripts = this_svg.modulescripts_set.all() # IN ORDER
                 for this_script in all_scripts:
                     if this_script.type == 'CSS' and this_script.active == True:
