@@ -22,12 +22,16 @@ from svija.models import Prefix, PrefixModules
 from svija.models import Settings
 from svija.models import Page, PageScripts, Svg, PageModules
 
-from modules import cache_functions, meta_canonical, make_snippet 
+from modules import cache_functions, make_snippet 
+from modules.meta_canonical import *
 from modules.sort_modules import *
 from modules.page_load_svgs import *
 from modules.add_script import *
+from modules.get_fonts import *
+from modules.generate_system_js import *
 
 from django.http import HttpResponsePermanentRedirect
+
 #———————————————————————————————————————— view definition
 
 @cache_functions.cache_per_user_function(ttl=60*60*24, cache_post=False)
@@ -60,12 +64,18 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— context for template
 
-    comments      = ''
-    title         = ''
+    comments     = language.comment
+    title        = page.title + ' ' + language.title
+    touch        = language.touch
+    analytics_id = settings.analytics_id
+    use_p3       = settings.p3_color
+
+    #———————————————————————————————————————— more context for template
+
     meta          = ''
     fonts         = ''
-    touch         = ''
-    view_js       = ''
+    font_link     = ''
+    system_js       = ''
     user_js       = ''
     head_css      = ''
     snippet       = ''
@@ -73,119 +83,64 @@ def PageView(request, request_prefix, request_slug):
     html          = ''
     form          = ''
     module        = ''
-    analytics_id  = ''
     body_js       = ''
 
-    #———————————————————————————————————————— the easy ones
-
-    comments     = language.comment
-    title        = page.title + ' ' + language.title
-    touch        = language.touch
-    analytics_id = settings.analytics_id
-    use_p3       = settings.p3_color
-
     #———————————————————————————————————————— meta tag
-
-    # just send necessary parts, not whole objects
     # creates meta link to canonical page
     #  <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
 
-    meta  = meta_canonical.create_canonical(
-        prefix,
-        responsive,
-        language,
-        settings.url,
-        request_prefix,
-        request_slug,
-    )
+    meta = create_canonical(
+        prefix,       responsive,     language,
+        settings.url, request_prefix, request_slug, )
 
     #———————————————————————————————————————— fonts
     # should be first in CSS
 
-    font_objs = Font.objects.all()
-    css_str  = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
-    link_str = '\n  <link rel="stylesheet" href="{}" />'
-    font_css = ''
-    font_link = ''
-    google_fonts = []
-
-    for this_font in font_objs:
-        if this_font.active:
-            font_face = this_font.css
-            font_src  = this_font.source
-
-            if this_font.google:
-                req = this_font.style.lower().replace(' ','')
-                req = this_font.family.replace(' ','+') + ':' + req 
-                google_fonts.append(req)
-
-            elif font_src.find('woff2') > 0:
-                font_format = " format('woff2')"
-                font_src = "url('/fonts/" + font_src
-                font_css  += '\n'+ css_str.format(font_face, font_src, font_format)
-
-            elif font_src.find('woff') > 0:  
-                font_format = " format('woff')"
-                font_src = "url('/fonts/" + font_src
-                font_css += '\n'+ css_str.format(font_face, font_src, font_format)
-
-            elif font_src.find(',') > 0: # local fonts
-                # src: local('Arial'), local('Arial MT'), local('Arial Regular'); }
-                font_format = ''
-                locals = font_src.replace(', ',',').split(',')
-                font_src = "local('"+"'), local('".join(locals)
-                font_css += '\n'+ css_str.format(font_face, font_src, font_format)
-
+    font_link, font_css = get_fonts()
     head_css = font_css + head_css
-
-    if len(google_fonts) > 0:
-        link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
-        font_link = link_str.format(('|').join(google_fonts))
 
     #———————————————————————————————————————— views.py generated JS
 
-    # version information
-    view_js += "var svija_version='2.1.5';\n"
+    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-    # language information
-    cde = language.code
-    view_js += 'var language_code = "' + cde +'";\n'
+#   # version information
+#   system_js += "var svija_version='2.1.5';\n"
+
+#   # language information
+#   cde = language.code
+#   system_js += 'var language_code = "' + cde +'";\n'
 #   pfx = settings.prefix.path
-#   view_js += 'var default_site_prefix = "' + pfx +'";\n'
+#   system_js += 'var default_site_prefix = "' + pfx +'";\n'
 
-    # accept cookies by default
-    if settings.tracking_on:
-        view_js += "var tracking_on = true;\n"
-    else:
-        view_js += "var tracking_on = false;\n"
+#   # accept cookies by default
+#   if settings.tracking_on: system_js += "var tracking_on = true;\n"
+#   else:                    system_js += "var tracking_on = false;\n"
 
-    # page url
-    if settings.secure:
-        page_url = 'https://'
-    else:
-        page_url = 'http://'
+#   # page url
+#   if settings.secure: page_url = 'https://'
+#   else:               page_url = 'http://'
 
-    page_url += settings.url + '/' + request_prefix + '/' + request_slug
-    view_js += "var page_url = '" + page_url + "';\n"
+#   page_url += settings.url + '/' + request_prefix + '/' + request_slug
+#   system_js += "var page_url = '" + page_url + "';\n"
 
-    # page dimension information
-    dim_js = ''
+#   # page dimension information
+#   dim_js = ''
 
-    if page.override_dims:
-        dim_js += '// overridden in page settings:\n'
+#   if page.override_dims:
+#       dim_js += '// overridden in page settings:\n'
 
-        dim_js += 'var page_width = '     + str(page.width  ) + '; '
-        dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
-        dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
-        dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
+#       dim_js += 'var page_width = '     + str(page.width  ) + '; '
+#       dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
+#       dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
+#       dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
 
-    else:
-        dim_js += 'var page_width = '     + str(responsive.width)   + '; '
-        dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
-        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
-        dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
+#   else:
+#       dim_js += 'var page_width = '     + str(responsive.width)   + '; '
+#       dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
+#       dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
+#       dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
 
-    view_js += dim_js
+#   system_js += dim_js
 
     #———————————————————————————————————————— form-oriented language variables
 
@@ -350,7 +305,7 @@ def PageView(request, request_prefix, request_slug):
         'meta'          : meta,
         'fonts'         : font_link,
         'touch'         : touch,
-        'view_js'       : view_js,
+        'system_js'       : system_js,
         'user_js'       : user_js,
         'css'           : head_css,
         'snippet'       : snippet,
