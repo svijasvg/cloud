@@ -29,6 +29,7 @@ from modules.page_load_svgs import *
 from modules.add_script import *
 from modules.get_fonts import *
 from modules.generate_system_js import *
+from modules.generate_form_js import *
 
 from django.http import HttpResponsePermanentRedirect
 
@@ -72,24 +73,15 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— more context for template
 
-    meta          = ''
-    fonts         = ''
-    font_link     = ''
-    system_js       = ''
-    user_js       = ''
-    head_css      = ''
-    snippet       = ''
-    svg           = ''
-    html          = ''
-    form          = ''
-    module        = ''
-    body_js       = ''
+    meta    = fonts    = font_link = system_js     = ''
+    user_js = head_css = snippet   = svg           = ''
+    html    = form     = module    = body_js       = ''
 
     #———————————————————————————————————————— meta tag
-    # creates meta link to canonical page
+    # meta link to canonical page
     #  <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
 
-    meta = create_canonical(
+    meta = meta_canonical(
         prefix,       responsive,     language,
         settings.url, request_prefix, request_slug, )
 
@@ -103,71 +95,10 @@ def PageView(request, request_prefix, request_slug):
 
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-#   # version information
-#   system_js += "var svija_version='2.1.5';\n"
-
-#   # language information
-#   cde = language.code
-#   system_js += 'var language_code = "' + cde +'";\n'
-#   pfx = settings.prefix.path
-#   system_js += 'var default_site_prefix = "' + pfx +'";\n'
-
-#   # accept cookies by default
-#   if settings.tracking_on: system_js += "var tracking_on = true;\n"
-#   else:                    system_js += "var tracking_on = false;\n"
-
-#   # page url
-#   if settings.secure: page_url = 'https://'
-#   else:               page_url = 'http://'
-
-#   page_url += settings.url + '/' + request_prefix + '/' + request_slug
-#   system_js += "var page_url = '" + page_url + "';\n"
-
-#   # page dimension information
-#   dim_js = ''
-
-#   if page.override_dims:
-#       dim_js += '// overridden in page settings:\n'
-
-#       dim_js += 'var page_width = '     + str(page.width  ) + '; '
-#       dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
-#       dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
-#       dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
-
-#   else:
-#       dim_js += 'var page_width = '     + str(responsive.width)   + '; '
-#       dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
-#       dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
-#       dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
-
-#   system_js += dim_js
-
     #———————————————————————————————————————— form-oriented language variables
+    # added to user js only if there is a form
 
-    # added down below if there is a form
-
-    form_js = '\n//———————————————————————————————————————— mail form\n\n'
-
-    form_js += 'var name_init = "'      + language.form_name       + '";\n'
-    form_js += 'var address_init = "'   + language.form_email      + '";\n'
-    form_js += 'var status_init = "'    + language.form_status     + '";\n'
-    form_js += 'var send_init = "'      + language.form_send       + '";\n'
-    form_js += 'var mess_sending = "'   + language.form_sending    + '";\n'
-    form_js += 'var mess_received = "'  + language.form_rcvd       + '";\n'
-    form_js += 'var alert_received = "' + language.form_alert_rcvd + '";\n'
-    form_js += 'var alert_failed = "'   + language.form_alert_fail  + '";\n'
-
-#var address_failed = 'cxoxnxtxaxcxtx@xoxzxaxkxex.xcxom';
-
-#var alert_failed   = 'Your message could not be sent.\n\nPlease send it directly to '
-#                   + address_failed.replace(/x/g,'');
-
-    alert_char  = 'x' # should be calculated
-    alert_email = alert_char.join(list(language.email))
-
-    form_js += 'var alert_email  = "'   + alert_email + '";\n'
-    form_js += 'var alert_char   = "'   + alert_char  + '";\n'
-    form_js += '\n//———————————————————————————————————————— /mail form\n\n'
+    form_js = generate_form_js(language)
 
     #———————————————————————————————————————— shared scripts
 

@@ -7,7 +7,7 @@ import os
 from django.db.models import Q
 from svija.models import Prefix
 
-def create_canonical(prefix, responsive, language, host,dir, url):
+def meta_canonical(prefix, responsive, language, host,dir, url):
 
 #----------------------------------------- find the correct prefix for the link
 
