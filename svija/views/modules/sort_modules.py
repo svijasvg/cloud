@@ -35,14 +35,4 @@ def sort_modules(all_modules, source_dir, specified_width, use_p3):
                 if this_script.type == 'form':
                     form += add_script('html', this_script.name, this_script.content)
 
-    results = {
-        'head_css': head_css,
-        'head_js' : head_js,
-        'body_js' : body_js,
-        'svg'     : svg,
-        'html'    : html,
-        'form'    : form,
-    }
-    return results
-
-
+    return head_css, head_js, body_js, svg, html, form

@@ -25,12 +25,12 @@ Decorator which caches the view for each User
 * The caching for anonymous users is shared with everyone
 
 How to use it:
-@cache_per_user_function(ttl=3600, cache_post=False)
+@cache_per_user(ttl=3600, cache_post=False)
 def my_view(request):
     return HttpResponse("LOL %s" % (request.user))
 '''
 
-def cache_per_user_function(ttl=None, cache_post=False):
+def cache_per_user(ttl=None, cache_post=False):
     def decorator(function):
         def apply_cache(request, *args, **kwargs):
             CACHE_KEY = cache_key(request)

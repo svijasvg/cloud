@@ -3,44 +3,27 @@
 
 import os, os.path, sys, pathlib, svija 
 
-from django.contrib.staticfiles.views import serve
 from django.core.cache import cache
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.files import File
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-from django.template import loader
-from django.urls import reverse
-from django.views import generic
-from django.views.decorators.cache import never_cache
-
-from svija.models import Forwards, Font, Notes, Language, Responsive, Robots
-from svija.models import Template, LibraryScript, Module, ModuleScripts
-from svija.models import Shared, SharedScripts
-from svija.models import Prefix, PrefixModules
-from svija.models import Settings
-from svija.models import Page, PageScripts, Svg, PageModules
-
-from modules import cache_functions
-from modules.meta_canonical import *
-from modules.sort_modules import *
-from modules.page_load_svgs import *
-from modules.add_script import *
-from modules.get_fonts import *
-from modules.generate_system_js import *
-from modules.generate_form_js import *
-from modules.generate_sitewide_js import *
-from modules.generate_accessibility import *
-from modules.generate_optional_js import *
-from modules.generate_page_js import *
-from modules.attribute_scripts import *
-
 from django.http import HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404, render
+
+from svija.models import *
+
+from modules.add_script import *
+from modules.attribute_scripts import *
+from modules.cache_per_user import *
+from modules.generate_accessibility import *
+from modules.generate_form_js import *
+from modules.generate_system_js import *
+from modules.get_fonts import *
+from modules.meta_canonical import *
+from modules.page_load_svgs import *
+from modules.sort_modules import *
 
 #———————————————————————————————————————— view definition
 
-@cache_functions.cache_per_user_function(ttl=60*60*24, cache_post=False)
+@cache_per_user(ttl=60*60*24, cache_post=False)
 def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— load objects
@@ -100,11 +83,6 @@ def PageView(request, request_prefix, request_slug):
 
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-    #———————————————————————————————————————— form-oriented language variables
-    # added to user js only if there is a form
-
-    form_js = generate_form_js(language)
-
     #———————————————————————————————————————— sitewide scripts
 
     c, h, b, m, f = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
@@ -137,12 +115,16 @@ def PageView(request, request_prefix, request_slug):
     html     += m
     form     += f
 
-    #———————————————————————————————————————— load all svgs
+    #———————————————————————————————————————— form-oriented language variables
+    # added to user js only if there is a form
 
-    if form == '': form_js = ''
-    user_js += form_js
 
-    #———————————————————————————————————————— load all svgs
+    #———————————————————————————————————————— if there's a form, get form js
+
+    if form != '':
+        user_js += generate_form_js(language)
+
+    #———————————————————————————————————————— load all page svgs
 
     source_dir = 'sync/' + responsive.source_dir
 
@@ -154,9 +136,9 @@ def PageView(request, request_prefix, request_slug):
     svg = ''
     all_svgs  = page.svg_set.all()
 
-    thisThing = page_load_svgs(all_svgs, source_dir, specified_width, use_p3)
-    svg += thisThing['svg']
-    head_css += thisThing['head_css']
+    res = page_load_svgs(all_svgs, source_dir, specified_width, use_p3)
+    svg += res['svg']
+    head_css += res['head_css']
 
     #———————————————————————————————————————— modules
 
@@ -165,33 +147,31 @@ def PageView(request, request_prefix, request_slug):
         user_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
 
-        thisThing = sort_modules(prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
-        module += thisThing['svg']
-        head_css += thisThing['head_css']
-        user_js += thisThing['head_js']
-        body_js += thisThing['body_js']
-        html    += thisThing['html']
-        form    += thisThing['form']
+        c, h, b, s, m, f = sort_modules(prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
+        head_css += c
+        user_js  += h
+        body_js  += b
+        module   += s
+        html     += m
+        form     += f
 
     user_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
 
     all_modules = page.pagemodules_set.all()
+    c, h, b, s, m, f = sort_modules(page.pagemodules_set.all(), source_dir, specified_width, use_p3)
 
-    thisThing = sort_modules(page.pagemodules_set.all(), source_dir, specified_width, use_p3)
-    module += thisThing['svg']
-    head_css += thisThing['head_css']
-    user_js += thisThing['head_js']
-    body_js += thisThing['body_js']
-    html    += thisThing['html']
-    form    += thisThing['form']
+    head_css += c
+    user_js  += h
+    body_js  += b
+    module   += s
+    html     += m
+    form     += f
 
     #———————————————————————————————————————— page settings
 
     template = 'svija/' + page.template.filename
-
-    if form != '':
-        template = template.replace('.html', '_token.html')
+    if form != '': template = template.replace('.html', '_token.html')
 
     # set it up
     context = {
@@ -200,7 +180,7 @@ def PageView(request, request_prefix, request_slug):
         'meta'          : meta,
         'fonts'         : font_link,
         'touch'         : touch,
-        'system_js'       : system_js,
+        'system_js'     : system_js,
         'user_js'       : user_js,
         'css'           : head_css,
         'snippet'       : accessible,
@@ -213,6 +193,5 @@ def PageView(request, request_prefix, request_slug):
     }
 
     return render(request, template, context)
-#   return render(request, template, {'context':context})
 
 #———————————————————————————————————————— fin
