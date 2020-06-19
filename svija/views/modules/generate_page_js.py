@@ -1,0 +1,29 @@
+#———————————————————————————————————————— generate_page_scripts.py
+
+from modules.add_script import *
+
+def generate_page_js(sitewide):
+
+    head_css = '\n\n/*———————————————————————————————————————— page scripts */\n\n'
+    head_js  = '\n\n//———————————————————————————————————————— page scripts\n\n'
+    body_js  = '\n\n//———————————————————————————————————————— page scripts\n\n'
+    html     = '\n\n<!-- ———————————————————————————————————————— page scripts -->\n\n'
+    form     = '\n\n<!-- ———————————————————————————————————————— page scripts -->\n\n'
+
+    for this_script in sitewide:
+        if this_script.type == 'CSS' and this_script.active == True:
+            head_css += add_script('css', this_script.name, this_script.content)
+
+        if this_script.type == 'head JS' and this_script.active == True:
+            head_js += add_script('js', this_script.name, this_script.content)
+
+        if this_script.type == 'body JS' and this_script.active == True:
+            body_js += add_script('js', this_script.name, this_script.content)
+
+        if this_script.type == 'HTML' and this_script.active == True:
+            html += add_script('html', this_script.name, this_script.content)
+
+        if this_script.type == 'form' and this_script.active == True:
+            form += add_script('html', this_script.name, this_script.content)
+
+    return head_css, head_js, body_js, html, form

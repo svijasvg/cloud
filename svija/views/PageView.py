@@ -32,6 +32,8 @@ from modules.generate_system_js import *
 from modules.generate_form_js import *
 from modules.generate_sitewide_js import *
 from modules.generate_accessibility import *
+from modules.generate_optional_js import *
+from modules.generate_page_js import *
 
 from django.http import HttpResponsePermanentRedirect
 
@@ -104,66 +106,40 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— sitewide scripts
 
-    c, h, b = generate_sitewide_js(page.shared.sharedscripts_set.all())
+    c, h, b, m, f = generate_sitewide_js(page.shared.sharedscripts_set.all())
     head_css += c
     user_js  += h
     body_js  += b
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— snippet
 
     snippet = generate_accessibility(settings.url, Page.objects.all(), page)
 
-    #———————————————————————————————————————— library scripts
+    #———————————————————————————————————————— optional scripts
 
-#   html     = ''
-#   form     = ''
-    user_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
-    body_js += '\n\n//———————————————————————————————————————— library scripts\n\n'
-
-    all_scripts = page.library_script.all()
-
-    for this_script in all_scripts:
-        if this_script.type == 'head JS':
-            user_js += add_script('js', this_script.name, this_script.content)
-
-        if this_script.type == 'body JS':
-            body_js += add_script('js', this_script.name, this_script.content)
-
-        if this_script.type == 'CSS':
-            head_css += add_script('css', this_script.name, this_script.content)
-
-        if this_script.type == 'HTML':
-            html += add_script('html', this_script.name, this_script.content)
-
-        if this_script.type == 'form':
-            form += add_script('html', this_script.name, this_script.content)
+    c, h, b, m, f = generate_optional_js(page.library_script.all())
+    head_css += c
+    user_js  += h
+    body_js  += b
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— page scripts
 
-    html     = ''
-    form     = ''
-    user_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
-    body_js += '\n\n//———————————————————————————————————————— page scripts\n\n'
+    c, h, b, m, f = generate_page_js(page.pagescripts_set.all())
 
-    all_scripts = page.pagescripts_set.all()
+    head_css += c
+    user_js  += h
+    body_js  += b
+    html     += m
+    form     += f
 
-    for this_script in all_scripts:
-        if this_script.type == 'head JS' and this_script.active == True:
-            user_js += add_script('js', this_script.name, this_script.content)
+    #———————————————————————————————————————— load all svgs
 
-        if this_script.type == 'body JS' and this_script.active == True:
-            body_js += add_script('js', this_script.name, this_script.content)
-
-        if this_script.type == 'CSS' and this_script.active == True:
-            head_css += add_script('css', this_script.name, this_script.content)
-
-        if this_script.type == 'HTML' and this_script.active == True:
-            html += add_script('html', this_script.name, this_script.content)
-
-        if this_script.type == 'form' and this_script.active == True:
-            form += add_script('html', this_script.name, this_script.content)
-
-    if form != '': user_js += form_js
+    if form == '': form_js = ''
+    user_js += form_js
 
     #———————————————————————————————————————— load all svgs
 

@@ -1,8 +1,8 @@
-#———————————————————————————————————————— generate_sitewide_scripts.py
+#———————————————————————————————————————— generate_optional_scripts.py
 
 from modules.add_script import *
 
-def generate_sitewide_js(sitewide):
+def generate_optional_js(sitewide):
 
     head_css = '\n\n/*———————————————————————————————————————— optional scripts */\n\n'
     head_js  = '\n\n//———————————————————————————————————————— optional scripts\n\n'
