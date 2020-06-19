@@ -30,6 +30,7 @@ from modules.add_script import *
 from modules.get_fonts import *
 from modules.generate_system_js import *
 from modules.generate_form_js import *
+from modules.generate_sitewide_js import *
 
 from django.http import HttpResponsePermanentRedirect
 
@@ -100,22 +101,12 @@ def PageView(request, request_prefix, request_slug):
 
     form_js = generate_form_js(language)
 
-    #———————————————————————————————————————— shared scripts
+    #———————————————————————————————————————— sitewide scripts
 
-    user_js += '\n//———————————————————————————————————————— shared scripts\n'
-    body_js += '//———————————————————————————————————————— shared scripts'
-
-    shared = page.shared.sharedscripts_set.all()  
-
-    for this_script in shared:
-        if this_script.type == 'CSS' and this_script.active == True:
-            head_css += add_script('css', this_script.name, this_script.content)
-
-        if this_script.type == 'head JS' and this_script.active == True:
-            user_js += add_script('js', this_script.name, this_script.content)
-
-        if this_script.type == 'body JS' and this_script.active == True:
-            body_js += add_script('js', this_script.name, this_script.content)
+    c, h, b = generate_sitewide_js(page.shared.sharedscripts_set.all())
+    head_css += c
+    user_js  += h
+    body_js  += b
 
     #———————————————————————————————————————— snippet
 
