@@ -34,6 +34,10 @@ def PageView(request, request_prefix, request_slug):
     settings   = get_object_or_404(Settings, active=True)
     language   = prefix.language
 
+    #———————————————————————————————————————— where content comes from
+
+    source_dir = 'sync/' + responsive.source_dir
+
     #————————————————————————————————————————  redirect if it's a default page (path not shown)
 
     site_default_prefix = '/' + settings.prefix.path +'/'            # default prefix for site
@@ -66,8 +70,8 @@ def PageView(request, request_prefix, request_slug):
     html    = form     = modules   = body_js       = ''
 
     core_content = {
-        'css'     : '',
         'head_js' : '',
+        'css'     : '',
         'body_js' : '',
         'svgs'    : '',
         'html'    : '',
@@ -95,12 +99,13 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— sitewide scripts
 
-    c, h, b, m, f = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
-    head_css += c
-    head_js  += h
-    body_js  += b
-    html     += m
-    form     += f
+    core_content = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
+#   c, h, b, m, f = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
+#   head_css += c
+#   head_js  += h
+#   body_js  += b
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— accessibility
 
@@ -108,38 +113,40 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— optional scripts
 
-    c, h, b, m, f = attribute_scripts(core_content, 'optional', page.library_script.all())
-    head_css += c
-    head_js  += h
-    body_js  += b
-    html     += m
-    form     += f
+    core_content = attribute_scripts(core_content, 'optional', page.library_script.all())
+#   c, h, b, m, f = attribute_scripts(core_content, 'optional', page.library_script.all())
+#   head_css += c
+#   head_js  += h
+#   body_js  += b
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— page scripts
 
-    c, h, b, m, f = attribute_scripts(core_content, 'page', page.pagescripts_set.all())
+    core_content = attribute_scripts(core_content, 'page', page.pagescripts_set.all())
+#   c, h, b, m, f = attribute_scripts(core_content, 'page', page.pagescripts_set.all())
 
-    head_css += c
-    head_js  += h
-    body_js  += b
-    html     += m
-    form     += f
+#   head_css += c
+#   head_js  += h
+#   body_js  += b
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— load all page svgs
-
-    source_dir = 'sync/' + responsive.source_dir
 
     if page.override_dims:
         specified_width = page.width
     else:
         specified_width = responsive.width
 
-    svg = ''
-    all_svgs  = page.svg_set.all()
+#   svg = ''
+#   all_svgs  = page.svg_set.all()
 
-    res = page_load_svgs(all_svgs, source_dir, specified_width, use_p3)
-    svg += res['svg']
-    head_css += res['head_css']
+    core_content = page_load_svgs(core_content,page, source_dir, responsive.width, use_p3)
+
+#   res = page_load_svgs(core_content,page, all_svgs, source_dir, specified_width, use_p3)
+#   svg += res['svg']
+#   head_css += res['head_css']
 
     #———————————————————————————————————————— modules
 
@@ -148,26 +155,30 @@ def PageView(request, request_prefix, request_slug):
         head_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
         body_js += '\n\n//———————————————————————————————————————— prefix module scripts\n\n'
 
-        c, h, b, s, m, f = sort_modules(core_content, prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
-        head_css += c
-        head_js  += h
-        body_js  += b
-        modules  += s
-        html     += m
-        form     += f
+        core_content = sort_modules(core_content, prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
+
+#       c, h, b, s, m, f = sort_modules(core_content, prefix.prefixmodules_set.all(), source_dir, specified_width, use_p3)
+#       head_css += c
+#       head_js  += h
+#       body_js  += b
+#       modules  += s
+#       html     += m
+#       form     += f
 
     head_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
     body_js += '\n\n//———————————————————————————————————————— page module scripts\n\n'
 
     all_modules = page.pagemodules_set.all()
-    c, h, b, s, m, f = sort_modules(core_content, page.pagemodules_set.all(), source_dir, specified_width, use_p3)
+    core_content = sort_modules(core_content, page.pagemodules_set.all(), source_dir, specified_width, use_p3)
 
-    head_css += c
-    head_js  += h
-    body_js  += b
-    modules  += s
-    html     += m
-    form     += f
+#   c, h, b, s, m, f = sort_modules(core_content, page.pagemodules_set.all(), source_dir, specified_width, use_p3)
+
+#   head_css += c
+#   head_js  += h
+#   body_js  += b
+#   modules  += s
+#   html     += m
+#   form     += f
 
     #———————————————————————————————————————— if there's a form, get form js
     # default string localization
@@ -200,13 +211,17 @@ def PageView(request, request_prefix, request_slug):
         'fonts'         : font_link,
         'touch'         : touch,
         'system_js'     : system_js,
-        'head_js'       : head_js,
-        'css'           : head_css,
+
+        'head_js'       : core_content['head_js'],
+        'css'           : core_content['css'],
+
         'accessible'    : accessible,
-        'svg'           : svg,
-        'html'          : html,
-        'form'          : form,
-        'modules'       : modules,
+
+        'svg'           : core_content['svgs'],
+        'html'          : core_content['html'],
+        'form'          : core_content['form'],
+        'modules'       : core_content['modules'],
+
         'analytics_id'  : analytics_id,
         'body_js'       : body_js
     }

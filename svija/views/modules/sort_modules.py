@@ -9,12 +9,12 @@ from modules.add_script import *
 
 def sort_modules(core_content, all_modules, source_dir, specified_width, use_p3):
 
-    head_css = head_js = body_js = svg = html = form = ''
+    head_css = head_js = body_js = svgs = html = form = ''
 
     for this_module in (obj.module for obj in all_modules if obj.active==True):
 
         s, c = get_single_svg(this_module, source_dir, specified_width, use_p3)
-        svg += s
+        svgs += s
         head_css += c
 
         for this_script in this_module.modulescripts_set.all():
@@ -35,4 +35,13 @@ def sort_modules(core_content, all_modules, source_dir, specified_width, use_p3)
                 if this_script.type == 'form':
                     form += add_script('html', this_script.name, this_script.content)
 
-    return head_css, head_js, body_js, svg, html, form
+#   return head_css, head_js, body_js, svgs, html, form
+
+    core_content['head_js'] += head_js
+    core_content['css']     += head_css
+    core_content['body_js'] += body_js
+    core_content['svgs']    += svgs
+    core_content['html']    += html
+    core_content['form']    += form
+
+    return core_content

@@ -1,22 +1,35 @@
-
-#———————————————————————————————————————— load all SVG's on a page
+#———————————————————————————————————————— page_load_svgs.py
 
 from modules import svg_cleaner
 from modules.get_single_svg import *
 
-def page_load_svgs(all_svgs, source_dir, specified_width, use_p3):
+#ef page_load_svgs(core_content,page,all_svgs, source_dir, specified_width, use_p3):
+
+def page_load_svgs(core_content, page, source_dir, responsive_width, use_p3):
+
+    if page.override_dims:
+        specified_width = page.width
+    else:
+        specified_width = responsive_width
     
-    head_css = svg = ''
+    svgs = ''
+    all_svgs  = page.svg_set.all()
+
+    css = svgs = ''
 
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
             s, c = get_single_svg(this_svg, source_dir, specified_width, use_p3)
-            svg += s
-            head_css += c
+            svgs += s
+            css += c
 
-    results = {
-        'head_css': head_css,
-        'svg'     : svg,
-    }
-    return results
+    core_content['css'] += css
+    core_content['svgs'] += svgs
 
+    return core_content
+
+#   results = {
+#       'css': css,
+#       'svg'     : svg,
+#   }
+#   return results
