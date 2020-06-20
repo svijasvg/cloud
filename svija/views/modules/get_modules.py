@@ -7,9 +7,12 @@ from modules.svg_cleaner import *
 from modules.get_single_svg import *
 from modules.add_script import *
 
-def sort_modules(core_content, all_modules, source_dir, specified_width, use_p3):
+def get_modules(core_content, label, all_modules, source_dir, specified_width, use_p3):
 
     head_css = head_js = body_js = svgs = html = form = ''
+
+    head_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+    body_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
 
     for this_module in (obj.module for obj in all_modules if obj.active==True):
 

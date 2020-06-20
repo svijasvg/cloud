@@ -1,7 +1,13 @@
     #———————————————————————————————————————— form-oriented language variables
 
     # added down below if there is a form
-def generate_form_js(language):
+
+#ef generate_form_js(language):
+
+def generate_form_js(core_content, language):
+
+    if core_content['form'] == '':
+        return core_content
 
     form_js = '\n//———————————————————————————————————————— mail form\n\n'
 
@@ -26,4 +32,7 @@ def generate_form_js(language):
     form_js += 'var alert_char   = "'   + alert_char  + '";\n'
     form_js += '\n//———————————————————————————————————————— /mail form\n\n'
 
-    return form_js
+    core_content['body_js'] += form_js
+    return core_content
+
+#   return form_js

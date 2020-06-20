@@ -5,13 +5,8 @@ from modules.get_single_svg import *
 
 #ef page_load_svgs(core_content,page,all_svgs, source_dir, specified_width, use_p3):
 
-def page_load_svgs(core_content, page, source_dir, responsive_width, use_p3):
+def page_load_svgs(core_content, page, source_dir, specified_width, use_p3):
 
-    if page.override_dims:
-        specified_width = page.width
-    else:
-        specified_width = responsive_width
-    
     svgs = ''
     all_svgs  = page.svg_set.all()
 
