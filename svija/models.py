@@ -162,7 +162,7 @@ class Template(models.Model):
 
 #———————————————————————————————————————— library scripts · no dependencies
 
-library_scripts=('head JS', 'body JS', 'HTML', 'form', 'CSS',)
+library_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
 
 class LibraryScript(models.Model):
 
@@ -202,7 +202,7 @@ class Module(models.Model):
         ordering = ['active', 'display_order', 'name', 'sort1', 'sort2',]
         verbose_name_plural = "2.2 · Modules"
 
-module_scripts=('head JS', 'body JS', 'CSS',)
+module_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
 
 class ModuleScripts(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -229,7 +229,7 @@ class Shared(models.Model):
         verbose_name = "Sitewide Scripts"
         verbose_name_plural = "3.2 · Sitewide Scripts"
 
-shared_scripts=('CSS', 'head JS', 'body JS',)
+shared_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
 
 class SharedScripts(models.Model):
     scripts = models.ForeignKey(Shared, on_delete=models.PROTECT)
@@ -352,7 +352,7 @@ class Page(models.Model):
         ordering = ['-visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
         verbose_name_plural = "2.1 · Pages"
 
-page_scripts=('head JS', 'body JS', 'CSS', 'HTML' , 'form',)
+page_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
 
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
