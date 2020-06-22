@@ -22,6 +22,18 @@ from modules.page_load_svgs import *
 from modules.redirect_if_home import *
 from modules.get_modules import *
 
+#———————————————————————————————————————— class definition
+
+class page_obj():
+    def __init__(self, meta_fonts, head_js, css, body_js, svgs, html, form):
+        self.meta_fonts = meta_fonts
+        self.head_js    = head_js
+        self.css        = css
+        self.body_js    = body_js
+        self.svgs       = svgs
+        self.html       = html
+        self.form       = form
+
 #———————————————————————————————————————— view definition
 
 @cache_per_user(ttl=60*60*24, cache_post=False)
@@ -75,6 +87,8 @@ def PageView(request, request_prefix, request_slug):
     core_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
 
     # load all page svgs
+    page_stuff = page_obj('1', '2','3', '4/body','5<!-- svg -->', '6<!-- html -->','<!--form-->')
+
     core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
 
     # modules
