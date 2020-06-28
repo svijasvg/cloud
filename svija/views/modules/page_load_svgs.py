@@ -2,6 +2,7 @@
 
 from modules import svg_cleaner
 from modules.get_single_svg import *
+from PageView import page_obj
 
 #ef page_load_svgs(core_content,page,all_svgs, source_dir, specified_width, use_p3):
 
@@ -21,10 +22,6 @@ def page_load_svgs(core_content, page, source_dir, specified_width, use_p3):
     core_content['css'] += css
     core_content['svgs'] += svgs
 
-    return core_content
+    dis = page_obj('', '', css, '', svgs, '', '')
 
-#   results = {
-#       'css': css,
-#       'svg'     : svg,
-#   }
-#   return results
+    return dis, core_content

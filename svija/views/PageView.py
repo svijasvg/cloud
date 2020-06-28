@@ -86,10 +86,15 @@ def PageView(request, request_prefix, request_slug):
     core_content = attribute_scripts(core_content, 'optional', page.library_script.all())
     core_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
 
-    # load all page svgs
-    page_stuff = page_obj('1', '2','3', '4/body','5<!-- svg -->', '6<!-- html -->','<!--form-->')
+#       self.meta_fonts = meta_fonts
+#       self.head_js    = head_js
+#       self.css        = css
+#       self.body_js    = body_js
+#       self.svgs       = svgs
+#       self.html       = html
+#       self.form       = form
 
-    core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
+    page_stuff, core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
 
     # modules
 
