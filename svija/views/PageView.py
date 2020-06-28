@@ -20,7 +20,6 @@ from modules.get_fonts import *
 from modules.meta_canonical import *
 from modules.page_load_svgs import *
 from modules.redirect_if_home import *
-from modules.get_modules import *
 
 #———————————————————————————————————————— class definition
 
@@ -33,6 +32,9 @@ class page_obj():
         self.svgs       = svgs
         self.html       = html
         self.form       = form
+
+from modules.get_modules import *
+from modules.order_content import *
 
 #———————————————————————————————————————— view definition
 
@@ -86,22 +88,18 @@ def PageView(request, request_prefix, request_slug):
     core_content = attribute_scripts(core_content, 'optional', page.library_script.all())
     core_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
 
-#       self.meta_fonts = meta_fonts
-#       self.head_js    = head_js
-#       self.css        = css
-#       self.body_js    = body_js
-#       self.svgs       = svgs
-#       self.html       = html
-#       self.form       = form
-
     page_stuff, core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
 
     # modules
 
-    if not page.suppress_modules:
-        core_content = get_modules(core_content, 'prefix module scripts', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
+    all_modules = []
 
-    core_content = get_modules(core_content, 'page module scripts', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    if not page.suppress_modules:
+        prefix_modules, core_content = get_modules(core_content, 'prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
+        all_modules.append(prefix_modules)
+
+    page_modules, core_content = get_modules(core_content, 'page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    all_modules.append(page_modules)
 
     # if there's a form, get form js
     core_content = generate_form_js(core_content, language)

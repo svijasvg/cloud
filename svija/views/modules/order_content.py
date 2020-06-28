@@ -1,4 +1,4 @@
-#———————————————————————————————————————— views/modules/get_modules.py
+#———————————————————————————————————————— views/modules/order_content.py
 
 # accepts a list of modules, some inactive
 # a module has exactly 1 svg filename, and it can be empty
@@ -8,7 +8,7 @@ from modules.get_single_svg import *
 from modules.add_script import *
 from PageView import page_obj
 
-def get_modules(core_content, label, all_modules, source_dir, specified_width, use_p3):
+def order_content(core_content, label, all_modules, source_dir, specified_width, use_p3):
 
     head_css = head_js = body_js = svgs = html = form = ''
 
