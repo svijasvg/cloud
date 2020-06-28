@@ -41,6 +41,8 @@ from modules.order_content import *
 @cache_per_user(ttl=60*60*24, cache_post=False)
 def PageView(request, request_prefix, request_slug):
 
+    all_modules = []
+
     #———————————————————————————————————————— load objects
 
     prefix     = get_object_or_404(Prefix, path=request_prefix)
@@ -88,11 +90,10 @@ def PageView(request, request_prefix, request_slug):
     core_content = attribute_scripts(core_content, 'optional', page.library_script.all())
     core_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
 
+    # page content & modules
+
     page_stuff, core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
-
-    # modules
-
-    all_modules = []
+    all_modules.append(page_stuff)
 
     if not page.suppress_modules:
         prefix_modules, core_content = get_modules(core_content, 'prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
@@ -101,6 +102,7 @@ def PageView(request, request_prefix, request_slug):
     page_modules, core_content = get_modules(core_content, 'page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
     all_modules.append(page_modules)
 
+    new_content = order_content(all_modules)
     # if there's a form, get form js
     core_content = generate_form_js(core_content, language)
 
