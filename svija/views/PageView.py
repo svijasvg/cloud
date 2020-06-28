@@ -32,6 +32,8 @@ class page_obj():
         self.svgs       = svgs
         self.html       = html
         self.form       = form
+    def __getitem__(cls, x):
+        return getattr(cls, x)
 
 from modules.get_modules import *
 from modules.order_content import *
@@ -97,12 +99,13 @@ def PageView(request, request_prefix, request_slug):
 
     if not page.suppress_modules:
         prefix_modules, core_content = get_modules(core_content, 'prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
-        all_modules.append(prefix_modules)
+        all_modules.extend(prefix_modules)
 
     page_modules, core_content = get_modules(core_content, 'page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
-    all_modules.append(page_modules)
+    all_modules.extend(page_modules)
 
     new_content = order_content(all_modules)
+
     # if there's a form, get form js
     core_content = generate_form_js(core_content, language)
 
@@ -123,6 +126,7 @@ def PageView(request, request_prefix, request_slug):
     }
 
     context.update(core_content)
+    #ontext.update(new_content)
 
     return render(request, template, context)
 

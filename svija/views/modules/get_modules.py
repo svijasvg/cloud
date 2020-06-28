@@ -57,9 +57,9 @@ def get_modules(core_content, label, all_modules, source_dir, specified_width, u
 
                 if this_script.type == 'form':
                     form += add_script('html', this_script.name, this_script.content)
-                    xf += add_script('html', this_script.name, this_script.content)
+                    xm += add_script('html', this_script.name, this_script.content)
 
-        module_list.append( page_obj(xf, xh, xc, xb, xs, xh, xf) )
+        module_list.append( page_obj(xf, xh, xc, xb, xs, xh, xm) )
 
     core_content['head_js'] += head_js
     core_content['css']     += head_css
