@@ -10,11 +10,10 @@ from PageView import page_obj
 def order_content(module_list):
 
     ordered_content = {
-        'meta_fonts':'', 'head_js':'', 'css':'', 'body_js':'', 'svgs':'', 'html':'', }
+        'head_js':'', 'css':'', 'body_js':'', 'svgs':'', 'html':'', }
 
-    meta_fonts = head_js = css =  body_js = svgs = html = form = ''
+    head_js = css =  body_js = svgs = html = form = ''
 
-    meta_fonts += ''.join([i['meta_fonts'] for i in module_list])
     head_js    += ''.join([i['head_js']    for i in module_list])
     css        += ''.join([i['css']        for i in module_list])
     body_js    += ''.join([i['body_js']    for i in module_list])
@@ -22,7 +21,6 @@ def order_content(module_list):
     html       += ''.join([i['html']       for i in module_list])
     html       += ''.join([i['form']       for i in module_list])
 
-    ordered_content['meta_fonts'] += meta_fonts
     ordered_content['head_js']    += head_js
     ordered_content['css']        += css
     ordered_content['body_js']    += body_js

@@ -19,7 +19,6 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
 
     for this_module in (obj.module for obj in all_modules if obj.active==True):
 
-#       self.meta_fonts = meta_fonts
 #       self.head_js    = head_js
 #       self.css        = css
 #       self.body_js    = body_js
@@ -27,7 +26,7 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
 #       self.html       = html
 #       self.form       = form
 
-        xf = xh = xc = xb = xs = xh = xm = ''
+        xh = xc = xb = xs = xh = xm = ''
 
         s, c = get_single_svg(this_module, source_dir, specified_width, use_p3)
         svgs += s
@@ -59,6 +58,6 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
                     form += add_script('html', this_script.name, this_script.content)
                     xm += add_script('html', this_script.name, this_script.content)
 
-        module_list.append( page_obj(xf, xh, xc, xb, xs, xh, xm) )
+        module_list.append(page_obj(xh, xc, xb, xs, xh, xm) )
 
     return module_list

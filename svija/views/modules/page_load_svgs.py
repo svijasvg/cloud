@@ -17,6 +17,6 @@ def page_load_svgs(page, source_dir, specified_width, use_p3):
             svgs += s
             css += c
 
-    dis = page_obj('', '', css, '', svgs, '', '')
+    dis = page_obj('', css, '', svgs, '', '')
 
     return dis

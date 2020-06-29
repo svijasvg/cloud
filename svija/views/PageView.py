@@ -24,8 +24,7 @@ from modules.redirect_if_home import *
 #———————————————————————————————————————— class definition
 
 class page_obj():
-    def __init__(self, meta_fonts, head_js, css, body_js, svgs, html, form):
-        self.meta_fonts = meta_fonts
+    def __init__(self, head_js, css, body_js, svgs, html, form):
         self.head_js    = head_js
         self.css        = css
         self.body_js    = body_js
@@ -64,13 +63,6 @@ def PageView(request, request_prefix, request_slug):
     redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
-    #———————————————————————————————————————— context for template
-
-    meta_canon = system_js = accessible = ''
-
-    core_content = {
-        'meta_fonts':'', 'head_js':'', 'css':'', 'body_js':'', 'svgs':'', 'html':'', 'form':'', 'modules':'', }
-
     #———————————————————————————————————————— main content building
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
@@ -78,27 +70,24 @@ def PageView(request, request_prefix, request_slug):
         prefix,       responsive,     language,
         settings.url, request_prefix, request_slug, )
 
-    # views.py generated JS
-    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
-
-    # accessibility
     accessible = generate_accessibility(settings.url, Page.objects.all(), page)
 
-    # fonts
-    # meta_fonts & css
-    #ore_content = get_fonts(core_content)
-    meta_fonts, font_css = get_fonts()
+#————————————————————————————————————————————————————————————————————————————————
 
-    # load scripts
-    #ore_content = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
-    #ore_content = attribute_scripts(core_content, 'optional', page.library_script.all())
-    #ore_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
+    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
+
+    meta_fonts, font_css = get_fonts()
 
     head_js, css, body_js, html, form = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
     head_js, css, body_js, html, form = attribute_scripts('optional', page.library_script.all())
-    head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
+
+    script_module = page_obj(head_js, css, body_js, '',  html, form)
+
+#————————————————————————————————————————————————————————————————————————————————
 
     # page content & modules
+
+    head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
 
     page_stuff = page_load_svgs(page, source_dir, page_width, use_p3)
     all_modules.append(page_stuff)
@@ -112,11 +101,11 @@ def PageView(request, request_prefix, request_slug):
 
 
     # if there's a form, get form js
-    #ore_content = generate_form_js(core_content, language)
+    #ore_content = generate_form_js(script_module, language)
 
     # get template (live, debug, or form with CSRF token)
     template = 'svija/' + page.template.filename
-    if core_content['form'] != '':
+    if script_module['form'] != '':
         form_js = generate_form_js(language)
         template = template.replace('.html', '_token.html')
 
@@ -126,6 +115,7 @@ def PageView(request, request_prefix, request_slug):
         'comments'      : language.comment,
         'title'         : page.title + ' ' + language.title,
         'meta_canon'    : meta_canon,
+        'meta_fonts'    : meta_fonts,
         'touch'         : language.touch,
         'system_js'     : system_js,
         'accessible'    : accessible,
