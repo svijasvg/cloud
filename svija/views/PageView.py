@@ -42,7 +42,7 @@ from modules.order_content import *
 @cache_per_user(ttl=60*60*24, cache_post=False)
 def PageView(request, request_prefix, request_slug):
 
-    all_modules = []
+    all_blocks = []
 
     #———————————————————————————————————————— load objects
 
@@ -63,7 +63,7 @@ def PageView(request, request_prefix, request_slug):
     redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
-    #———————————————————————————————————————— main content building
+    #———————————————————————————————————————— system information
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
@@ -78,27 +78,24 @@ def PageView(request, request_prefix, request_slug):
 #————————————————————————————————————————————————————————————————————————————————
 # first two page_object's: sitewide & optional scripts
 
-    all_modules.append( attribute_scripts('sitewide', page.shared.sharedscripts_set.all())                                          )
-    all_modules.append( attribute_scripts('sitewide', page.shared.sharedscripts_set.all())                                          )
-    all_modules.append( attribute_scripts('optional', page.library_script.all())                                                    )
+    all_blocks.append( attribute_scripts( 'sitewide', page.shared.sharedscripts_set.all(), '', '', ))
+    all_blocks.append( attribute_scripts( 'optional', page.library_script.all()          , '', '', ))
 
 #————————————————————————————————————————————————————————————————————————————————
 # page content & modules
 
-#   head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
-
-#   page_stuff = page_load_svgs(page, source_dir, page_width, use_p3)
-#   all_modules.append(page_stuff)
+    dim_css, svgs = page_load_svgs(page, source_dir, page_width, use_p3)
+    all_blocks.append( attribute_scripts('page', page.pagescripts_set.all(), svgs, dim_css))
 
 #————————————————————————————————————————————————————————————————————————————————
 # modules
 
     if not page.suppress_modules:
         prefix_modules  = get_modules('prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
-        all_modules.extend(prefix_modules)
+        all_blocks.extend(prefix_modules)
 
     page_modules = get_modules('page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
-    all_modules.extend(page_modules)
+    all_blocks.extend(page_modules)
 
 #————————————————————————————————————————————————————————————————————————————————
 
@@ -121,7 +118,7 @@ def PageView(request, request_prefix, request_slug):
         'analytics_id'  : settings.analytics_id,
     }
 
-    page_blocks = order_content(all_modules)
+    page_blocks = order_content(all_blocks)
     context.update(page_blocks)
 
     return render(request, template, context)

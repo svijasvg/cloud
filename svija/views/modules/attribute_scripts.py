@@ -3,8 +3,7 @@
 from modules.add_script import *
 from PageView import page_obj
 
-#ef attribute_scripts(core_content, label, sitewide):
-def attribute_scripts(label, sitewide):
+def attribute_scripts(label, script_list, svg_passthrough, css_dimensions):
 
     css      = '\n\n/*———————————————————————————————————————— '    + label + ' scripts */\n\n'
     head_js  = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
@@ -12,7 +11,9 @@ def attribute_scripts(label, sitewide):
     html     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
     form     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
 
-    for this_script in sitewide:
+    css += css_dimensions
+
+    for this_script in script_list:
         if this_script.type == 'CSS' and this_script.active == True:
             css += add_script('css', this_script.name, this_script.content)
 
@@ -28,5 +29,5 @@ def attribute_scripts(label, sitewide):
         if this_script.type == 'form' and this_script.active == True:
             form += add_script('html', this_script.name, this_script.content)
 
-    results = page_obj(head_js, css, body_js, '', html, form)
+    results = page_obj(head_js, css, body_js, svg_passthrough, html, form)
     return results
