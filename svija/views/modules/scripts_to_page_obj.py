@@ -1,9 +1,9 @@
-#———————————————————————————————————————— attribute_scripts.py
+#———————————————————————————————————————— scripts_to_page_obj.py
 
 from modules.add_script import *
 from PageView import page_obj
 
-def attribute_scripts(label, script_list, svg_passthrough, css_dimensions):
+def scripts_to_page_obj(label, script_list, svg_passthrough, css_dimensions):
 
     css      = '\n\n/*———————————————————————————————————————— '    + label + ' scripts */\n\n'
     head_js  = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
@@ -29,5 +29,4 @@ def attribute_scripts(label, script_list, svg_passthrough, css_dimensions):
         if this_script.type == 'form' and this_script.active == True:
             form += add_script('html', this_script.name, this_script.content)
 
-    results = page_obj(head_js, css, body_js, svg_passthrough, html, form)
-    return results
+    return page_obj(head_js, css, body_js, svg_passthrough, html, form)

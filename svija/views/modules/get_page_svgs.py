@@ -1,9 +1,9 @@
-#———————————————————————————————————————— page_load_svgs.py
+#———————————————————————————————————————— get_page_svgs.py
 
 from modules import svg_cleaner
 from modules.get_single_svg import *
 
-def page_load_svgs(page, source_dir, specified_width, use_p3):
+def get_page_svgs(page, source_dir, specified_width, use_p3):
 
     svgs = ''
     all_svgs  = page.svg_set.all()
@@ -16,4 +16,4 @@ def page_load_svgs(page, source_dir, specified_width, use_p3):
             svgs += s
             css += c
 
-    return css, svgs
+    return svgs, css
