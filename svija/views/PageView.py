@@ -11,11 +11,9 @@ from django.shortcuts import get_object_or_404, render
 from svija.models import *
 
 from modules.add_script import *
-from modules.attribute_scripts import *
 from modules.cache_per_user import *
 from modules.generate_accessibility import *
 from modules.generate_form_js import *
-from modules.generate_system_js import *
 from modules.get_fonts import *
 from modules.meta_canonical import *
 from modules.page_load_svgs import *
@@ -34,6 +32,8 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
+from modules.generate_system_js import *
+from modules.attribute_scripts import *
 from modules.get_modules import *
 from modules.order_content import *
 
@@ -72,28 +72,26 @@ def PageView(request, request_prefix, request_slug):
 
     accessible = generate_accessibility(settings.url, Page.objects.all(), page)
 
-#————————————————————————————————————————————————————————————————————————————————
-
+    meta_fonts, font_css = get_fonts()
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-    meta_fonts, font_css = get_fonts()
+#————————————————————————————————————————————————————————————————————————————————
+# first two page_object's: sitewide & optional scripts
 
-    h1= c1= b1= m1= f1= ''
-
-    h1, c1, b1, m1, f1 = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
-    h2, c2, b2, m2, f2 = attribute_scripts('optional', page.library_script.all())
-
-    script_module = page_obj(system_js+h1+h2, font_css+c1+c2, b1+b2, '',  m1+m2, f1+f2)
-    all_modules.extend(script_module)
+    all_modules.append( attribute_scripts('sitewide', page.shared.sharedscripts_set.all())                                          )
+    all_modules.append( attribute_scripts('sitewide', page.shared.sharedscripts_set.all())                                          )
+    all_modules.append( attribute_scripts('optional', page.library_script.all())                                                    )
 
 #————————————————————————————————————————————————————————————————————————————————
+# page content & modules
 
-    # page content & modules
+#   head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
 
-    head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
+#   page_stuff = page_load_svgs(page, source_dir, page_width, use_p3)
+#   all_modules.append(page_stuff)
 
-    page_stuff = page_load_svgs(page, source_dir, page_width, use_p3)
-    all_modules.append(page_stuff)
+#————————————————————————————————————————————————————————————————————————————————
+# modules
 
     if not page.suppress_modules:
         prefix_modules  = get_modules('prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
@@ -102,15 +100,13 @@ def PageView(request, request_prefix, request_slug):
     page_modules = get_modules('page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
     all_modules.extend(page_modules)
 
-
-    # if there's a form, get form js
-    #ore_content = generate_form_js(script_module, language)
+#————————————————————————————————————————————————————————————————————————————————
 
     # get template (live, debug, or form with CSRF token)
     template = 'svija/' + page.template.filename
-    if script_module['form'] != '':
-        form_js = generate_form_js(language)
-        template = template.replace('.html', '_token.html')
+#   if script_module['form'] != '':
+#       form_js = generate_form_js(language)
+#       template = template.replace('.html', '_token.html')
 
     #———————————————————————————————————————— render it all
 

@@ -1,4 +1,4 @@
-    #———————————————————————————————————————— views.py generated JS
+#———————————————————————————————————————— views/modules/generate_system_js.py
 
 def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive):
 
