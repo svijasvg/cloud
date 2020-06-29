@@ -78,10 +78,13 @@ def PageView(request, request_prefix, request_slug):
 
     meta_fonts, font_css = get_fonts()
 
-    head_js, css, body_js, html, form = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
-    head_js, css, body_js, html, form = attribute_scripts('optional', page.library_script.all())
+    h1= c1= b1= m1= f1= ''
 
-    script_module = page_obj(head_js, css, body_js, '',  html, form)
+    h1, c1, b1, m1, f1 = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
+    h2, c2, b2, m2, f2 = attribute_scripts('optional', page.library_script.all())
+
+    script_module = page_obj(system_js+h1+h2, font_css+c1+c2, b1+b2, '',  m1+m2, f1+f2)
+    all_modules.extend(script_module)
 
 #————————————————————————————————————————————————————————————————————————————————
 
