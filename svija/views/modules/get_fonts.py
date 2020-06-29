@@ -5,7 +5,8 @@
 
 from svija.models import Font
 
-def get_fonts(core_content):
+#ef get_fonts(core_content):
+def get_fonts():
     font_objs = Font.objects.all()
     css_str  = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
     link_str = '\n  <link rel="stylesheet" href="{}" />'
@@ -45,6 +46,7 @@ def get_fonts(core_content):
         link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
         font_link = link_str.format(('|').join(google_fonts))
 
-    core_content['meta_fonts'] = font_link
-    core_content['css'] = font_css + core_content['css']
-    return core_content
+    #ore_content['meta_fonts'] = font_link
+    #ore_content['css'] = font_css + core_content['css']
+    #eturn core_content
+    return font_link, font_css

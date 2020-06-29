@@ -85,32 +85,40 @@ def PageView(request, request_prefix, request_slug):
     accessible = generate_accessibility(settings.url, Page.objects.all(), page)
 
     # fonts
-    core_content = get_fonts(core_content)
+    # meta_fonts & css
+    #ore_content = get_fonts(core_content)
+    meta_fonts, font_css = get_fonts()
 
     # load scripts
-    core_content = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
-    core_content = attribute_scripts(core_content, 'optional', page.library_script.all())
-    core_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
+    #ore_content = attribute_scripts(core_content, 'sitewide', page.shared.sharedscripts_set.all())
+    #ore_content = attribute_scripts(core_content, 'optional', page.library_script.all())
+    #ore_content = attribute_scripts(core_content, 'page',     page.pagescripts_set.all())
+
+    head_js, css, body_js, html, form = attribute_scripts('sitewide', page.shared.sharedscripts_set.all())
+    head_js, css, body_js, html, form = attribute_scripts('optional', page.library_script.all())
+    head_js, css, body_js, html, form = attribute_scripts('page',     page.pagescripts_set.all())
 
     # page content & modules
 
-    page_stuff, core_content = page_load_svgs(core_content,page, source_dir, page_width, use_p3)
+    page_stuff = page_load_svgs(page, source_dir, page_width, use_p3)
     all_modules.append(page_stuff)
 
     if not page.suppress_modules:
-        prefix_modules, core_content = get_modules(core_content, 'prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
+        prefix_modules  = get_modules('prefix module', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
         all_modules.extend(prefix_modules)
 
-    page_modules, core_content = get_modules(core_content, 'page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    page_modules = get_modules('page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
     all_modules.extend(page_modules)
 
 
     # if there's a form, get form js
-    core_content = generate_form_js(core_content, language)
+    #ore_content = generate_form_js(core_content, language)
 
     # get template (live, debug, or form with CSRF token)
     template = 'svija/' + page.template.filename
-    if core_content['form'] != '': template = template.replace('.html', '_token.html')
+    if core_content['form'] != '':
+        form_js = generate_form_js(language)
+        template = template.replace('.html', '_token.html')
 
     #———————————————————————————————————————— render it all
 
@@ -124,10 +132,8 @@ def PageView(request, request_prefix, request_slug):
         'analytics_id'  : settings.analytics_id,
     }
 
-    #ontext.update(core_content)
-
-    new_content = order_content(all_modules)
-    context.update(new_content)
+    page_blocks = order_content(all_modules)
+    context.update(page_blocks)
 
     return render(request, template, context)
 

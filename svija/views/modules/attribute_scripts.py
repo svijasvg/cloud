@@ -2,7 +2,8 @@
 
 from modules.add_script import *
 
-def attribute_scripts(core_content, label, sitewide):
+#ef attribute_scripts(core_content, label, sitewide):
+def attribute_scripts(label, sitewide):
 
     head_css = '\n\n/*———————————————————————————————————————— ' + label + ' scripts */\n\n'
     head_js  = '\n\n//———————————————————————————————————————— ' + label + ' scripts\n\n'
@@ -26,12 +27,12 @@ def attribute_scripts(core_content, label, sitewide):
         if this_script.type == 'form' and this_script.active == True:
             form += add_script('html', this_script.name, this_script.content)
 
-#   return head_css, head_js, body_js, html, form
+    return head_css, head_js, body_js, html, form
 
-    core_content['head_js'] += head_js
-    core_content['css']     += head_css
-    core_content['body_js'] += body_js
-    core_content['html']    += html
-    core_content['form']    += form
+#   core_content['head_js'] += head_js
+#   core_content['css']     += head_css
+#   core_content['body_js'] += body_js
+#   core_content['html']    += html
+#   core_content['form']    += form
 
-    return core_content
+#   return core_content

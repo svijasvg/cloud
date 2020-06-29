@@ -8,7 +8,7 @@ from modules.get_single_svg import *
 from modules.add_script import *
 from PageView import page_obj
 
-def get_modules(core_content, label, all_modules, source_dir, specified_width, use_p3):
+def get_modules(label, all_modules, source_dir, specified_width, use_p3):
 
     head_css = head_js = body_js = svgs = html = form = ''
 
@@ -61,11 +61,4 @@ def get_modules(core_content, label, all_modules, source_dir, specified_width, u
 
         module_list.append( page_obj(xf, xh, xc, xb, xs, xh, xm) )
 
-    core_content['head_js'] += head_js
-    core_content['css']     += head_css
-    core_content['body_js'] += body_js
-    core_content['svgs']    += svgs
-    core_content['html']    += html
-    core_content['form']    += form
-
-    return module_list, core_content
+    return module_list
