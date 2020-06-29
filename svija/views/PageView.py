@@ -104,7 +104,6 @@ def PageView(request, request_prefix, request_slug):
     page_modules, core_content = get_modules(core_content, 'page module', page.pagemodules_set.all(), source_dir, page_width, use_p3)
     all_modules.extend(page_modules)
 
-    new_content = order_content(all_modules)
 
     # if there's a form, get form js
     core_content = generate_form_js(core_content, language)
@@ -125,8 +124,10 @@ def PageView(request, request_prefix, request_slug):
         'analytics_id'  : settings.analytics_id,
     }
 
-    context.update(core_content)
-    #ontext.update(new_content)
+    #ontext.update(core_content)
+
+    new_content = order_content(all_modules)
+    context.update(new_content)
 
     return render(request, template, context)
 
