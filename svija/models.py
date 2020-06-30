@@ -157,7 +157,7 @@ class Template(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['active', 'display_order']
+        ordering = ['-active', 'display_order']
         verbose_name_plural = "4.3 · Templates"
 
 #———————————————————————————————————————— library scripts · no dependencies
@@ -199,7 +199,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['active', 'display_order', 'name', 'sort1', 'sort2',]
+        ordering = ['-active', 'display_order', 'name', 'sort1', 'sort2',]
         verbose_name_plural = "2.2 · Modules"
 
 module_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
