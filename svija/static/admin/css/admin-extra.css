@@ -221,9 +221,7 @@ input[type=submit]:hover,
 input[type=button]:hover,
 .submit-row input:hover,
 a.button:hover
-
-  { color:var(--color-contrast);
-    background:var(--color); }
+/*———————————————————————————————————————— buttons */
 
 .button.default,
 input[type=submit].default,
@@ -238,5 +236,14 @@ input[type=submit].default:hover,
 
   { color:var(--color);
     background:var(--color-contrast); }
+
+/* type=submit class="default" */
+
+.button.default:focus,
+input[type=submit].default:focus,
+.submit-row input.default:focus
+
+  { color:var(--color-contrast);
+    background:var(--color); }
 
 /*———————————————————————————————————————— fin */
