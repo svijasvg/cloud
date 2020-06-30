@@ -30,7 +30,7 @@ class page_obj():
 #mport importlib
 
 # get list of modules from dir, not typing, prefix all with pageview_
-#unctions = ['add_script',         'cache_per_user',           'combine_content',
+#unctions = ['get_script',         'cache_per_user',           'combine_content',
 #            'contains_form',      'generate_accessibility',   'generate_form_js',
 #            'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
 #            'meta_canonical',     'redirect_if_home',         'scripts_to_page_obj', ]
@@ -40,7 +40,7 @@ class page_obj():
 #   getattr(x, function)
 
 
-from modules.add_script import *
+from modules.get_script import *
 from modules.cache_per_user import *
 from modules.combine_content import *
 from modules.contains_form import *
@@ -71,6 +71,7 @@ def PageView(request, request_prefix, request_slug):
     use_p3     = settings.p3_color
     source_dir = 'sync/' + responsive.source_dir
     template   = 'svija/' + page.template.filename
+    accessible = generate_accessibility(settings.url, Page.objects.all(), page)
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -87,9 +88,8 @@ def PageView(request, request_prefix, request_slug):
         prefix,       responsive,     language,
         settings.url, request_prefix, request_slug, )
 
-    accessible = generate_accessibility(settings.url, Page.objects.all(), page)
-
     meta_fonts, font_css = get_fonts()
+
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
     #———————————————————————————————————————— template context

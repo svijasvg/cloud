@@ -5,7 +5,7 @@
 
 from modules.svg_cleaner import *
 from modules.get_single_svg import *
-from modules.add_script import *
+from modules.get_script import *
 from PageView import page_obj
 
 def get_modules(label, all_modules, source_dir, specified_width, use_p3):
@@ -39,24 +39,24 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
             if this_script.active:
 
                 if this_script.type == 'CSS':
-                    head_css += add_script('css', this_script.name, this_script.content)
-                    xc += add_script('css', this_script.name, this_script.content)
+                    head_css += get_script('css', this_script.name, this_script.content)
+                    xc += get_script('css', this_script.name, this_script.content)
 
                 if this_script.type == 'head JS':
-                    head_js += add_script('js', this_script.name, this_script.content)
-                    xh += add_script('js', this_script.name, this_script.content)
+                    head_js += get_script('js', this_script.name, this_script.content)
+                    xh += get_script('js', this_script.name, this_script.content)
 
                 if this_script.type == 'body JS':
-                    body_js += add_script('js', this_script.name, this_script.content)
-                    xb += add_script('js', this_script.name, this_script.content)
+                    body_js += get_script('js', this_script.name, this_script.content)
+                    xb += get_script('js', this_script.name, this_script.content)
 
                 if this_script.type == 'HTML':
-                    html += add_script('html', this_script.name, this_script.content)
-                    xh += add_script('html', this_script.name, this_script.content)
+                    html += get_script('html', this_script.name, this_script.content)
+                    xh += get_script('html', this_script.name, this_script.content)
 
                 if this_script.type == 'form':
-                    form += add_script('html', this_script.name, this_script.content)
-                    xm += add_script('html', this_script.name, this_script.content)
+                    form += get_script('html', this_script.name, this_script.content)
+                    xm += get_script('html', this_script.name, this_script.content)
 
         module_list.append(page_obj(xh, xc, xb, xs, xh, xm) )
 

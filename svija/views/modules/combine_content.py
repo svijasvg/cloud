@@ -4,7 +4,6 @@
 
 from modules.svg_cleaner import *
 from modules.get_single_svg import *
-from modules.add_script import *
 from PageView import page_obj
 
 def combine_content(blocks):
