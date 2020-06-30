@@ -10,14 +10,6 @@ from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
 
-from modules.add_script import *
-from modules.cache_per_user import *
-from modules.generate_accessibility import *
-from modules.generate_form_js import *
-from modules.get_fonts import *
-from modules.get_page_svgs import *
-from modules.meta_canonical import *
-from modules.redirect_if_home import *
 
 #———————————————————————————————————————— class definition
 
@@ -32,10 +24,32 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
-from modules.contains_form import *
-from modules.generate_system_js import *
-from modules.get_modules import *
+
+#mport importlib
+
+# get list of modules from dir, not typing, prefix all with pageview_
+#unctions = ['add_script',         'cache_per_user',           'combine_content',
+#            'contains_form',      'generate_accessibility',   'generate_form_js',
+# 					 'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
+#            'meta_canonical',     'redirect_if_home',         'scripts_to_page_obj', ]
+
+#or function in functions:
+#   x = importlib.import_module('.'+function , 'modules')
+#   getattr(x, function)
+
+
+from modules.add_script import *
+from modules.cache_per_user import *
 from modules.combine_content import *
+from modules.contains_form import *
+from modules.generate_accessibility import *
+from modules.generate_form_js import *
+from modules.generate_system_js import *
+from modules.get_fonts import *
+from modules.get_modules import *
+from modules.get_page_svgs import *
+from modules.meta_canonical import *
+from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 
 #———————————————————————————————————————— view definition
@@ -99,12 +113,12 @@ def PageView(request, request_prefix, request_slug):
     svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
+    page_modules = get_modules('page modules', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    content_blocks.extend(page_modules)
+
     if not page.suppress_modules:
         prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
         content_blocks.extend(prefix_modules)
-
-    page_modules = get_modules('page modules', page.pagemodules_set.all(), source_dir, page_width, use_p3)
-    content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— if form, add CSRF token
 

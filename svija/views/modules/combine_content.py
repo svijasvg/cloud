@@ -7,23 +7,16 @@ from modules.get_single_svg import *
 from modules.add_script import *
 from PageView import page_obj
 
-def combine_content(content_blocks):
+def combine_content(blocks):
 
-    head_js = css =  body_js = svgs = html = form = ''
+    js = css = body = ''
 
-    for i in content_blocks:
-        head_js += i['head_js']
-        css     += i['css']
-        body_js += i['body_js']
-        html    += i['svgs']
-        html    += i['html']
-        html    += i['form']
+    for i in blocks:
+        js   += i['head_js']
+        css  += i['css']
+        body += i['svgs']
+        body += i['html']
+        body += i['form']
+        body += '<script>' + i['body_js'] + '</script>'
 
-    combined_content = {
-        'js':'', 'css':'', 'body':'', }
-
-    combined_content['js']    = head_js
-    combined_content['css']   = css
-    combined_content['body']  = html + '<script>' + body_js + '</script>'
-
-    return combined_content
+    return { 'js':js, 'css':css, 'body':body, }
