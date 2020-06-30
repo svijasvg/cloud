@@ -27,8 +27,8 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
                 svg_width = specified_width
                 svg_height = round(specified_width * page_ratio)
  
-            rem_width = svg_width/10
-            rem_height = svg_height/10
+            rem_width  = round(svg_width/10,  3)
+            rem_height = round(svg_height/10, 3)
  
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             css += '\n\n' + css_dims
