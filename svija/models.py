@@ -278,29 +278,23 @@ backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
 class Settings(models.Model):
 
     active        = models.BooleanField(default=False, verbose_name='site is online',)
-    robots = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
+    robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default prefix')
+    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default prefix')
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
 
     # email settings
-    mail_id          = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
-    mail_pass  = models.CharField(max_length=200, default='', verbose_name='password for sending email',blank=True,)
-    mail_srv  = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
-    mail_port = models.IntegerField(default=0, verbose_name='email server port')
-    mail_tls = models.BooleanField(default=True, verbose_name='use TLS',)
-
-#   cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit DEPRECATED',)
-#   backup_interval = models.CharField(max_length=255, default='', choices=Choices(*backup_intervals), verbose_name='backup interval')
-#   backup_next     = models.BooleanField(default=False, verbose_name='back up on next visit',)
-#   from datetime import datetime
-#   pub_date    = models.DateTimeField(default=datetime.now, blank=True)
+    mail_id       = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
+    mail_pass     = models.CharField(max_length=200, default='', verbose_name='password for sending email',blank=True,)
+    mail_srv      = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
+    mail_port     = models.IntegerField(default=0, verbose_name='email server port')
+    mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
     def __str__(self):
         return self.url

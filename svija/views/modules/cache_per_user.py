@@ -5,8 +5,10 @@
 
 from django.core.cache import cache
 from django.core.cache import cache as memcache
-from django.views.decorators.cache import never_cache
+from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import never_cache
+from modules.get_settings import *
 from svija.models import Settings, Page, Module
 
 def cache_key(request):
@@ -44,7 +46,8 @@ def cache_per_user(ttl=None, cache_post=False):
                 return_cached_content = False
 
             #  admins see cached content?
-            settings = get_object_or_404(Settings,active=True)
+            good, settings = get_settings()
+            if not good: return HttpResponseNotFound(settings)
 
             pages = Page.objects.filter(cache_reset=True)
             page_count = Page.objects.filter(cache_reset=True).count()

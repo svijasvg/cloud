@@ -1,10 +1,12 @@
-#   return HttpResponse("debugging message.")
+# from django.http import HttpResponse
+# return HttpResponse("debugging message.")
 #———————————————————————————————————————— svija.views
 
 import os, os.path, sys, pathlib, svija 
 
 from django.core.cache import cache
 from django.db.models import Q
+from django.http import HttpResponseNotFound
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 
@@ -30,7 +32,7 @@ class page_obj():
 # get list of modules from dir, not typing, prefix all with pageview_
 #unctions = ['add_script',         'cache_per_user',           'combine_content',
 #            'contains_form',      'generate_accessibility',   'generate_form_js',
-# 					 'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
+#            'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
 #            'meta_canonical',     'redirect_if_home',         'scripts_to_page_obj', ]
 
 #or function in functions:
@@ -59,13 +61,12 @@ def PageView(request, request_prefix, request_slug):
 
     content_blocks = []
 
-    #———————————————————————————————————————— load objects
+    #———————————————————————————————————————— main settings
 
+    settings   = get_object_or_404(Settings, active=True)
     prefix     = get_object_or_404(Prefix, path=request_prefix)
     page       = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
     responsive = get_object_or_404(Responsive, name=prefix.responsive.name)
-    settings   = get_object_or_404(Settings, active=True)
-
     language   = prefix.language
     use_p3     = settings.p3_color
     source_dir = 'sync/' + responsive.source_dir
