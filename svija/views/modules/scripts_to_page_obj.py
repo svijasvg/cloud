@@ -5,11 +5,11 @@ from PageView import page_obj
 
 def scripts_to_page_obj(label, script_list, svg_passthrough, css_dimensions):
 
-    css      = '\n\n/*———————————————————————————————————————— '    + label + ' scripts */\n\n'
-    head_js  = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
-    body_js  = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
-    html     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
-    form     = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
+    head_js = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
+    css     = '\n\n/*———————————————————————————————————————— '    + label + ' scripts */\n\n'
+    body_js = '\n\n//———————————————————————————————————————— '    + label + ' scripts\n\n'
+    html    = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
+    form    = '\n\n<!-- ———————————————————————————————————————— ' + label + ' scripts -->\n\n'
 
     css += css_dimensions
 
