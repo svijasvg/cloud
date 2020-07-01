@@ -67,7 +67,7 @@ def PageView(request, request_prefix, request_slug):
     prefix     = get_object_or_404(Prefix, path=request_prefix)
     page       = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
     responsive = get_object_or_404(Responsive, name=prefix.responsive.name)
-    shared     = get_object_or_404(Shared, responsive=prefix.responsive.pk)
+    shared     = get_object_or_404(Shared, Q(responsive=prefix.responsive.pk) & Q(active=True))
     language   = prefix.language
     use_p3     = settings.p3_color
     source_dir = 'sync/' + responsive.source_dir
