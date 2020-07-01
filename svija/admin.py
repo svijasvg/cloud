@@ -137,7 +137,7 @@ class TemplateAdmin(admin.ModelAdmin):
 
 admin.site.register(Template, TemplateAdmin)
 
-#---------------------------------------- shared scripts · no dependencies
+#---------------------------------------- default scripts · dependent on responsive
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -159,10 +159,10 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
 
 admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
-#---------------------------------------- library scripts · no dependencies
+#---------------------------------------- optional scripts · no dependencies
 
-from .models import LibraryScript
-class LibraryScriptAdmin(admin.ModelAdmin):
+from .models import OptionalScript
+class OptionalScriptAdmin(admin.ModelAdmin):
 
     # display on parent menu
     list_filter = ('type', 'sort1', 'sort2',)
@@ -175,7 +175,7 @@ class LibraryScriptAdmin(admin.ModelAdmin):
         ('content',        {'fields': ['content',                      ],}),
     ]   
 
-admin.site.register(LibraryScript, LibraryScriptAdmin)
+admin.site.register(OptionalScript, OptionalScriptAdmin)
 
 #---------------------------------------- responsive · no dependencies
 
@@ -282,11 +282,11 @@ class SvgInline(admin.TabularInline):
     verbose_name_plural = 'svg files · fichiers svg'
 
 from .models import Page
-class LibraryScriptInline(admin.TabularInline):
-    model = Page.library_script.through
+class OptionalScriptInline(admin.TabularInline):
+    model = Page.optional_script.through
     extra = 0 
-    verbose_name = "library script"
-    verbose_name_plural = "library scripts"
+    verbose_name = "optional script"
+    verbose_name_plural = "optional scripts"
     classes = ['collapse']
 
 from .models import PageScripts
@@ -321,7 +321,7 @@ class PageAdmin(admin.ModelAdmin):
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
 
-    inlines = [SvgInline, ModuleInlinePage, LibraryScriptInline, PageScriptsInline]
+    inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

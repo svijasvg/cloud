@@ -162,9 +162,9 @@ class Template(models.Model):
         ordering = ['-active', 'display_order']
         verbose_name_plural = "4.3 · Templates"
 
-#———————————————————————————————————————— library scripts · no dependencies
+#———————————————————————————————————————— optional scripts · no dependencies
 
-class LibraryScript(models.Model):
+class OptionalScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
@@ -216,7 +216,7 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— shared scripts · dependent on responsive
+#———————————————————————————————————————— default scripts · dependent on responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
@@ -308,7 +308,7 @@ class Page(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
-    library_script = models.ManyToManyField(LibraryScript, blank=True)
+    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
     cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
 
