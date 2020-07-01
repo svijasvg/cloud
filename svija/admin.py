@@ -139,13 +139,13 @@ admin.site.register(Template, TemplateAdmin)
 
 #---------------------------------------- shared scripts · no dependencies
 
-from .models import Shared, SharedScripts
-class SharedScriptsInline(admin.TabularInline):
-    model = SharedScripts
+from .models import DefaultScripts, DefaultScriptTypes
+class DefaultScriptTypesInline(admin.TabularInline):
+    model = DefaultScriptTypes
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
 
-class SharedAdmin(admin.ModelAdmin):
+class DefaultScriptsAdmin(admin.ModelAdmin):
 
     # display on parent scripts
     list_display = ('name', 'active', 'responsive', )
@@ -155,9 +155,9 @@ class SharedAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('Scripts Name', {'fields': ['name', 'active', 'responsive', ],'description': 'Scripts will be loaded automatically.',}),
     ]   
-    inlines = [SharedScriptsInline]
+    inlines = [DefaultScriptTypesInline]
 
-admin.site.register(Shared, SharedAdmin)
+admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
 #---------------------------------------- library scripts · no dependencies
 

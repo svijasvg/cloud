@@ -12,6 +12,8 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
+script_types = ('head JS', 'CSS', 'HTML', 'form', 'body JS',)
+
 #———————————————————————————————————————— redirects · no dependencies
 
 class Forwards(models.Model): 
@@ -162,12 +164,10 @@ class Template(models.Model):
 
 #———————————————————————————————————————— library scripts · no dependencies
 
-library_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
-
 class LibraryScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    type = models.CharField(max_length=255, default='', choices=Choices(*library_scripts), verbose_name='type')
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -202,11 +202,9 @@ class Module(models.Model):
         ordering = ['-active', 'display_order', 'name', 'sort1', 'sort2',]
         verbose_name_plural = "2.2 · Modules"
 
-module_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
-
 class ModuleScripts(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*module_scripts), verbose_name='type')
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
     order = models.IntegerField(default=0, verbose_name='load order')
@@ -220,21 +218,20 @@ class ModuleScripts(models.Model):
 
 #———————————————————————————————————————— shared scripts · dependent on responsive
 
-class Shared(models.Model):
-    name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
+#lass Shared(models.Model):
+class DefaultScripts(models.Model):
+    name = models.CharField(max_length=200, default='', verbose_name='set name')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "Sitewide Scripts"
-        verbose_name_plural = "3.2 · Sitewide Scripts"
+        verbose_name = "Default Scripts"
+        verbose_name_plural = "3.2 · Default Scripts"
 
-shared_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
-
-class SharedScripts(models.Model):
-    scripts = models.ForeignKey(Shared, on_delete=models.PROTECT)
-    type = models.CharField(max_length=255, default='', choices=Choices(*shared_scripts), verbose_name='type')
+class DefaultScriptTypes(models.Model):
+    scripts = models.ForeignKey(DefaultScripts, on_delete=models.PROTECT)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
     order = models.IntegerField(default=0, verbose_name='load order')
@@ -346,11 +343,9 @@ class Page(models.Model):
         ordering = ['-visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
         verbose_name_plural = "2.1 · Pages"
 
-page_scripts=('head JS', 'CSS', 'HTML', 'form', 'body JS',)
-
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*page_scripts), verbose_name='type')
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
     order = models.IntegerField(default=0, verbose_name='load order')
