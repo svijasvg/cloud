@@ -9,6 +9,8 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     cde = language.code
     system_js += 'var language_code = "' + cde +'";\n'
 
+    system_js += "var responsives = {'desktop':'fr', 'mobile':'fm'}\n"
+
     # accept cookies by default
     if settings.tracking_on: system_js += "var tracking_on = true;\n"
     else:                    system_js += "var tracking_on = false;\n"
