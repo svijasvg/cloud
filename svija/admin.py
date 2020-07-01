@@ -153,7 +153,6 @@ class SharedAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-#       ('Scripts Name', {'fields': ['name', ],}),
         ('Scripts Name', {'fields': ['name', 'responsive', ],'description': 'Scripts will be loaded automatically.',}),
     ]   
     inlines = [SharedScriptsInline]
@@ -316,8 +315,8 @@ class PageAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['cache_reset', 'display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template','shared'], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility text',     {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'], 'description':fr_setup,}),
+        ('accessibility text', {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   

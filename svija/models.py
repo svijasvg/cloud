@@ -302,14 +302,13 @@ class Settings(models.Model):
         verbose_name = "Site Settings"
         verbose_name_plural = "1.1 · Site Settings"
 
-#———————————————————————————————————————— page · uses shared, template & prefix
+#———————————————————————————————————————— page · uses template & prefix
 
 from ckeditor.fields import RichTextField
 
 class Page(models.Model): 
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
-    shared = models.ForeignKey(Shared, default=0, on_delete=models.PROTECT, )
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     library_script = models.ManyToManyField(LibraryScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
