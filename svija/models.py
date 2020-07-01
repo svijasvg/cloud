@@ -223,6 +223,7 @@ class ModuleScripts(models.Model):
 class Shared(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='Scripts Name')
     responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
+    active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
     class Meta:

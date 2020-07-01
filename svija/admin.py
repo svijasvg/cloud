@@ -148,7 +148,7 @@ class SharedScriptsInline(admin.TabularInline):
 class SharedAdmin(admin.ModelAdmin):
 
     # display on parent scripts
-    list_display = ('name', )
+    list_display = ('name', 'active', 'responsive', )
     save_on_top = True
     save_as = True
 
