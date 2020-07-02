@@ -87,7 +87,7 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'display_order', 'flag', 'code', 'email',)
+    list_display = ('name', 'display_order', 'flag', 'code', 'title', 'email',)
     save_on_top = True
     save_as = True
 
