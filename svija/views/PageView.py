@@ -109,7 +109,7 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— content blocks
 
-    content_blocks.append( scripts_to_page_obj( 'default', defaultscripts.defaultscripttypes_set.all(),             '', '', ) )
+    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),             '', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
     svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)

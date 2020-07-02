@@ -1,15 +1,32 @@
 #———————————————————————————————————————— views/modules/generate_system_js.py
 
+from svija.models import Prefix, Responsive
+
+#     need current language code
+#     all prefixes where language=language code
+#     for eady prefix,
+#     
+#     fr = fr['desktop'], fm['mobile']
+
 def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive):
 
     # version information
     system_js = "var svija_version='" + version + "';\n"
 
     # language information
-    cde = language.code
-    system_js += 'var language_code = "' + cde +'";\n'
+    system_js += 'var language_code = "' + language.code +'";\n'
 
-    system_js += "var responsives = {'desktop':'fr', 'mobile':'fm'}\n"
+    # all prefixes for this language
+    prefix_list = list(Prefix.objects.filter(language = language.pk))
+
+    all_resps = []
+    for prf in prefix_list: 
+        resp = prf.responsive
+        resp_name = resp.name
+#       scpt += "'" + resp_name + "':'" + pfix.path + "'"
+        all_resps.append( "'" + resp_name + "':'" + prf.path + "'")
+
+    system_js += "var responsives = {" + ', '.join(all_resps) + "};\n"
 
     # accept cookies by default
     if settings.tracking_on: system_js += "var tracking_on = true;\n"
