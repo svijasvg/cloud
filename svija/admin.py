@@ -267,11 +267,11 @@ admin.site.register(Settings, SettingsAdmin)
 
 #---------------------------------------- page
 
-fr_basic = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
-fr_setup = ' '.join(["Paramètres de d'affichage"])
-fr_seo   = ' '.join(["Texte pour les non-voyants"])
-fr_overr = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
-fr_dims  = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
+fr_basic  = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
+fr_setup  = ' '.join(["Paramètres de d'affichage"])
+fr_access = ' '.join(["Texte pour les non-voyants"])
+fr_overr  = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
+fr_dims   = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
 
 from .models import Svg
 class SvgInline(admin.TabularInline):
@@ -316,9 +316,9 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('BASIC SETUP',        {'fields': ['cache_reset', 'display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility text', {'fields': ['snippet_name','snippet_text'],                    'classes': ['collapse'], 'description':fr_seo,}),
+        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'], 'description':fr_access,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety',       ], 'classes': ['collapse'], 'description':fr_dims}),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'], 'description':fr_dims}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]

@@ -13,11 +13,11 @@ def generate_accessibility(domain, pages, page):
             prefix = page.prefix.path
             tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
             if page.url != 'missing':
-                links += tag.format(domain,prefix,page.url,page.snippet_name)
+                links += tag.format(domain,prefix,page.url,page.accessibility_name)
 
 #---------------------------------------- add capture
 
-    text = page.snippet_text
+    text = page.accessibility_text
     capture = '/images/capture.jpg'
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     results = tag.format(text,links,domain,capture)
