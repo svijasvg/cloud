@@ -1,6 +1,9 @@
 //———————————————————————————————————————— template: cookies.js
 
 function setCookie(cname, cvalue, exdays) {
+
+  if (exdays > 7) exdays = 7; // max in Safari
+
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
 
@@ -8,7 +11,8 @@ function setCookie(cname, cvalue, exdays) {
   var expy = 'expires=' + d.toUTCString(); + '; ';
   var domn = '; domain=' + window.location.hostname + '; ';
   var path = '/; ';
-  var secr = 'secure;';
+//var secr = 'secure;';
+  var secr = '';
 
   document.cookie = name + expy + domn + path + secr;
 }
@@ -23,5 +27,3 @@ function getCookie(cname) {
   }
   return "";
 }
-
-//———————————————————————————————————————— refresh existing cookie
