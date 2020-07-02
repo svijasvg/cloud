@@ -43,19 +43,26 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     dim_js = ''
 
     if page.override_dims:
-        dim_js += '// overridden in page settings:\n'
+        dim_js += '\n// overridden in page settings:\n'
 
-        dim_js += 'var page_width = '     + str(page.width  ) + '; '
-        dim_js += 'var visible_width = '  + str(page.visible) + '; \n'
-        dim_js += 'var page_offsetx = '   + str(page.offsetx) + '; '
-        dim_js += 'var page_offsety = '   + str(page.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(page.width  ) + ';\n'
+        dim_js += 'var visible_width = '  + str(page.visible) + ';\n'
+        dim_js += 'var page_offsetx = '   + str(page.offsetx) + ';\n'
+        dim_js += 'var page_offsety = '   + str(page.offsety) + ';\n'
 
     else:
-        dim_js += 'var page_width = '     + str(responsive.width)   + '; '
-        dim_js += 'var visible_width = '  + str(responsive.visible) + '; \n'
-        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + '; '
-        dim_js += 'var page_offsety = '   + str(responsive.offsety) + '; \n'
+        dim_js += 'var page_width = '     + str(responsive.width)   + ';\n'
+        dim_js += 'var visible_width = '  + str(responsive.visible) + ';\n'
+        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + ';\n'
+        dim_js += 'var page_offsety = '   + str(responsive.offsety) + ';\n'
 
+# get scroll position too
+#   override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
+#   width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
+#   visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
+#   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
+#   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
+    
     system_js += dim_js
 
     return system_js
