@@ -76,6 +76,8 @@ def PageView(request, request_prefix, request_slug):
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
+
+# get scroll position too
     
     #————————————————————————————————————————  redirect if it's a default page (path not shown)
 
