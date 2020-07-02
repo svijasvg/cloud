@@ -187,7 +187,7 @@ class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit (or visit /c)',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -310,7 +310,7 @@ class Page(models.Model):
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit (or visit /c)',)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
