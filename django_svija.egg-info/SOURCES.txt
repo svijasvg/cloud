@@ -1,5 +1,6 @@
 LICENSE
 MANIFEST.in
+README.md
 setup.py
 django_svija.egg-info/PKG-INFO
 django_svija.egg-info/SOURCES.txt
