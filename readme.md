@@ -1,6 +1,7 @@
------------------------------------------
-Svija: web sites with SVG instead of HTML
------------------------------------------
+![Svija: SVG-based websites built in Adobe Illustrator](http://files.svija.com/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator")
+
+**Svija: web sites with SVG instead of HTML**
+---------------------------------------------
 
 Version 2.1.5
 
