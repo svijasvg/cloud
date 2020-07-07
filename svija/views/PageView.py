@@ -122,15 +122,17 @@ def PageView(request, request_prefix, request_slug):
         prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
         content_blocks.extend(prefix_modules)
 
+    content_types = combine_content(content_blocks)
+
     #———————————————————————————————————————— if form, add CSRF token
 
     if contains_form(content_blocks):
         form_js = generate_form_js(language)
         template = template.replace('.html', '_token.html')
+        content_types['js'] += "\n" + form_js
 
     #———————————————————————————————————————— content blocks
 
-    content_types = combine_content(content_blocks)
     context.update(content_types)
     return render(request, template, context)
 
