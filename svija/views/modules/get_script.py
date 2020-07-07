@@ -12,7 +12,7 @@ def get_script(kind, name, content):
 
     # https://regex101.com
     # matches a-z   0-9   \s   .   _   +   -   &  .ext (2 or 3 letters)
-    filename = re.compile("^[a-z,0-9,\s,\.,_,+,\-,&]+\.[a-z]{2,3}$", re.I) 
+    filename = re.compile("^[a-z,0-9,\s,\.,_,+,\-,&]+\.[a-z]{2,4}$", re.I) 
 
     if filename.match(content):
         source_path = os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
