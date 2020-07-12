@@ -96,7 +96,7 @@ class Language(models.Model):
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name label',)
     form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email label',)
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button label',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='default message value',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='default form instructions',)
 
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='message while sending',)
     form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='message after sent',)
