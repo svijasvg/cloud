@@ -167,6 +167,7 @@ class Template(models.Model):
 class OptionalScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
+    active = models.BooleanField(default=True, verbose_name='active',)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
