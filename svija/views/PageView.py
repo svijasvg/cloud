@@ -26,7 +26,6 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
-
 #mport importlib
 
 # get list of modules from dir, not typing, prefix all with pageview_
