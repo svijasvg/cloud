@@ -1,0 +1,18 @@
+all sites, add /a in forwards
+add /language_code/ to all mail form js
+
+
+in urls.py 
+
+change
+
+  handler404 = 'svija.views.error404'
+
+to
+
+  handler404 = 'svija.views.Error404'
+
+
+delete
+
+  urlpatterns.append(path('a', RedirectView.as_view(url='/admin/svija/help/')),)
