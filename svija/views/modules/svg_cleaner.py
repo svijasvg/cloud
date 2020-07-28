@@ -259,7 +259,8 @@ def get_x_y(str):
     val_x = values[1]
     val_y = values[3]
     rest  = values[4]
-    return val_x, val_y, rest
+    content = 'x'
+    return val_x, val_y, rest, content
 
 #———————————————————————————————————————— remove x & y coords from tspan
 
@@ -271,13 +272,17 @@ def fix_bumps(line):
     number_of_parts = len(blocks)
 
     line = ''
+
+    # go through blocks from end to beginning
     for x in range (number_of_parts-1, 1, -1):
-        this_x, this_y, rest = get_x_y(blocks[x])
+        this_x, this_y, this_rest, this_content = get_x_y(blocks[x])
+
+        # if there is white space between blocks, don't strip x coords
 
         if this_x != 0:
-            prev_x, prev_y, rien  = get_x_y(blocks[x-1])
+            prev_x, prev_y, prev_rest, prev_content  = get_x_y(blocks[x-1])
             if this_y == prev_y:
-                blocks[x] = rest # strip coordinates from blocks[x]
+                blocks[x] = this_rest # strip coordinates from blocks[x]
 
         # adding a CR causes Firefox to add far too much whitespace
         line = "<tspan "+ blocks[x] + line
