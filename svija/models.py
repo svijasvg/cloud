@@ -325,7 +325,7 @@ class Page(models.Model):
 
     # accessibility
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='page name')
-    accessibility_text = RichTextField(verbose_name='accessibility content')
+    accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
