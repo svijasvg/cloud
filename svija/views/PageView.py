@@ -62,16 +62,16 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— main settings
 
-    settings       = get_object_or_404(Settings, active=True)
-    prefix         = get_object_or_404(Prefix, path=request_prefix)
-    page           = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
-    responsive     = get_object_or_404(Responsive, name=prefix.responsive.name)
-    defaultscripts = get_object_or_404(DefaultScripts, Q(responsive=prefix.responsive.pk) & Q(active=True))
-    language       = prefix.language
-    use_p3         = settings.p3_color
-    source_dir     = 'sync/' + responsive.source_dir
-    template       = 'svija/' + page.template.filename
-    accessible     = generate_accessibility(settings.url, Page.objects.all(), page)
+    settings        = get_object_or_404(Settings, active=True)
+    prefix          = get_object_or_404(Prefix, path=request_prefix)
+    page            = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
+    responsive      = get_object_or_404(Responsive, name=prefix.responsive.name)
+    defaultscripts  = get_object_or_404(DefaultScripts, Q(responsive=prefix.responsive.pk) & Q(active=True))
+    language        = prefix.language
+    use_p3          = settings.p3_color
+    source_dir      = 'sync/' + responsive.source_dir
+    template        = 'svija/' + page.template.filename
+    accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -108,7 +108,7 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— content blocks
 
-    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),             '', '', ) )
+    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(), '', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
     svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)
