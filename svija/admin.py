@@ -165,13 +165,13 @@ from .models import OptionalScript
 class OptionalScriptAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_filter = ('type', 'sort1', 'sort2',)
-    list_display = ('name', 'sort1', 'sort2', 'type',)
+    list_filter = ('type', 'sort1', 'sort2','active',)
+    list_display = ('name', 'sort1', 'sort2', 'type','active',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'type', 'sort1','sort2',],}),
+        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1','sort2',],}),
         ('content',        {'fields': ['content',                      ],}),
     ]   
 

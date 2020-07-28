@@ -179,7 +179,7 @@ class OptionalScript(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ["type", "name", "sort1", "sort2"]
+        ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
         verbose_name = "Optional Scripts"
         verbose_name_plural = "3.3 · Optional Scripts"
 
