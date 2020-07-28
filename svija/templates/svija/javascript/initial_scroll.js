@@ -10,6 +10,7 @@ var pix_width = page_width * illustrator_pixel;
 var css_string = 'position:absolute; top:0; left:0; z-index:-9999; height:1000px; width:' + pix_width + 'px';
 
 full_width.setAttribute("style", css_string);
+full_width.setAttribute("id", "initial_scroll_div");
 document.body.appendChild(full_width);
 
 //————— initial scroll

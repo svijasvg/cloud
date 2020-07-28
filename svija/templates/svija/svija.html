@@ -55,4 +55,9 @@ if (tracking_on)
 {{ body }}
 {% block token%}{% endblock %}
 
-<script> page_loaded = true; </script></body></html>{% endautoescape %}
+<script>
+
+  document.getElementById("initial_scroll_div").outerHTML = "";
+  page_loaded = true;
+
+</script></body></html>{% endautoescape %}
