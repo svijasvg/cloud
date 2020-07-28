@@ -134,7 +134,7 @@ def clean(file_path, file_name, use_p3):
 
     for css_ref in fonts_to_add:
         new_font = create_new_font(css_ref, Font())
-        p = Font.objects.create(css = new_font.css, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=False)
+        p = Font.objects.create(css = new_font.css, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=True)
         p.save
 
     #—————————————————————————————————————— add new ID if necessary

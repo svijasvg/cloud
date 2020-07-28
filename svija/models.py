@@ -43,6 +43,7 @@ class Font(models.Model):
     class Meta:
         verbose_name = "Font"
         verbose_name_plural = "3.1 · Fonts"
+        ordering = ['-active', 'family', 'style']
 
 #———————————————————————————————————————— help · no dependencies
 
