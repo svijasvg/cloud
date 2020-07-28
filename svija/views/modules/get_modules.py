@@ -19,45 +19,40 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
 
     for this_module in (obj.module for obj in all_modules if obj.active==True):
 
-#       self.head_js    = head_js
-#       self.css        = css
-#       self.body_js    = body_js
-#       self.svgs       = svgs
-#       self.html       = html
-#       self.form       = form
-
-        xh = xc = xb = xs = xh = xm = ''
+        hj = hc = bj = sv = ht = fm = ''
 
         s, c = get_single_svg(this_module, source_dir, specified_width, use_p3)
         svgs += s
         head_css += c
 
-        xs = s
-        xc = c
+        sv = s
+        hc = c
 
         for this_script in this_module.modulescripts_set.all():
             if this_script.active:
 
-                if this_script.type == 'CSS':
-                    head_css += get_script('css', this_script.name, this_script.content)
-                    xc += get_script('css', this_script.name, this_script.content)
-
                 if this_script.type == 'head JS':
                     head_js += get_script('js', this_script.name, this_script.content)
-                    xh += get_script('js', this_script.name, this_script.content)
+                    hj += 'boo' + get_script('js', this_script.name, this_script.content)
+
+                if this_script.type == 'CSS':
+                    head_css += get_script('css', this_script.name, this_script.content)
+                    hc += get_script('css', this_script.name, this_script.content)
 
                 if this_script.type == 'body JS':
                     body_js += get_script('js', this_script.name, this_script.content)
-                    xb += get_script('js', this_script.name, this_script.content)
+                    bj += get_script('js', this_script.name, this_script.content)
+
+                # SVG handled outside of loop
 
                 if this_script.type == 'HTML':
                     html += get_script('html', this_script.name, this_script.content)
-                    xh += get_script('html', this_script.name, this_script.content)
+                    ht += get_script('html', this_script.name, this_script.content)
 
                 if this_script.type == 'form':
                     form += get_script('html', this_script.name, this_script.content)
-                    xm += get_script('html', this_script.name, this_script.content)
+                    fm += get_script('html', this_script.name, this_script.content)
 
-        module_list.append(page_obj(xh, xc, xb, xs, xh, xm) )
+        module_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
     return module_list
