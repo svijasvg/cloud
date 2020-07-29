@@ -1,7 +1,7 @@
 import os
 from setuptools import find_packages, setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README')) as readme:
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
 # allow setup.py to be run from any path
@@ -14,7 +14,7 @@ setup(
     include_package_data=True,
     license='BSD License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
-    long_description=README.md,
+    long_description=README,
     url='https://docs.svija.com/',
     author='Andrew Swift',
     author_email='andrew@svija.com',
