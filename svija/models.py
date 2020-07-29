@@ -43,6 +43,7 @@ class Font(models.Model):
     class Meta:
         verbose_name = "Font"
         verbose_name_plural = "3.1 · Fonts"
+        ordering = ['-active', 'family', 'style']
 
 #———————————————————————————————————————— help · no dependencies
 
@@ -115,6 +116,7 @@ class Language(models.Model):
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
+    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='source directory',)
@@ -167,6 +169,7 @@ class Template(models.Model):
 class OptionalScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
+    active = models.BooleanField(default=True, verbose_name='active',)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
@@ -177,7 +180,7 @@ class OptionalScript(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ["type", "name", "sort1", "sort2"]
+        ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
         verbose_name = "Optional Scripts"
         verbose_name_plural = "3.3 · Optional Scripts"
 
@@ -187,7 +190,7 @@ class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit (or visit /c)',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -310,7 +313,7 @@ class Page(models.Model):
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
-    cache_reset   = models.BooleanField(default=False, verbose_name='clear cache on next visit (or visit /c)',)
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
@@ -323,7 +326,7 @@ class Page(models.Model):
 
     # accessibility
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='page name')
-    accessibility_text = RichTextField(verbose_name='accessibility content')
+    accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')

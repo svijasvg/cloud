@@ -7,7 +7,8 @@ from django.http import HttpResponse
 def ClearCacheView(request):
     if request.user.is_superuser:
         memcache.clear()
-        return HttpResponse('<pre>Cache cleared.')
+        msg = "<html><body><script> alert('Cache deleted.'); window.history.go(-1); </script>"
+        return HttpResponse(msg)
     else:
         response = PageView(request, '', 'missing',)
         response.status_code = 404

@@ -26,7 +26,6 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
-
 #mport importlib
 
 # get list of modules from dir, not typing, prefix all with pageview_
@@ -62,17 +61,20 @@ def PageView(request, request_prefix, request_slug):
     content_blocks = []
 
     #———————————————————————————————————————— main settings
+    # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
-    settings       = get_object_or_404(Settings, active=True)
-    prefix         = get_object_or_404(Prefix, path=request_prefix)
-    page           = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
-    responsive     = get_object_or_404(Responsive, name=prefix.responsive.name)
-    defaultscripts = get_object_or_404(DefaultScripts, Q(responsive=prefix.responsive.pk) & Q(active=True))
-    language       = prefix.language
-    use_p3         = settings.p3_color
-    source_dir     = 'sync/' + responsive.source_dir
-    template       = 'svija/' + page.template.filename
-    accessible     = generate_accessibility(settings.url, Page.objects.all(), page)
+    settings        = Settings.objects.filter(active=True).first()
+    prefix          = Prefix.objects.filter(path=request_prefix).first()
+    responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
+
+    page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
+    defaultscripts  = DefaultScripts.objects.filter(Q(responsive=prefix.responsive.pk) & Q(active=True)).first()
+
+    language        = prefix.language
+    use_p3          = settings.p3_color
+    source_dir      = 'sync/' + responsive.source_dir
+    template        = 'svija/' + page.template.filename
+    accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -87,7 +89,7 @@ def PageView(request, request_prefix, request_slug):
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
         prefix,       responsive,     language,
-        settings.url, request_prefix, request_slug, )
+        settings.secure, settings.url, request_prefix, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 
@@ -109,7 +111,7 @@ def PageView(request, request_prefix, request_slug):
 
     #———————————————————————————————————————— content blocks
 
-    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),             '', '', ) )
+    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
     svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)
