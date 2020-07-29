@@ -2,6 +2,8 @@ LICENSE
 MANIFEST.in
 README.md
 setup.py
+django_svija.egg-info/.PKG-INFO.un~
+django_svija.egg-info/.SOURCES.txt.un~
 django_svija.egg-info/PKG-INFO
 django_svija.egg-info/SOURCES.txt
 django_svija.egg-info/dependency_links.txt
@@ -12,6 +14,9 @@ svija/apps.py
 svija/models.py
 svija/tests.py
 svija/urls.py
+svija/fixtures/help.json
+svija/fixtures/responsive.json
+svija/fixtures/template.json
 svija/migrations/0001_initial.py
 svija/migrations/0002_remove_responsive_overflow.py
 svija/migrations/0003_auto_20190618_1015.py
@@ -99,6 +104,12 @@ svija/migrations/0084_auto_20200701_2115.py
 svija/migrations/0085_auto_20200701_2120.py
 svija/migrations/0086_auto_20200702_1311.py
 svija/migrations/0087_auto_20200703_1139.py
+svija/migrations/0088_auto_20200713_1436.py
+svija/migrations/0089_auto_20200728_1322.py
+svija/migrations/0090_auto_20200728_1359.py
+svija/migrations/0091_auto_20200728_1516.py
+svija/migrations/0092_auto_20200728_1550.py
+svija/migrations/0093_responsive_code.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
