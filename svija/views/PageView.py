@@ -86,7 +86,7 @@ def PageView(request, request_prefix, request_slug):
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
         prefix,       responsive,     language,
-        settings.url, request_prefix, request_slug, )
+        settings.secure, settings.url, request_prefix, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 

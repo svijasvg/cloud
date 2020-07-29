@@ -7,7 +7,7 @@ import os
 from django.db.models import Q
 from svija.models import Prefix
 
-def meta_canonical(prefix, responsive, language, host,dir, url):
+def meta_canonical(prefix, responsive, language, secure, host, dir, url):
 
 #----------------------------------------- find the correct prefix for the link
 
@@ -23,7 +23,9 @@ def meta_canonical(prefix, responsive, language, host,dir, url):
 
 #----------------------------------------- the easy part
 
-    tag = responsive.meta_tag + ' href="http://{0}/{1}/{2}"'
+    protocol = 'https' if secure else 'http'
+
+    tag = responsive.meta_tag + ' href="' + protocol + '://{0}/{1}/{2}"'
     tag = tag.format(host,new_prefix,url)
     return tag
 
