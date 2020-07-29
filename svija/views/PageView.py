@@ -61,11 +61,12 @@ def PageView(request, request_prefix, request_slug):
     content_blocks = []
 
     #———————————————————————————————————————— main settings
+    # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
-    settings        = get_object_or_404(Settings, active=True)
-    prefix          = get_object_or_404(Prefix, path=request_prefix)
+    settings        = Settings.objects.filter(active=True).first()
+    prefix          = Prefix.objects.filter(path=request_prefix).first()
+    responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
     page            = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
-    responsive      = get_object_or_404(Responsive, name=prefix.responsive.name)
     defaultscripts  = get_object_or_404(DefaultScripts, Q(responsive=prefix.responsive.pk) & Q(active=True))
     language        = prefix.language
     use_p3          = settings.p3_color
