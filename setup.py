@@ -14,7 +14,7 @@ setup(
     include_package_data=True,
     license='BSD License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
-    long_description=README,
+    long_description=README.md,
     url='https://docs.svija.com/',
     author='Andrew Swift',
     author_email='andrew@svija.com',
@@ -31,4 +31,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
+    package_data={
+        'fixtures': ['fixtures/*.json'],
+    },
 )
