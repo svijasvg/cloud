@@ -116,6 +116,7 @@ class Language(models.Model):
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
+    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='source directory',)

@@ -87,7 +87,7 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'display_order', 'flag', 'code', 'title', 'email',)
+    list_display = ('name', 'code', 'flag', 'title', 'email',)
     save_on_top = True
     save_as = True
 
@@ -183,12 +183,12 @@ from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'display_order', 'canonical', 'source_dir', 'description')
+    list_display = ('name', 'code', 'display_order', 'canonical', 'source_dir', 'description')
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+        ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
         ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
