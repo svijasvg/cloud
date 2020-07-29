@@ -11,6 +11,7 @@ setup(
     name='django-svija',
     version='2.1.6',
     packages=find_packages(),
+    package_data={'fixtures': ['*.json', 'svija/fixtures/*']}
     include_package_data=True,
     license='BSD License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
@@ -31,7 +32,4 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    package_data={
-        'fixtures': ['fixtures/*.json'],
-    },
 )
