@@ -1,0 +1,40 @@
+[
+{
+    "model": "svija.responsive",
+    "pk": 1,
+    "fields": {
+        "name": "desktop",
+        "code": "dt",
+        "display_order": 1,
+        "source_dir": "desktop",
+        "meta_tag": "rel=\"alternate\" media=\"only screen and (max-width: 640px)\"",
+        "description": "240+1200+240px",
+        "canonical": true,
+        "width": 1680,
+        "visible": 1200,
+        "offsetx": 240,
+        "offsety": 0,
+        "img_multiply": "2.4",
+        "img_quality": 0
+    }
+},
+{
+    "model": "svija.responsive",
+    "pk": 2,
+    "fields": {
+        "name": "mobile",
+        "code": "mb",
+        "display_order": 2,
+        "source_dir": "mobile",
+        "meta_tag": "rel=\"canonical\"",
+        "description": "60+300+60px",
+        "canonical": false,
+        "width": 420,
+        "visible": 300,
+        "offsetx": 60,
+        "offsety": 0,
+        "img_multiply": "2.4",
+        "img_quality": 0
+    }
+}
+]
