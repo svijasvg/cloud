@@ -66,8 +66,10 @@ def PageView(request, request_prefix, request_slug):
     settings        = Settings.objects.filter(active=True).first()
     prefix          = Prefix.objects.filter(path=request_prefix).first()
     responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
-    page            = get_object_or_404(Page, Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True))
-    defaultscripts  = get_object_or_404(DefaultScripts, Q(responsive=prefix.responsive.pk) & Q(active=True))
+
+    page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
+    defaultscripts  = DefaultScripts.objects.filter(Q(responsive=prefix.responsive.pk) & Q(active=True)).first()
+
     language        = prefix.language
     use_p3          = settings.p3_color
     source_dir      = 'sync/' + responsive.source_dir
