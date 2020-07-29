@@ -52,7 +52,7 @@ def clean(file_path, file_name, use_p3):
         #———————————————————————————————— get dimensions from viewbox value in svg tag
 
         # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
-        #	 height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
+        # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
 
         if line_number == 3:
             parts1 = line.split('viewBox="')
@@ -90,7 +90,7 @@ def clean(file_path, file_name, use_p3):
         exp = r'tspan x=\"[1-9]'
         regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
         if (re.search(exp, line)):
-            line = fix_bumps(line)
+            line = clean_tspans(line)
   
         #———————————————————————————————— get id if layer like "id example" exists
                                         # note that this means the ID could change at the end,
@@ -252,43 +252,58 @@ def remove_duplicates(font_array):
 
 #———————————————————————————————————————— get x & y coords from string
 
-# input: x="331.245" y="490" class="sttspan...
+# input: <tspan x="0" y="0" class="st2 st3">ARTISTS</tspan>
 
-def get_x_y(str):
+def get_xy_content(str):
     values = str.split("\"",4)
-    val_x = values[1]
-    val_y = values[3]
+    x = values[1]
+    y = values[3]
     rest  = values[4]
-    content = 'x'
-    return val_x, val_y, rest, content
+
+    rest_parts_1 = rest.split(">",1)          # split at first >
+    half_two = rest_parts_1[1]                # keep second part
+    rest_parts_2 = half_two.split("</tspan")  # split at end of tspan
+    content = rest_parts_2[0]
+
+    return x, y, rest, content
 
 #———————————————————————————————————————— remove x & y coords from tspan
 
-# fixes problem where Safari cause text blocks to bump into each other
+# fixes problem where Safari cause text tspans to bump into each other
 # delete coords for <tspan x="400.88" y="147">some text</tspan>
 
-def fix_bumps(line):
-    blocks = line.split('<tspan ')
-    number_of_parts = len(blocks)
+def clean_tspans(line):
+    tspans = line.split('<tspan ')
+    first_bit = tspans.pop(0)
 
-    line = ''
+    tspans = ['<tspan {0}'.format(i) for i in tspans] # add tspans back to list
 
-    # go through blocks from end to beginning
-    for x in range (number_of_parts-1, 1, -1):
-        this_x, this_y, this_rest, this_content = get_x_y(blocks[x])
+    number_of_tspans = len(tspans)
+    output = ''
 
-        # if there is white space between blocks, don't strip x coords
+    # go through tspans from last to 2nd (start, end, step)
+    # https://stackoverflow.com/questions/4504662/why-does-rangestart-end-not-include-end
+    # reverse range ends earlier than expected
+    for x in range (number_of_tspans-1, -1, -1):
 
-        if this_x != 0:
-            prev_x, prev_y, prev_rest, prev_content  = get_x_y(blocks[x-1])
-            if this_y == prev_y:
-                blocks[x] = this_rest # strip coordinates from blocks[x]
+        this_x, this_y, this_rest, this_content = get_xy_content(tspans[x])
+
+        if this_content == "\t": continue # tabs get their own tspans, useless to keep them
+
+        if x > 1 and this_x != 0:
+            prev_x, prev_y, prev_rest, prev_content  = get_xy_content(tspans[x-1])
+
+            # if the Y height is same as previous block, and there's no text separation
+            # we get rid of the x & y coordinates
+            if this_y == prev_y and prev_content != "\t":
+                tspans[x] = '<tspan ' + this_rest # strip coordinates from tspans[x]
 
         # adding a CR causes Firefox to add far too much whitespace
-        line = "<tspan "+ blocks[x] + line
 
-    line = blocks[0] + '<tspan ' + blocks[1] + line
-    return line
+        output = tspans[x] + "\n" + output
+
+    output = first_bit + "\n" + output
+    return output
 
 #———————————————————————————————————————— add P3 color
 # adds definition after fill:#FFFFFF, stroke:#9537FF
