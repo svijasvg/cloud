@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-svija
-Version: 2.1.5
+Version: 2.1.6
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://docs.svija.com/
 Author: Andrew Swift
@@ -20,7 +20,7 @@ Description: ![Svija: SVG-based websites built in Adobe Illustrator](http://file
         
         Visit **[svija.com][2]** for an overview of the project.
         
-        If you're interested, we can help you set up a server for free.
+        If you're interested, we can help you set up an account for free.
         Just go to our **[contact page][3]** and ask!
         
         [1]: https://docs.svija.com "Visit the documentation site"
