@@ -17,7 +17,7 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     system_js += 'var language_code = "' + language.code +'";\n'
 
     # responsive information
-    system_js += 'var responsive_code = "' + language.code +'";\n'
+    system_js += 'var responsive_code = "' + responsive.code +'";\n'
 
     # all prefixes for this language
     prefix_list = list(Prefix.objects.filter(language = language.pk))
