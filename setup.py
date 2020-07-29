@@ -12,7 +12,7 @@ setup(
     version='2.1.6',
     packages=find_packages(),
     include_package_data=True,
-    package_data={'fixtures': ['svija/fixtures/*.json']},
+#   package_data={'fixtures': ['svija/fixtures/*.json']},
     license='BSD License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
     long_description=README,
