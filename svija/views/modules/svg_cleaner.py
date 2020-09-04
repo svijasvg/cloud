@@ -273,6 +273,7 @@ def get_xy_content(str):
 # delete coords for <tspan x="400.88" y="147">some text</tspan>
 
 def clean_tspans(line):
+
     tspans = line.split('<tspan ')
     first_bit = tspans.pop(0)
 
@@ -284,13 +285,14 @@ def clean_tspans(line):
     # go through tspans from last to 2nd (start, end, step)
     # https://stackoverflow.com/questions/4504662/why-does-rangestart-end-not-include-end
     # reverse range ends earlier than expected
+
     for x in range (number_of_tspans-1, -1, -1):
 
         this_x, this_y, this_rest, this_content = get_xy_content(tspans[x])
 
-        if this_content == "\t": continue # tabs get their own tspans, useless to keep them
+        if this_content == "\t": continue # AI gives tabs an empty tspan
 
-        if x > 1 and this_x != 0:
+        if x > 0 and this_x != 0:
             prev_x, prev_y, prev_rest, prev_content  = get_xy_content(tspans[x-1])
 
             # if the Y height is same as previous block, and there's no text separation
