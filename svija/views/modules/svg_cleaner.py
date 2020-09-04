@@ -298,9 +298,8 @@ def clean_tspans(line):
             if this_y == prev_y and prev_content != "\t":
                 tspans[x] = '<tspan ' + this_rest # strip coordinates from tspans[x]
 
-        # adding a CR causes Firefox to add far too much whitespace
-
-        output = tspans[x] + "\n" + output
+        # add a CR for debugging only — it causes Firefbx & Chrome to add whitespace
+        output = tspans[x] + "" + output
 
     output = first_bit + "\n" + output
     return output
