@@ -33,7 +33,7 @@ def get_modules(label, all_modules, source_dir, specified_width, use_p3):
 
                 if this_script.type == 'head JS':
                     head_js += get_script('js', this_script.name, this_script.content)
-                    hj += 'boo' + get_script('js', this_script.name, this_script.content)
+                    hj += get_script('js', this_script.name, this_script.content)
 
                 if this_script.type == 'CSS':
                     head_css += get_script('css', this_script.name, this_script.content)
