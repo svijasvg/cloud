@@ -6,8 +6,7 @@ import os, os.path, sys, pathlib, svija
 
 from django.core.cache import cache
 from django.db.models import Q
-from django.http import HttpResponseNotFound
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
@@ -52,6 +51,7 @@ from modules.get_page_svgs import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
+from django.http import Http404
 
 #———————————————————————————————————————— view definition
 
@@ -68,6 +68,10 @@ def PageView(request, request_prefix, request_slug):
     responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
 
     page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
+    if not page:
+#       return HttpResponse("debugging message.")
+        raise Http404
+
     defaultscripts  = DefaultScripts.objects.filter(Q(responsive=prefix.responsive.pk) & Q(active=True)).first()
 
     language        = prefix.language
