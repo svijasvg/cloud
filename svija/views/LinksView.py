@@ -27,7 +27,7 @@ def LinksView(request, request_prefix, placed_file):
     bits = placed_file.split('.')
     type = bits[-1].lower()
     if type != 'png' and type != 'gif':
-        type = 'jpg'
+        type = 'jpeg'
     image_data = open(source_dir, "rb").read()
     return HttpResponse(image_data, content_type='image/' + type)
 
