@@ -6,7 +6,7 @@
 # instead of defaulting to en, need to get site default language
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
@@ -15,7 +15,6 @@ from svija.views import PageView
 
 @never_cache
 def Error404(request, *args, **kwargs):
-
     requested = request.path[1:]
 
     #————— check fer redirect
