@@ -9,16 +9,16 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-svija',
-    version='2.1.7',
+    version='2.1.8',
     packages=find_packages(),
     include_package_data=True,
 #   package_data={'fixtures': ['svija/fixtures/*.json']},
     license='BSD License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
     long_description=README,
-    url='https://docs.svija.com/',
+    url='https://docs.svija.love/',
     author='Andrew Swift',
-    author_email='andrew@svija.com',
+    author_email='andrew@svija.love',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
