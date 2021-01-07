@@ -205,17 +205,24 @@ class ModuleScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
+# https://stackoverflow.com/questions/5852540/django-admin-display-multiple-fields-on-the-same-line
+#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
+    list_display = ('name', 'css_id', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', 'sort1', 'sort2', 'filename',],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
+       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],}),
     ]   
 
     inlines = [ModuleScriptsInline]
