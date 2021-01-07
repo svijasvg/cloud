@@ -20,7 +20,14 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
             svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
  
         else:
-            svg_ID, svg_width, svg_height, svg_content = clean(temp_source, this_svg.filename, use_p3)
+            is_module = hasattr(this_svg, 'css_id')
+
+            temp_id = this_svg.filename
+            if is_module:
+                if this_svg.css_id != '':
+                    temp_id = this_svg.css_id
+
+            svg_ID, svg_width, svg_height, svg_content = clean(temp_source, temp_id, use_p3)
  
             if svg_width > specified_width:
                 page_ratio = svg_height/svg_width
@@ -36,3 +43,9 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
  
     return svg, css
 
+
+#   css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
+#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
