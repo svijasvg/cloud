@@ -60,20 +60,20 @@ def calculate_css(this_svg):
     return y + z
   
 def dico_position(x):
+#   return '/* position: ' +x+ ' */\n'
     return {
         'absolute': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
         'bottom'  : 'position: relative;\n',
     }[x]
-    return "/* error "+x+" */"
 
 def dico_corners(x):
+#   return '/* corner: ' +x+ ' */\n'
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
         'top right'   : 'left: ; right: xrem; top: yrem; bottom: ;\n',
         'bottom right': 'left: ; right: xrem; top: ; bottom: yrem;\n',
         'bottom left' : 'left: xrem; right: ; top: ; bottom: yrem;\n',
-
     }[x]
 
 
