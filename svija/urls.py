@@ -22,6 +22,7 @@ urlpatterns = [
 #---------------------------------------- email sending
 
     path('<slug:lng>/mail', views.MailView),
+    path('<slug:lng>/send', views.SendView),
 
 #---------------------------------------- home pages
 

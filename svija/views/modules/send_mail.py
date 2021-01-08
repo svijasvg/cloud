@@ -20,6 +20,7 @@ import re
 import socket
 from email.mime.text import MIMEText
 import smtplib
+from smtplib import SMTPException
 from django.core.mail import get_connection, send_mail
 
 import cgitb
@@ -137,14 +138,17 @@ def send(settings, language, request, ua):
 
     connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
 
-    send_mail(
-        subject,
-        body,
-        frm,
-        [to, bcc,],
-        fail_silently=False,
-        connection=connection,
-    )
+    try:
+        send_mail(
+            subject,
+            body,
+            frm,
+            [to, bcc,],
+            fail_silently=False,
+            connection=connection,
+        )
+    except SMTPException as e:
+        fail = e
 
     #———————————————————————————————————————— success
 
