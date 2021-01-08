@@ -65,6 +65,7 @@ def dico_position(x):
         'floating': 'position: fixed;\n',
         'bottom'  : 'position: relative;\n',
     }[x]
+    return "/* error "+x+" */"
 
 def dico_corners(x):
     return {

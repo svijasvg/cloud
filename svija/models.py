@@ -203,8 +203,8 @@ class Module(models.Model):
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
-    horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
-    vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+    horz_offset = models.SmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+    vert_offset = models.SmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
     def __unicode__(self):
         return self.name
