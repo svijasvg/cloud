@@ -51,30 +51,32 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
     return svg, css
 
 def calculate_css(this_svg):
-    y = dico_position(this_svg.position)
-    z = dico_corners(this_svg.corner)
+    posit  = dic_position(this_svg.position)
+    offset = dic_corners(this_svg.corner, this_svg.position)
     xoff = str(this_svg.horz_offset/10) + 'rem'
     yoff = str(this_svg.vert_offset/10) + 'rem'
-    z = z.replace('xrem', xoff)
-    z = z.replace('yrem', yoff)
-    return y + z
+    offset = offset.replace('xrem', xoff)
+    offset = offset.replace('yrem', yoff)
+    return posit + offset
   
-def dico_position(x):
-#   return '/* position: ' +x+ ' */\n'
+def dic_position(pos):
+    if pos != 'absolute' and pos != 'floating' and pos != 'bottom': return '/* invalid svg position */'
     return {
         'absolute': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
         'bottom'  : 'position: relative;\n',
-    }[x]
+    }[pos]
 
-def dico_corners(x):
-#   return '/* corner: ' +x+ ' */\n'
+def dic_corners(cor, pos):
+    if pos != 'absolute' and pos != 'floating' and pos != 'bottom': return '/* invalid svg position */'
+    if pos ==  'bottom':
+        return 'margin-left: xrem; right: ; margin-top: yrem; bottom: ;\n'
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
         'top right'   : 'left: ; right: xrem; top: yrem; bottom: ;\n',
         'bottom right': 'left: ; right: xrem; top: ; bottom: yrem;\n',
         'bottom left' : 'left: xrem; right: ; top: ; bottom: yrem;\n',
-    }[x]
+    }[cor]
 
 
 #   positions = ('absolute', 'floating', 'bottom',)
