@@ -60,17 +60,16 @@ def calculate_css(this_svg):
     return posit + offset
   
 def dic_position(pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'bottom': return '/* invalid svg position */'
+    if pos != 'absolute' and pos != 'floating' and pos != '': return '/* invalid svg position */'
     return {
         'absolute': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
-        'bottom'  : 'position: relative;\n',
+        ''        : '',
     }[pos]
 
 def dic_corners(cor, pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'bottom': return '/* invalid svg position */'
-    if pos ==  'bottom':
-        return 'margin-left: xrem; right: ; margin-top: yrem; bottom: ;\n'
+    if pos != 'absolute' and pos != 'floating' and pos != '': return '/* invalid svg position */'
+    if pos ==  '': return ''
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
         'top right'   : 'left: ; right: xrem; top: yrem; bottom: ;\n',

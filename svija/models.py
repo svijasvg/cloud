@@ -186,7 +186,7 @@ class OptionalScript(models.Model):
 
 #———————————————————————————————————————— module · no dependencies
 
-positions = ('absolute', 'floating', 'bottom',)
+positions = ('absolute', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 class Module(models.Model):
