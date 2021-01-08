@@ -60,16 +60,16 @@ def calculate_css(this_svg):
     return posit + offset
   
 def dic_position(pos):
-    if pos != 'absolute' and pos != 'floating' and pos != '': return '/* invalid svg position */'
+    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     return {
         'absolute': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
-        ''        : '',
+        'none'        : '',
     }[pos]
 
 def dic_corners(cor, pos):
-    if pos != 'absolute' and pos != 'floating' and pos != '': return '/* invalid svg position */'
-    if pos ==  '': return ''
+    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
+    if pos ==  'none': return ''
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
         'top right'   : 'left: ; right: xrem; top: yrem; bottom: ;\n',
@@ -78,7 +78,7 @@ def dic_corners(cor, pos):
     }[cor]
 
 
-#   positions = ('absolute', 'floating', 'bottom',)
+#   positions = ('absolute', 'floating', 'none',)
 #   corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 #   css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
