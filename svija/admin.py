@@ -94,8 +94,8 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag','display_order',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('email parameters',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('contact form information', {'fields': ['email', 'form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
+        ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
         ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
@@ -190,7 +190,7 @@ class ResponsiveAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
-        ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
+#       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
 admin.site.register(Responsive, ResponsiveAdmin)
@@ -244,12 +244,12 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('path', 'display_order', 'responsive', 'language', 'default', )
+    list_display = ('path', 'default', 'language', 'responsive', 'display_order',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('display name', {'fields': ['path', 'display_order', 'responsive', 'language','default',],}),
+        ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],}),
     ]   
 
     inlines = [ModuleInlinePrefix, ]
