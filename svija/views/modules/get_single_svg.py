@@ -56,10 +56,11 @@ def calculate_css(this_svg):
     horz = this_svg.horz_offset
     vert = this_svg.vert_offset
 
-# if position is absolute and corner is bottom, vert_offset = 0-vert_offset
-
-    if pos == 'absolute' and (cor == 'bottom left' or cor == 'bottom right'):
+    if cor == 'bottom left' or cor == 'bottom right':
         vert = 0 - vert
+
+    if cor == 'top right' or cor == 'bottom right':
+        horz = 0 - horz
 
     posit  = dic_position(pos)
     offset = dic_corners(cor, pos)
