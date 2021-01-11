@@ -94,8 +94,8 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag','display_order',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('email parameters',   {'fields': ['bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('contact form information', {'fields': ['email', 'form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
+        ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
         ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
@@ -190,7 +190,7 @@ class ResponsiveAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
-        ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
+#       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
 admin.site.register(Responsive, ResponsiveAdmin)
@@ -205,17 +205,26 @@ class ModuleScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
+# https://stackoverflow.com/questions/5852540/django-admin-display-multiple-fields-on-the-same-line
+#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+
+corner_note = '<b>reference corner</b> does not apply to placement <b>bottom</b>'
+
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
+    list_display = ('name', 'css_id', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', 'sort1', 'sort2', 'filename',],}),
+       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
+       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description':corner_note,}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -235,12 +244,12 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('path', 'display_order', 'responsive', 'language', 'default', )
+    list_display = ('path', 'default', 'language', 'responsive', 'display_order',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('display name', {'fields': ['path', 'display_order', 'responsive', 'language','default',],}),
+        ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],}),
     ]   
 
     inlines = [ModuleInlinePrefix, ]

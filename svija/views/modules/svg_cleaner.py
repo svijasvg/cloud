@@ -14,10 +14,10 @@ import os, re, io
 from svija.models import Font
 from django.core.exceptions import ObjectDoesNotExist
 
-def clean(file_path, file_name, use_p3):
+def clean(file_path, temp_id, use_p3):
 
     # if unspecified, ID will be filename with extension removed (-en.svg)
-    svg_ID         = cleanup(file_name)
+    svg_ID         = cleanup(temp_id)
     width = height = 0
     line_number    = 2
     first_line     = ''
@@ -96,9 +96,9 @@ def clean(file_path, file_name, use_p3):
                                         # note that this means the ID could change at the end,
                                         # so .st[id]8 won't correspond
 
-        if line[1:10] == 'g id="id_':
-            parts = line.split('"')
-            svg_ID = parts[1][3:]
+#       if line[1:10] == 'g id="id_':
+#           parts = line.split('"')
+#           svg_ID = parts[1][3:]
 
         #————————————————————————————————— find fonts
                                          # .st2{font-family:'Signika-Regular';}
@@ -238,11 +238,12 @@ def update_css(google_font, style_string):
 
 #———————————————————————————————————————— remove special characters
 
-def cleanup(filename):
+def cleanup(css_id):
+  css_id = css_id.replace('.svg','')
 # per.iod in na,me.svg
   translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
-  filename = filename.translate(translation_table)
-  return filename[:-4]
+  css_id = css_id.translate(translation_table)
+  return css_id
 
 #———————————————————————————————————————— remove duplicates
 

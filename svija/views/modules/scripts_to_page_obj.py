@@ -39,4 +39,7 @@ def scripts_to_page_obj(label, script_list, svg_passthrough, css_dimensions):
     html = comm_html + html
     form = comm_form + form
 
+    # form closing tag is included in csrf token template
+    form = form.replace('</form>', '')
+
     return page_obj(head_js, css, body_js, svg_passthrough, html, form)

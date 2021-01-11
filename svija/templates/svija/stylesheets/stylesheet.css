@@ -2,6 +2,8 @@
 
 html,body{ margin: 0px; }
 
+body{ position: absolute; } /* necessary for module svg's with absolute positioning */
+
  svg:first-of-type{
      width: 100%;   /* avoids flash when SVG is resized */
   overflow: hidden; /* so MS browsers won't display content outside of artboard */

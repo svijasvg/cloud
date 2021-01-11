@@ -1,6 +1,6 @@
 #———————————————————————————————————————— __init__.py
 
-version = '2.1.7'
+version = '2.1.8'
 import os, sys
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
@@ -10,14 +10,18 @@ if not path in sys.path: sys.path.insert(1, path)
 
 #———————————————————————————————————————— all views
 
-#   path('c', views.ClearCacheView),
-from .ClearCacheView import *
 
 #   path('<slug:lng>/mail', views.MailView),
 from .MailView       import *
 
 #   path('<slug:path1>/<slug:path2>', views.PageView),  # prefix/slug
 from .PageView       import *
+
+#   path('c', views.ClearCacheView), depends on PageView
+from .ClearCacheView import *
+
+#   path('<slug:lng>/send', views.SendView), depends on PageView
+from .SendView       import *
 
 #   re_path(r'^(?P<path1>)$', views.HomePageView),          # root url
 #   re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePageView), # two letters followed by slash

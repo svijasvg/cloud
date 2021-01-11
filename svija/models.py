@@ -87,17 +87,17 @@ class Language(models.Model):
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
-    bcc = models.CharField(max_length=200, default='', verbose_name='bcc: field for contact form',blank=True,)
-    default = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
+    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
+    default  = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
-    subject = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='sending address in email body',blank=True,)
+    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name='address label in body',blank=True,)
 
-    email           = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name label',)
     form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email label',)
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button label',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='default form instructions',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='form instructions',)
 
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='message while sending',)
     form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='message after sent',)
@@ -186,6 +186,9 @@ class OptionalScript(models.Model):
 
 #———————————————————————————————————————— module · no dependencies
 
+positions = ('absolute', 'floating', 'none',)
+corners = ('top left', 'top right', 'bottom left', 'bottom right',)
+
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
@@ -196,6 +199,12 @@ class Module(models.Model):
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+
+    css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
+    position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+    corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+    horz_offset = models.SmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+    vert_offset = models.SmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
     def __unicode__(self):
         return self.name
@@ -273,8 +282,6 @@ class PrefixModules(models.Model):
         ordering = ["zindex"]
 
 #———————————————————————————————————————— site settings · uses prefix & robots
-
-backup_intervals = ('none', '6 hrs', 'daily', 'weekly', 'monthly', 'quarterly',)
 
 class Settings(models.Model):
 
