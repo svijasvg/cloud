@@ -110,6 +110,11 @@ svija/migrations/0090_auto_20200728_1359.py
 svija/migrations/0091_auto_20200728_1516.py
 svija/migrations/0092_auto_20200728_1550.py
 svija/migrations/0093_responsive_code.py
+svija/migrations/0094_auto_20210107_1414.py
+svija/migrations/0095_auto_20210107_1418.py
+svija/migrations/0096_auto_20210108_1320.py
+svija/migrations/0097_auto_20210108_1502.py
+svija/migrations/0098_auto_20210111_0920.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
@@ -126,6 +131,7 @@ svija/templates/admin/submit_line.html
 svija/templates/svija/.debug.html.un~
 svija/templates/svija/.debug_token.html.un~
 svija/templates/svija/.svija.html.un~
+svija/templates/svija/.svija_token.html.un~
 svija/templates/svija/debug.html
 svija/templates/svija/debug_token.html
 svija/templates/svija/detail.html
@@ -157,6 +163,7 @@ svija/views/LinksView.py
 svija/views/MailView.py
 svija/views/PageView.py
 svija/views/RobotsView.py
+svija/views/SendView.py
 svija/views/SitemapView.py
 svija/views/__init__.py
 svija/views/modules/__init__.py
