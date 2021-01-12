@@ -51,10 +51,22 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
     return svg, css
 
 def calculate_css(this_svg):
-    posit  = dic_position(this_svg.position)
-    offset = dic_corners(this_svg.corner, this_svg.position)
-    xoff = str(this_svg.horz_offset/10) + 'rem'
-    yoff = str(this_svg.vert_offset/10) + 'rem'
+    pos = this_svg.position
+    cor = this_svg.corner
+    horz = this_svg.horz_offset
+    vert = this_svg.vert_offset
+
+    if cor == 'bottom left' or cor == 'bottom right':
+        vert = 0 - vert
+
+    if cor == 'top right' or cor == 'bottom right':
+        horz = 0 - horz
+
+    posit  = dic_position(pos)
+    offset = dic_corners(cor, pos)
+
+    xoff = str(horz/10) + 'rem'
+    yoff = str(vert/10) + 'rem'
     offset = offset.replace('xrem', xoff)
     offset = offset.replace('yrem', yoff)
     return posit + offset
