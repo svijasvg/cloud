@@ -211,8 +211,6 @@ class ModuleScriptsInline(admin.TabularInline):
 #   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
-corner_note = '<b>reference corner</b> does not apply to placement <b>bottom</b>'
-
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
@@ -224,7 +222,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
        ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
-       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description':corner_note,}),
+       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],}),
     ]   
 
     inlines = [ModuleScriptsInline]

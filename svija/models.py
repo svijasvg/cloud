@@ -200,11 +200,11 @@ class Module(models.Model):
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
 
-    css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
+    css_id = models.CharField(max_length=200, default='', blank=True, verbose_name='object ID',)
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
-    corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
-    horz_offset = models.SmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
-    vert_offset = models.SmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+    corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
+    horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
+    vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     def __unicode__(self):
         return self.name
