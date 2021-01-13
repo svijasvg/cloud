@@ -16,6 +16,7 @@ def combine_content(blocks):
         body += i['svgs']
         body += i['html']
         body += i['form']
-        body += '<script>' + i['body_js'] + '</script>'
+        if i['body_js'] != '':
+            body += '<script>' + i['body_js'] + '</script>'
 
     return { 'js':js, 'css':css, 'body':body, }
