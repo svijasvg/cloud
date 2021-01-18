@@ -55,7 +55,8 @@ from django.http import Http404
 
 #———————————————————————————————————————— view definition
 
-@cache_per_user(ttl=60*60*24, cache_post=False)
+#cache_per_user(ttl=60*60*24, cache_post=False)
+@cache_per_user(60*60*24, False)
 def PageView(request, request_prefix, request_slug):
 
     content_blocks = []
