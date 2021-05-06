@@ -9,4 +9,32 @@
   <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src="/admn/svija-admin-300x80.png" %} width=225 height=60></a></h1>
 {% endblock %}
 
+{% block usertools %}
+{% if has_permission %}
+<div id="user-tools">
+    {% block welcome-msg %}
+        {% trans 'Welcome,' %}
+        <strong>lkjmqlkdsf{% firstof user.get_short_name user.get_username %}</strong>.
+    {% endblock %}
+    {% block userlinks %}
+        {% if site_url %}
+            <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+        {% endif %}
+        {% if user.is_active and user.is_staff %}
+            {% url 'django-admindocs-docroot' as docsroot %}
+            {% if docsroot %}
+                <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+            {% endif %}
+        {% endif %}
+        {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+        {% endif %}
+        <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+    {% endblock %}
+</div>
+{% endif %}
+{% endblock %}
+
 {% block nav-global %}{% endblock %}
+
+<!-- /opt/venv/djangoEnv/lib/python3.8/site-packages/django/contrib/admin/templates/admin -->
