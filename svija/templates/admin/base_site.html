@@ -12,26 +12,29 @@
 {% block usertools %}
 {% if has_permission %}
 <div id="user-tools">
-  V 2.2.0 ·
+
+  {% block welcome-msg %}
+  {% endblock %}
+
   {% block userlinks %}
     {% if site_url %}
-      <a href="{{ site_url }}">{% trans 'View site' %}</a> /
+      <a href="{{ site_url }}" target=_blank>{% trans 'View site' %}</a> ·
     {% endif %}
+    <a href=/c>Clear Cache</a> · 
+    <a href=https://docs.svija.love target=_blank>Documentation</a> ·&nbsp;
+    V 2.2.0<br>
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}
       {% if docsroot %}
-        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
       {% endif %}
     {% endif %}
+    <strong>{% firstof user.get_short_name user.get_username %}</strong> ·
     {% if user.has_usable_password %}
-    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ·
     {% endif %}
-  {% block welcome-msg %}
-    {% trans 'Welcome,' %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong>!
-  {% endblock %}
     <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
   {% endblock %}
+
 </div>
 {% endif %}
 {% endblock %}
