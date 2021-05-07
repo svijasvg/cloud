@@ -1,6 +1,9 @@
+#———————————————————————————————————————— svija.views
+
 # from django.http import HttpResponse
 # return HttpResponse("debugging message.")
-#———————————————————————————————————————— svija.views
+
+#———————————————————————————————————————— import
 
 import os, os.path, sys, pathlib, svija 
 
@@ -10,7 +13,6 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponsePermanen
 from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
-
 
 #———————————————————————————————————————— class definition
 
@@ -24,6 +26,8 @@ class page_obj():
         self.form       = form
     def __getitem__(cls, x):
         return getattr(cls, x)
+
+#———————————————————————————————————————— more import
 
 #mport importlib
 
@@ -53,12 +57,17 @@ from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 from django.http import Http404
 
-#———————————————————————————————————————— view definition
+#———————————————————————————————————————— *** view definition
 
 #cache_per_user(ttl=60*60*24, cache_post=False)
 @cache_per_user(60*60*24, False)
 def PageView(request, request_prefix, request_slug):
 
+
+#———————————————————————————————————————— view construction
+
+    #———————————————————————————————————————— initialize content
+ 
     content_blocks = []
 
     #———————————————————————————————————————— main settings
@@ -84,7 +93,7 @@ def PageView(request, request_prefix, request_slug):
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
 
-    #————————————————————————————————————————  redirect if it's a default page (path not shown)
+    #———————————————————————————————————————— redirect if it's a default page (path not shown)
 
     redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
@@ -114,7 +123,7 @@ def PageView(request, request_prefix, request_slug):
         'analytics_id'  : settings.analytics_id,
     }
 
-    #———————————————————————————————————————— content blocks
+    #———————————————————————————————————————— combine content blocks
 
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
@@ -138,9 +147,10 @@ def PageView(request, request_prefix, request_slug):
         template = template.replace('.html', '_token.html')
         content_types['js'] += "\n" + form_js
 
-    #———————————————————————————————————————— content blocks
+    #———————————————————————————————————————— update context & return
 
     context.update(content_types)
     return render(request, template, context)
+
 
 #———————————————————————————————————————— fin
