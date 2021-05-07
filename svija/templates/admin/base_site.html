@@ -1,6 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static %}
-
+{% load i18n static %}
 {% block title %}{{ title }} | Svija Admin{% endblock %}
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/admn/stylesheet.css" />
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />{% endblock %}
@@ -9,4 +8,36 @@
   <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src="/admn/svija-admin-300x80.png" %} width=225 height=60></a></h1>
 {% endblock %}
 
+
+{% block usertools %}
+{% if has_permission %}
+<div id="user-tools">
+
+  {% block welcome-msg %}
+  {% endblock %}
+
+  {% block userlinks %}
+    {% if site_url %}
+      <a href="{{ site_url }}" target=_blank>{% trans 'View site' %}</a> ·
+    {% endif %}
+    <a href=/c>Clear Cache</a> · 
+    <a href=https://docs.svija.love target=_blank>Documentation</a> ·&nbsp;
+    V 2.2.0<br>
+    {% if user.is_active and user.is_staff %}
+      {% url 'django-admindocs-docroot' as docsroot %}
+      {% if docsroot %}
+      {% endif %}
+    {% endif %}
+    <strong>{% firstof user.get_short_name user.get_username %}</strong> ·
+    {% if user.has_usable_password %}
+    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ·
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+  {% endblock %}
+
+</div>
+{% endif %}
+{% endblock %}
+
 {% block nav-global %}{% endblock %}
+<!-- /opt/venv/djangoEnv/lib/python3.8/site-packages/django/contrib/admin/templates/admin -->
