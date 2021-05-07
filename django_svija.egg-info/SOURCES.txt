@@ -115,6 +115,8 @@ svija/migrations/0095_auto_20210107_1418.py
 svija/migrations/0096_auto_20210108_1320.py
 svija/migrations/0097_auto_20210108_1502.py
 svija/migrations/0098_auto_20210111_0920.py
+svija/migrations/0099_auto_20210112_1423.py
+svija/migrations/0100_auto_20210112_1426.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
@@ -126,6 +128,7 @@ svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/admin-extra.css
 svija/static/svija/scripts/TweenMax-2.0.2.js
 svija/static/svija/scripts/gsap.min.js
+svija/templates/admin/.base_site.html.un~
 svija/templates/admin/base_site.html
 svija/templates/admin/submit_line.html
 svija/templates/svija/.debug.html.un~
