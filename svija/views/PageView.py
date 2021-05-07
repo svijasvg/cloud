@@ -66,10 +66,6 @@ def PageView(request, request_prefix, request_slug):
 
 #———————————————————————————————————————— view construction
 
-    #———————————————————————————————————————— initialize content
- 
-    content_blocks = []
-
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
@@ -93,37 +89,25 @@ def PageView(request, request_prefix, request_slug):
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
 
-    #———————————————————————————————————————— redirect if it's a default page (path not shown)
+    #———————————————————————————————————————— redirect if / or /en
 
     redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
-    #———————————————————————————————————————— system information
+    #———————————————————————————————————————— metatags, system js & fonts
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
-        prefix,       responsive,     language,
-        settings.secure, settings.url, request_prefix, request_slug, )
+        prefix,       responsive,     language, settings.secure,
+        settings.url, request_prefix, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-    #———————————————————————————————————————— template context
+    #———————————————————————————————————————— content blocks
 
-    context = {
-        'comments'      : language.comment,
-        'title'         : page.title + ' ' + language.title,
-        'meta_canon'    : meta_canon,
-        'meta_fonts'    : meta_fonts,
-        'touch'         : language.touch,
-        'system_js'     : system_js,
-        'font_css'      : font_css,
-        'accessible'    : accessible,
-        'analytics_id'  : settings.analytics_id,
-    }
-
-    #———————————————————————————————————————— combine content blocks
+    content_blocks = []
 
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
@@ -147,9 +131,24 @@ def PageView(request, request_prefix, request_slug):
         template = template.replace('.html', '_token.html')
         content_types['js'] += "\n" + form_js
 
-    #———————————————————————————————————————— update context & return
+    #———————————————————————————————————————— template context
+
+    context = {
+        'comments'      : language.comment,
+        'title'         : page.title + ' ' + language.title,
+        'meta_canon'    : meta_canon,
+        'meta_fonts'    : meta_fonts,
+        'touch'         : language.touch,
+        'system_js'     : system_js,
+        'font_css'      : font_css,
+        'accessible'    : accessible,
+        'analytics_id'  : settings.analytics_id,
+    }
 
     context.update(content_types)
+
+    #————————————————————————————————————————  return render
+
     return render(request, template, context)
 
 
