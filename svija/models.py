@@ -19,7 +19,7 @@ script_types = ('head JS', 'CSS', 'HTML', 'form', 'body JS',)
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='new prefix, HTTP or HTTPS', blank=True)
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     def __str__(self):
@@ -34,7 +34,7 @@ class Font(models.Model):
     css    = models.CharField(max_length=100, default='', verbose_name='CSS reference')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='source', blank=True)
+    source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='WOFF filename', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
     active = models.BooleanField(default=True, verbose_name='include',)
 
@@ -136,7 +136,8 @@ class Responsive(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order']
-        verbose_name_plural = "1.3 · Responsive Options"
+        verbose_name = "Screen"
+        verbose_name_plural = "1.3 · Screens"
 
 #———————————————————————————————————————— robots · no dependencies
 
@@ -233,7 +234,7 @@ class ModuleScripts(models.Model):
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='set name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen',)
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
@@ -266,7 +267,8 @@ class Prefix(models.Model):
     def __str__(self):
         return self.path
     class Meta:
-        verbose_name_plural = "1.4 · Prefix Codes"
+        verbose_name = "Combination"
+        verbose_name_plural = "1.4 · Combinations"
         ordering = ['display_order']
 
 class PrefixModules(models.Model):
@@ -285,13 +287,13 @@ class PrefixModules(models.Model):
 
 class Settings(models.Model):
 
-    active        = models.BooleanField(default=False, verbose_name='site is online',)
+    active        = models.BooleanField(default=False, verbose_name='online',)
     robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
-    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default prefix')
+    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='default combination')
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
@@ -307,8 +309,8 @@ class Settings(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        verbose_name = "Site Settings"
-        verbose_name_plural = "1.1 · Site Settings"
+        verbose_name = "URL & Settings"
+        verbose_name_plural = "1.1 · URL & Settings"
 
 #———————————————————————————————————————— page · uses template & prefix
 
