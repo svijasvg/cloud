@@ -1,4 +1,4 @@
-*Modified 6 May, 2021 · live server*
+*Modified 6 May, 2021 · dev server*
 
 ![Svija: SVG-based websites built in Adobe Illustrator](http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator")
 
