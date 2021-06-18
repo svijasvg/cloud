@@ -21,19 +21,17 @@ admin.site.register(Forwards, ForwardsAdmin)
 
 #---------------------------------------- fonts · no dependencies
 
-fr_bosic = ' '.join(["Source : nom Google, fichier woff/woff2 ou local1,local2 etc. pour polices standard"])
-
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_filter = ('active', 'google', 'family', )
-    list_display = ('css', 'family', 'style', 'google', 'source', 'active', )
+    list_display = ('css', 'family', 'style', 'source', 'google', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['css','source', 'family', 'style', 'active', 'google',], 'description':fr_bosic,}),
+        ('font info',    {'fields': ['css', 'family', 'style', 'source', 'google', 'active',], }),
 
     ]   
 
@@ -87,12 +85,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'flag', 'title', 'email',)
+    list_display = ('name', 'code', 'title', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','flag','display_order',],}),
+        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],}),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
@@ -211,6 +209,8 @@ class ModuleScriptsInline(admin.TabularInline):
 #   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
+positdesc = 'Superimposed on the page · negative = move up/left · positive = move down/right'
+
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
@@ -221,8 +221,8 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'cache_reset', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
-       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],}),
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
+       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -260,12 +260,12 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'active', 'robots', 'prefix', 'cached',)
+    list_display = ('url', 'active', 'robots', 'prefix',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'cached', 'p3_color', 'prefix', 'analytics_id', 'tracking_on', 'maps_api_key',]}),
+        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'p3_color', 'prefix', 'analytics_id', 'tracking_on',]}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
@@ -321,7 +321,7 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['cache_reset', 'display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
+        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
         ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'], 'description':fr_setup,}),
         ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'], 'description':fr_access,}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),

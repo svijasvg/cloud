@@ -1,8 +1,13 @@
 {% extends "admin/base.html" %}
 {% load i18n static %}
+
 {% block title %}{{ title }} | Svija Admin{% endblock %}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/admn/stylesheet.css" />
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="/admn/stylesheet.css" />
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />
+{% endblock %}
 
 {% block branding %}
   <h1 id="site-name"><a href="{% url 'admin:index' %}"><img id="svija-admin-logo" src="/admn/svija-admin-300x80.png" %} width=225 height=60></a></h1>
@@ -22,7 +27,7 @@
     {% endif %}
     <a href=/c>Clear Cache</a> · 
     <a href=https://docs.svija.love target=_blank>Documentation</a> ·&nbsp;
-    V 2.2.0<br>
+
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}
       {% if docsroot %}

@@ -12,7 +12,7 @@ def ClearCacheView(request):
         return response
 
     memcache.clear()
-    msg = "<html><body><script> alert('Cache deleted.'); window.history.go(-1); </script>"
+    msg = "<html><body><script> alert('Cache cleared.'); window.history.go(-1); </script>"
     return HttpResponse(msg)
 
 #———————————————————————————————————————— fin
