@@ -118,6 +118,7 @@ svija/migrations/0098_auto_20210111_0920.py
 svija/migrations/0099_auto_20210112_1423.py
 svija/migrations/0100_auto_20210112_1426.py
 svija/migrations/0101_auto_20210618_1417.py
+svija/migrations/0102_auto_20210622_1451.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
