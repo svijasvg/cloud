@@ -259,16 +259,16 @@ class DefaultScriptTypes(models.Model):
 
 class Prefix(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    path = models.CharField(max_length=2, default='')
+    path = models.CharField(max_length=2, default='', verbose_name='code',)
     default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen',)
     language = models.ForeignKey(Language, default=0, on_delete=models.PROTECT, )
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
     class Meta:
-        verbose_name = "Combination"
-        verbose_name_plural = "1.4 · Combinations"
+        verbose_name = "Combination Code"
+        verbose_name_plural = "1.4 · Combination Codes"
         ordering = ['display_order']
 
 class PrefixModules(models.Model):
@@ -321,14 +321,14 @@ class Page(models.Model):
     visitable = models.BooleanField(default=True, verbose_name='visitable',)
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, )
+    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
     pub_date    = models.DateTimeField(default=datetime.now, blank=True)
-    url    = models.CharField(max_length=200, default='', verbose_name='slug (follows prefix)')
+    url    = models.CharField(max_length=200, default='', verbose_name='address')
 
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)

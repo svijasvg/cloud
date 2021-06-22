@@ -242,7 +242,7 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('path', 'default', 'language', 'responsive', 'display_order',)
+    list_display = ('path', 'language', 'responsive', 'default', 'display_order',)
     save_on_top = True
     save_as = True
 
@@ -273,12 +273,6 @@ class SettingsAdmin(admin.ModelAdmin):
 admin.site.register(Settings, SettingsAdmin)
 
 #---------------------------------------- page
-
-fr_basic  = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
-fr_setup  = ' '.join(["Paramètres de d'affichage"])
-fr_access = ' '.join(["Texte pour les non-voyants"])
-fr_overr  = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
-fr_dims   = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
 
 from .models import Svg
 class SvgInline(admin.TabularInline):
@@ -321,11 +315,11 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'], 'description':fr_access,}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'], 'description':fr_dims}),
+        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],}),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'],}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]

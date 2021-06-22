@@ -53,8 +53,8 @@ def get_single_svg(this_svg, source_dir, specified_width, use_p3):
 def calculate_css(this_svg):
     pos = this_svg.position
     cor = this_svg.corner
-    horz = this_svg.horz_offset / 10
-    vert = this_svg.vert_offset / 10
+    horz = this_svg.horz_offset
+    vert = this_svg.vert_offset
 
     if cor == 'bottom left' or cor == 'bottom right':
         vert = 0 - vert
