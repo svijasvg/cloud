@@ -1,8 +1,24 @@
-#---------------------------------------- svija admin
+#———————————————————————————————————————— instructional notes
+
+descSettings     = "Basic settings that affec the entire website."
+descLanguages    = "Languages supported by your website."
+descScreens      = "You can define the screens you want to support for your website."
+descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen combination</b>."
+descPages        = "All the settings that are specific to a single page."
+descModules      = "Modules are reusable content that can be included via <b><a href='/admin/svija/prefix/'>Combination Codes</a></b> or <b><a href='/admin/svija/page/'>Page Settings</a></b>."
+descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must either provide a <b>WOFF filename</b> or check \"<b>Google font</b>\"."
+descDefault      = "Default scripts are loaded automatically with every page."
+descOptional     = "Optional scripts can be added via the settings for each page."
+descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
+descRedirects    = "Use redirects to <b>forward</b> an old page address to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
+descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
+descNotes        = "This is a place where you can leave messages for yourself or your coworkers"
+descHelp         = "Articles or useful information to help you with Svija."
+
 
 from django.contrib import admin
 
-#---------------------------------------- redirects · no dependencies
+#———————————————————————————————————————— redirects · no dependencies
 
 from .models import Forwards
 class ForwardsAdmin(admin.ModelAdmin):
@@ -14,12 +30,12 @@ class ForwardsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], }),
+        ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], 'description':descRedirects,}),
     ]   
 
 admin.site.register(Forwards, ForwardsAdmin)
 
-#---------------------------------------- fonts · no dependencies
+#———————————————————————————————————————— fonts · no dependencies
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
@@ -31,13 +47,13 @@ class FontAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['css', 'family', 'style', 'source', 'google', 'active',], }),
+        ('font info',    {'fields': ['css', 'family', 'style', 'source', 'google', 'active',], 'description':descFonts,}),
 
     ]   
 
 admin.site.register(Font, FontAdmin)
 
-#---------------------------------------- help · no dependencies
+#———————————————————————————————————————— help · no dependencies
 
 from .models import Help
 class HelpAdmin(admin.ModelAdmin):
@@ -49,7 +65,7 @@ class HelpAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], }),
+        ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], 'description':descHelp,}),
         ('contents',    {'fields': ['contents',], }),
     ]   
 
@@ -58,7 +74,7 @@ class HelpAdmin(admin.ModelAdmin):
 
 admin.site.register(Help, HelpAdmin)
 
-#---------------------------------------- notes · no dependencies
+#———————————————————————————————————————— notes · no dependencies
 
 from .models import Notes
 class NotesAdmin(admin.ModelAdmin):
@@ -70,7 +86,7 @@ class NotesAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('meta',    {'fields': ['name','category', 'author',], }),
+        ('meta',    {'fields': ['name','category', 'author',], 'description':descNotes, }),
         ('contents',    {'fields': ['contents',], }),
     ]   
 
@@ -79,7 +95,7 @@ class NotesAdmin(admin.ModelAdmin):
 
 admin.site.register(Notes, NotesAdmin)
 
-#---------------------------------------- language · no dependencies
+#———————————————————————————————————————— language · no dependencies
 
 from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
@@ -90,7 +106,7 @@ class LanguageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],}),
+        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
@@ -100,7 +116,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 admin.site.register(Language, LanguageAdmin)
 
-#---------------------------------------- robots · no dependencies
+#———————————————————————————————————————— robots · no dependencies
 
 from .models import Robots
 class RobotsAdmin(admin.ModelAdmin):
@@ -111,7 +127,7 @@ class RobotsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('name & file contents',{'fields': ['name', 'contents', ]}),
+        ('name & file contents',{'fields': ['name', 'contents', ], 'description':descRobots, }),
     ]   
     verbose_name = "robots.txt"
 
@@ -119,7 +135,7 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#---------------------------------------- template · no dependencies
+#———————————————————————————————————————— template · no dependencies
 
 from .models import Template
 class TemplateAdmin(admin.ModelAdmin):
@@ -130,12 +146,12 @@ class TemplateAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],}),
+        ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],'description':descTemplates,}),
     ]   
 
 admin.site.register(Template, TemplateAdmin)
 
-#---------------------------------------- default scripts · dependent on responsive
+#———————————————————————————————————————— default scripts · dependent on responsive
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -151,13 +167,13 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': ['name', 'active', 'responsive', ],'description': 'Scripts will be loaded automatically.',}),
+        ('Scripts Name', {'fields': ['name', 'active', 'responsive', ],'description':descDefault, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 
 admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
-#---------------------------------------- optional scripts · no dependencies
+#———————————————————————————————————————— optional scripts · no dependencies
 
 from .models import OptionalScript
 class OptionalScriptAdmin(admin.ModelAdmin):
@@ -169,13 +185,13 @@ class OptionalScriptAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1','sort2',],}),
+        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1','sort2',],'description':descOptional,}),
         ('content',        {'fields': ['content',                      ],}),
     ]   
 
 admin.site.register(OptionalScript, OptionalScriptAdmin)
 
-#---------------------------------------- responsive · no dependencies
+#———————————————————————————————————————— responsive · no dependencies
 
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
@@ -186,14 +202,14 @@ class ResponsiveAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description']}),
+        ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description'],'description':descScreens,}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
 #       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
 admin.site.register(Responsive, ResponsiveAdmin)
 
-#---------------------------------------- modules · no dependencies
+#———————————————————————————————————————— modules · no dependencies
 
 from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
@@ -221,7 +237,7 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),],}),
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),], 'description':descModules, }),
        ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
@@ -229,7 +245,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
 admin.site.register(Module, ModuleAdmin)
 
-#---------------------------------------- prefix · depends on responsive & language
+#———————————————————————————————————————— prefix · depends on responsive & language
 
 from .models import Prefix
 class ModuleInlinePrefix(admin.TabularInline):
@@ -242,19 +258,19 @@ class ModuleInlinePrefix(admin.TabularInline):
 class PrefixAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_display = ('path', 'default', 'language', 'responsive', 'display_order',)
+    list_display = ('path', 'language', 'responsive', 'default', 'display_order',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],}),
+        ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],'description':descCombinations,}),
     ]   
 
     inlines = [ModuleInlinePrefix, ]
 
 admin.site.register(Prefix, PrefixAdmin)
 
-#---------------------------------------- settings · depends on robots & prefix
+#———————————————————————————————————————— settings · depends on robots & prefix
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
@@ -265,20 +281,14 @@ class SettingsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'p3_color', 'prefix', 'analytics_id', 'tracking_on',]}),
+        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'p3_color', 'prefix', 'analytics_id', 'tracking_on',],'description': descSettings,}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
 admin.site.register(Settings, SettingsAdmin)
 
-#---------------------------------------- page
-
-fr_basic  = ' '.join(["L'adresse de la page sera composée du préfix + slug (en/contact)"])
-fr_setup  = ' '.join(["Paramètres de d'affichage"])
-fr_access = ' '.join(["Texte pour les non-voyants"])
-fr_overr  = ' '.join(["Désactiver les menus, headers & footers ou format par défaut"])
-fr_dims   = ' '.join(["Largeur, largeur visible, combien caché à gauche et combien caché en haut"])
+#———————————————————————————————————————— page
 
 from .models import Svg
 class SvgInline(admin.TabularInline):
@@ -301,8 +311,8 @@ class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "user script"
-    verbose_name_plural = "user scripts"
+    verbose_name = "script"
+    verbose_name_plural = "additional scripts"
     classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
@@ -321,15 +331,16 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':fr_basic,}),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'], 'description':fr_setup,}),
-        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'], 'description':fr_access,}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ], 'description':fr_overr }),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'], 'description':fr_dims}),
+        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':descPages, }),
+        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
+        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
+        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'],}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
-#---------------------------------------- fin
+
+#———————————————————————————————————————— fin

@@ -1,6 +1,6 @@
 #———————————————————————————————————————— __init__.py
 
-version = '2.2.1'
+version = '2.2.2'
 import os, sys
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))

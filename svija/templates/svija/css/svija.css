@@ -2,7 +2,8 @@
 
 html,body{ margin: 0px; }
 
-body{ position: absolute; } /* necessary for module svg's with absolute positioning */
+body{ position:absolute; /* necessary for module svg's with absolute positioning */
+      background-color:#dbdbdb; }
 
 svg{ 
     position:relative; /* un-positioned elements draw first by default, screwing up z index */
