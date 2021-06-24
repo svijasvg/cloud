@@ -120,6 +120,7 @@ svija/migrations/0100_auto_20210112_1426.py
 svija/migrations/0101_auto_20210618_1417.py
 svija/migrations/0102_auto_20210622_1451.py
 svija/migrations/0103_auto_20210623_1545.py
+svija/migrations/0104_auto_20210624_1720.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
@@ -150,7 +151,6 @@ svija/templates/svija/debug_token.html
 svija/templates/svija/detail.html
 svija/templates/svija/index.html
 svija/templates/svija/lab.html
-svija/templates/svija/realisations.svg
 svija/templates/svija/results.html
 svija/templates/svija/svija.html
 svija/templates/svija/svija_token.html
