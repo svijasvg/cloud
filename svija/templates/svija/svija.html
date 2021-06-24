@@ -20,11 +20,11 @@
 page_loaded = false;
 
 {{ system_js }}
-{% include "svija/javascript/rem.js" %}
-{% include "svija/javascript/cookies.js" %}
-{% include "svija/javascript/choose_language.js" %}
-{% include "svija/javascript/on_resize.js" %}
-{% include "svija/javascript/tap_highlight.js" %}
+{% include "svija/js/rem.js" %}
+{% include "svija/js/cookies.js" %}
+{% include "svija/js/choose_language.js" %}
+{% include "svija/js/on_resize.js" %}
+{% include "svija/js/tap_highlight.js" %}
 {{ js }}
 
   </script>
@@ -42,13 +42,13 @@ if (tracking_on)
 
 <style>
 
-{% include "svija/stylesheets/stylesheet.css" %}
+{% include "svija/css/svija.css" %}
 {{ font_css }}
 {{ css }}
 
 </style></head><body><script>
 
-{% include "svija/javascript/initial_scroll.js" %}
+{% include "svija/js/initial_scroll.js" %}
 
 </script><div id=accessibility>{{ accessible }}</div>
 
