@@ -311,8 +311,8 @@ class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
     fields = ('type', 'active', 'order', 'name', 'content',)
-    verbose_name = "user script"
-    verbose_name_plural = "user scripts"
+    verbose_name = "script"
+    verbose_name_plural = "additional scripts"
     classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
