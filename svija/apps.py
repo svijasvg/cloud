@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class SvgPagesConfig(AppConfig):
     name = 'svija'
-    verbose_name = 'Svija 2.2.3'
+    verbose_name = 'Svija'
