@@ -395,4 +395,5 @@ class PageModules(models.Model):
         verbose_name_plural = "modules"
         ordering = ["zindex"]
 
+
 #———————————————————————————————————————— fin
