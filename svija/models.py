@@ -31,7 +31,7 @@ class Forwards(models.Model):
 #———————————————————————————————————————— fonts · no dependencies
 
 class Font(models.Model): 
-    css    = models.CharField(max_length=100, default='', verbose_name='CSS reference')
+    css    = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='WOFF filename', blank=True)
@@ -193,15 +193,16 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-
     active = models.BooleanField(default=True, verbose_name='active',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
+    notes = RichTextField(default='')
+
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
+
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
     horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)

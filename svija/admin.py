@@ -1,6 +1,6 @@
 #———————————————————————————————————————— instructional notes
 
-descSettings     = "Basic settings that affec the entire website."
+descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
 descScreens      = "You can define the screens you want to support for your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen combination</b>."
@@ -237,7 +237,8 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
+       ('Notes', {'fields': ['notes', ], 'classes': ['collapse'],}), 
        ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
@@ -296,7 +297,7 @@ class SvgInline(admin.TabularInline):
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
-    verbose_name_plural = 'svg files · fichiers svg'
+    verbose_name_plural = 'Illustrator svg files'
 
 from .models import Page
 class OptionalScriptInline(admin.TabularInline):
