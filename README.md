@@ -5,7 +5,7 @@
 **Svija: web sites with SVG instead of HTML**
 ---------------------------------------------
 
-Version 2.2.3
+Version 2.2.4
 
 A set of tools for building web sites using Adobe Illustrator.
 Includes a CMS for managing pages and menus.
