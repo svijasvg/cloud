@@ -1,6 +1,6 @@
 #———————————————————————————————————————— instructional notes
 
-descSettings     = "Basic settings that affec the entire website."
+descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
 descScreens      = "You can define the screens you want to support for your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen combination</b>."
@@ -108,9 +108,9 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
-        ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
+        ('email parameters',   {'fields': ['email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_status','form_send',], 'classes': ['collapse'],}),
+        ('status messages', {'fields': ['form_sending', 'form_alert_fail','form_rcvd','form_alert_rcvd',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
 
@@ -237,7 +237,8 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename',),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
+       ('Notes', {'fields': ['notes', ], 'classes': ['collapse'],}), 
        ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
@@ -296,7 +297,7 @@ class SvgInline(admin.TabularInline):
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
-    verbose_name_plural = 'svg files · fichiers svg'
+    verbose_name_plural = 'Illustrator svg files'
 
 from .models import Page
 class OptionalScriptInline(admin.TabularInline):

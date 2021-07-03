@@ -1,6 +1,7 @@
 /*———————————————————————————————————————— global css */
 
-html,body{ margin: 0px; }
+html,body{ margin: 0px;
+           padding: env(safe-area-inset); /* https://stackoverflow.com/a/50475590/72958 */ }
 
 body{ position:absolute; /* necessary for module svg's with absolute positioning */
       background-color:#dbdbdb; }

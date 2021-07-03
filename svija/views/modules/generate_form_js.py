@@ -13,14 +13,20 @@ def generate_form_js(language):
 
     form_js = '\n//———————————————————————————————————————— mail form\n\n'
 
-    form_js += 'var name_init = "'      + language.form_name       + '";\n'
-    form_js += 'var address_init = "'   + language.form_email      + '";\n'
-    form_js += 'var status_init = "'    + language.form_status     + '";\n'
-    form_js += 'var send_init = "'      + language.form_send       + '";\n'
-    form_js += 'var mess_sending = "'   + language.form_sending    + '";\n'
-    form_js += 'var mess_received = "'  + language.form_rcvd       + '";\n'
-    form_js += 'var alert_received = "' + language.form_alert_rcvd + '";\n'
-    form_js += 'var alert_failed = "'   + language.form_alert_fail  + '";\n'
+    form_js += 'var form_dest = "'       + language.email           + '";\n'
+    form_js += 'var form_subject = "'    + language.subject         + '";\n'
+    form_js += 'var form_fromlable = "'  + language.mail_frm        + '";\n'
+    
+    form_js += 'var name_init = "'       + language.form_name       + '";\n'
+    form_js += 'var business_init = "'   + language.form_business   + '";\n'
+    form_js += 'var address_init = "'    + language.form_email      + '";\n'
+    form_js += 'var message_init = "'    + language.form_status     + '";\n'
+    form_js += 'var send_init = "'       + language.form_send       + '";\n'
+
+    form_js += 'var status_sending = "'  + language.form_sending    + '";\n'
+    form_js += 'var status_failed = "'   + language.form_alert_fail + '";\n'
+    form_js += 'var status_received = "' + language.form_rcvd       + '";\n'
+    form_js += 'var alert_received = "'  + language.form_alert_rcvd + '";\n'
 
 #var address_failed = 'cxoxnxtxaxcxtx@xoxzxaxkxex.xcxom';
 

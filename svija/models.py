@@ -31,7 +31,7 @@ class Forwards(models.Model):
 #———————————————————————————————————————— fonts · no dependencies
 
 class Font(models.Model): 
-    css    = models.CharField(max_length=100, default='', verbose_name='CSS reference')
+    css    = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='WOFF filename', blank=True)
@@ -88,21 +88,24 @@ class Language(models.Model):
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
+
+    # 3 deprecated fields
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
     default  = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
-    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='address label in body',blank=True,)
 
-    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name label',)
-    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email label',)
-    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button label',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='form instructions',)
+    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
+    form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)
+    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
+    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
-    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='message while sending',)
-    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='message after sent',)
-    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='message sent alert',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='message failed alert',)
+    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed',)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent',)
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent (alert)',)
 
     comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
 
@@ -193,15 +196,16 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-
     active = models.BooleanField(default=True, verbose_name='active',)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
+    notes = RichTextField(default='')
+
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
+
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
     horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
@@ -390,5 +394,6 @@ class PageModules(models.Model):
         verbose_name = "module"
         verbose_name_plural = "modules"
         ordering = ["zindex"]
+
 
 #———————————————————————————————————————— fin

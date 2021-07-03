@@ -14,6 +14,9 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     system_js = "var svija_version='" + version + "';\n"
 
     # language information
+    system_js += 'var page_key = "' + str(page.pk) +'";\n'
+
+    # language information
     system_js += 'var language_code = "' + language.code +'";\n'
 
     # responsive information
