@@ -108,9 +108,9 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('email parameters',   {'fields': ['email', 'bcc', 'default', 'no_email', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('contact form labels', {'fields': ['form_name', 'form_email','form_send','form_status',], 'classes': ['collapse'],}),
-        ('contact form contents', {'fields': ['form_sending', 'form_rcvd','form_alert_rcvd','form_alert_fail',], 'classes': ['collapse'],}),
+        ('email parameters',   {'fields': ['email', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_status','form_send',], 'classes': ['collapse'],}),
+        ('status messages', {'fields': ['form_sending', 'form_alert_fail','form_rcvd','form_alert_rcvd',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
 
