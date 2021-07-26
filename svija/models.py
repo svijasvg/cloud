@@ -288,8 +288,8 @@ class PrefixModules(models.Model):
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "required by combination code"
-        verbose_name_plural = "required by combination code"
+        verbose_name = "The following module is required by a combination code"
+        verbose_name_plural = "The following modules are required by a combination code"
         ordering = ["zindex"]
 
 #———————————————————————————————————————— site settings · combination code & robots
@@ -396,8 +396,8 @@ class PageModules(models.Model):
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "required by a page"
-        verbose_name_plural = "required by a page"
+        verbose_name = "The following module is required by a page"
+        verbose_name_plural = "The following modules are required by a page"
         ordering = ["zindex"]
 
 
