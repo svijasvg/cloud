@@ -191,7 +191,7 @@ class OptionalScriptAdmin(admin.ModelAdmin):
 
 admin.site.register(OptionalScript, OptionalScriptAdmin)
 
-#———————————————————————————————————————— responsive · no dependencies
+#———————————————————————————————————————— screen size · no dependencies
 
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
