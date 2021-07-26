@@ -241,7 +241,7 @@ class ModuleScripts(models.Model):
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen',)
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
