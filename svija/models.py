@@ -207,7 +207,7 @@ class Module(models.Model):
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    notes = RichTextField(default='')
+    notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 

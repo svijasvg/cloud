@@ -238,7 +238,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
        ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
-       ('Notes', {'fields': ['notes', ], 'classes': ['collapse'],}), 
+       ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
        ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
