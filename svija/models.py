@@ -154,7 +154,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "robots.txt"
-        verbose_name_plural = "4.1· Robots.txt"
+        verbose_name_plural = "4.1 · Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
