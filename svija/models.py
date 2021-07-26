@@ -288,8 +288,8 @@ class PrefixModules(models.Model):
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "module"
-        verbose_name_plural = "modules"
+        verbose_name = "required by combination code"
+        verbose_name_plural = "required by combination code"
         ordering = ["zindex"]
 
 #———————————————————————————————————————— site settings · combination code & robots
@@ -389,15 +389,15 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    page   = models.ForeignKey(Page,   on_delete=models.PROTECT)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "module"
-        verbose_name_plural = "modules"
+        verbose_name = "required by a page"
+        verbose_name_plural = "required by a page"
         ordering = ["zindex"]
 
 
