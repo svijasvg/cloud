@@ -1,5 +1,7 @@
 #———————————————————————————————————————— models.py
 
+# CHANGING MODEL NAMES IMPLIES CHANGING STATIC/ADMIN_EXTRA.CSS
+
 # on_delete
 #https://stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
