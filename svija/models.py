@@ -16,7 +16,7 @@ from model_utils import Choices
 
 #———————————————————————————————————————— types of scripts
 
-script_types = ('head JS', 'CSS', 'HTML', 'form', 'body JS',)
+script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 #———————————————————————————————————————— redirects · no dependencies
 
@@ -107,7 +107,7 @@ class Language(models.Model):
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='sending failed',)
     form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent',)
     form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent (alert)',)
 

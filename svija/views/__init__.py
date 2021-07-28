@@ -20,6 +20,9 @@ from .PageView       import *
 #   path('c', views.ClearCacheView), depends on PageView
 from .ClearCacheView import *
 
+#   path('csync', views.ClearCacheSyncView),
+from .ClearCacheSyncView import *
+
 #   path('<slug:lng>/send', views.SendView), depends on PageView
 from .SendView       import *
 
