@@ -125,6 +125,13 @@ svija/migrations/0105_auto_20210703_0658.py
 svija/migrations/0106_module_notes.py
 svija/migrations/0107_language_form_business.py
 svija/migrations/0108_auto_20210703_1359.py
+svija/migrations/0109_auto_20210726_1105.py
+svija/migrations/0110_auto_20210726_1116.py
+svija/migrations/0111_auto_20210726_1117.py
+svija/migrations/0112_auto_20210726_1312.py
+svija/migrations/0113_auto_20210726_1324.py
+svija/migrations/0114_auto_20210726_1326.py
+svija/migrations/0115_auto_20210729_1404.py
 svija/migrations/__init__.py
 svija/modules/.ClearCacheView.py.un~
 svija/modules/__pycache__/make_snippet.cpython-38.pyc
@@ -173,6 +180,7 @@ svija/templates/svija/js/initial_scroll.js
 svija/templates/svija/js/on_resize.js
 svija/templates/svija/js/rem.js
 svija/templates/svija/js/tap_highlight.js
+svija/views/ClearCacheSyncView.py
 svija/views/ClearCacheView.py
 svija/views/Error404.py
 svija/views/HomePageView.py
