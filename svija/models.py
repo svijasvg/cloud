@@ -1,9 +1,11 @@
-#———————————————————————————————————————— comments
+#———————————————————————————————————————— models.py
+
+# CHANGING MODEL NAMES IMPLIES CHANGING STATIC/ADMIN_EXTRA.CSS
 
 # on_delete
 #https://stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
-#———————————————————————————————————————— svg_page.models
+#———————————————————————————————————————— imports
 
 from django.db import models
 import datetime
@@ -12,7 +14,9 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
-script_types = ('head JS', 'CSS', 'HTML', 'form', 'body JS',)
+#———————————————————————————————————————— types of scripts
+
+script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 #———————————————————————————————————————— redirects · no dependencies
 
@@ -25,7 +29,7 @@ class Forwards(models.Model):
     def __str__(self):
         return self.from_url
     class Meta:
-        verbose_name = "Redirects"
+        verbose_name = "redirect"
         verbose_name_plural = "4.2 · Redirects"
 
 #———————————————————————————————————————— fonts · no dependencies
@@ -41,7 +45,7 @@ class Font(models.Model):
     def __str__(self):
         return self.css
     class Meta:
-        verbose_name = "Font"
+        verbose_name = "font"
         verbose_name_plural = "3.1 · Fonts"
         ordering = ['-active', 'family', 'style']
 
@@ -73,7 +77,7 @@ class Notes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "notes"
+        verbose_name = "note"
         verbose_name_plural = "4.4 · My Notes"
 
 #———————————————————————————————————————— language · no dependencies
@@ -103,7 +107,7 @@ class Language(models.Model):
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='sending failed',)
     form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent',)
     form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent (alert)',)
 
@@ -115,23 +119,24 @@ class Language(models.Model):
         ordering = ['display_order']
         verbose_name_plural = "1.2 · Languages"
 
-#———————————————————————————————————————— responsive · no dependencies
+#———————————————————————————————————————— screen size · no dependencies
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='source directory',)
+    source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
     meta_tag = models.CharField(max_length=200, default='', blank=True)
     description = models.CharField(max_length=200, default='', blank=True)
     canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
 
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='pixel width of AI document',blank=True,)
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='pixel width in Illustrator',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
+    # not currently implemented, so hidden
     img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
@@ -139,8 +144,8 @@ class Responsive(models.Model):
         return self.name
     class Meta:
         ordering = ['display_order']
-        verbose_name = "Screen"
-        verbose_name_plural = "1.3 · Screens"
+        verbose_name = "screen size"
+        verbose_name_plural = "1.3 · Screen Sizes"
 
 #———————————————————————————————————————— robots · no dependencies
 
@@ -150,8 +155,8 @@ class Robots(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "Robots.txt"
-        verbose_name_plural = "4.1· Robots.txt"
+        verbose_name = "robots.txt"
+        verbose_name_plural = "4.1 · Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
@@ -185,10 +190,10 @@ class OptionalScript(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
-        verbose_name = "Optional Scripts"
+        verbose_name = "optional scripts"
         verbose_name_plural = "3.3 · Optional Scripts"
 
-#———————————————————————————————————————— module · no dependencies
+#———————————————————————————————————————— modules · no dependencies
 
 positions = ('absolute', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
@@ -202,7 +207,7 @@ class Module(models.Model):
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
-    notes = RichTextField(default='')
+    notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
@@ -233,17 +238,17 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— default scripts · dependent on responsive
+#———————————————————————————————————————— default scripts · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen',)
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "Default Scripts"
+        verbose_name = "default scripts"
         verbose_name_plural = "3.2 · Default Scripts"
 
 class DefaultScriptTypes(models.Model):
@@ -259,19 +264,19 @@ class DefaultScriptTypes(models.Model):
         verbose_name = "included script"
         ordering = ["order"]
 
-#———————————————————————————————————————— prefix · uses responsive & language
+#———————————————————————————————————————— combination codes · screen size & language
 
 class Prefix(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     path = models.CharField(max_length=2, default='', verbose_name='code',)
     default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen',)
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=0, on_delete=models.PROTECT, )
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
     class Meta:
-        verbose_name = "Combination Code"
+        verbose_name = "combination"
         verbose_name_plural = "1.4 · Combination Codes"
         ordering = ['display_order']
 
@@ -283,11 +288,11 @@ class PrefixModules(models.Model):
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "module"
-        verbose_name_plural = "modules"
+        verbose_name = "The following module is required by a combination code"
+        verbose_name_plural = "The following modules are required by a combination code"
         ordering = ["zindex"]
 
-#———————————————————————————————————————— site settings · uses prefix & robots
+#———————————————————————————————————————— site settings · combination code & robots
 
 class Settings(models.Model):
 
@@ -313,7 +318,7 @@ class Settings(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        verbose_name = "URL & Settings"
+        verbose_name = "website"
         verbose_name_plural = "1.1 · URL & Settings"
 
 #———————————————————————————————————————— page · uses template & prefix
@@ -384,15 +389,15 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
+    page   = models.ForeignKey(Page,   on_delete=models.PROTECT)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "module"
-        verbose_name_plural = "modules"
+        verbose_name = "The following module is required by a page"
+        verbose_name_plural = "The following modules are required by a page"
         ordering = ["zindex"]
 
 

@@ -1,6 +1,6 @@
 #———————————————————————————————————————— __init__.py
 
-version = '2.2.3'
+version = '2.2.4'
 import os, sys
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
@@ -19,6 +19,9 @@ from .PageView       import *
 
 #   path('c', views.ClearCacheView), depends on PageView
 from .ClearCacheView import *
+
+#   path('csync', views.ClearCacheSyncView),
+from .ClearCacheSyncView import *
 
 #   path('<slug:lng>/send', views.SendView), depends on PageView
 from .SendView       import *

@@ -2,8 +2,8 @@
 
 descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
-descScreens      = "You can define the screens you want to support for your website."
-descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen combination</b>."
+descScreens      = "You can define the screen sizes you want to support for your website."
+descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 descPages        = "All the settings that are specific to a single page."
 descModules      = "Modules are reusable content that can be included via <b><a href='/admin/svija/prefix/'>Combination Codes</a></b> or <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must either provide a <b>WOFF filename</b> or check \"<b>Google font</b>\"."
@@ -191,7 +191,7 @@ class OptionalScriptAdmin(admin.ModelAdmin):
 
 admin.site.register(OptionalScript, OptionalScriptAdmin)
 
-#———————————————————————————————————————— responsive · no dependencies
+#———————————————————————————————————————— screen size · no dependencies
 
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
@@ -238,7 +238,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
        ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
-       ('Notes', {'fields': ['notes', ], 'classes': ['collapse'],}), 
+       ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
        ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
     ]   
 
