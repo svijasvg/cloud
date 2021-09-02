@@ -51,11 +51,11 @@ urlpatterns = [
 #---------------------------------------- fonts, images & scripts
 # source_dir = responsive.source_dir
 
-    re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/admin"}),
-    re_path(r'^files/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/files"}),
-    re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
-    re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
-    re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/scripts"}),
+    re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/-Svija/admin customization"}),
+    re_path(r'^files/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/-Svija/shared files"}),
+    re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/-Svija/fonts/woff"}),
+    re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/-Svija/icons"}),
+    re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/-Svija/site scripts"}),
 
 ]
 
