@@ -332,8 +332,8 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':descPages, }),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('basic setup',        {'fields': ['display_order', 'visitable', 'prefix','url','title',],'description':descPages, }),
+        ('details',            {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
         ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
         ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'],}),
