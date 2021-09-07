@@ -201,7 +201,7 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    active = models.BooleanField(default=True, verbose_name='published',)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
@@ -327,7 +327,7 @@ from ckeditor.fields import RichTextField
 
 class Page(models.Model): 
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    visitable = models.BooleanField(default=True, verbose_name='visitable',)
+    visitable = models.BooleanField(default=True, verbose_name='published',)
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
