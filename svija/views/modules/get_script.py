@@ -18,7 +18,8 @@ def get_script(kind, name, content):
         source_path = os.path.abspath(os.path.dirname(__name__)) + '/sync/scripts/' + content
         path = pathlib.Path(source_path)
         if not path.exists():
-            content = 'file not found: ' + content
+            name = 'file not found: ' + content
+            content = ''
         else:
             name = 'file: ' + name
             with open(source_path, 'r', encoding='utf-8') as f:
