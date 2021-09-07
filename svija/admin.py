@@ -314,7 +314,7 @@ class PageScriptsInline(admin.TabularInline):
     fields = ('type', 'active', 'order', 'name', 'content',)
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
-    classes = ['collapse']
+#   classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
