@@ -46,7 +46,7 @@ class Font(models.Model):
         return self.css
     class Meta:
         verbose_name = "font"
-        verbose_name_plural = "3.1 · Fonts"
+        verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'family', 'style']
 
 #———————————————————————————————————————— help · no dependencies
@@ -191,7 +191,7 @@ class OptionalScript(models.Model):
     class Meta:
         ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
         verbose_name = "optional scripts"
-        verbose_name_plural = "3.3 · Optional Scripts"
+        verbose_name_plural = "3.2 · Optional Scripts"
 
 #———————————————————————————————————————— modules · no dependencies
 
@@ -249,7 +249,7 @@ class DefaultScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "default scripts"
-        verbose_name_plural = "3.2 · Default Scripts"
+        verbose_name_plural = "3.1 · Default Scripts"
 
 class DefaultScriptTypes(models.Model):
     scripts = models.ForeignKey(DefaultScripts, on_delete=models.PROTECT)
