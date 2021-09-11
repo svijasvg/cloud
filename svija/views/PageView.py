@@ -14,7 +14,8 @@ from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
 
-#———————————————————————————————————————— class definition
+
+#———————————————————————————————————————— class page_obj():
 
 class page_obj():
     def __init__(self, head_js, css, body_js, svgs, html, form):
@@ -27,7 +28,7 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
-#———————————————————————————————————————— more import
+#———————————————————————————————————————— import
 
 #mport importlib
 
@@ -57,14 +58,14 @@ from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 from django.http import Http404
 
-#———————————————————————————————————————— *** view definition
+
+#  ▼  ▲
+
+#———————————————————————————————————————— ▼ view definition
 
 #cache_per_user(ttl=60*60*24, cache_post=False)
 @cache_per_user(60*60*24, False)
 def PageView(request, request_prefix, request_slug):
-
-
-#———————————————————————————————————————— view construction
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
@@ -82,9 +83,9 @@ def PageView(request, request_prefix, request_slug):
 
     language        = prefix.language
     use_p3          = settings.p3_color
-    source_dir      = 'sync/' + responsive.source_dir
     template        = 'svija/' + page.template.filename
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
+    content_blocks = []
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -105,22 +106,29 @@ def PageView(request, request_prefix, request_slug):
 
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
-    #———————————————————————————————————————— content blocks
-
-    content_blocks = []
+    #———————————————————————————————————————— default & optional scripts
 
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
-    svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)
+    #———————————————————————————————————————— page content
+
+    svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
+
+    #———————————————————————————————————————— page scripts & modules
+
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    page_modules = get_modules('page modules', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    page_modules = get_modules('page modules', page.pagemodules_set.all(), page_width, use_p3)
     content_blocks.extend(page_modules)
 
+    #———————————————————————————————————————— module content
+
     if not page.suppress_modules:
-        prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
+        prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), page_width, use_p3)
         content_blocks.extend(prefix_modules)
+
+    #———————————————————————————————————————— combine content blocks
 
     content_types = combine_content(content_blocks)
 
