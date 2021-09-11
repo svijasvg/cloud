@@ -15,13 +15,12 @@ def get_single_svg(ai_path, page_width, use_p3):
     # can be empty if module without SVG
     if ai_path.filename != '':
 
-        # everything after last /: home.ai
+        # everything after last / in full .ai path
         ai_name = ai_path.filename.rpartition("/")[2]
-
-        svg_name = ai_name[:-3] + '_' + str(page_width) + '.svg'
+        raw_name = ai_name[:-3]
+        svg_name = raw_name + '_' + str(page_width) + '.svg'
 
         svija_path = '/sync/Svija/SVG Files/'
-
         abs_path = os.path.abspath(os.path.dirname(__name__))
 
         #—————— check if svg exists
@@ -36,25 +35,15 @@ def get_single_svg(ai_path, page_width, use_p3):
         else:
             is_module = hasattr(ai_path, 'css_id')
 
-            temp_id = ai_path.filename
+            temp_id = raw_name
             if is_module:
                 if ai_path.css_id != '':
                     temp_id = ai_path.css_id
 
+
             svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
-
-
-
             svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
-            return svg, css
 
-
-
-
-
-
-
- 
             if svg_width > page_width:
                 page_ratio = svg_height/svg_width
                 svg_width = page_width
