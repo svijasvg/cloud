@@ -18,11 +18,7 @@ def LinksView(request, request_prefix, placed_file):
         settings = get_object_or_404(Settings,active=True)
         prefix = settings.prefix
 
-    responsive = prefix.responsive
-    source_dir = 'sync/' + responsive.source_dir
-    response = SITE_ROOT + source_dir +'/links/'+ placed_file
-
-    source_dir = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir
+    source_dir = os.path.abspath(os.path.dirname(__name__)) + '/sync'
     source_dir += '/links/' + placed_file
     bits = placed_file.split('.')
     type = bits[-1].lower()

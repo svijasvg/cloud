@@ -15,26 +15,26 @@ SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 urlpatterns = [ 
-#---------------------------------------- exact addresses
+#———————————————————————————————————————— exact addresses
 
     path('c', views.ClearCacheView),
     path('csync', views.ClearCacheSyncView),
 
-#---------------------------------------- email sending
+#———————————————————————————————————————— email sending
 
     path('<slug:lng>/mail', views.MailView),
     path('<slug:lng>/send', views.SendView),
 
-#---------------------------------------- home pages
+#———————————————————————————————————————— home pages
 
     re_path(r'^(?P<request_prefix>)$', views.HomePageView),          # root url
     re_path(r'^(?P<request_prefix>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
 
-#---------------------------------------- regular pages
+#———————————————————————————————————————— regular pages
 
     path('<slug:request_prefix>/<slug:request_slug>', views.PageView),  # prefix/slug
 
-#---------------------------------------- placed images (in Links folder)
+#———————————————————————————————————————— placed images (in Links folder)
 # xlink:href="links/image.jpg", in page at /fr/contact
 
     re_path(r'^(?P<request_prefix>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
@@ -42,13 +42,13 @@ urlpatterns = [
     # special case: home page, has no /en/
     re_path(r'^links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
 
-#---------------------------------------- txt views
+#———————————————————————————————————————— txt views
 
     path('lab', views.LabView),
     path('robots.txt', views.RobotsView),
     path('sitemap.txt', views.SitemapView),
 
-#---------------------------------------- fonts, images & scripts
+#———————————————————————————————————————— fonts, images & scripts
 # source_dir = responsive.source_dir
 
     re_path(r'^admn/(?P<path>.*)$(?i)', static.serve, {'document_root': SITE_ROOT + "/sync/Svija/Admin Customization"}),
@@ -59,6 +59,6 @@ urlpatterns = [
 
 ]
 
-#---------------------------------------- fin
+#———————————————————————————————————————— fin
 
 
