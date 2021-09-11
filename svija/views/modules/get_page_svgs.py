@@ -10,6 +10,7 @@ def get_page_svgs(page, page_width, use_p3):
 
     css = svgs = ''
 
+    # also edit modules/generate_system_js.py
     for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
         if this_svg.active:
             s, c = get_single_svg(this_svg, page_width, use_p3)

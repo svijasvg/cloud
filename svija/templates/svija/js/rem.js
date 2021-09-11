@@ -22,7 +22,14 @@
 //  Google, Edge etc. don't have any issues because pinch-to-zoom has
 //  no effect at all on the DOM
 
-// firefox does not support pinch
+//———————————————————————————————————————— main program
+
+// visible_width is supplied by server (width of "screen)
+
+var illustrator_pixel = window.innerWidth / visible_width;
+
+//————————————————————————————————————————  firefox does not support pinch
+
 var firefox = navigator.userAgent.indexOf('Firefox');
 
 var pure = window.outerWidth/window.innerWidth*100;
@@ -32,10 +39,9 @@ var current_zoom = Math.round(pure);
 var zoom_levels = [50, 67, 75, 80, 85, 90, 100, 110, 125, 150, 170, 200, 240, 400, 500];
 var pinched = zoom_levels.indexOf(current_zoom) < 0 && firefox;
 
-//———————————————————————————————————————— main program
-
-var illustrator_pixel = window.innerWidth / visible_width;
 if (pinched) illustrator_pixel = illustrator_pixel*current_zoom/100;
+
+//———————————————————————————————————————— set the rem unit
 
 document.documentElement.style.fontSize = (10 * illustrator_pixel) + 'px';
 
