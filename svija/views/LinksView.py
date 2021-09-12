@@ -1,5 +1,4 @@
 #———————————————————————————————————————— LinksView.py
-# "links/accueil-bg-15097511.jpg"
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -19,7 +18,7 @@ def LinksView(request, request_prefix, placed_file):
         prefix = settings.prefix
 
     source_dir = os.path.abspath(os.path.dirname(__name__)) + '/sync'
-    source_dir += '/links/' + placed_file
+    source_dir += '/Links/' + placed_file
     bits = placed_file.split('.')
     type = bits[-1].lower()
     if type != 'png' and type != 'gif':

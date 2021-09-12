@@ -206,7 +206,7 @@ class Module(models.Model):
     sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='SVG file (optional)',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
@@ -384,8 +384,8 @@ class Svg(models.Model):
     def __str__(self):
         return self.filename
     class Meta:
-        verbose_name = "SVG file"
-        verbose_name_plural = "SVG files"
+        verbose_name = "Illustrator file"
+        verbose_name_plural = "Illustrator files"
         ordering = ["zindex"]
 
 class PageModules(models.Model):

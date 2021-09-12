@@ -6,6 +6,14 @@
 
 # Svija: web sites with SVG instead of HTML
 
+---
+
+Code source for mobile home page has missing SVG
+
+the word bugger is in the code, but from where?
+
+---
+
 Version 2.2.5
 
 A set of tools for building web sites using Adobe Illustrator.
