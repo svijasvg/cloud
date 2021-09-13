@@ -197,12 +197,12 @@ from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'display_order', 'canonical', 'source_dir', 'description')
+    list_display = ('name', 'width', 'description', 'display_order', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description'],'description':descScreens,}),
+        ('details',{'fields': ['name', 'code', 'limit', 'canonical', 'meta_tag', 'description', 'display_order'],'description':descScreens,}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
 #       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   

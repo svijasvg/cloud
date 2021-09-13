@@ -119,19 +119,20 @@ class Language(models.Model):
         ordering = ['display_order']
         verbose_name_plural = "1.2 · Languages"
 
-#———————————————————————————————————————— screen size · no dependencies
+#———————————————————————————————————————— screen size was responsive · no dependencies
 
 class Responsive(models.Model):
     name = models.CharField(max_length=200, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
-    source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
-    meta_tag = models.CharField(max_length=200, default='', blank=True)
-    description = models.CharField(max_length=200, default='', blank=True)
     canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
 
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='pixel width in Illustrator',blank=True,)
+    meta_tag = models.CharField(max_length=200, default='', blank=True)
+    description = models.CharField(max_length=200, default='', blank=True)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='AI pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
@@ -139,6 +140,9 @@ class Responsive(models.Model):
     # not currently implemented, so hidden
     img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
+
+    # deprecated
+    source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
 
     def __str__(self):
         return self.name

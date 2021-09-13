@@ -1,6 +1,18 @@
 #————————————————————————————————————————  redirect if it's a default page (path not shown)
-
-from django.http import HttpResponsePermanentRedirect
+#
+#   called by views/PageView to redirect urls that
+#   are invisible:
+#
+#   /en      » /
+#   /en/home » /
+#   /fr/home » /fr
+#
+#   if this returns '', nothing is done
+#   if this returns an address, the correct http redirect
+#   is issued by PageView and the page loading process
+#   starts over
+#
+#———————————————————————————————————————— redirect_if_home(request_prefix, request_path, settings, prefix_default):
 
 def redirect_if_home(request_prefix, request_path, settings, prefix_default):
 

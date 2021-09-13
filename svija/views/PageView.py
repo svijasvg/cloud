@@ -14,7 +14,6 @@ from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
 
-
 #———————————————————————————————————————— class page_obj():
 
 class page_obj():
@@ -56,6 +55,7 @@ from modules.get_page_svgs import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
+from modules.page_version import *
 from django.http import Http404
 
 
@@ -106,6 +106,13 @@ def PageView(request, request_prefix, request_slug):
 
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
 
+    #———————————————————————————————————————— new responsive
+    #
+    #   should return a screens code
+
+    responsive_return = page_version(request.COOKIES, request.path, settings, prefix.default)
+    system_js = responsive_return + '\n\n' + system_js
+
     #———————————————————————————————————————— default & optional scripts
 
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
@@ -155,7 +162,7 @@ def PageView(request, request_prefix, request_slug):
 
     context.update(content_types)
 
-    #————————————————————————————————————————  return render
+    #———————————————————————————————————————— ▲ return render
 
     return render(request, template, context)
 
