@@ -297,7 +297,7 @@ class SvgInline(admin.TabularInline):
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
-    verbose_name_plural = 'Illustrator svg files'
+    verbose_name_plural = 'Illustrator files'
 
 from .models import Page
 class OptionalScriptInline(admin.TabularInline):
