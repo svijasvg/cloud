@@ -27,7 +27,10 @@ urlpatterns = [
 
 #———————————————————————————————————————— email sending
 
+    # used by contact page
     path('<slug:lng>/mail', views.MailView),
+
+    # send test mail to see what happens
     path('<slug:lng>/send', views.SendView),
 
 #———————————————————————————————————————— placed images (in Links folder)

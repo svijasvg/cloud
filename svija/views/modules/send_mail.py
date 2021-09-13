@@ -3,6 +3,8 @@
 
 #———————————————————————————————————————— modules/send_mail.py
 #
+#   called by views.MailView
+#
 #   prints out message on fail, 1 on success
 #   remember to check in "all mail" because mail
 #   sent to myself is archived immediately
@@ -23,8 +25,10 @@ import smtplib
 from smtplib import SMTPException
 from django.core.mail import get_connection, send_mail
 
+#———————————————————————————————————————— errors to browser
+
 import cgitb
-cgitb.enable() # errors to browser
+cgitb.enable() 
 
 #———————————————————————————————————————— function
 
