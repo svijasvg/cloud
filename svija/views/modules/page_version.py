@@ -30,13 +30,23 @@ def page_version(request_cookies, request_path, settings, prefix_default):
     wow = request_cookies.get('wow')
     nua = request_cookies.get('nua')
 
-    ret_val  = 'wiw: ' + wiw + '\n'
-    ret_val += 'wow: ' + wiw + '\n'
-    ret_val += 'nua: ' + nua + '\n'
+    ret_val  = '// wiw: ' + wiw + '\n'
+    ret_val += '// wow: ' + wiw + '\n'
+    ret_val += '// nua: ' + nua + '\n'
+
+#———————————————————————————————————————— code for if cookies weren't set
+
+# insert client-side js that wouldn't otherwise be necessary
 
 #———————————————————————————————————————— get upper limits from screens
 
-#   responsive = Responsive.objects.filter(width > 0).first()
+    screens = Responsive.objects.all()
+
+    default_screen = Responsive.objects.filter(limit=0).first()
+
+    for screen in screens:
+      if 
+      ret_val += '// limit: ' + str(screen.limit) + '\n\n'
 
 #   ret_val += responsive[0]setting.width + '\n'
     # Responsive.objects.filter(name=prefix.responsive.name).first()
