@@ -1,5 +1,7 @@
 #———————————————————————————————————————— views/modules/generate_system_js.py
 
+#———————————————————————————————————————— imports
+
 from svija.models import Prefix, Responsive
 
 #     need current language code
@@ -8,9 +10,10 @@ from svija.models import Prefix, Responsive
 #     
 #     fr = fr['desktop'], fm['mobile']
 
+
 def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive):
 
-    system_js = "//———————————————————————————————————————— view module generate_system_js\n\n"
+    system_js = "//———————————————————————————————————————— system js\n\n"
     
 #———————————————————————————————————————— easy ones
 
@@ -39,27 +42,6 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
         all_resps.append( "'" + resp_name + "':'" + prf.path + "'")
 
     system_js += "var responsives = {" + ', '.join(all_resps) + "};\n"
-
-#———————————————————————————————————————— .ai urls
-
-# this is so the image algorithm can find the correct images.
-# there should not be two different images with the same name
-# it will not be an issue once images are optimized in a single directory
-
-# could start by copying all images to a special directory, with no optimization
-
-# for now, the paths will give a set of clues where an image could be
-# but they will not necessarily be available to the image loader
-# we'll see when the cookie data is available
-
-    svg_list = []
-    all_svgs  = page.svg_set.all()
-
-    for this_svg in all_svgs: #WHERE ACTIVE == TRUE, ORDER BY LOAD_ORDER
-        if this_svg.active:
-            svg_list.append(this_svg.filename)
-
-    system_js += "var ai_files  = [\"" + '",\n"'.join(svg_list) + "\"];\n"
 
 #———————————————————————————————————————— data
 
