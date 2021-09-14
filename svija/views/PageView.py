@@ -86,7 +86,7 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #############################################################
 
-    page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
+    page            = Page.objects.filter(Q(language__code=request_prefix) & Q(screen__code=screen) & Q(url=request_slug) & Q(visitable=True)).first()
     if not page:
 #       return HttpResponse("debugging message.")
         raise Http404
