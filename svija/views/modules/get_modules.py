@@ -17,12 +17,12 @@ def get_modules(label, all_modules, page_width, use_p3):
     head_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
     body_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
 
-    for this_module in (obj.module for obj in all_modules if obj.active==True):
+    for this_module in all_modules:
 
         hj = hc = bj = sv = ht = fm = ''
 
         s, c = get_single_svg(this_module, page_width, use_p3)
-        svgs += s
+        svgs     += s
         head_css += c
 
         sv = s

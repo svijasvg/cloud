@@ -88,6 +88,8 @@ class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    #efault = models.CharField(max_length=20, default='', verbose_name='default page')
+    default  = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
@@ -99,7 +101,6 @@ class Language(models.Model):
 
     # 3 deprecated fields
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
-    default  = models.CharField(max_length=200, default='', verbose_name='sender if email fails verifcation',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
 
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)

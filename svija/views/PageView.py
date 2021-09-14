@@ -92,7 +92,7 @@ def SubPageView(request, request_prefix, request_slug, screen):
         #eturn HttpResponse("page not found: " + request_prefix + ':' + screen + ':' + request_slug)
 
     # SHOULDN'T BE FIRST BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
-    defaultscripts  = DefaultScripts.objects.filter(Q(screen__code=screen) & Q(active=True)).first()
+    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
     template        = 'svija/' + page.template.filename
@@ -104,14 +104,15 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— redirect if / or /en
 
-    redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
+    ################### LANGUAGE NEEDS A DEFAULT PAGE
+    redirect = redirect_if_home(request_prefix, request.path, settings, language.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
     #———————————————————————————————————————— metatags, system js & fonts
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
-        prefix,       responsive,     language, settings.secure,
+                      responsive,     language, settings.secure,
         settings.url, request_prefix, request_slug, )
 
     meta_fonts, font_css = get_fonts()
@@ -140,9 +141,11 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— module content
 
+
     if not page.suppress_modules:
-        prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), page_width, use_p3)
-        content_blocks.extend(prefix_modules)
+        all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True))
+        screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
+        content_blocks.extend(screen_modules)
 
     #———————————————————————————————————————— combine content blocks
 

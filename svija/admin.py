@@ -101,12 +101,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'title', 'email',)
+    list_display = ('name', 'code', 'default', 'title', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],'description':descLanguages, }),
+        ('name, two-letter code', {'fields': [('name', 'code'),('default','display_order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email parameters',   {'fields': ['email', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_status','form_send',], 'classes': ['collapse'],}),
