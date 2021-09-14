@@ -23,10 +23,10 @@
 
   {% block userlinks %}
     {% if site_url %}
-      <a href="{{ site_url }}" target=_blank>{% trans 'View site' %}</a> ·
+      <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ·
     {% endif %}
     <a href=/c>Clear Cache</a> · 
-    <a href=https://docs.svija.love target=_blank>Documentation</a> ·&nbsp;
+    <a href=https://tech.svija.love target=_blank>Documentation</a> ·&nbsp;
     v2.2.5<br>
 
     {% if user.is_active and user.is_staff %}
