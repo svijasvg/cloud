@@ -234,12 +234,12 @@ class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'screen', 'language', 'css_id',  'sort1', 'active',)
+    list_display = ('name', 'screen', 'display_order', 'language', 'css_id',  'sort1', 'active',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active'),('sort1', 'screen'), ('css_id', 'language',), ('filename', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename', ),], 'description':descModules, }),
        ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
        ('PLACEMENT', {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   

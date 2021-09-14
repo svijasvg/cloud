@@ -209,9 +209,11 @@ class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='published',)
+    optional = models.BooleanField(default=False, verbose_name='optional',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
     sort1 = models.CharField(max_length=100, default='', verbose_name='sort label', blank=True,)
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
@@ -224,7 +226,6 @@ class Module(models.Model):
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     # deprecated
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
 
     def __unicode__(self):
