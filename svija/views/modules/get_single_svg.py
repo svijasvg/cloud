@@ -11,11 +11,9 @@ from modules.svg_cleaner import *
 def get_single_svg(ai_path, page_width, use_p3):
 
     css = svg = ''
-    #vg = ai_path
-    #eturn svg, css
 
     # can be empty if module without SVG
-    if ai_path.filename != '':
+    if hasattr(ai_path, 'filename'):
 
         # everything after last / in full .ai path
         ai_name = ai_path.filename.rpartition("/")[2]

@@ -141,10 +141,10 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— module content
 
-    if not page.suppress_modules:
-        all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
-        screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
-        content_blocks.extend(screen_modules)
+#   if not page.suppress_modules:
+#       all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
+#       screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
+#       content_blocks.extend(screen_modules)
 
     #———————————————————————————————————————— combine content blocks
 
