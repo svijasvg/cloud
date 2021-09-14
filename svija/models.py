@@ -268,7 +268,7 @@ class DefaultScriptTypes(models.Model):
         verbose_name = "included script"
         ordering = ["order"]
 
-#———————————————————————————————————————— combination codes · screen size & language
+#———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
 
 class Prefix(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
@@ -332,9 +332,10 @@ from ckeditor.fields import RichTextField
 class Page(models.Model): 
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='published',)
+    screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     # unused or meta
@@ -359,6 +360,9 @@ class Page(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
+    # deprectaed
+    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
+
     def __unicode__(self):
         return self.name
     def __str__(self):
@@ -366,6 +370,9 @@ class Page(models.Model):
     class Meta:
         ordering = ['-visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
         verbose_name_plural = "2.1 · Pages"
+#   def __str__(self):
+#       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
+
 
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)

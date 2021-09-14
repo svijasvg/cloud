@@ -61,14 +61,18 @@ from django.http import Http404
 
 #  ▼  ▲
 
-#———————————————————————————————————————— ▼ main view definition
+#———————————————————————————————————————— main view definition
 
 def PageView(request, request_prefix, request_slug):
 
-  screen = 'mobile'
+  screen = request.COOKIES.get('screen')
+  if (screen == ''):
+    # calculate minimum screen
+    trash = null
   return SubPageView(request, request_prefix, request_slug, screen)
 
-#———————————————————————————————————————— cached view definition
+
+#———————————————————————————————————————— ▼ cached view definition
 
 @cache_per_user(60*60*24, False)
 def SubPageView(request, request_prefix, request_slug, screen):
@@ -79,6 +83,8 @@ def SubPageView(request, request_prefix, request_slug, screen):
     settings        = Settings.objects.filter(active=True).first()
     prefix          = Prefix.objects.filter(path=request_prefix).first()
     responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
+
+    #############################################################
 
     page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
     if not page:
@@ -111,16 +117,9 @@ def SubPageView(request, request_prefix, request_slug, screen):
     meta_fonts, font_css = get_fonts()
 
     screens = Responsive.objects.all()
+
     system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive, screens)
-
-    system_js = '\n//' + screen + '\n\n' + system_js
-
-    #———————————————————————————————————————— new responsive
-    #
-    #   should return a screens code
-
-    #esponsive_return = page_version(request.COOKIES, request.path, settings, prefix.default)
-    #ystem_js = responsive_return + '\n\n' + system_js
+    system_js = '\n// screen=' + screen + '\n\n' + system_js
 
     #———————————————————————————————————————— default & optional scripts
 
