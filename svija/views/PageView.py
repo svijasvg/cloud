@@ -66,9 +66,9 @@ from django.http import Http404
 def PageView(request, request_prefix, request_slug):
 
   screen = request.COOKIES.get('screen')
-  if (screen == ''):
+  if (screen == None): 
     # calculate minimum screen
-    trash = null
+    screen = 'cp'
   return SubPageView(request, request_prefix, request_slug, screen)
 
 
@@ -81,19 +81,19 @@ def SubPageView(request, request_prefix, request_slug, screen):
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
     settings        = Settings.objects.filter(active=True).first()
-    prefix          = Prefix.objects.filter(path=request_prefix).first()
-    responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
+    language        = Language.objects.filter(code=request_prefix).first()
+    responsive      = Responsive.objects.filter(code=screen).first()
 
     #############################################################
 
     page            = Page.objects.filter(Q(language__code=request_prefix) & Q(screen__code=screen) & Q(url=request_slug) & Q(visitable=True)).first()
-    if not page:
-#       return HttpResponse("debugging message.")
-        raise Http404
+    if not page: raise Http404
 
-    defaultscripts  = DefaultScripts.objects.filter(Q(responsive=prefix.responsive.pk) & Q(active=True)).first()
+        #eturn HttpResponse("page not found: " + request_prefix + ':' + screen + ':' + request_slug)
 
-    language        = prefix.language
+    # SHOULDN'T BE FIRST BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
+    defaultscripts  = DefaultScripts.objects.filter(Q(screen__code=screen) & Q(active=True)).first()
+
     use_p3          = settings.p3_color
     template        = 'svija/' + page.template.filename
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
@@ -128,6 +128,7 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— page content
 
+#   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
 
     #———————————————————————————————————————— page scripts & modules

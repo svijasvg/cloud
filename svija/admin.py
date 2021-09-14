@@ -167,7 +167,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': ['name', 'active', 'responsive', ],'description':descDefault, }),
+        ('Scripts Name', {'fields': [('name', 'active',),'responsive',  ],'description':descDefault, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 
