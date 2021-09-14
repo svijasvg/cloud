@@ -197,7 +197,7 @@ from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'width', 'description', 'display_order', )
+    list_display = ('name', 'code', 'width', 'description', 'display_order', )
     save_on_top = True
     save_as = True
 

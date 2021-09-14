@@ -11,7 +11,7 @@ from svija.models import Prefix, Responsive
 #     fr = fr['desktop'], fm['mobile']
 
 
-def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive):
+def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive, screens):
 
     system_js = "//———————————————————————————————————————— system js\n\n"
     
@@ -31,17 +31,11 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
 
 #———————————————————————————————————————— screens
 
-    # all prefixes for this language
-    prefix_list = list(Prefix.objects.filter(language = language.pk))
+    all_screens = []
+    for screen in screens:
+        all_screens.append( "'" + screen.code + "':'" + str(screen.limit) + "'")
 
-    all_resps = []
-    for prf in prefix_list: 
-        resp = prf.responsive
-        resp_name = resp.name
-#       scpt += "'" + resp_name + "':'" + pfix.path + "'"
-        all_resps.append( "'" + resp_name + "':'" + prf.path + "'")
-
-    system_js += "var responsives = {" + ', '.join(all_resps) + "};\n"
+    system_js += "var screens = {" + ', '.join(all_screens) + "};\n" 
 
 #———————————————————————————————————————— data
 

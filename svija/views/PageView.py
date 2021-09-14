@@ -55,17 +55,23 @@ from modules.get_page_svgs import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
-from modules.page_version import *
+#rom modules.page_version import *
 from django.http import Http404
 
 
 #  ▼  ▲
 
-#———————————————————————————————————————— ▼ view definition
+#———————————————————————————————————————— ▼ main view definition
 
-#cache_per_user(ttl=60*60*24, cache_post=False)
-@cache_per_user(60*60*24, False)
 def PageView(request, request_prefix, request_slug):
+
+  screen = 'mobile'
+  return SubPageView(request, request_prefix, request_slug, screen)
+
+#———————————————————————————————————————— cached view definition
+
+@cache_per_user(60*60*24, False)
+def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
@@ -104,14 +110,17 @@ def PageView(request, request_prefix, request_slug):
 
     meta_fonts, font_css = get_fonts()
 
-    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
+    screens = Responsive.objects.all()
+    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive, screens)
+
+    system_js = '\n//' + screen + '\n\n' + system_js
 
     #———————————————————————————————————————— new responsive
     #
     #   should return a screens code
 
-    responsive_return = page_version(request.COOKIES, request.path, settings, prefix.default)
-    system_js = responsive_return + '\n\n' + system_js
+    #esponsive_return = page_version(request.COOKIES, request.path, settings, prefix.default)
+    #ystem_js = responsive_return + '\n\n' + system_js
 
     #———————————————————————————————————————— default & optional scripts
 
