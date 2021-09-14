@@ -1,5 +1,7 @@
 #———————————————————————————————————————— models.py
 
+#———————————————————————————————————————— notes
+
 # CHANGING MODEL NAMES IMPLIES CHANGING STATIC/ADMIN_EXTRA.CSS
 
 # on_delete
@@ -206,9 +208,9 @@ class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='published',)
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+    sort1 = models.CharField(max_length=100, default='', verbose_name='sort label', blank=True,)
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
@@ -220,12 +222,16 @@ class Module(models.Model):
     horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
+    # deprecated
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+
     def __unicode__(self):
         return self.name
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'display_order', 'name', 'sort1', 'sort2',]
+        ordering = ['-active', 'sort1', 'name', 'screen',]
         verbose_name_plural = "2.2 · Modules"
 
 class ModuleScripts(models.Model):
@@ -353,11 +359,11 @@ class Page(models.Model):
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
     module = models.ManyToManyField(Module, through='PageModules')
 
-    override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
-    width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
-    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
-    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
-    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
+    override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
+    width = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
+    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
+    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
+    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprectaed
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')

@@ -6,8 +6,6 @@ descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
 descScreens      = "You can define the screen sizes you want to support for your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
-descPages        = "All the settings that are specific to a single page."
-descModules      = "Modules are reusable content that can be included via <b><a href='/admin/svija/prefix/'>Combination Codes</a></b> or <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must either provide a <b>WOFF filename</b> or check \"<b>Google font</b>\"."
 descDefault      = "Default scripts are loaded automatically with every page."
 descOptional     = "Optional scripts can be added via the settings for each page."
@@ -213,11 +211,13 @@ admin.site.register(Responsive, ResponsiveAdmin)
 
 #———————————————————————————————————————— modules · no dependencies
 
+descModules = "Modules are reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
+
 from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'order', 'name', 'content','active',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -227,21 +227,21 @@ class ModuleScriptsInline(admin.TabularInline):
 #   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
-positdesc = 'Superimposed on the page · negative = move up/left · positive = move down/right'
+positdesc = 'Superimposed on the Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'css_id', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
+    list_display = ('name', 'screen', 'language', 'css_id',  'sort1', 'active',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active'),('sort1', 'screen'), ('css_id', 'language',), ('filename', ),], 'description':descModules, }),
        ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
-       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
+       ('PLACEMENT', {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -293,6 +293,9 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— page
 
+descPages  = "Settings that are specific to a single page."
+descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
+
 from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
@@ -313,7 +316,7 @@ from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'order', 'name', 'content','active',)
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
@@ -334,11 +337,11 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('basic setup',        {'fields': ['visitable', 'language', 'screen','url','title',],'description':descPages, }),
-        ('details',    {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
-        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'],}),
+        ('basic setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),],'description':descPages, }),
+        ('details',            {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('accessibility',      {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
+        ('overrides',          {'fields': [('suppress_modules','override_dims',), ],}),
+        ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
