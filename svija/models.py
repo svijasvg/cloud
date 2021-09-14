@@ -330,7 +330,6 @@ class Settings(models.Model):
 from ckeditor.fields import RichTextField
 
 class Page(models.Model): 
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     visitable = models.BooleanField(default=True, verbose_name='published',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
@@ -361,6 +360,7 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
     # deprectaed
+    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
 
     def __unicode__(self):
@@ -368,7 +368,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ['-visitable', 'display_order', 'prefix', 'url', '-pub_date', ]
+        ordering = ['-visitable', 'url', 'language', 'screen', '-pub_date', ]
         verbose_name_plural = "2.1 · Pages"
 #   def __str__(self):
 #       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)

@@ -329,12 +329,12 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
-    list_display = ('url', 'language', 'screen', 'title', 'visitable', 'suppress_modules', 'pub_date', 'display_order', )
+    list_display = ('url', 'language', 'screen', 'title', 'visitable', 'suppress_modules', 'pub_date', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('basic setup',        {'fields': ['display_order', 'visitable', 'language', 'screen','url','title',],'description':descPages, }),
+        ('basic setup',        {'fields': ['visitable', 'language', 'screen','url','title',],'description':descPages, }),
         ('details',    {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
         ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
         ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
