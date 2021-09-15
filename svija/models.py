@@ -132,10 +132,9 @@ class Responsive(models.Model):
     canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
 
     meta_tag = models.CharField(max_length=200, default='', blank=True)
-    description = models.CharField(max_length=200, default='', blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='AI pixel width',blank=True,)
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
@@ -146,6 +145,7 @@ class Responsive(models.Model):
 
     # deprecated
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
+    description = models.CharField(max_length=200, default='', blank=True)
 
     def __str__(self):
         return self.name

@@ -127,12 +127,12 @@ def SubPageView(request, request_prefix, request_slug, screen):
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
-    #———————————————————————————————————————— page SVG's
+    #———————————————————————————————————————— page: SVG's
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
 
-    #———————————————————————————————————————— page scripts & modules
+    #———————————————————————————————————————— page: scripts & modules
 
     # pagemodules CONTAIN modules, but are not modules
     # can't use get_modules to get them because the modules are INSIDE pagemodules
@@ -142,12 +142,12 @@ def SubPageView(request, request_prefix, request_slug, screen):
     page_modules = get_page_modules('page modules', page.pagemodules_set.all(), page_width, use_p3)
     content_blocks.extend(page_modules)
 
-    #———————————————————————————————————————— module content
+    #———————————————————————————————————————— modules
 
     if not page.suppress_modules:
-        all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
-        screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
-        content_blocks.extend(screen_modules)
+        screen_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
+        module_content = get_modules('screen modules', screen_modules, page_width, use_p3)
+        content_blocks.extend(module_content)
 
     #———————————————————————————————————————— combine content blocks
 

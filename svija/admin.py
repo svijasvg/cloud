@@ -4,7 +4,6 @@
 
 descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
-descScreens      = "You can define the screen sizes you want to support for your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must either provide a <b>WOFF filename</b> or check \"<b>Google font</b>\"."
 descDefault      = "Default scripts are loaded automatically with every page."
@@ -193,16 +192,18 @@ admin.site.register(OptionalScript, OptionalScriptAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
+descScreens      = "Define the screen sizes supported by the website. Maximum pixel width 0 = unlimited."
+
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'width', 'description', 'display_order', )
+    list_display = ('name', 'code', 'width', 'display_order', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'code', 'limit', 'canonical', 'meta_tag', 'description', 'display_order'],'description':descScreens,}),
+        ('details',{'fields': ['name', 'code', 'limit', 'canonical', 'meta_tag', 'display_order'],'description':descScreens,}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
 #       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
