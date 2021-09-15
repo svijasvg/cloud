@@ -66,12 +66,15 @@ from django.http import Http404
 
 def PageView(request, language_code, request_slug):
 
-  screen_code = request.COOKIES.get('screen')
+  screen_code = request.COOKIES.get('screen_code')
   if (screen_code == None): 
 
-    # calculate minimum screen
-    screen_code = 'mb'
+    all_screens = Responsive.objects.order_by('limit')
 
+    if (len(all_screens) > 1): screen_code = all_screens[1].code
+    else: screen_code = all_screens[0].code
+
+# return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
   return SubPageView(request, language_code, request_slug, screen_code)
 
 
@@ -79,6 +82,7 @@ def PageView(request, language_code, request_slug):
 
 @cache_per_user(60*60*24, False)
 def SubPageView(request, language_code, request_slug, screen_code):
+#   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django

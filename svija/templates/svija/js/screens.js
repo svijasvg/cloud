@@ -3,7 +3,7 @@
 //———————————————————————————————————————— system js
 
 // var screen_code = "cp";
-// var screens = {'cp':'0', 'mb':'400'};
+// var all_screens = {0:'cp', 400:'mb'};
 
 //———————————————————————————————————————— get pixel width of window
 
@@ -16,20 +16,20 @@ else pixel_width = 1200;
 
 //———————————————————————————————————————— find best fit
 
-var this_screen_code = 'cp';
+var this_screen_code = all_screens[0];
 var min_value = 1000000;
 
-for (const [key, value] of Object.entries(screens)) {
-  if (pixel_width < value && pixel_width < min_value){
-    min_value = value;
-    this_screen_code = key;
+for (const [key, value] of Object.entries(all_screens)) {
+  if (pixel_width < key && pixel_width < min_value){
+    min_value = key;
+    this_screen_code = value;
   }
 }
 
 //———————————————————————————————————————— set cookie & redirect
 
-setCookie('screen', this_screen_code, 7);
+setCookie('screen_code', this_screen_code, 7);
 
-alert(screen_code + ' : ' + this_screen_code);
+//alert(screen_code + ' : ' + this_screen_code);
 
 if (screen_code != this_screen_code)  location.reload();
