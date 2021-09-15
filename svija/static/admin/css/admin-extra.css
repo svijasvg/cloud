@@ -144,13 +144,31 @@ fieldset.collapsed .collapse-toggle                                             
 
 div.description{
   color:var(--dark-gray);
-  background-color:var(--light-gray);
-  opacity:0.7;
-  padding:5px 7px 7px 7px;
-  margin-left:20px;
-  border-radius:0px 0px 5px 5px;
+  background-color:var(--color);
+  padding:5px 15px 5px 15px;
+  margin-left:10px;
+  margin-bottom:7px;
+  border-radius:0px 0px 2px 2px;
   display: inline-block;
-  font-size:14px;
+  font-size:12px;
+}
+
+div.description::before {
+  content: '★ ';
+}
+
+div.description a:link,
+div.description a:visited{
+  color:var(--dark-gray);
+  border-bottom:1px dotted var(--dark-gray);
+  padding-bottom:0;
+}
+
+div.description a:hover,
+div.description a:active{
+  text-decoration:none;
+  border-bottom:1px solid var(--dark-gray);
+  color:black;
 }
 
 /*———————————————————————————————————————— model list global */

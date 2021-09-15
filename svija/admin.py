@@ -234,8 +234,8 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'screen', 'display_order', 'language', 'css_id',  'sort1', 'active',)
+#   list_filter = ('active', 'sort1', 'sort2', )
+    list_display = ('name', 'screen', 'optional', 'display_order', 'language', 'css_id',  'sort1', 'active',)
     save_on_top = True
     save_as = True
 
