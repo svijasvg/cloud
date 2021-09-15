@@ -11,7 +11,9 @@ from svija.models import Prefix, Responsive
 #     fr = fr['desktop'], fm['mobile']
 
 
-def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive, screens):
+def generate_system_js(version, settings, page, language_code, request_slug, this_screen, screens):
+
+#   this_screen = Responsive.objects.filter(code=screen).first()
 
     system_js = "//———————————————————————————————————————— system js\n\n"
     
@@ -21,21 +23,18 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     system_js += "var svija_version='" + version + "';\n"
 
     # language information
-    system_js += 'var page_key = "' + str(page.pk) +'";\n'
-
-    # language information
-    system_js += 'var language_code = "' + language.code +'";\n'
+    system_js += 'var language_code = "' + language_code +'";\n'
 
     # responsive information
-    system_js += 'var responsive_code = "' + responsive.code +'";\n'
+    system_js += 'var screen_code = "' + this_screen.code +'";\n'
 
 #———————————————————————————————————————— screens
 
-    all_screens = []
-    for screen in screens:
-        all_screens.append( "'" + screen.code + "':'" + str(screen.limit) + "'")
+    all_x_screens = []
+    for one_screen in screens:
+        all_x_screens.append( "'" + one_screen.code + "':'" + str(one_screen.limit) + "'")
 
-    system_js += "var screens = {" + ', '.join(all_screens) + "};\n" 
+    system_js += "var screens = {" + ', '.join(all_x_screens) + "};\n" 
 
 #———————————————————————————————————————— data
 
@@ -47,7 +46,7 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     if settings.secure: page_url = 'https://'
     else:               page_url = 'http://'
 
-    page_url += settings.url + '/' + request_prefix + '/' + request_slug
+    page_url += settings.url + '/' + language_code + '/' + request_slug
 
     system_js += "var page_url = '" + page_url + "';\n"
 
@@ -64,10 +63,10 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
         dim_js += 'var page_offsety = '   + str(page.offsety) + ';\n'
 
     else:
-        dim_js += 'var page_width = '     + str(responsive.width)   + ';\n'
-        dim_js += 'var visible_width = '  + str(responsive.visible) + ';\n'
-        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + ';\n'
-        dim_js += 'var page_offsety = '   + str(responsive.offsety) + ';\n'
+        dim_js += 'var page_width = '     + str(this_screen.width)   + ';\n'
+        dim_js += 'var visible_width = '  + str(this_screen.visible) + ';\n'
+        dim_js += 'var page_offsetx = '   + str(this_screen.offsetx) + ';\n'
+        dim_js += 'var page_offsety = '   + str(this_screen.offsety) + ';\n'
 
     system_js += dim_js
 

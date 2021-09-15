@@ -66,34 +66,36 @@ from django.http import Http404
 
 def PageView(request, language_code, request_slug):
 
-  screen = request.COOKIES.get('screen')
-  if (screen == None): 
+  screen_code = request.COOKIES.get('screen')
+  if (screen_code == None): 
+
     # calculate minimum screen
-    screen = 'mb'
-  return SubPageView(request, language_code, request_slug, screen)
+    screen_code = 'mb'
+
+  return SubPageView(request, language_code, request_slug, screen_code)
 
 
 #———————————————————————————————————————— ▼ cached view definition
 
 @cache_per_user(60*60*24, False)
-def SubPageView(request, request_prefix, request_slug, screen):
+def SubPageView(request, language_code, request_slug, screen_code):
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
     settings        = Settings.objects.filter(active=True).first()
-    language        = Language.objects.filter(code=request_prefix).first()
-    responsive      = Responsive.objects.filter(code=screen).first()
+    language        = Language.objects.filter(code=language_code).first()
+    responsive      = Responsive.objects.filter(code=screen_code).first()
 
     #############################################################
 
-    page            = Page.objects.filter(Q(language__code=request_prefix) & Q(screen__code=screen) & Q(url=request_slug) & Q(visitable=True)).first()
+    page            = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
     if not page: raise Http404
 
-        #eturn HttpResponse("page not found: " + request_prefix + ':' + screen + ':' + request_slug)
+        #eturn HttpResponse("page not found: " + language_code + ':' + screen_code + ':' + request_slug)
 
     # SHOULDN'T BE FIRST BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
-    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen) & Q(active=True)).first()
+    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
     template        = 'svija/' + page.template.filename
@@ -105,7 +107,7 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— redirect if / or /en
 
-    redirect = redirect_if_home(request_prefix, request.path, settings, language.default)
+    redirect = redirect_if_home(language_code, request.path, settings, language.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
     #———————————————————————————————————————— metatags, system js & fonts
@@ -113,14 +115,13 @@ def SubPageView(request, request_prefix, request_slug, screen):
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
                       responsive,     language, settings.secure,
-        settings.url, request_prefix, request_slug, )
+        settings.url, language_code, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 
     screens = Responsive.objects.all()
 
-    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive, screens)
-    system_js = '\n// screen=' + screen + '\n\n' + system_js
+    system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
     #———————————————————————————————————————— default & optional scripts
 
@@ -145,7 +146,7 @@ def SubPageView(request, request_prefix, request_slug, screen):
     #———————————————————————————————————————— modules
 
     if not page.suppress_modules:
-        screen_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=True))
+        screen_modules = Module.objects.filter(Q(screen__code=screen_code) & Q(active=True) & Q(optional=True))
         module_content = get_modules('screen modules', screen_modules, page_width, use_p3)
         content_blocks.extend(module_content)
 

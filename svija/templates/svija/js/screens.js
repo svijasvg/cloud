@@ -1,30 +1,35 @@
 //———————————————————————————————————————— template: screens.js
 
-// browser information for server-side use
+//———————————————————————————————————————— system js
 
-setCookie('screen', 'cp', 7);
+// var screen_code = "cp";
+// var screens = {'cp':'0', 'mb':'400'};
 
-//———————————————————————————————————————— old js
+//———————————————————————————————————————— get pixel width of window
 
-// redirects to desktop  if window is not in portrait mode
-// mobile & desktop scripts are the same except for the first and last lines
+// this is temporary
 
 var cutoff = 0.9;
 var ratio  = window.innerWidth / window.innerHeight;
-var portrait = ratio < cutoff;
+if (ratio < cutoff) pixel_width = 300;
+else pixel_width = 1200;
 
-// get url information
+//———————————————————————————————————————— find best fit
 
-var parts = page_url.split('/');
-var pge   = parts[4].replace('#', '');
+var this_screen_code = 'cp';
+var min_value = 1000000;
 
-// supplied by system: var responsives = {'desktop':'fr', 'mobile':'fm'};
+for (const [key, value] of Object.entries(screens)) {
+  if (pixel_width < value && pixel_width < min_value){
+    min_value = value;
+    this_screen_code = key;
+  }
+}
 
-//if    (portrait) location.href = '/' + responsives['Mobile' ] + '/' + pge;
-if (!portrait) location.href = '/' + responsives['Computer'] + '/' + pge;
+//———————————————————————————————————————— set cookie & redirect
 
-//———————————————————————————————————————— new js
+setCookie('screen', this_screen_code, 7);
 
-// in js above:
-// var responsive_code = "cp";
-// var screens = {'cp':'0', 'mb':'400'};
+alert(screen_code + ' : ' + this_screen_code);
+
+if (screen_code != this_screen_code)  location.reload();
