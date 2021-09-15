@@ -1,21 +1,32 @@
 #———————————————————————————————————————— HomePageView.py
 
+#———————————————————————————————————————— imports
+
 from django.shortcuts import get_object_or_404
-from svija.models import Prefix, Settings
-from svija.views import PageView
+from svija.models import Language, Settings
+from svija.views import SubPageView
 from modules.cache_per_user import *
 
-@cache_per_user(ttl=60*60*24, cache_post=False)
-def HomePageView(request, request_prefix):
+#———————————————————————————————————————— definition
 
-    if request_prefix == '':
-        settings = get_object_or_404(Settings,active=True)
-        request_prefix = settings.prefix.path
+def HomePageView(request, language_code):
 
-    prefix = get_object_or_404(Prefix, path=request_prefix)
-    request_slug = prefix.default
+  screen = request.COOKIES.get('screen')
+  if (screen == None): 
+    # calculate minimum screen
+    screen = 'mb'
 
-    response = PageView(request, request_prefix, request_slug,)
-    return response
+#———————————————————————————————————————— different from regular page
+
+  if language_code == '':
+    settings = get_object_or_404(Settings, active=True)
+    language_code = settings.language.code
+
+  language = get_object_or_404(Language, code=language_code)
+  request_slug = language.default
+
+#———————————————————————————————————————— same as regular page
+
+  return SubPageView(request, language_code, request_slug, screen)
 
 #———————————————————————————————————————— fin

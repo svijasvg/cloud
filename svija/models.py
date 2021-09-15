@@ -310,11 +310,9 @@ class Settings(models.Model):
 
     active        = models.BooleanField(default=False, verbose_name='online',)
     robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
-    secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
     url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
-    cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
-    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code default')
+    language      = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='default language')
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
@@ -326,6 +324,11 @@ class Settings(models.Model):
     mail_srv      = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
     mail_port     = models.IntegerField(default=0, verbose_name='email server port')
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
+
+    # deprecated
+    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code default')
+    cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
+    secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
 
     def __str__(self):
         return self.url

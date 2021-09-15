@@ -42,12 +42,12 @@ urlpatterns = [
 
 #———————————————————————————————————————— home pages
 
-    re_path(r'^(?P<request_prefix>)$', views.HomePageView),          # root url
-    re_path(r'^(?P<request_prefix>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
+    re_path(r'^(?P<language_code>)$', views.HomePageView),          # root url
+    re_path(r'^(?P<language_code>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
 
 #———————————————————————————————————————— regular pages
 
-    path('<slug:request_prefix>/<slug:request_slug>', views.PageView),  # prefix/slug
+    path('<slug:language_code>/<slug:request_slug>', views.PageView),  # prefix/slug
 
 #———————————————————————————————————————— txt views
 

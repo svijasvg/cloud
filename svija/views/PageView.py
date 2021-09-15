@@ -64,13 +64,13 @@ from django.http import Http404
 
 #———————————————————————————————————————— main view definition
 
-def PageView(request, request_prefix, request_slug):
+def PageView(request, language_code, request_slug):
 
   screen = request.COOKIES.get('screen')
   if (screen == None): 
     # calculate minimum screen
-    screen = 'cp'
-  return SubPageView(request, request_prefix, request_slug, screen)
+    screen = 'mb'
+  return SubPageView(request, language_code, request_slug, screen)
 
 
 #———————————————————————————————————————— ▼ cached view definition
