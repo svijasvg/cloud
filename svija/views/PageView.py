@@ -50,6 +50,7 @@ from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_fonts import *
+from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
 from modules.meta_canonical import *
@@ -104,7 +105,6 @@ def SubPageView(request, request_prefix, request_slug, screen):
 
     #———————————————————————————————————————— redirect if / or /en
 
-    ################### LANGUAGE NEEDS A DEFAULT PAGE
     redirect = redirect_if_home(request_prefix, request.path, settings, language.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
     
@@ -127,24 +127,27 @@ def SubPageView(request, request_prefix, request_slug, screen):
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
-    #———————————————————————————————————————— page content
+    #———————————————————————————————————————— page SVG's
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
 
     #———————————————————————————————————————— page scripts & modules
 
+    # pagemodules CONTAIN modules, but are not modules
+    # can't use get_modules to get them because the modules are INSIDE pagemodules
+
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    page_modules = get_modules('page modules', page.pagemodules_set.all(), page_width, use_p3)
+    page_modules = get_page_modules('page modules', page.pagemodules_set.all(), page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— module content
 
-#   if not page.suppress_modules:
-#       all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
-#       screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
-#       content_blocks.extend(screen_modules)
+    if not page.suppress_modules:
+        all_modules = Module.objects.filter(Q(screen__code=screen) & Q(active=True) & Q(optional=False))
+        screen_modules  = get_modules('screen modules', all_modules, page_width, use_p3)
+        content_blocks.extend(screen_modules)
 
     #———————————————————————————————————————— combine content blocks
 

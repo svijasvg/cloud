@@ -13,55 +13,56 @@ def get_single_svg(ai_path, page_width, use_p3):
     css = svg = ''
 
     # can be empty if module without SVG
-    if hasattr(ai_path, 'filename'):
+    if not hasattr(ai_path, 'filename'):
+        return svg, css
 
-        # everything after last / in full .ai path
-        ai_name = ai_path.filename.rpartition("/")[2]
-        raw_name = ai_name[:-3]
-        svg_name = raw_name + '_' + str(page_width) + '.svg'
+    # everything after last / in full .ai path
+    ai_name = ai_path.filename.rpartition("/")[2]
+    raw_name = ai_name[:-3]
+    svg_name = raw_name + '_' + str(page_width) + '.svg'
 
-        svija_path = '/sync/Svija/SVG Files/'
-        abs_path = os.path.abspath(os.path.dirname(__name__))
+    svija_path = '/sync/Svija/SVG Files/'
+    abs_path = os.path.abspath(os.path.dirname(__name__))
 
-        #—————— check if svg exists
+    #—————— check if svg exists
 
-        svg_path = abs_path + svija_path + svg_name
-        path = pathlib.Path(svg_path)
+    svg_path = abs_path + svija_path + svg_name
+    path = pathlib.Path(svg_path)
 
-        if not path.exists():
-            svg = '<!-- missing svg: {} -->'.format(ai_path.filename)
-            #vg = '<!-- missing svg: {} -->'.format(svg_path)
- 
+    if not path.exists():
+        svg = '<!-- missing svg: {} -->'.format(ai_path.filename)
+        #vg = '<!-- missing svg: {} -->'.format(svg_path)
+
+    else:
+        is_module = hasattr(ai_path, 'css_id')
+
+        temp_id = raw_name
+        if is_module:
+            if ai_path.css_id != '':
+                temp_id = ai_path.css_id
+
+
+        svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
+        svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+
+        if svg_width > page_width:
+            page_ratio = svg_height/svg_width
+            svg_width = page_width
+            svg_height = round(page_width * page_ratio)
+
+        rem_width  = round(svg_width/10,  3)
+        rem_height = round(svg_height/10, 3)
+
+        if is_module:
+            css_dims = '#' + svg_ID + '{\n'
+            css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
+            y = calculate_css(ai_path)
+            css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
-            is_module = hasattr(ai_path, 'css_id')
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            css += '\n\n' + css_dims
 
-            temp_id = raw_name
-            if is_module:
-                if ai_path.css_id != '':
-                    temp_id = ai_path.css_id
-
-
-            svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
-            svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
-
-            if svg_width > page_width:
-                page_ratio = svg_height/svg_width
-                svg_width = page_width
-                svg_height = round(page_width * page_ratio)
- 
-            rem_width  = round(svg_width/10,  3)
-            rem_height = round(svg_height/10, 3)
- 
-            if is_module:
-                css_dims = '#' + svg_ID + '{\n'
-                css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
-                y = calculate_css(ai_path)
-                css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
-            else:
-                css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-                css += '\n\n' + css_dims
-
-            svg += '\n' + svg_content
+        svg += '\n' + svg_content
  
     return svg, css
 

@@ -332,7 +332,7 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
-    list_display = ('url', 'language', 'screen', 'title', 'visitable', 'suppress_modules', 'pub_date', )
+    list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', )
     save_on_top = True
     save_as = True
 
