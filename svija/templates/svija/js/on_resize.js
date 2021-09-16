@@ -11,7 +11,7 @@ var win_stored_width = window.innerWidth;
 window.addEventListener("resize", resizeWindow);
 
 function resizeWindow(){
-  if (responsive_code == 'mb')               return false; // mobile version
+//if (screen_code == 'mb')                   return false; // mobile version
   if (!page_loaded)                          return false; // page still loading
   if (window.innerWidth == win_stored_width) return false; // height was changed
   if (window_zoomed())                       return false; // zoomed, not resized
