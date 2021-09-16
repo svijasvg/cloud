@@ -30,9 +30,8 @@ for (const [key, value] of Object.entries(all_screens)) {
 
 setCookie('screen_code', this_screen_code, 7);
 
-//alert(screen_code + ' : ' + this_screen_code);
-
 if (screen_code != this_screen_code){
-  msg = 'The page loaded was '+screen_code+', do you want to redirect to '+this_screen_code+'?';
-  if (confirm(msg)) location.reload();
+  // msg = 'The page loaded was '+screen_code+', do you want to redirect to '+this_screen_code+'?';
+  // if (confirm(msg)) location.reload();
+  location.reload();
 }
