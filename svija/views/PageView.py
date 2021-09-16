@@ -1,4 +1,6 @@
-#———————————————————————————————————————— svija.views
+#———————————————————————————————————————— PageView.py
+
+#———————————————————————————————————————— debugging
 
 # from django.http import HttpResponse
 # return HttpResponse("debugging message.")
@@ -60,8 +62,6 @@ from modules.scripts_to_page_obj import *
 from django.http import Http404
 
 
-#  ▼  ▲
-
 #———————————————————————————————————————— main view definition
 
 def PageView(request, language_code, request_slug):
@@ -88,9 +88,9 @@ def PageView(request, language_code, request_slug):
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
-# @vary_on_cookie
 def SubPageView(request, language_code, request_slug, screen_code):
 #   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
+#   return HttpResponse(request.path) # //mb or /en/contact/mb
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
@@ -106,7 +106,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
         #eturn HttpResponse("page not found: " + language_code + ':' + screen_code + ':' + request_slug)
 
-    # SHOULDN'T BE FIRST BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
+    # SHOULDN'T BE first() BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
     defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
@@ -117,11 +117,11 @@ def SubPageView(request, language_code, request_slug, screen_code):
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
 
-    #———————————————————————————————————————— redirect if / or /en
+    #———————————————————————————————————————— redirect if /en/home or /en or /fr/accueil
 
-    redirect = redirect_if_home(language_code, request.path, settings, language.default)
+    redirect = redirect_if_home(request.path, settings.language.code, language.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
-    
+
     #———————————————————————————————————————— metatags, system js & fonts
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >

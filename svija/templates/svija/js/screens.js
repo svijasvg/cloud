@@ -32,4 +32,7 @@ setCookie('screen_code', this_screen_code, 7);
 
 //alert(screen_code + ' : ' + this_screen_code);
 
-if (screen_code != this_screen_code)  location.reload();
+if (screen_code != this_screen_code){
+  msg = 'The page loaded was '+screen_code+', do you want to redirect to '+this_screen_code+'?';
+  if (confirm(msg)) location.reload();
+}

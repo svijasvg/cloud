@@ -234,8 +234,8 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-#   list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'screen', 'optional', 'display_order', 'language', 'css_id',  'sort1', 'active',)
+    list_filter = ('screen', 'language', 'optional', 'sort1', 'active', )
+    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'active',)
     save_on_top = True
     save_as = True
 
@@ -330,7 +330,7 @@ class ModuleInlinePage(admin.TabularInline):
     verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
+    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims',  )
 
     # display on parent page
     list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', )

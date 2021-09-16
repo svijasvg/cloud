@@ -372,7 +372,7 @@ class Page(models.Model):
 
     # deprectaed
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    prefix = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code',)
+    prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
 
     def __unicode__(self):
         return self.name
