@@ -152,7 +152,8 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    page_modules = get_page_modules('page modules', page.pagemodules_set.all(), page_width, use_p3)
+    page_modules_raw = page.pagemodules_set.all().order_by('zindex')
+    page_modules = get_page_modules('page modules', page_modules_raw, page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— modules

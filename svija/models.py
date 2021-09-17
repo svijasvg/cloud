@@ -73,7 +73,7 @@ from ckeditor.fields import RichTextField
 
 class Notes(models.Model):
     name = models.CharField(max_length=200, default='')
-    category = models.CharField(max_length=100, default='', verbose_name='category', blank=True,)
+    category = models.CharField(max_length=100, default='', verbose_name='sort category', blank=True,)
     author = models.CharField(max_length=100, default='', verbose_name='author', blank=True,)
     contents = RichTextField()
     def __str__(self):
@@ -187,9 +187,11 @@ class OptionalScript(models.Model):
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='active',)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='sort category', blank=True,)
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
+
+    # deprecated
+    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
 
     def __unicode__(self):
         return self.name
@@ -197,7 +199,7 @@ class OptionalScript(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
-        verbose_name = "optional scripts"
+        verbose_name = "optional script"
         verbose_name_plural = "3.2 · Optional Scripts"
 
 #———————————————————————————————————————— modules · no dependencies

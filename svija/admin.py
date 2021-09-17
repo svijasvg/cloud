@@ -23,7 +23,6 @@ from .models import Forwards
 class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('active', )
     list_display = ('to_page', 'to_prefix', 'from_url', 'active', )
     save_on_top = True
     save_as = True
@@ -40,8 +39,8 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('active', 'google', 'family', )
     list_display = ('css', 'family', 'style', 'source', 'google', 'active', )
+    list_filter = ('family', 'google', 'active', )
     save_on_top = True
     save_as = True
 
@@ -58,8 +57,8 @@ from .models import Help
 class HelpAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('cat1', 'cat2',)
     list_display = ('name', 'cat1', 'cat2','link',)
+    list_filter = ('cat1', 'cat2',)
     save_on_top = True
     save_as = True
 
@@ -79,8 +78,8 @@ from .models import Notes
 class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('category', 'author',)
     list_display = ('name', 'category', 'author',)
+    list_filter = ('category', 'author',)
     save_on_top = True
     save_as = True
 
@@ -178,13 +177,12 @@ from .models import OptionalScript
 class OptionalScriptAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_filter = ('type', 'sort1', 'sort2','active',)
-    list_display = ('name', 'sort1', 'sort2', 'type','active',)
+    list_display = ('name', 'sort1', 'type','active',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1','sort2',],'description':descOptional,}),
+        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1',],'description':descOptional,}),
         ('content',        {'fields': ['content',                      ],}),
     ]   
 
@@ -234,8 +232,8 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_filter = ('screen', 'language', 'optional', 'sort1', 'active', )
     list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'active',)
+    list_filter = ('screen', 'language', 'optional', 'sort1', )
     save_on_top = True
     save_as = True
 
@@ -330,10 +328,10 @@ class ModuleInlinePage(admin.TabularInline):
     verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims',  )
 
     # display on parent page
     list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', )
+    list_filter = ('screen', 'language', )
     save_on_top = True
     save_as = True
 
