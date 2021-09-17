@@ -14,8 +14,8 @@ import os
 proj_folder = os.path.abspath(os.path.dirname(__name__))
 
 app_name = 'svija'
-rp = '[A-Za-z0-9À-ÖØ-öø-ÿ \.\/-]*links'
-pf = '[A-Za-z0-9À-ÖØ-öø-ÿ \.-]+\.(jpeg|jpg|png|gif)'
+rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
 
 urlpatterns = [ 
