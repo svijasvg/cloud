@@ -1,4 +1,6 @@
-#———————————————————————————————————————— svija.views
+#———————————————————————————————————————— PageView.py
+
+#———————————————————————————————————————— debugging
 
 # from django.http import HttpResponse
 # return HttpResponse("debugging message.")
@@ -14,7 +16,7 @@ from django.shortcuts import get_object_or_404, render
 
 from svija.models import *
 
-#———————————————————————————————————————— class definition
+#———————————————————————————————————————— class page_obj():
 
 class page_obj():
     def __init__(self, head_js, css, body_js, svgs, html, form):
@@ -27,7 +29,7 @@ class page_obj():
     def __getitem__(cls, x):
         return getattr(cls, x)
 
-#———————————————————————————————————————— more import
+#———————————————————————————————————————— import
 
 #mport importlib
 
@@ -50,77 +52,118 @@ from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_fonts import *
+from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
+#rom modules.page_version import *
 from django.http import Http404
 
-#———————————————————————————————————————— *** view definition
 
-#cache_per_user(ttl=60*60*24, cache_post=False)
+#———————————————————————————————————————— main view definition
+
+def PageView(request, language_code, request_slug):
+
+  screen_code = request.COOKIES.get('screen_code')
+
+#———————————————————————————————————————— get smallest resolution screen code
+
+  if (screen_code == None): 
+    all_screens = Responsive.objects.order_by('limit')
+
+    if (len(all_screens) > 1): screen_code = all_screens[1].code
+    else: screen_code = all_screens[0].code
+
+#———————————————————————————————————————— use cached page view
+
+  request.path += '/' + screen_code
+  return SubPageView(request, language_code, request_slug, screen_code)
+
+
+#———————————————————————————————————————— ▼ cached view definition
+#
+#   different according to screen code because screen code
+#   has been appended to path
+
 @cache_per_user(60*60*24, False)
-def PageView(request, request_prefix, request_slug):
-
-
-#———————————————————————————————————————— view construction
+def SubPageView(request, language_code, request_slug, screen_code):
+#   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
+#   return HttpResponse(request.path) # //mb or /en/contact/mb
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
     settings        = Settings.objects.filter(active=True).first()
-    prefix          = Prefix.objects.filter(path=request_prefix).first()
-    responsive      = Responsive.objects.filter(name=prefix.responsive.name).first()
+    language        = Language.objects.filter(code=language_code).first()
+    responsive      = Responsive.objects.filter(code=screen_code).first()
 
-    page            = Page.objects.filter(Q(prefix__path=request_prefix) & Q(url=request_slug) & Q(visitable=True)).first()
-    if not page:
-#       return HttpResponse("debugging message.")
-        raise Http404
+    #############################################################
 
-    defaultscripts  = DefaultScripts.objects.filter(Q(responsive=prefix.responsive.pk) & Q(active=True)).first()
+    page            = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
+    if not page: raise Http404
 
-    language        = prefix.language
+        #eturn HttpResponse("page not found: " + language_code + ':' + screen_code + ':' + request_slug)
+
+    # SHOULDN'T BE first() BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
+    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
+
     use_p3          = settings.p3_color
-    source_dir      = 'sync/' + responsive.source_dir
     template        = 'svija/' + page.template.filename
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
+    content_blocks = []
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
 
-    #———————————————————————————————————————— redirect if / or /en
+    #———————————————————————————————————————— redirect if /en/home or /en or /fr/accueil
 
-    redirect = redirect_if_home(request_prefix, request.path, settings, prefix.default)
+    redirect = redirect_if_home(request.path, settings.language.code, language.default)
     if redirect: return HttpResponsePermanentRedirect(redirect)
-    
+
     #———————————————————————————————————————— metatags, system js & fonts
 
     # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
     meta_canon = meta_canonical(
-        prefix,       responsive,     language, settings.secure,
-        settings.url, request_prefix, request_slug, )
+                      responsive,     language, settings.secure,
+        settings.url, language_code, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 
-    system_js = generate_system_js(svija.views.version, language, settings, page, request_prefix, request_slug, responsive)
+    screens = Responsive.objects.all()
 
-    #———————————————————————————————————————— content blocks
+    system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
-    content_blocks = []
+    #———————————————————————————————————————— default & optional scripts
 
     content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
     content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
-    svgs, css_dimensions = get_page_svgs(page, source_dir, page_width, use_p3)
+    #———————————————————————————————————————— page: SVG's
+
+#   return HttpResponse("debugging message: "+str(page_width)) # 1200
+    svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
+
+    #———————————————————————————————————————— page: scripts & modules
+
+    # pagemodules CONTAIN modules, but are not modules
+    # can't use get_modules to get them because the modules are INSIDE pagemodules
+
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    page_modules = get_modules('page modules', page.pagemodules_set.all(), source_dir, page_width, use_p3)
+    page_modules_raw = page.pagemodules_set.all().order_by('zindex')
+    page_modules = get_page_modules('page modules', page_modules_raw, page_width, use_p3)
     content_blocks.extend(page_modules)
 
+    #———————————————————————————————————————— modules
+
     if not page.suppress_modules:
-        prefix_modules  = get_modules('prefix modules', prefix.prefixmodules_set.all(), source_dir, page_width, use_p3)
-        content_blocks.extend(prefix_modules)
+        screen_modules = Module.objects.filter(Q(screen__code=screen_code) & Q(active=True) & Q(optional=True)).order_by('display_order')
+        module_content = get_modules('screen modules', screen_modules, page_width, use_p3)
+        content_blocks.extend(module_content)
+
+    #———————————————————————————————————————— combine content blocks
 
     content_types = combine_content(content_blocks)
 
@@ -147,7 +190,7 @@ def PageView(request, request_prefix, request_slug):
 
     context.update(content_types)
 
-    #————————————————————————————————————————  return render
+    #———————————————————————————————————————— ▲ return render
 
     return render(request, template, context)
 

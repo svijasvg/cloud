@@ -1,14 +1,19 @@
 #———————————————————————————————————————— SendView.py
-# /fr/mail sends mail (needs language code)
+#
+# going to /fr/send will send a test email
+# this is to eliminate confusion about
+# where send failures come from
+#
+#———————————————————————————————————————— imports
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from svija.models import Prefix, Settings
 from svija.views import PageView
+from modules import send_mail
 
 #———————————————————————————————————————— send mail
 
-from modules import send_mail
 
 def SendView(request, lng):
     if not request.user.is_superuser:
@@ -23,7 +28,10 @@ def SendView(request, lng):
 
     return HttpResponse(response)
 
+
 #———————————————————————————————————————— imported from send_mail.py
+
+#———————————————————————————————————————— imports
 
 import sys
 import os
@@ -35,14 +43,15 @@ import smtplib
 from smtplib import SMTPException
 from django.core.mail import get_connection, send_mail
 
+#———————————————————————————————————————— errors to browser
+
 import cgitb
-cgitb.enable() # errors to browser
+cgitb.enable() 
 
 #———————————————————————————————————————— function
 
 def sendx(language):
     settings = get_object_or_404(Settings, active=True)
-
 
 #———————————————————————————————————————— module paths
 

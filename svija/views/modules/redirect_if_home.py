@@ -1,20 +1,61 @@
-#————————————————————————————————————————  redirect if it's a default page (path not shown)
+#———————————————————————————————————————— redirect_if_home.py
 
-from django.http import HttpResponsePermanentRedirect
+#———————————————————————————————————————— redirect if it's a default page (path not shown)
+# 
+#   there are two possibilities for addresses like / and /en
+#
+#   the correct address (minimal), handled by HomePageView
+#   the incorrect address (/en, /en/home), handled by this function
+#
+#   if this page should not have a real address, it's redirected to the
+#   abbreviated address
+#
+#   called by views/PageView to redirect urls that
+#   are invisible:
+#
+#   /en    » /
+#   /en/home » /
+#   /fr/home » /fr
+#
+#   if this returns '', nothing is done
+#   if this returns an address, the correct http redirect
+#   is issued by PageView and the page loading process
+#   starts over
+#
+#———————————————————————————————————————— redirect_if_home(request_language_code, request_page, site_default_code, request_language_default_page):
 
-def redirect_if_home(request_prefix, request_path, settings, prefix_default):
+#   this page will cause 302 redirects if we can go up the hierarchy
+#
+#   /en » /
+#   /fr/accueil » /fr
+#
+#   none of the received variables have slashes
+#   /en/home redirects to /, doesn't get to this function
 
-    site_default_prefix = '/' + settings.prefix.path +'/'            # default prefix for site
-    site_default_slug   = settings.prefix.default                    # default slug for prefix
-    site_default_path   = site_default_prefix + site_default_slug    # default slug for prefix
+def redirect_if_home(request_path, site_default_code, request_language_default_page):
+  
+  path_parts = request_path.split('/')
 
-    this_prefix         = '/' + request_prefix +'/'
-    this_prefix_default    = this_prefix + prefix_default
+  #                -3     -2     -1
+  #            ø   lang   page   screen
 
-    # if address corresponds to site default page
-    if request_path == site_default_path or request_path == site_default_prefix: return '/'
+  request_language_code = path_parts[-3]
+  request_page = path_parts[-2]
+  request_path = request_language_code + '/' + request_page
 
-    # if address corresponds to prefix default page
-    if request_path == this_prefix_default: return this_prefix
+#———————————————————————————————————————— site language default page · /en › /
 
-    return ''
+  test_path_1 = site_default_code + '/'
+  if request_path == test_path_1: return '/'
+
+#———————————————————————————————————————— other language default page · /fr/accueil › /fr
+
+  test_path_2 = request_language_code + '/' + request_language_default_page
+  if request_path == test_path_2 : return '/' + request_language_code
+
+#———————————————————————————————————————— no match, return ''
+
+  return ''
+
+
+#———————————————————————————————————————— fin

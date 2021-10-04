@@ -1,12 +1,16 @@
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
-*Updated 26 July, 2021 · dev.acswift.com*
+*Updated 4 September, 2021 · dev.svija.love*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
 # Svija: web sites with SVG instead of HTML
 
-Version 2.2.4
+renamed dev branch to beta
+
+---
+
+Version 2.2.5
 
 A set of tools for building web sites using Adobe Illustrator.
 Includes a CMS for managing pages and menus.

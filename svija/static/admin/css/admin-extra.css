@@ -144,13 +144,31 @@ fieldset.collapsed .collapse-toggle                                             
 
 div.description{
   color:var(--dark-gray);
-  background-color:var(--light-gray);
-  opacity:0.7;
-  padding:5px 7px 7px 7px;
-  margin-left:20px;
-  border-radius:0px 0px 5px 5px;
+  background-color:var(--color);
+  padding:5px 15px 5px 15px;
+  margin-left:10px;
+  margin-bottom:7px;
+  border-radius:0px 0px 2px 2px;
   display: inline-block;
-  font-size:14px;
+  font-size:12px;
+}
+
+div.description::before {
+  content: '★ ';
+}
+
+div.description a:link,
+div.description a:visited{
+  color:var(--dark-gray);
+  border-bottom:1px dotted var(--dark-gray);
+  padding-bottom:0;
+}
+
+div.description a:hover,
+div.description a:active{
+  text-decoration:none;
+  border-bottom:1px solid var(--dark-gray);
+  color:black;
 }
 
 /*———————————————————————————————————————— model list global */
@@ -187,15 +205,18 @@ tr.model-responsive a:hover, tr.model-responsive a:active
 
 /*———————————————————————————————————————— model list 2.x · modules & pages */
 
+tr.model-font,
 tr.model-page, tr.model-module
 
   { background-color:var(--color); border-radius:5px; }
 
+tr.model-font           a:link, tr.model-font          a:visited,
 tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited
 
   { color:var(--dark-gray); }
 
+tr.model-font          a:hover, tr.model-font          a:active,
 tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active
 
@@ -203,20 +224,17 @@ tr.model-module a:hover, tr.model-module a:active
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
-tr.model-font,
 tr.model-defaultscripts,
 tr.model-optionalscript
 
   { background-color:var(--light-gray);
        border-radius:5px; }
 
-tr.model-font           a:link, tr.model-font          a:visited,
 tr.model-defaultscripts  a:link, tr.model-defaultscripts a:visited,
 tr.model-optionalscript         a:link, tr.model-optionalscript        a:visited
 
   { color:var(--dark-gray); }
 
-tr.model-font          a:hover, tr.model-font          a:active,
 tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
 tr.model-optionalscript        a:hover, tr.model-optionalscript        a:active
 

@@ -1,64 +1,70 @@
+#———————————————————————————————————————— urls.py
+
+#———————————————————————————————————————— imports
+
 from . import views
-
 from django.urls import path, re_path
-
 from django.views import static
 from django.views.generic import RedirectView
 from django.views.decorators.cache import cache_page
-
-#https://stackoverflow.com/questions/17820980/how-can-i-load-a-static-font-file-for-use-with-pil-in-django
 import os
-#ITE_ROOT = os.path.realpath(os.path.dirname(__file__)+'/../')
-SITE_ROOT = os.path.abspath(os.path.dirname(__name__))
-    #source_dir = os.path.abspath(os.path.dirname(__file__)+'/../') + '/' + source_dir
+
+#———————————————————————————————————————— variables
+
+proj_folder = os.path.abspath(os.path.dirname(__name__))
 
 app_name = 'svija'
+rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+
 
 urlpatterns = [ 
-#---------------------------------------- exact addresses
+
+#———————————————————————————————————————— exact addresses
 
     path('c', views.ClearCacheView),
     path('csync', views.ClearCacheSyncView),
 
-#---------------------------------------- email sending
+#———————————————————————————————————————— email sending
 
+    # used by contact page
     path('<slug:lng>/mail', views.MailView),
+
+    # send test mail to see what happens
     path('<slug:lng>/send', views.SendView),
 
-#---------------------------------------- home pages
+#———————————————————————————————————————— placed images (in Links folder)
 
-    re_path(r'^(?P<request_prefix>)$', views.HomePageView),          # root url
-    re_path(r'^(?P<request_prefix>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
+#   replaced \w with A-Za-z0-9À-ÖØ-öø-ÿ to permit accented filenames & folders
+#   https://stackoverflow.com/questions/56279948/remove-special-characters-but-not-accented-letters
 
-#---------------------------------------- regular pages
+    re_path(r'^(?P<request_prefix>' + rp + ')/(?P<placed_file>' + pf + ')$(?i)', views.LinksView),
 
-    path('<slug:request_prefix>/<slug:request_slug>', views.PageView),  # prefix/slug
+#———————————————————————————————————————— home pages
 
-#---------------------------------------- placed images (in Links folder)
-# xlink:href="links/image.jpg", in page at /fr/contact
+    # why is there a language code in the first line?
+    re_path(r'^(?P<language_code>)$', views.HomePageView),          # root url
+    re_path(r'^(?P<language_code>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
 
-    re_path(r'^(?P<request_prefix>[\w-]+)/links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksView),
+#———————————————————————————————————————— regular pages
 
-    # special case: home page, has no /en/
-    re_path(r'^links/(?P<placed_file>[\w\-\ \.]+\.(jpeg|jpg|png|gif))$(?i)', views.LinksViewHome),
+    path('<slug:language_code>/<slug:request_slug>', views.PageView),  # prefix/slug
 
-#---------------------------------------- txt views
+#———————————————————————————————————————— txt views
 
     path('lab', views.LabView),
     path('robots.txt', views.RobotsView),
     path('sitemap.txt', views.SitemapView),
 
-#---------------------------------------- fonts, images & scripts
-# source_dir = responsive.source_dir
+#———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^admn/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/admin"}),
-    re_path(r'^files/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/files"}),
-    re_path(r'^fonts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/fonts"}),
-    re_path(r'^images/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/images"}),
-    re_path(r'^scripts/(?P<path>.*)$', static.serve, {'document_root': SITE_ROOT + "/sync/scripts"}),
+    re_path(r'^admn/(?P<path>.*)$(?i)',    static.serve, {'document_root': proj_folder + "/sync/Svija/Admin Customization"}),
+    re_path(r'^fonts/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"   }),
+    re_path(r'^files/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"       }),
+    re_path(r'^images/(?P<path>.*)$(?i)',  static.serve, {'document_root': proj_folder + "/sync/Svija/Icons"              }),
+    re_path(r'^scripts/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"       }),
+
 
 ]
 
-#---------------------------------------- fin
-
-
+#———————————————————————————————————————— fin

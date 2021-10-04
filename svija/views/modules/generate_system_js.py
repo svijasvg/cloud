@@ -1,5 +1,7 @@
 #———————————————————————————————————————— views/modules/generate_system_js.py
 
+#———————————————————————————————————————— imports
+
 from svija.models import Prefix, Responsive
 
 #     need current language code
@@ -8,31 +10,33 @@ from svija.models import Prefix, Responsive
 #     
 #     fr = fr['desktop'], fm['mobile']
 
-def generate_system_js(version, language, settings, page, request_prefix, request_slug, responsive):
+
+def generate_system_js(version, settings, page, language_code, request_slug, this_screen, screens):
+
+#   this_screen = Responsive.objects.filter(code=screen).first()
+
+    system_js = "//———————————————————————————————————————— system js\n\n"
+    
+#———————————————————————————————————————— easy ones
 
     # version information
-    system_js = "var svija_version='" + version + "';\n"
+    system_js += "var svija_version='" + version + "';\n"
 
     # language information
-    system_js += 'var page_key = "' + str(page.pk) +'";\n'
-
-    # language information
-    system_js += 'var language_code = "' + language.code +'";\n'
+    system_js += 'var language_code = "' + language_code +'";\n'
 
     # responsive information
-    system_js += 'var responsive_code = "' + responsive.code +'";\n'
+    system_js += 'var screen_code = "' + this_screen.code +'";\n'
 
-    # all prefixes for this language
-    prefix_list = list(Prefix.objects.filter(language = language.pk))
+#———————————————————————————————————————— screens
 
-    all_resps = []
-    for prf in prefix_list: 
-        resp = prf.responsive
-        resp_name = resp.name
-#       scpt += "'" + resp_name + "':'" + pfix.path + "'"
-        all_resps.append( "'" + resp_name + "':'" + prf.path + "'")
+    all_x_screens = []
+    for one_screen in screens:
+        all_x_screens.append( str(one_screen.limit) +  ":'" + one_screen.code + "'")
 
-    system_js += "var responsives = {" + ', '.join(all_resps) + "};\n"
+    system_js += "var all_screens = {" + ', '.join(all_x_screens) + "};\n" 
+
+#———————————————————————————————————————— data
 
     # accept cookies by default
     if settings.tracking_on: system_js += "var tracking_on = true;\n"
@@ -42,10 +46,12 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
     if settings.secure: page_url = 'https://'
     else:               page_url = 'http://'
 
-    page_url += settings.url + '/' + request_prefix + '/' + request_slug
+    page_url += settings.url + '/' + language_code + '/' + request_slug
+
     system_js += "var page_url = '" + page_url + "';\n"
 
-    # page dimension information
+#———————————————————————————————————————— page dimension information
+
     dim_js = ''
 
     if page.override_dims:
@@ -57,10 +63,14 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
         dim_js += 'var page_offsety = '   + str(page.offsety) + ';\n'
 
     else:
-        dim_js += 'var page_width = '     + str(responsive.width)   + ';\n'
-        dim_js += 'var visible_width = '  + str(responsive.visible) + ';\n'
-        dim_js += 'var page_offsetx = '   + str(responsive.offsetx) + ';\n'
-        dim_js += 'var page_offsety = '   + str(responsive.offsety) + ';\n'
+        dim_js += 'var page_width = '     + str(this_screen.width)   + ';\n'
+        dim_js += 'var visible_width = '  + str(this_screen.visible) + ';\n'
+        dim_js += 'var page_offsetx = '   + str(this_screen.offsetx) + ';\n'
+        dim_js += 'var page_offsety = '   + str(this_screen.offsety) + ';\n'
+
+    system_js += dim_js
+
+#———————————————————————————————————————— unused scrolling
 
 # get scroll position too
 #   override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
@@ -69,6 +79,6 @@ def generate_system_js(version, language, settings, page, request_prefix, reques
 #   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
 #   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
     
-    system_js += dim_js
-
     return system_js
+
+#———————————————————————————————————————— fin

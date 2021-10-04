@@ -1,12 +1,11 @@
+#———————————————————————————————————————— models.py
+
 #———————————————————————————————————————— instructional notes
 
 descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
-descScreens      = "You can define the screen sizes you want to support for your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
-descPages        = "All the settings that are specific to a single page."
-descModules      = "Modules are reusable content that can be included via <b><a href='/admin/svija/prefix/'>Combination Codes</a></b> or <b><a href='/admin/svija/page/'>Page Settings</a></b>."
-descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must either provide a <b>WOFF filename</b> or check \"<b>Google font</b>\"."
+descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
 descDefault      = "Default scripts are loaded automatically with every page."
 descOptional     = "Optional scripts can be added via the settings for each page."
 descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
@@ -24,8 +23,7 @@ from .models import Forwards
 class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('active', )
-    list_display = ('to_page', 'to_prefix', 'from_url', 'active', )
+    list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
     save_on_top = True
     save_as = True
 
@@ -41,8 +39,8 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('active', 'google', 'family', )
     list_display = ('css', 'family', 'style', 'source', 'google', 'active', )
+    list_filter = ('family', 'google', 'active', )
     save_on_top = True
     save_as = True
 
@@ -59,8 +57,8 @@ from .models import Help
 class HelpAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('cat1', 'cat2',)
     list_display = ('name', 'cat1', 'cat2','link',)
+    list_filter = ('cat1', 'cat2',)
     save_on_top = True
     save_as = True
 
@@ -80,8 +78,8 @@ from .models import Notes
 class NotesAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_filter = ('category', 'author',)
     list_display = ('name', 'category', 'author',)
+    list_filter = ('category', 'author',)
     save_on_top = True
     save_as = True
 
@@ -101,12 +99,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'title', 'email',)
+    list_display = ('name', 'code', 'default', 'title', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code & flag emoji', {'fields': ['name', 'code','display_order',],'description':descLanguages, }),
+        ('name, two-letter code', {'fields': [('name', 'code'),('default','display_order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email parameters',   {'fields': ['email', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_status','form_send',], 'classes': ['collapse'],}),
@@ -167,7 +165,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': ['name', 'active', 'responsive', ],'description':descDefault, }),
+        ('Scripts Name', {'fields': [('name', 'active',),'responsive',  ],'description':descDefault, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 
@@ -179,13 +177,12 @@ from .models import OptionalScript
 class OptionalScriptAdmin(admin.ModelAdmin):
 
     # display on parent menu
-    list_filter = ('type', 'sort1', 'sort2','active',)
-    list_display = ('name', 'sort1', 'sort2', 'type','active',)
+    list_display = ('name', 'sort1', 'type','active',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1','sort2',],'description':descOptional,}),
+        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1',],'description':descOptional,}),
         ('content',        {'fields': ['content',                      ],}),
     ]   
 
@@ -193,16 +190,18 @@ admin.site.register(OptionalScript, OptionalScriptAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
+descScreens      = "Define the screen sizes supported by the website. Maximum pixel width 0 = unlimited."
+
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'display_order', 'canonical', 'source_dir', 'description')
+    list_display = ('name', 'code', 'width', 'display_order', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'code', 'display_order', 'canonical', 'source_dir', 'meta_tag', 'description'],'description':descScreens,}),
+        ('details',{'fields': ['name', 'code', 'limit', 'canonical', 'meta_tag', 'display_order'],'description':descScreens,}),
         ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
 #       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
@@ -211,11 +210,13 @@ admin.site.register(Responsive, ResponsiveAdmin)
 
 #———————————————————————————————————————— modules · no dependencies
 
+descModules = "Modules are reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
+
 from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'order', 'name', 'content','active',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -225,21 +226,21 @@ class ModuleScriptsInline(admin.TabularInline):
 #   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
-positdesc = 'Superimposed on the page · negative = move up/left · positive = move down/right'
+positdesc = 'Superimposed on the Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_filter = ('active', 'sort1', 'sort2', )
-    list_display = ('name', 'css_id', 'active', 'display_order', 'sort1', 'sort2', 'filename',)
+    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'active',)
+    list_filter = ('screen', 'language', 'optional', 'sort1', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active', 'display_order', ('sort1', 'sort2',), ('css_id', 'filename', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename', ),], 'description':descModules, }),
        ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
-       ('PLACEMENT', {'fields': [('position', 'corner',), ('horz_offset', 'vert_offset',),],'description': positdesc,}),
+       ('PLACEMENT', {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptsInline]
@@ -282,7 +283,7 @@ class SettingsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('main settings',   {'fields': ['robots', 'active', 'url', 'secure', 'p3_color', 'prefix', 'analytics_id', 'tracking_on',],'description': descSettings,}),
+        ('main settings',   {'fields': [('url', 'active', 'p3_color',), ('analytics_id','tracking_on', ), ('language',), 'robots',],'description': descSettings,}),
         ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
@@ -291,13 +292,16 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— page
 
+descPages  = "Settings that are specific to a single page."
+descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
+
 from .models import Svg
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('filename','zindex','active',)
-    verbose_name_plural = 'Illustrator svg files'
+    verbose_name_plural = 'Illustrator files'
 
 from .models import Page
 class OptionalScriptInline(admin.TabularInline):
@@ -311,10 +315,10 @@ from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
+    fields = ('type', 'order', 'name', 'content','active',)
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
-    classes = ['collapse']
+#   classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
@@ -324,19 +328,19 @@ class ModuleInlinePage(admin.TabularInline):
     verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
-    list_filter = ('prefix', 'visitable', 'suppress_modules', 'override_dims', 'template', )
 
     # display on parent page
-    list_display = ('url', 'prefix', 'display_order', 'title', 'visitable', 'suppress_modules', 'pub_date',)
+    list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', )
+    list_filter = ('screen', 'language', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('BASIC SETUP',        {'fields': ['display_order', 'visitable', 'prefix','url',],'description':descPages, }),
-        ('setup & details',    {'fields': ['title','pub_date','notes','template',], 'classes': ['collapse'],}),
-        ('accessibility text', {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('OVERRIDES',          {'fields': ['suppress_modules','override_dims', ],}),
-        ('dimensions',         {'fields': ['width', 'visible', 'offsetx', 'offsety', ], 'classes': ['collapse'],}),
+        ('basic setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),],'description':descPages, }),
+        ('details',            {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('accessibility',      {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
+        ('overrides',          {'fields': [('suppress_modules','override_dims',), ],}),
+        ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
     inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]

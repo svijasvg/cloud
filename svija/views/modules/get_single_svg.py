@@ -1,54 +1,72 @@
+#———————————————————————————————————————— get_single_svg.py
 
-#———————————————————————————————————————— get 1 SVG & calculate sizes
+#———————————————————————————————————————— import
 
 import os
 import pathlib
 from modules.svg_cleaner import *
 
-def get_single_svg(this_svg, source_dir, specified_width, use_p3):
+#———————————————————————————————————————— get_single_svg(ai_path, page_width, use_p3):
+
+def get_single_svg(ai_path, page_width, use_p3):
 
     css = svg = ''
 
-    # can be empty if it's a module that doesn't include an SVG
-    if this_svg.filename != '':
+    # can be empty if module without SVG
+    if not hasattr(ai_path, 'filename'):
+        return svg, css
 
-        #—————— check if svg exists
-        temp_source = os.path.abspath(os.path.dirname(__name__)) + '/' + source_dir + '/' + this_svg.filename
-        path = pathlib.Path(temp_source)
+    # everything after last / in full .ai path
+    ai_name = ai_path.filename.rpartition("/")[2]
+    raw_name = ai_name[:-3]
+    svg_name = raw_name + '_' + str(page_width) + '.svg'
 
-        if not path.exists():
-            svg = '<!-- missing svg: {} -->'.format(this_svg.filename)
- 
+    svija_path = '/sync/Svija/SVG Files/'
+    abs_path = os.path.abspath(os.path.dirname(__name__))
+
+    #—————— check if svg exists
+
+    svg_path = abs_path + svija_path + svg_name
+    path = pathlib.Path(svg_path)
+
+    if not path.exists():
+        svg = '<!-- missing svg: {} -->'.format(ai_path.filename)
+        #vg = '<!-- missing svg: {} -->'.format(svg_path)
+
+    else:
+        is_module = hasattr(ai_path, 'css_id')
+
+        temp_id = raw_name
+        if is_module:
+            if ai_path.css_id != '':
+                temp_id = ai_path.css_id
+
+
+        svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
+        svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+
+        if svg_width > page_width:
+            page_ratio = svg_height/svg_width
+            svg_width = page_width
+            svg_height = round(page_width * page_ratio)
+
+        rem_width  = round(svg_width/10,  3)
+        rem_height = round(svg_height/10, 3)
+
+        if is_module:
+            css_dims = '#' + svg_ID + '{\n'
+            css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
+            y = calculate_css(ai_path)
+            css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
-            is_module = hasattr(this_svg, 'css_id')
+            css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            css += '\n\n' + css_dims
 
-            temp_id = this_svg.filename
-            if is_module:
-                if this_svg.css_id != '':
-                    temp_id = this_svg.css_id
-
-            svg_ID, svg_width, svg_height, svg_content = clean(temp_source, temp_id, use_p3)
- 
-            if svg_width > specified_width:
-                page_ratio = svg_height/svg_width
-                svg_width = specified_width
-                svg_height = round(specified_width * page_ratio)
- 
-            rem_width  = round(svg_width/10,  3)
-            rem_height = round(svg_height/10, 3)
- 
-            if is_module:
-                css_dims = '#' + svg_ID + '{\n'
-                css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
-                y = calculate_css(this_svg)
-                css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
-            else:
-                css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-                css += '\n\n' + css_dims
-
-            svg += '\n' + svg_content
+        svg += '\n' + svg_content
  
     return svg, css
+
+#———————————————————————————————————————— calculate_css(this_svg):
 
 def calculate_css(this_svg):
     pos = this_svg.position
@@ -71,6 +89,8 @@ def calculate_css(this_svg):
     offset = offset.replace('yrem', yoff)
     return posit + offset
   
+#———————————————————————————————————————— dic_position(pos):
+
 def dic_position(pos):
     if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     return {
@@ -78,6 +98,8 @@ def dic_position(pos):
         'floating': 'position: fixed;\n',
         'none'        : '',
     }[pos]
+
+#———————————————————————————————————————— dic_corners(cor, pos):
 
 def dic_corners(cor, pos):
     if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
@@ -90,6 +112,9 @@ def dic_corners(cor, pos):
     }[cor]
 
 
+#———————————————————————————————————————— fin
+
+# extra info
 #   positions = ('absolute', 'floating', 'none',)
 #   corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 

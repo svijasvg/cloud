@@ -1,0 +1,6 @@
+.gitconfig                                                                       
+*.un~                                                                            
+untracked/*                                                                      
+.DS*                                                                             
+"Icon\r"                                                                         
+*__pycache__*
