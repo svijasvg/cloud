@@ -6,7 +6,6 @@ descSettings     = "Basic settings that affect the entire website."
 descLanguages    = "Languages supported by your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
-descDefault      = "Default scripts are loaded automatically with every page."
 #escOptional     = "Optional scripts can be added via the settings for each page."
 descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
 descRedirects    = "Use redirects to <b>forward</b> an old page address to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
@@ -151,6 +150,8 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— script sets · dependent on responsive
 
+descDefault = "Sets of scripts · can be included in <a href=\"/admin/svija/page/\">page settings</a>."
+
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
     model = DefaultScriptTypes
@@ -165,7 +166,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': [('name', 'active',),'responsive',  ],'description':descDefault, }),
+        ('Scripts Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 

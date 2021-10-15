@@ -261,7 +261,7 @@ class DefaultScripts(models.Model):
     active = models.BooleanField(default=True, verbose_name='active',)
 
     # deprecated
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
+    responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
 
     def __str__(self):
         return self.name
