@@ -30,8 +30,8 @@ def get_single_svg(ai_path, page_width, use_p3):
     path = pathlib.Path(svg_path)
 
     if not path.exists():
-        svg = '<!-- missing svg: {} -->'.format(ai_path.filename)
-        #vg = '<!-- missing svg: {} -->'.format(svg_path)
+        #vg = '<!-- missing svg: {} -->'.format(ai_path.filename)
+        svg = '<!-- missing svg: {} -->'.format(svg_path)
 
     else:
         is_module = hasattr(ai_path, 'css_id')
