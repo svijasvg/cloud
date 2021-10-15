@@ -253,7 +253,7 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— default scripts · responsive
+#———————————————————————————————————————— script sets · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
@@ -351,8 +351,8 @@ class Page(models.Model):
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
-    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
+    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
@@ -376,7 +376,7 @@ class Page(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
-    # deprectaed
+    # deprecated
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)

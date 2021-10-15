@@ -51,7 +51,7 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
-#———————————————————————————————————————— help · no dependencies
+#———————————————————————————————————————— help · no dependencies · DEPRECATED
 
 #   from .models import Help
 #   class HelpAdmin(admin.ModelAdmin):
@@ -72,7 +72,7 @@ admin.site.register(Font, FontAdmin)
 #   
 #   admin.site.register(Help, HelpAdmin)
 
-#———————————————————————————————————————— notes · no dependencies
+#———————————————————————————————————————— notes · no dependencies · DEPRECATED
 
 #   from .models import Notes
 #   class NotesAdmin(admin.ModelAdmin):
@@ -133,7 +133,7 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— template · no dependencies
+#———————————————————————————————————————— template · no dependencies · DEPRECATED
 
 #   from .models import Template
 #   class TemplateAdmin(admin.ModelAdmin):
@@ -149,7 +149,7 @@ admin.site.register(Robots, RobotsAdmin)
 #   
 #   admin.site.register(Template, TemplateAdmin)
 
-#———————————————————————————————————————— default scripts · dependent on responsive
+#———————————————————————————————————————— script sets · dependent on responsive
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -171,7 +171,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
 
 admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
-#———————————————————————————————————————— optional scripts · no dependencies
+#———————————————————————————————————————— optional scripts · no dependencies · DEPRECATED
 
 #   from .models import OptionalScript
 #   class OptionalScriptAdmin(admin.ModelAdmin):
@@ -247,7 +247,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
 admin.site.register(Module, ModuleAdmin)
 
-#———————————————————————————————————————— prefix · depends on responsive & language
+#———————————————————————————————————————— prefix · depends on responsive & language · DEPRECATED
 
 #   from .models import Prefix
 #   class ModuleInlinePrefix(admin.TabularInline):
@@ -295,7 +295,8 @@ admin.site.register(Settings, SettingsAdmin)
 descPages  = "Settings that are specific to a single page."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
-from .models import Svg
+from .models import Page, Svg
+
 class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
@@ -303,13 +304,27 @@ class SvgInline(admin.TabularInline):
     fields = ('filename','zindex','active',)
     verbose_name_plural = 'Illustrator files'
 
-from .models import Page
+class DefaultScriptsInline(admin.TabularInline):
+    model = Page.default_scripts.through
+    extra = 0 
+    verbose_name = "script set"
+    verbose_name_plural = "script sets"
+    classes = ['collapse']
+
 #   class OptionalScriptInline(admin.TabularInline):
 #       model = Page.optional_script.through
 #       extra = 0 
 #       verbose_name = "optional script"
 #       verbose_name_plural = "optional scripts"
 #       classes = ['collapse']
+
+class ModuleInlinePage(admin.TabularInline):
+    model = Page.module.through
+    extra = 0 
+    fields = ('module', 'zindex', 'active',)
+    verbose_name = "module"
+    verbose_name_plural = "modules"
+    classes = ['collapse']
 
 from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
@@ -319,13 +334,6 @@ class PageScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
-
-class ModuleInlinePage(admin.TabularInline):
-    model = Page.module.through
-    extra = 0 
-    fields = ('module', 'zindex', 'active',)
-    verbose_name = "module"
-    verbose_name_plural = "modules"
 
 class PageAdmin(admin.ModelAdmin):
 
@@ -343,8 +351,9 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
+    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
-    inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
+#   inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 
