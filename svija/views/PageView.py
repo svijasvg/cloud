@@ -137,8 +137,14 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #———————————————————————————————————————— default & optional scripts
 
-    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
-    content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
+
+    page_scripts_raw = page.default_scripts.all()
+    for this_set in page_scripts_raw:
+      content_blocks.append( scripts_to_page_obj( 'script sets' , this_set.defaultscripttypes_set.all(),'', '', ) )
+
+#   deprecated
+#   content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
+#   content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
     #———————————————————————————————————————— page: SVG's
 
