@@ -7,7 +7,7 @@ descLanguages    = "Languages supported by your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
 descDefault      = "Default scripts are loaded automatically with every page."
-descOptional     = "Optional scripts can be added via the settings for each page."
+#escOptional     = "Optional scripts can be added via the settings for each page."
 descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
 descRedirects    = "Use redirects to <b>forward</b> an old page address to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
 descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
@@ -173,20 +173,20 @@ admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
 #———————————————————————————————————————— optional scripts · no dependencies
 
-from .models import OptionalScript
-class OptionalScriptAdmin(admin.ModelAdmin):
-
-    # display on parent menu
-    list_display = ('name', 'sort1', 'type','active',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1',],'description':descOptional,}),
-        ('content',        {'fields': ['content',                      ],}),
-    ]   
-
-admin.site.register(OptionalScript, OptionalScriptAdmin)
+#   from .models import OptionalScript
+#   class OptionalScriptAdmin(admin.ModelAdmin):
+#   
+#       # display on parent menu
+#       list_display = ('name', 'sort1', 'type','active',)
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1',],'description':descOptional,}),
+#           ('content',        {'fields': ['content',                      ],}),
+#       ]   
+#   
+#   admin.site.register(OptionalScript, OptionalScriptAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
@@ -304,12 +304,12 @@ class SvgInline(admin.TabularInline):
     verbose_name_plural = 'Illustrator files'
 
 from .models import Page
-class OptionalScriptInline(admin.TabularInline):
-    model = Page.optional_script.through
-    extra = 0 
-    verbose_name = "optional script"
-    verbose_name_plural = "optional scripts"
-    classes = ['collapse']
+#   class OptionalScriptInline(admin.TabularInline):
+#       model = Page.optional_script.through
+#       extra = 0 
+#       verbose_name = "optional script"
+#       verbose_name_plural = "optional scripts"
+#       classes = ['collapse']
 
 from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
@@ -343,7 +343,8 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
+#   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
+    inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

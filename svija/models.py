@@ -163,7 +163,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "robots.txt"
-        verbose_name_plural = "4.1 · Robots.txt"
+        verbose_name_plural = "4.3 · Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
@@ -182,6 +182,7 @@ class Template(models.Model):
 
 #———————————————————————————————————————— optional scripts · no dependencies
 
+#deprecated
 class OptionalScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
@@ -199,8 +200,8 @@ class OptionalScript(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
-        verbose_name = "optional script"
-        verbose_name_plural = "3.2 · Optional Scripts"
+        verbose_name = "DEPRECATED was optional script"
+        verbose_name_plural = "DEPRECATED · was Optional Scripts"
 
 #———————————————————————————————————————— modules · no dependencies
 
@@ -257,16 +258,19 @@ class ModuleScripts(models.Model):
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
     active = models.BooleanField(default=True, verbose_name='active',)
+
+    # deprecated
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
+
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "default scripts"
-        verbose_name_plural = "3.1 · Default Scripts"
+        verbose_name = "script set"
+        verbose_name_plural = "4.1 · Script Sets"
 
 class DefaultScriptTypes(models.Model):
-    scripts = models.ForeignKey(DefaultScripts, on_delete=models.PROTECT)
+    scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -275,7 +279,7 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "included script"
+        verbose_name = "script"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
@@ -373,6 +377,7 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprectaed
+    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
 
