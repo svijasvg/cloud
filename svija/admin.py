@@ -226,7 +226,7 @@ class ModuleScriptsInline(admin.TabularInline):
 #   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
 
-positdesc = 'Superimposed on the Illustrator page · negative = up ↖ left · positive = down ↘ right'
+positdesc = 'Superimposed on the Illustrator page · negative: up ↖ left · positive: down ↘ right'
 
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
