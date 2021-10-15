@@ -53,45 +53,45 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— help · no dependencies
 
-from .models import Help
-class HelpAdmin(admin.ModelAdmin):
-
-    # display on parent page
-    list_display = ('name', 'cat1', 'cat2','link',)
-    list_filter = ('cat1', 'cat2',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], 'description':descHelp,}),
-        ('contents',    {'fields': ['contents',], }),
-    ]   
-
-    class Media:
-        js = ('ckeditor.js',) 
-
-admin.site.register(Help, HelpAdmin)
+#   from .models import Help
+#   class HelpAdmin(admin.ModelAdmin):
+#   
+#       # display on parent page
+#       list_display = ('name', 'cat1', 'cat2','link',)
+#       list_filter = ('cat1', 'cat2',)
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], 'description':descHelp,}),
+#           ('contents',    {'fields': ['contents',], }),
+#       ]   
+#   
+#       class Media:
+#           js = ('ckeditor.js',) 
+#   
+#   admin.site.register(Help, HelpAdmin)
 
 #———————————————————————————————————————— notes · no dependencies
 
-from .models import Notes
-class NotesAdmin(admin.ModelAdmin):
-
-    # display on parent page
-    list_display = ('name', 'category', 'author',)
-    list_filter = ('category', 'author',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('meta',    {'fields': ['name','category', 'author',], 'description':descNotes, }),
-        ('contents',    {'fields': ['contents',], }),
-    ]   
-
-    class Media:
-        js = ('ckeditor.js',) 
-
-admin.site.register(Notes, NotesAdmin)
+#   from .models import Notes
+#   class NotesAdmin(admin.ModelAdmin):
+#   
+#       # display on parent page
+#       list_display = ('name', 'category', 'author',)
+#       list_filter = ('category', 'author',)
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('meta',    {'fields': ['name','category', 'author',], 'description':descNotes, }),
+#           ('contents',    {'fields': ['contents',], }),
+#       ]   
+#   
+#       class Media:
+#           js = ('ckeditor.js',) 
+#   
+#   admin.site.register(Notes, NotesAdmin)
 
 #———————————————————————————————————————— language · no dependencies
 
@@ -135,19 +135,19 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— template · no dependencies
 
-from .models import Template
-class TemplateAdmin(admin.ModelAdmin):
-
-    # display on parent template
-    list_display = ('name', 'display_order', 'active', 'description', 'filename', )
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],'description':descTemplates,}),
-    ]   
-
-admin.site.register(Template, TemplateAdmin)
+#   from .models import Template
+#   class TemplateAdmin(admin.ModelAdmin):
+#   
+#       # display on parent template
+#       list_display = ('name', 'display_order', 'active', 'description', 'filename', )
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],'description':descTemplates,}),
+#       ]   
+#   
+#   admin.site.register(Template, TemplateAdmin)
 
 #———————————————————————————————————————— default scripts · dependent on responsive
 
@@ -249,28 +249,28 @@ admin.site.register(Module, ModuleAdmin)
 
 #———————————————————————————————————————— prefix · depends on responsive & language
 
-from .models import Prefix
-class ModuleInlinePrefix(admin.TabularInline):
-    model = Prefix.module.through
-    extra = 0 
-    fields = ('module', 'prefix', 'zindex', 'active',)
-    verbose_name = "module"
-    verbose_name_plural = "modules"
-
-class PrefixAdmin(admin.ModelAdmin):
-
-    # display on parent menu
-    list_display = ('path', 'language', 'responsive', 'default', 'display_order',)
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],'description':descCombinations,}),
-    ]   
-
-    inlines = [ModuleInlinePrefix, ]
-
-admin.site.register(Prefix, PrefixAdmin)
+#   from .models import Prefix
+#   class ModuleInlinePrefix(admin.TabularInline):
+#       model = Prefix.module.through
+#       extra = 0 
+#       fields = ('module', 'prefix', 'zindex', 'active',)
+#       verbose_name = "module"
+#       verbose_name_plural = "modules"
+#   
+#   class PrefixAdmin(admin.ModelAdmin):
+#   
+#       # display on parent menu
+#       list_display = ('path', 'language', 'responsive', 'default', 'display_order',)
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],'description':descCombinations,}),
+#       ]   
+#   
+#       inlines = [ModuleInlinePrefix, ]
+#   
+#   admin.site.register(Prefix, PrefixAdmin)
 
 #———————————————————————————————————————— settings · depends on robots & prefix
 
@@ -278,7 +278,7 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'active', 'robots', 'prefix',)
+    list_display = ('url', 'active', 'language', 'robots',)
     save_on_top = True
     save_as = True
 
