@@ -8,7 +8,7 @@ from modules.svg_cleaner import *
 
 #———————————————————————————————————————— get_single_svg(ai_path, page_width, use_p3):
 
-def get_single_svg(ai_path, page_width, use_p3):
+def get_single_svg(ai_path, screen_code, page_width, use_p3):
 
     css = svg = ''
 
@@ -19,7 +19,7 @@ def get_single_svg(ai_path, page_width, use_p3):
     # everything after last / in full .ai path
     ai_name = ai_path.filename.rpartition("/")[2]
     raw_name = ai_name[:-3]
-    svg_name = raw_name + '_' + str(page_width) + '.svg'
+    svg_name = raw_name + '_' + screen_code + '.svg'
 
     svija_path = '/sync/Svija/SVG Files/'
     abs_path = os.path.abspath(os.path.dirname(__name__))
