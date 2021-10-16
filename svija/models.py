@@ -253,7 +253,7 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "extra scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— script sets · responsive
+#———————————————————————————————————————— script · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
@@ -266,8 +266,8 @@ class DefaultScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script set"
-        verbose_name_plural = "4.1 · Script Sets"
+        verbose_name = "scripts"
+        verbose_name_plural = "4.1 · Scripts"
 
 class DefaultScriptTypes(models.Model):
     scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
@@ -279,7 +279,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script"
+        verbose_name = "single script"
+        verbose_name_plural = "single scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language

@@ -148,9 +148,9 @@ admin.site.register(Robots, RobotsAdmin)
 #   
 #   admin.site.register(Template, TemplateAdmin)
 
-#———————————————————————————————————————— script sets · dependent on responsive
+#———————————————————————————————————————— scripts · dependent on responsive
 
-descDefault = "Sets of scripts · can be included in <a href=\"/admin/svija/page/\">page settings</a>."
+descDefault = "Scripts · can be included via <a href=\"/admin/svija/page/\">page settings</a>."
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -166,7 +166,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('Scripts Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
+        ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 
