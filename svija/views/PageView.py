@@ -135,10 +135,9 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
-    #———————————————————————————————————————— default & optional scripts
+    #———————————————————————————————————————— script sets
 
-
-    page_scripts_raw = page.default_scripts.all()
+    page_scripts_raw = page.default_scripts.all().filter(active=True)
     for this_set in page_scripts_raw:
       content_blocks.append( scripts_to_page_obj( 'script sets' , this_set.defaultscripttypes_set.all(),'', '', ) )
 
