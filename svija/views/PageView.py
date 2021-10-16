@@ -135,27 +135,28 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
-    #———————————————————————————————————————— script sets
+    #———————————————————————————————————————— page SVG's & scripts
+
+#   return HttpResponse("debugging message: "+str(page_width)) # 1200
+    svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
+
+    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
+
+
+    #———————————————————————————————————————— scripts
 
     page_scripts_raw = page.default_scripts.all().filter(active=True)
     for this_set in page_scripts_raw:
-      content_blocks.append( scripts_to_page_obj( 'script sets' , this_set.defaultscripttypes_set.all(),'', '', ) )
+      content_blocks.append( scripts_to_page_obj( 'scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
 
 #   deprecated
 #   content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
 #   content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
 
-    #———————————————————————————————————————— page: SVG's
-
-#   return HttpResponse("debugging message: "+str(page_width)) # 1200
-    svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
-
-    #———————————————————————————————————————— page: scripts & modules
+    #———————————————————————————————————————— page modules
 
     # pagemodules CONTAIN modules, but are not modules
     # can't use get_modules to get them because the modules are INSIDE pagemodules
-
-    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
     page_modules_raw = page.pagemodules_set.all().order_by('zindex')
     page_modules = get_page_modules('page modules', page_modules_raw, page_width, use_p3)
