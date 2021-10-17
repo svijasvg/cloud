@@ -8,48 +8,23 @@ from modules.svg_cleaner import *
 
 #———————————————————————————————————————— get_single_svg(target_obj, page_width, use_p3):
 
-def get_single_svg(page, target_obj, screen_code, page_width, use_p3):
+def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     css = svg = ''
 
     # can be empty if module without SVG
-    if not hasattr(target_obj, 'filename'):
-        return svg, css
+    if not hasattr(target_obj, 'filename'): return svg, css
 
-
-
-
-
-
-
+    ai_name = target_obj.filename
 
     # remove everything in beginning of path if necessary
     # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai
 
-#   ai_name = target_obj.filename
+    if ai_name.find('/') > -1:
+      ai_name = ai_name.rpartition("/")[2]
+      target_obj.filename = ai_name
+      target_obj.save()
 
-#   if ai_name.find('/') > 0:
-#     ai_name = ai_name.rpartition("/")[2]
-#     target_obj.filename.value = ai_name
-#     target_obj.save()
-
-    # t = TemperatureData.objects.get(id=1)
-    # t.value = 999  # change field
-    # t.save() # this will update only
-
-
-
-
-
-
-
-
-
-
-
-    ai_name = target_obj.filename.rpartition("/")[2]
-
-    # everything after last / in full .ai path
     raw_name = ai_name[:-3]
     svg_name = raw_name + '_' + screen_code + '.svg'
 
@@ -59,6 +34,7 @@ def get_single_svg(page, target_obj, screen_code, page_width, use_p3):
     #—————— check if svg exists
 
     svg_path = abs_path + svija_path + svg_name
+
     path = pathlib.Path(svg_path)
 
     if not path.exists():
