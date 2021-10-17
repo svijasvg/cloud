@@ -6,18 +6,50 @@ import os
 import pathlib
 from modules.svg_cleaner import *
 
-#———————————————————————————————————————— get_single_svg(ai_path, page_width, use_p3):
+#———————————————————————————————————————— get_single_svg(target_obj, page_width, use_p3):
 
-def get_single_svg(ai_path, screen_code, page_width, use_p3):
+def get_single_svg(page, target_obj, screen_code, page_width, use_p3):
 
     css = svg = ''
 
     # can be empty if module without SVG
-    if not hasattr(ai_path, 'filename'):
+    if not hasattr(target_obj, 'filename'):
         return svg, css
 
+
+
+
+
+
+
+
+    # remove everything in beginning of path if necessary
+    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai
+
+#   ai_name = target_obj.filename
+
+#   if ai_name.find('/') > 0:
+#     ai_name = ai_name.rpartition("/")[2]
+#     target_obj.filename.value = ai_name
+#     target_obj.save()
+
+    # t = TemperatureData.objects.get(id=1)
+    # t.value = 999  # change field
+    # t.save() # this will update only
+
+
+
+
+
+
+
+
+
+
+
+    ai_name = target_obj.filename.rpartition("/")[2]
+
     # everything after last / in full .ai path
-    ai_name = ai_path.filename.rpartition("/")[2]
     raw_name = ai_name[:-3]
     svg_name = raw_name + '_' + screen_code + '.svg'
 
@@ -30,16 +62,16 @@ def get_single_svg(ai_path, screen_code, page_width, use_p3):
     path = pathlib.Path(svg_path)
 
     if not path.exists():
-        #vg = '<!-- missing svg: {} -->'.format(ai_path.filename)
+        #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
         svg = '<!-- missing svg: {} -->'.format(svg_path)
 
     else:
-        is_module = hasattr(ai_path, 'css_id')
+        is_module = hasattr(target_obj, 'css_id')
 
         temp_id = raw_name
         if is_module:
-            if ai_path.css_id != '':
-                temp_id = ai_path.css_id
+            if target_obj.css_id != '':
+                temp_id = target_obj.css_id
 
 
         svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
@@ -56,7 +88,7 @@ def get_single_svg(ai_path, screen_code, page_width, use_p3):
         if is_module:
             css_dims = '#' + svg_ID + '{\n'
             css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
-            y = calculate_css(ai_path)
+            y = calculate_css(target_obj)
             css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
