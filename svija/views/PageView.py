@@ -140,7 +140,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     #———————————————————————————————————————— page SVG's & scripts
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
-    svgs, css_dimensions = get_page_svgs(page, screen_code, page_width, use_p3)
+    svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
@@ -161,14 +161,14 @@ def SubPageView(request, language_code, request_slug, screen_code):
     # can't use get_modules to get them because the modules are INSIDE pagemodules
 
     page_modules_raw = page.pagemodules_set.all().order_by('zindex')
-    page_modules = get_page_modules('page modules', page_modules_raw, screen_code, page_width, use_p3)
+    page_modules = get_page_modules('page modules', page_modules_raw, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— modules
 
     if not page.suppress_modules:
         screen_modules = Module.objects.filter(Q(screen__code=screen_code) & Q(active=True) & Q(optional=True)).order_by('display_order')
-        module_content = get_modules('screen modules', screen_modules, screen_code, page_width, use_p3)
+        module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 
     #———————————————————————————————————————— combine content blocks

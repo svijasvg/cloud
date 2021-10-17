@@ -3,7 +3,7 @@
 from modules import svg_cleaner
 from modules.get_single_svg import *
 
-def get_page_svgs(page, screen_code, page_width, use_p3):
+def get_page_svgs(screen_code, page, page_width, use_p3):
 
     svgs = ''
     all_svgs  = page.svg_set.all()
