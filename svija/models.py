@@ -249,8 +249,8 @@ class ModuleScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "extra script"
-        verbose_name_plural = "extra scripts"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— script · responsive
@@ -402,7 +402,8 @@ class PageScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 class Svg(models.Model):
@@ -413,20 +414,20 @@ class Svg(models.Model):
     def __str__(self):
         return self.filename
     class Meta:
-        verbose_name = "Illustrator file"
-        verbose_name_plural = "Illustrator files"
+        verbose_name = "link to Illustrator file"
+        verbose_name_plural = "links to Illustrator files"
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
-    page   = models.ForeignKey(Page,   on_delete=models.PROTECT)
+    page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "The following module is required by a page"
-        verbose_name_plural = "The following modules are required by a page"
+        verbose_name = "link to module"
+        verbose_name_plural = "links to modules"
         ordering = ["zindex"]
 
 #———————————————————————————————————————— fin
