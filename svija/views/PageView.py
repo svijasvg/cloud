@@ -63,6 +63,7 @@ from django.http import Http404
 
 
 #———————————————————————————————————————— main view definition
+# return HttpResponse("debugging message.")
 
 def PageView(request, language_code, request_slug):
 
@@ -91,6 +92,8 @@ def PageView(request, language_code, request_slug):
 def SubPageView(request, language_code, request_slug, screen_code):
 #   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
 #   return HttpResponse(request.path) # //mb or /en/contact/mb
+
+  # return HttpResponse("debugging message: " + request.path)
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django

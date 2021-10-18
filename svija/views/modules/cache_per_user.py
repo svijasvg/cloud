@@ -39,6 +39,7 @@ def cache_per_user(ttl=None, cache_post=False):
             return_cached_content = True
             page_content          = None
 
+
 #———————————————————————————————————————— no cache for POST or admins
 
             if not cache_post and request.method == 'POST':
@@ -49,10 +50,11 @@ def cache_per_user(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— cached if necessary
 
+
             if return_cached_content:
                 page_content = memcache.get(CACHE_KEY, None)
 
-            if not page_content:
+            if page_content is None:
                 page_content = function(request, *args, **kwargs)
                 if return_cached_content:
                     memcache.set(CACHE_KEY, page_content, ttl)
@@ -69,5 +71,6 @@ def cache_key(request):
     urlencode = q.urlencode(safe='()')
 
     return 'pageview_%s_%s' % (request.path, urlencode)
+
 
 #———————————————————————————————————————— fin
