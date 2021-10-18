@@ -1,41 +1,3 @@
-/* /static/admin/css/base.css
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: #264b5d;
-    --primary-fg: #eee;
-
-    --body-fg: #eeeeee;
-    --body-bg: #121212;
-    --body-quiet-color: #e0e0e0;
-    --body-loud-color: #ffffff;
-
-    --breadcrumbs-link-fg: #e0e0e0;
-    --breadcrumbs-bg: var(--primary);
-
-    --link-fg: #81d4fa;
-    --link-hover-color: #4ac1f7;
-    --link-selected-fg: #6f94c6;
-
-    --hairline-color: #272727;
-    --border-color: #353535;
-
-    --error-fg: #e35f5f;
-    --message-success-bg: #006b1b;
-    --message-warning-bg: #583305;
-    --message-error-bg: #570808;
-
-    --darkened-bg: #212121;
-    --selected-bg: #1b1b1b;
-    --selected-row: #00363a;
-
-    --close-button-bg: #333333;
-    --close-button-hover-bg: #666666;
-  }
-}
-
-*/
-
 /*———————————————————————————————————————— static/admin/css/admin-extra.css */
 
 /*———————————————————————————————————————— fonts */
@@ -68,21 +30,37 @@
   --color:          rgb( 70%, 100%,   0% );
   --color-contrast: rgb(  0%,   0%,   0% ); */
 
-:root { --dark-gray:  hsl(0, 0%,  20%);
-        --gray-text:  hsl(0, 0%,  50%);
-        --light-gray: hsl(0, 0%,  90%);
-        --white:      hsl(0, 0%, 100%); }
+:root { --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  90%);
+        --bg-bright:   hsl(0, 0%, 100%);
+        --text-dark:   hsl(0, 0%,  20%);
+        --text-med:    hsl(0, 0%,  70%);
+        --text-bright: hsl(0, 0%,  90%); }
+
+@media (prefers-color-scheme: dark) {
+
+:root { --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  50%);
+        --bg-bright:   hsl(0, 0%,  12%);
+        --text-dark:   hsl(0, 0%,  80%);
+        --text-med:    hsl(0, 0%,  50%);
+        --text-bright: hsl(0, 0%,  50%); }
+}
+
+:root { --link:        var(--text-dark); 
+        --link-hover:  var(--text-dark); }
+
 
 /*———————————————————————————————————————— header bar */
 
 #header
-                       { background-color:var(--dark-gray);
-                         border-bottom:1px solid var(--color); }
+  { background-color:var(--bg-dark);
+    border-bottom:1px solid var(--color); }
 
 #svija-admin-logo
 
-                       { background-color:var(--color);
-                         margin:5px 0 5px -12px; }
+  { background-color:var(--color);
+    margin:5px 0 5px -12px; }
 
 /*———————————————————————————————————————— small text at right of header */
 
@@ -94,55 +72,57 @@
 #header div#user-tools a:link,                    /* user tools links */
 #header div#user-tools a:visited
 
-                       { color:var(--color);
-                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
-                         text-decoration:none; }
+  { color:var(--color);
+    border-bottom:1px solid var(--bg-dark);
+    text-decoration:none; }
 
 #header div#user-tools a:hover,
 #header div#user-tools a:active
 
-                       { color:white;
-                         border-bottom:1px solid white; }
+  { color: var(--text-bright);
+    border-bottom:1px solid var(--text-bright); }
 
 /*———————————————————————————————————————— nav bar */
 
-div.breadcrumbs        { background-color:var(--dark-gray);
-                         color:var(--light-gray); }
+div.breadcrumbs
+
+  { background-color:var(--bg-dark);
+               color:var(--bg-med); }
 
 div.breadcrumbs a:link,
 div.breadcrumbs a:visited
 
-                       { color:hsl(0,0%,70%);
-                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
-                         text-decoration:none; }
+  { color:hsl(0,0%,70%);
+    border-bottom:1px solid hsla(0, 0%, 0%, 0);
+    text-decoration:none; }
 
 div.breadcrumbs a:hover,
 div.breadcrumbs a:active
 
-                       { color:white;
-                         border-bottom:1px solid white; }
+                       { color:var(--text-bright);
+                         border-bottom:1px solid var(--text-bright); }
 
 /*———————————————————————————————————————— message bar under header (page updated) */
 
 ul.messagelist li
 
-  { color:var(--dark-gray);
+  { color:var(--bg-dark);
     background:var(--color); }
 
 ul.messagelist li a
 
-  { color: var(--dark-gray);
+  { color: var(--bg-dark);
     font-weight:bold; }
 
 /*———————————————————————————————————————— top right "add page" bubble */
 
-.object-tools a.addlink {
-  color:var(--color);
-  background:var(--dark-gray);
-  border-radius:5px;
-  padding-top:6px;
-  padding-right:10px;
-}
+.object-tools a.addlink
+
+  {         color:var(--color);
+       background:var(--bg-dark);
+    border-radius:5px;
+      padding-top:6px;
+    padding-right:10px; }
 
 /*———————————————————————————————————————— black bars in middle of page */
 
@@ -150,16 +130,31 @@ ul.messagelist li a
 .module h2,      /* filter header, model detail header NEED TO FIX UPPERCASE SOMEWHERE */
 .inline-group h2 /* inline models headers */
 
-                       { background-color:var(--dark-gray);
-                         border-radius:5px;
-                         text-transform:uppercase; }
+  { background-color:var(--bg-dark);
+               color:var(--color);
+      text-transform:uppercase;
+       border-radius:5px; }
+
+/*———————————————————————————————————————— initially-hidden fields */
+
+fieldset.collapsed h2
+
+  { background-color:var(--bg-dark) !important;
+               color:var(--text-med) !important;
+      text-transform:uppercase;
+       border-radius:5px; }
+
+fieldset.collapsed .collapse-toggle,   /* (SHOW) link */
+fieldset.collapse .collapse-toggle   /* (HIDE) link */
+
+  { color:var(--color) !important; }
+
+fieldset.collapse  /* background of hidden blocks when made visible */
+
+  { background-color:var(--bg-med);
+       border-radius:5px; }
 
 /*———————————————————————————————————————— basic links & list of modelsi */
-
-:root {
-  --link:                var(--gray-text); 
-  --link-hover:          black;
-}
 
 a:link, a:visited      { color: var(--link);
                          text-decoration: none; }
@@ -167,55 +162,36 @@ a:link, a:visited      { color: var(--link);
 a:hover, a:active      { color: var(--link-hover);
                          text-decoration: underline; }
 
-/*———————————————————————————————————————— initially-hidden fields */
-
-fieldset.collapsed .collapse-toggle { color:var(--color); } /* show hidden fields */
-
-/* module collapse collapsed */
-fieldset.module        { } /* main model settings (not inlines or collapsed */
-fieldset.collapse      { background-color:var(--light-gray); border-radius:5px; } /* background of hidden blocks when made visible */
-
-.module h2, .module caption, .inline-group h2,                                    /* background bar of uncollapsed module */
-fieldset.collapsed h2                                                             /* background bars of collapsed areas */
-
-                       { background-color:var(--dark-gray) !important;
-                         color:var(--light-gray) !important;
-                         border-radius:5px; }
-
-fieldset.collapsed .collapse-toggle                                               /* (SHOW) link */
-
-                       { color:var(--color)!important; }
-
 /*———————————————————————————————————————— help tip */
 
-div.description{
-  color:var(--dark-gray);
-  background-color:var(--color);
-  padding:5px 15px 5px 15px;
-  margin-left:10px;
-  margin-bottom:7px;
-  border-radius:0px 0px 2px 2px;
-  display: inline-block;
-  font-size:12px;
-}
+div.description
 
-div.description::before {
-  content: '★ ';
-}
+  {            color:var(--color-contrast);
+    background-color:var(--color);
+             padding:5px 15px 5px 15px;
+         margin-left:10px;
+       margin-bottom:7px;
+       border-radius:0px 0px 2px 2px;
+             display:inline-block;
+           font-size:12px; }
+
+div.description::before
+
+  { content: '★ '; }
 
 div.description a:link,
-div.description a:visited{
-  color:var(--dark-gray);
-  border-bottom:1px dotted var(--dark-gray);
-  padding-bottom:0;
-}
+div.description a:visited
+
+  { text-decoration:none;
+              color:var(--text-dark);
+      border-bottom:1px dotted var(--text-dark);
+     padding-bottom:0; }
 
 div.description a:hover,
-div.description a:active{
-  text-decoration:none;
-  border-bottom:1px solid var(--dark-gray);
-  color:black;
-}
+div.description a:active
+
+  {         color:var(--text-dark);
+    border-bottom:1px solid var(--text-dark); }
 
 /*———————————————————————————————————————— model list global */
 
@@ -231,20 +207,20 @@ tr.model-settings,
 tr.model-language,
 tr.model-responsive
 
-  { background-color:var(--light-gray);
+  { background-color:var(--bg-med);
        border-radius:5px; }
 
 tr.model-settings   a:link, tr.model-settings   a:visited,
 tr.model-language   a:link, tr.model-language   a:visited,
 tr.model-responsive a:link, tr.model-responsive a:visited
 
-  { color:var(--dark-gray); }
+  { color:var(--text-dark); }
 
 tr.model-settings   a:hover, tr.model-settings   a:active,
 tr.model-language   a:hover, tr.model-language   a:active,
 tr.model-responsive a:hover, tr.model-responsive a:active
 
-  { color:var(--dark-gray); }
+  { color:var(--text-dark); }
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
@@ -253,13 +229,19 @@ tr.model-module,
 tr.model-font
 
   { background-color:var(--color);
-    border:1px solid var(--light-gray); }
+    border:1px solid var(--bg-med); }
+
+/* bottom borders */
+tr.model-page th, tr.model-page td, tr.model-page th,
+tr.model-module th, tr.model-module td, tr.model-module th
+
+  { border-bottom: 1px solid var(--bg-bright); }
 
 tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
 tr.model-font   a:link, tr.model-font   a:visited
 
-  { color:var(--dark-gray); }
+  { color:var(--color-contrast); }
 
 tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
@@ -267,32 +249,26 @@ tr.model-font   a:hover, tr.model-font   a:active
 
   { color:var(--color-contrast); }
 
-/* bottom borders */
-tr.model-page th, tr.model-page td, tr.model-page th,
-tr.model-module th, tr.model-module td, tr.model-module th
-
-  { border-bottom: 1px solid var(--white); }
-
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
 tr.model-defaultscripts,
 tr.model-forwards,
 tr.model-robots
 
-  { background-color:var(--white);
-    border:1px solid var(--light-gray); }
+  { background-color:var(--bg-bright);
+    border:1px solid var(--bg-med); }
 
 tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
 tr.model-forwards       a:link, tr.model-forwards       a:visited,
 tr.model-robots         a:link, tr.model-robots         a:visited
 
-  { color:var(--dark-gray); }
+  { color:var(--text-dark); }
 
 tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
 tr.model-forwards       a:hover, tr.model-forwards       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
-  { color:var(--dark-gray); }
+  { color:var(--text-dark); }
 
 /*———————————————————————————————————————— buttons */
 
@@ -302,14 +278,17 @@ input[type=button],
 .submit-row input,
 a.button
 
-  { color:var(--dark-gray);
-    background:var(--light-gray); }
+  {      color:var(--text-dark);
+    background:var(--bg-med); }
 
-.button:hover,
+           .button:hover,
 input[type=submit]:hover,
 input[type=button]:hover,
-.submit-row input:hover,
-a.button:hover
+ .submit-row input:hover,
+          a.button:hover
+
+  { color:var(--color-contrast);
+     background:var(--color); }
 
 /*———————————————————————————————————————— default buttons */
 
@@ -317,24 +296,22 @@ a.button:hover
 input[type=submit].default,
 .submit-row input.default
 
-  { color:var(--color-contrast);
+  {      color:var(--color-contrast);
     background:var(--color);
-    outline:0 !important; } /* blue accessibility outline around default button */
+       outline:0 !important; } /* blue accessibility outline around default button */
 
 .button.default:hover,
 input[type=submit].default:hover,
 .submit-row input.default:hover
 
-  { color:var(--color);
+  {      color:var(--color);
     background:var(--color-contrast); }
-
-/* type=submit class="default" */
 
 .button.default:focus,
 input[type=submit].default:focus,
 .submit-row input.default:focus
 
-  { color:var(--color-contrast);
+  {      color:var(--color-contrast);
     background:var(--color); }
 
 
