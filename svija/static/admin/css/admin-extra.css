@@ -34,7 +34,8 @@
   }
 }
 
-/
+*/
+
 /*———————————————————————————————————————— static/admin/css/admin-extra.css */
 
 /*———————————————————————————————————————— fonts */
@@ -60,11 +61,19 @@
     font-style: normal;
 }
 
-/*———————————————————————————————————————— header bar */
+/*———————————————————————————————————————— colors */
 
-:root { --dark-gray:  hsl(0, 0%,20%);
-        --gray-text:  hsl(0, 0%,50%);
-        --light-gray: hsl(0, 0%,90%); }
+/* in sync/Svija/Admin Customization:
+
+  --color:          rgb( 70%, 100%,   0% );
+  --color-contrast: rgb(  0%,   0%,   0% ); */
+
+:root { --dark-gray:  hsl(0, 0%,  20%);
+        --gray-text:  hsl(0, 0%,  50%);
+        --light-gray: hsl(0, 0%,  90%);
+        --white:      hsl(0, 0%, 100%); }
+
+/*———————————————————————————————————————— header bar */
 
 #header
                        { background-color:var(--dark-gray);
@@ -237,13 +246,14 @@ tr.model-responsive a:hover, tr.model-responsive a:active
 
   { color:var(--dark-gray); }
 
-/*———————————————————————————————————————— model list 2.x · modules & pages */
+/*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
 tr.model-page,
 tr.model-module,
 tr.model-font
 
-  { background-color:var(--color); border-radius:5px; }
+  { background-color:var(--color);
+    border:1px solid var(--light-gray); }
 
 tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
@@ -257,25 +267,32 @@ tr.model-font   a:hover, tr.model-font   a:active
 
   { color:var(--color-contrast); }
 
+/* bottom borders */
+tr.model-page th, tr.model-page td, tr.model-page th,
+tr.model-module th, tr.model-module td, tr.model-module th
+
+  { border-bottom: 1px solid var(--white); }
+
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
-/*
 tr.model-defaultscripts,
-tr.model-optionalscript
+tr.model-forwards,
+tr.model-robots
 
-  { background-color:var(--light-gray);
-       border-radius:5px; }
+  { background-color:var(--white);
+    border:1px solid var(--light-gray); }
 
-tr.model-defaultscripts  a:link, tr.model-defaultscripts a:visited,
-tr.model-optionalscript         a:link, tr.model-optionalscript        a:visited
+tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
+tr.model-forwards       a:link, tr.model-forwards       a:visited,
+tr.model-robots         a:link, tr.model-robots         a:visited
 
   { color:var(--dark-gray); }
 
 tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
-tr.model-optionalscript        a:hover, tr.model-optionalscript        a:active
+tr.model-forwards       a:hover, tr.model-forwards       a:active,
+tr.model-robots         a:hover, tr.model-robots         a:active
 
   { color:var(--dark-gray); }
-*/
 
 /*———————————————————————————————————————— buttons */
 
