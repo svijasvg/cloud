@@ -112,7 +112,11 @@ def SubPageView(request, language_code, request_slug, screen_code):
     #defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
-    template        = 'svija/' + page.template.filename
+
+    # deprecated
+    #emplate        = 'svija/' + page.template.filename
+
+    template        = 'svija/svija.html'
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
     content_blocks = []
 
