@@ -32,7 +32,7 @@ class Forwards(models.Model):
         return self.from_url
     class Meta:
         verbose_name = "redirect"
-        verbose_name_plural = "4.2 · Redirects"
+        verbose_name_plural = "3.2 · Redirects"
 
 #———————————————————————————————————————— fonts · no dependencies
 
@@ -163,7 +163,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "robots.txt"
-        verbose_name_plural = "4.3 · Robots.txt"
+        verbose_name_plural = "3.3 · Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
@@ -267,7 +267,7 @@ class DefaultScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "scripts"
-        verbose_name_plural = "4.1 · Scripts"
+        verbose_name_plural = "3.1 · Scripts"
 
 class DefaultScriptTypes(models.Model):
     scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
@@ -342,7 +342,6 @@ class Settings(models.Model):
     class Meta:
         verbose_name = "website"
         verbose_name_plural = "1.1 · URL & Settings"
-
 #———————————————————————————————————————— page · uses template & prefix
 
 from ckeditor.fields import RichTextField
@@ -429,6 +428,5 @@ class PageModules(models.Model):
         verbose_name = "The following module is required by a page"
         verbose_name_plural = "The following modules are required by a page"
         ordering = ["zindex"]
-
 
 #———————————————————————————————————————— fin
