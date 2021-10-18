@@ -104,12 +104,12 @@ def SubPageView(request, language_code, request_slug, screen_code):
     #############################################################
 
     page            = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
-    if not page: raise Http404
-
-        #eturn HttpResponse("page not found: " + language_code + ':' + screen_code + ':' + request_slug)
+    
+    if not page: raise Http404 # passed to file Error404.py
 
     # SHOULDN'T BE first() BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
-    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
+    # deprecated:
+    #defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
     template        = 'svija/' + page.template.filename

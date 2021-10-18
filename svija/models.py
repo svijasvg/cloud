@@ -342,6 +342,7 @@ class Settings(models.Model):
     class Meta:
         verbose_name = "website"
         verbose_name_plural = "1.1 · URL & Settings"
+
 #———————————————————————————————————————— page · uses template & prefix
 
 from ckeditor.fields import RichTextField
@@ -429,5 +430,6 @@ class PageModules(models.Model):
         verbose_name = "link to module"
         verbose_name_plural = "links to modules"
         ordering = ["zindex"]
+
 
 #———————————————————————————————————————— fin

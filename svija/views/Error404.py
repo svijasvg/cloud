@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
-from svija.models import Forwards, Prefix, Settings
+from svija.models import Forwards, Language, Settings
 from svija.views import PageView
 
 @never_cache
@@ -39,13 +39,15 @@ def Error404(request, *args, **kwargs):
     # get prefix if possible, otherwise get site default prefix
 
     path1 = request.path.split('/')[1]
+
     try:
-        prefix = Prefix.objects.get(path=path1)
+        lang = Language.objects.get(code=path1)
     except ObjectDoesNotExist:
         settings = get_object_or_404(Settings,active=True)
-        path1 = settings.prefix.path
+        lang = settings.language.code
 
-    response = PageView(request, path1, 'missing',)
+    response = PageView(request, lang, 'missing',)
+
     response.status_code = 404
     return response
 
