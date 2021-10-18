@@ -30,7 +30,8 @@
   --color:          rgb( 70%, 100%,   0% );
   --color-contrast: rgb(  0%,   0%,   0% ); */
 
-:root { --bg-dark:     hsl(0, 0%,  20%);
+:root { --bg-head:     hsl(0, 0%,  20%);
+        --bg-dark:     hsl(0, 0%,  20%);
         --bg-med:      hsl(0, 0%,  90%);
         --bg-bright:   hsl(0, 0%, 100%);
         --text-dark:   hsl(0, 0%,  20%);
@@ -39,12 +40,18 @@
 
 @media (prefers-color-scheme: dark) {
 
-:root { --bg-dark:     hsl(0, 0%,  20%);
-        --bg-med:      hsl(0, 0%,  50%);
+:root { --bg-head:     hsl(0, 0%,  20%);
+        --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  30%);
         --bg-bright:   hsl(0, 0%,  12%);
         --text-dark:   hsl(0, 0%,  80%);
         --text-med:    hsl(0, 0%,  50%);
-        --text-bright: hsl(0, 0%,  50%); }
+        --text-bright: hsl(0, 0%,  50%);
+
+        --body-bg:     hsl(0, 0%,  10%); }
+
+body { background-color:var(--bg-dark) !important; }
+
 }
 
 :root { --link:        var(--text-dark); 
@@ -54,8 +61,8 @@
 /*———————————————————————————————————————— header bar */
 
 #header
-  { background-color:var(--bg-dark);
-    border-bottom:1px solid var(--color); }
+  { background-color:var(--bg-head);
+       border-bottom:1px solid var(--color); }
 
 #svija-admin-logo
 
@@ -73,7 +80,7 @@
 #header div#user-tools a:visited
 
   { color:var(--color);
-    border-bottom:1px solid var(--bg-dark);
+    border-bottom:1px solid #0000;
     text-decoration:none; }
 
 #header div#user-tools a:hover,
@@ -87,7 +94,7 @@
 div.breadcrumbs
 
   { background-color:var(--bg-dark);
-               color:var(--bg-med); }
+               color:var(--text-med); }
 
 div.breadcrumbs a:link,
 div.breadcrumbs a:visited
@@ -154,7 +161,7 @@ fieldset.collapse  /* background of hidden blocks when made visible */
   { background-color:var(--bg-med);
        border-radius:5px; }
 
-/*———————————————————————————————————————— basic links & list of modelsi */
+/*———————————————————————————————————————— basic links & list of models */
 
 a:link, a:visited      { color: var(--link);
                          text-decoration: none; }
@@ -183,15 +190,16 @@ div.description a:link,
 div.description a:visited
 
   { text-decoration:none;
-              color:var(--text-dark);
-      border-bottom:1px dotted var(--text-dark);
+              color:var(--color-contrast);
+              font-weight:bold;
+      border-bottom:1px solid var(--color-contrast);
      padding-bottom:0; }
 
 div.description a:hover,
 div.description a:active
 
-  {         color:var(--text-dark);
-    border-bottom:1px solid var(--text-dark); }
+  {         color:var(--color-contrast);
+    border-bottom:3px solid var(--color-contrast); }
 
 /*———————————————————————————————————————— model list global */
 
@@ -214,13 +222,15 @@ tr.model-settings   a:link, tr.model-settings   a:visited,
 tr.model-language   a:link, tr.model-language   a:visited,
 tr.model-responsive a:link, tr.model-responsive a:visited
 
-  { color:var(--text-dark); }
+  {           color:var(--text-dark);
+    text-decoration:none; }
 
 tr.model-settings   a:hover, tr.model-settings   a:active,
 tr.model-language   a:hover, tr.model-language   a:active,
 tr.model-responsive a:hover, tr.model-responsive a:active
 
-  { color:var(--text-dark); }
+  {        color:var(--text-dark);
+    padding-left:1rem; }
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
@@ -241,13 +251,15 @@ tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
 tr.model-font   a:link, tr.model-font   a:visited
 
-  { color:var(--color-contrast); }
+  {           color:var(--color-contrast);
+    text-decoration:none; }
 
 tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
-  { color:var(--color-contrast); }
+  {        color:var(--color-contrast);
+    padding-left:1rem; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
@@ -262,13 +274,15 @@ tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
 tr.model-forwards       a:link, tr.model-forwards       a:visited,
 tr.model-robots         a:link, tr.model-robots         a:visited
 
-  { color:var(--text-dark); }
+  {           color:var(--text-dark);
+    text-decoration:none; }
 
 tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
 tr.model-forwards       a:hover, tr.model-forwards       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
-  { color:var(--text-dark); }
+  {        color:var(--text-dark);
+    padding-left:1rem; }
 
 /*———————————————————————————————————————— buttons */
 
