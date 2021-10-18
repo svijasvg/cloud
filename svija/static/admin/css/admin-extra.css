@@ -328,5 +328,9 @@ input[type=submit].default:focus,
   {      color:var(--color-contrast);
     background:var(--color); }
 
+/*———————————————————————————————————————— tiny original name text */
+
+td.original p{ display:none; }
+
 
 /*———————————————————————————————————————— fin */
