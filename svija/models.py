@@ -95,13 +95,13 @@ class Language(models.Model):
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
-    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
-    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
-
     # 3 deprecated fields
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
+
+    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
     form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)

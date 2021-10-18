@@ -9,6 +9,8 @@
 #   if core_content['form'] == '':
 #       return core_content
 
+#———————————————————————————————————————— generate_form_js(language):
+
 def generate_form_js(language):
 
     form_js = '\n//———————————————————————————————————————— mail form\n\n'
@@ -44,3 +46,4 @@ def generate_form_js(language):
 #   return core_content
 
     return form_js
+
