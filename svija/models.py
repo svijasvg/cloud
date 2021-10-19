@@ -25,8 +25,10 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
+
+    # deprecated
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
 
     def __str__(self):
         return self.from_url
@@ -392,6 +394,7 @@ class Page(models.Model):
 #   def __str__(self):
 #       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
 
+#———————————————————————————————————————— page models
 
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)

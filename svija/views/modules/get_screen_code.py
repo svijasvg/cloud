@@ -1,5 +1,7 @@
 #———————————————————————————————————————— get_screen_code.py
 
+#———————————————————————————————————————— definition
+
 from svija.models import Responsive 
 
 def get_screen_code(request):
@@ -17,5 +19,6 @@ def get_screen_code(request):
     code = all_screens[1].code
 
   return code
+
 
 #———————————————————————————————————————— fin

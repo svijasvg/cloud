@@ -81,24 +81,19 @@ def PageView(request, language_code, request_slug):
 @cache_per_user(60*60*24, False)
 def SubPageView(request, language_code, request_slug, screen_code):
 
+    #eturn HttpResponse("debugging message." + request.path)
+
+    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
+    if not page: raise Http404 # passed to file Error404.py
+
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
     settings        = Settings.objects.filter(active=True).first()
     language        = Language.objects.filter(code=language_code).first()
 
-    #deprecated
+    # now called screen
     responsive      = Responsive.objects.filter(code=screen_code).first()
-
-    #############################################################
-
-    page            = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
-    
-    if not page: raise Http404 # passed to file Error404.py
-
-    # SHOULDN'T BE first() BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
-    # deprecated:
-    #defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
 
     use_p3          = settings.p3_color
 
@@ -107,7 +102,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     template        = 'svija/svija.html'
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
-    content_blocks = []
+    content_blocks  = []
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -129,6 +124,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     screens = Responsive.objects.all()
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
+    system_js = '// '+request.path + '\n// '+request_slug + '\n//' + screen_code + system_js
 
     #———————————————————————————————————————— page SVG's & scripts
 
@@ -136,7 +132,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
     svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
-
 
     #———————————————————————————————————————— scripts
 

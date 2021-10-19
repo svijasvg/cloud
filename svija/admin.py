@@ -22,12 +22,12 @@ from .models import Forwards
 class ForwardsAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('from_url', 'to_prefix', 'to_page', 'active', )
+    list_display = ('from_url', 'to_page', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('no leading slash',    {'fields': ['from_url','to_prefix', 'to_page','active',], 'description':descRedirects,}),
+        ('update redirect',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirects,}),
     ]   
 
 admin.site.register(Forwards, ForwardsAdmin)

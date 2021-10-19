@@ -16,22 +16,20 @@ else pixel_width = 1200;
 
 //———————————————————————————————————————— find best fit
 
-var this_screen_code = all_screens[0];
+var correct_screen_code = all_screens[0];
 var min_value = 1000000;
 
 for (const [key, value] of Object.entries(all_screens)) {
   if (pixel_width < key && pixel_width < min_value){
     min_value = key;
-    this_screen_code = value;
+    correct_screen_code = value;
   }
 }
 
 //———————————————————————————————————————— set cookie & redirect
 
-setCookie('screen_code', this_screen_code, 7);
+setCookie('screen_code', correct_screen_code, 7);
 
-if (screen_code != this_screen_code){
-  // msg = 'The page loaded was '+screen_code+', do you want to redirect to '+this_screen_code+'?';
-  // if (confirm(msg)) location.reload();
-  location.reload();
+if (screen_code != correct_screen_code){
+  setTimeout(window.location.reload.bind(window.location), 50);
 }
