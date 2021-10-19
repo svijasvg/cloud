@@ -55,35 +55,25 @@ from modules.get_fonts import *
 from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
+from modules.get_screen_code import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 #rom modules.page_version import *
 from django.http import Http404
 
-
-#———————————————————————————————————————— main view definition
-# return HttpResponse("debugging message.")
+#———————————————————————————————————————— ▼ PageView(request, language_code, request_slug):
+#
+#   this method adds a screen code (/mb, /cp) to the request path
+#   then calls the real pageview function, which is cached
 
 def PageView(request, language_code, request_slug):
 
-  screen_code = request.COOKIES.get('screen_code')
-
-#———————————————————————————————————————— get smallest resolution screen code
-
-  if (screen_code == None): 
-    all_screens = Responsive.objects.order_by('limit')
-
-    if (len(all_screens) > 1): screen_code = all_screens[1].code
-    else: screen_code = all_screens[0].code
-
-#———————————————————————————————————————— use cached page view
-
+  screen_code = get_screen_code(request)
   request.path += '/' + screen_code
   return SubPageView(request, language_code, request_slug, screen_code)
 
-
-#———————————————————————————————————————— ▼ cached view definition
+#———————————————————————————————————————— ▼ SubPageView(request, language_code, request_slug, screen_code):
 #
 #   different according to screen code because screen code
 #   has been appended to path
