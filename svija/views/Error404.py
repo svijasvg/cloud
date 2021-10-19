@@ -19,6 +19,7 @@ def Error404(request, *args, **kwargs):
   # remove leading slash
   requested = request.path[1:]
   missing_page = 'missing'
+  missing_msg = '<pre>\n\n   Page Missing: ' + requested + '\n\n   To customize this message, add a page called "' + missing_page + '".'
 
 #———————————————————————————————————————— check for redirect
 
@@ -42,7 +43,7 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— if we're already on the "missing" page
 
   if missing_page in requested:
-    response = HttpResponse('<pre>\n\n   Page Missing: ' + requested + '\n\n   To customize this message, add a page called "' + missing_page + '".')
+    response = HttpResponse(missing_msg)
     response.status_code = 404
     return response
 
@@ -54,7 +55,7 @@ def Error404(request, *args, **kwargs):
     requested_code = request.path.split('/')[1]
   
   try:
-    lang = Language.objects.get(code=requested_code)
+    lang = Language.objects.get(code=requested_code).code
   except ObjectDoesNotExist:
     settings = get_object_or_404(Settings,active=True)
     lang = settings.language.code
@@ -65,13 +66,18 @@ def Error404(request, *args, **kwargs):
 
 #———————————————————————————————————————— update the request.path to missing
 
+  orig_path = request.path
   request.path = '/' + lang + '/' + missing_page
 
 #———————————————————————————————————————— return correct missing page
 
-  response = PageView(request, lang, missing_page,)
-  response.status_code = 404
+  try:
+    response = PageView(request, lang, missing_page,)
+  except:
+    response = HttpResponse(missing_msg)
 
+  response.status_code = 404
   return response
+
 
 #———————————————————————————————————————— fin
