@@ -90,10 +90,6 @@ def PageView(request, language_code, request_slug):
 
 @cache_per_user(60*60*24, False)
 def SubPageView(request, language_code, request_slug, screen_code):
-#   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
-#   return HttpResponse(request.path) # //mb or /en/contact/mb
-
-  # return HttpResponse("debugging message: " + request.path)
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
