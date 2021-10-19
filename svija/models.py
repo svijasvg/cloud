@@ -25,6 +25,8 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
+
+    # renma to_url
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     # deprecated

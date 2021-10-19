@@ -27,7 +27,7 @@ class ForwardsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('update redirect',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirects,}),
+        ('redirect settings',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirects,}),
     ]   
 
 admin.site.register(Forwards, ForwardsAdmin)

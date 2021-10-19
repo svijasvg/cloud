@@ -40,13 +40,7 @@ def Error404(request, *args, **kwargs):
 
   try:
     redirect_obj = Forwards.objects.get(from_url=request_path, active=True)
-
-    if redirect_obj.to_prefix[0:4] == 'http': # or https
-      return HttpResponsePermanentRedirect(redirect_obj.to_prefix + '://' + redirect_obj.to_page)
-    elif redirect_obj.to_prefix != '':
-      return HttpResponsePermanentRedirect('/'+redirect_obj.to_prefix + '/' + redirect_obj.to_page)
-    else:
-      return HttpResponsePermanentRedirect('' + redirect_obj.to_page)
+    return HttpResponsePermanentRedirect(redirect_obj.to_page)
 
   except ObjectDoesNotExist: pass
 
