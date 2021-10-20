@@ -46,14 +46,6 @@ def send(settings, language, request, ua):
 
     fail = '' # send mail if not '' at end
 
-#———————————————————————————————————————— configuration
-
-    to       = language.email
-    bcc      = language.bcc
-    default  = language.default
-    no_email = language.no_email
-    subject  = language.subject + ' ' + settings.url
-
 #———————————————————————————————————————— get form data
 
     naim = str(request.get('name'))
@@ -129,6 +121,14 @@ def send(settings, language, request, ua):
     sep = ')\n'
     body += "\n\n————————————————————————————————————————\n" +sep.join(s)
 
+#———————————————————————————————————————— configuration
+
+    to       = language.email
+    bcc      = language.bcc
+    default  = language.default
+    no_email = language.no_email
+    subject  = language.subject + ' ' + settings.url
+
     #———————————————————————————————————————— sendmail
 
     ht = settings.mail_srv
@@ -159,4 +159,4 @@ def send(settings, language, request, ua):
     if fail == '': return 1
     else: return fail
 
-    #———————————————————————————————————————— fin
+#———————————————————————————————————————— fin

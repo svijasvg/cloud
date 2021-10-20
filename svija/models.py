@@ -357,7 +357,6 @@ class Page(models.Model):
     visitable = models.BooleanField(default=True, verbose_name='published',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
-    template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
     default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
 
@@ -387,6 +386,7 @@ class Page(models.Model):
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
+    template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
 
     def __unicode__(self):
         return self.name

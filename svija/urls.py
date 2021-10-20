@@ -31,7 +31,7 @@ urlpatterns = [
     path('<slug:lng>/mail', views.MailView),
 
     # send test mail to see what happens
-    path('<slug:lng>/send', views.SendView),
+    path('send', views.SendView),
 
 #———————————————————————————————————————— placed images (in Links folder)
 

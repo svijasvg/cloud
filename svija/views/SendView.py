@@ -8,23 +8,24 @@
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Prefix, Settings
+from svija.models import Settings, Language
 from svija.views import PageView
 from modules import send_mail
 
 #———————————————————————————————————————— send mail
 
 
-def SendView(request, lng):
+def SendView(request):
     if not request.user.is_superuser:
         response = PageView(request, 'en','missing',)
         response.status_code = 404
         return response
 
-    pfix = get_object_or_404(Prefix, path=lng)
-    lng = pfix.language
+    settings = get_object_or_404(Settings, active=True)
+    language_code = settings.language.code
+    this_language = Language.objects.get(code=language_code)
 
-    response = sendx(lng)
+    response = sendx(this_language)
 
     return HttpResponse(response)
 
@@ -61,31 +62,45 @@ def sendx(language):
 
     fail = '' # send mail if not '' at end
 
-    #———————————————————————————————————————— configuration
-
     naim = 'test name' 
     addr = 'example@example.com' 
     body = 'email is working' 
-    frm = addr
-
-    to       = language.email
-    bcc      = language.bcc
-    default  = language.default
-    no_email = language.no_email
-    subject  = language.subject
 
     #———————————————————————————————————————— sendmail
 
-    ht = settings.mail_srv
-    pt = settings.mail_port
-    un = settings.mail_id
-    pw = settings.mail_pass
+    fail = mailit(settings, language, body)
+
+    if fail == '': fail = 'mail sent successfully'
+    return '<html><body><pre>' + str(fail)
+
+#———————————————————————————————————————— function
+
+def mailit(settings, language, body):
+
+    fail = ''
+
+    #—————————— site settings
+
+    ht  = settings.mail_srv
+    pt  = settings.mail_port
+    un  = settings.mail_id
+    pw  = settings.mail_pass
     tls = settings.mail_tls
+
+    #—————————— language settings
+
+    subject  = language.subject
+    to       = language.email
+    bcc      = language.bcc
+#   default  = language.default
+    no_email = language.no_email
 
     # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
     ht = socket.gethostbyname(ht)
 
     connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
+
+    frm = settings.url + '<'+to+'>'
 
     try:
         send_mail(
@@ -99,7 +114,6 @@ def sendx(language):
     except SMTPException as e:
         fail = e
 
-    if fail == '': fail = 'mail sent successfully'
-    return '<html><body><pre>' + str(fail)
+    return fail
 
-    #———————————————————————————————————————— fin
+#———————————————————————————————————————— fin
