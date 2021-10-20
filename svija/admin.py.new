@@ -275,11 +275,9 @@ admin.site.register(Module, ModuleAdmin)
 
 #———————————————————————————————————————— settings · depends on robots & prefix
 
-from urllib.parse import quote
-
-mailLink     = "mailto:support@svija.love?subject=custom domain request&body="
-mailBody     = quote("I would like to change the address of my Svija website:\n\n    from:\n    to:\n\nThank you,\n")
-descSettings = "Changing the address of your website is easy — email <a href='" + mailLink + mailBody + "'>support@svija.love</a>."
+#mailLink     = "mailto:support@svija.love?subject=custom domain request&body=I would like to change the address of my svija website\n\n    from _____\n\n    to _____"
+#escSettings = "To change the address of your website, follow <a href='" + mailLink + "'>this link</a>."
+descSettings = "x"
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):

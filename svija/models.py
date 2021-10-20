@@ -323,7 +323,7 @@ class Settings(models.Model):
 
     active        = models.BooleanField(default=False, verbose_name='online',)
     robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
-    url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
+    url           = models.CharField(max_length=200, default='', verbose_name='site address',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
     language      = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='default language')
 
