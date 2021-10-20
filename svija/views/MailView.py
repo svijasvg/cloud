@@ -19,9 +19,13 @@ from modules import send_mail
 
 def MailView(request):
 
-  # comment out 4 lines for testing
+  # comment out these lines for testing
 
-  if request.method != 'POST': return HttpResponse(0)
+  if request.method != 'POST':
+    response = HttpResponse(0)
+    response.status_code = 404
+    return response
+
   addr = request.get('email').lower()
   naim = str(request.get('name'))
   body = request.get('message')
