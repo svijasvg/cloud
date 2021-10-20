@@ -30,7 +30,5 @@ for (const [key, value] of Object.entries(all_screens)) {
 
 setCookie('screen_code', correct_screen_code, 7);
 
-if (screen_code != correct_screen_code){
-  //  alert(getCookie('screen_code')); // returns mb as it should
+if (screen_code != correct_screen_code)
   setTimeout(window.location.reload.bind(window.location), 50);
-}

@@ -67,6 +67,7 @@ from django.http import Http404
 #   this method adds a screen code (/mb, /cp) to the request path
 #   then calls the real pageview function, which is cached
 
+@never_cache
 def PageView(request, language_code, request_slug):
 
   screen_code = get_screen_code(request)
