@@ -44,6 +44,12 @@ def Error404(request, *args, **kwargs):
 
   except ObjectDoesNotExist: pass
 
+  try:
+    redirect_obj = Forwards.objects.get(from_url='/'+request_path, active=True)
+    return HttpResponsePermanentRedirect(redirect_obj.to_page)
+
+  except ObjectDoesNotExist: pass
+
 #———————————————————————————————————————— "missing" page is missing
 
   if missing_page in request_path:

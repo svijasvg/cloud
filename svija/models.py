@@ -362,7 +362,7 @@ class Page(models.Model):
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
-    pub_date    = models.DateTimeField(default=datetime.now, blank=True)
+    pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
     url    = models.CharField(max_length=200, default='', verbose_name='address')
 
     # used in page construction
@@ -420,8 +420,8 @@ class Svg(models.Model):
     def __str__(self):
         return self.filename
     class Meta:
-        verbose_name = "link to Illustrator file"
-        verbose_name_plural = "links to Illustrator files"
+        verbose_name = "Illustrator file"
+        verbose_name_plural = "Illustrator files"
         ordering = ["zindex"]
 
 class PageModules(models.Model):

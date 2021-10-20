@@ -8,7 +8,6 @@ descCombinations = "Combination Codes are the first part of the page address. Th
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
 #escOptional     = "Optional scripts can be added via the settings for each page."
 descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
-descRedirects    = "Use redirects to <b>forward</b> an old page address to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
 descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
 descNotes        = "This is a place where you can leave messages for yourself or your coworkers"
 descHelp         = "Articles or useful information to help you with Svija."
@@ -17,6 +16,8 @@ descHelp         = "Articles or useful information to help you with Svija."
 from django.contrib import admin
 
 #———————————————————————————————————————— redirects · no dependencies
+
+descRedirects = "<b>Forward</b> an old page to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
 
 from .models import Forwards
 class ForwardsAdmin(admin.ModelAdmin):
@@ -308,8 +309,8 @@ class SvgInline(admin.TabularInline):
 class DefaultScriptsInline(admin.TabularInline):
     model = Page.default_scripts.through
     extra = 0 
-    verbose_name = "script set"
-    verbose_name_plural = "script sets"
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
     classes = ['collapse']
 
 #   class OptionalScriptInline(admin.TabularInline):
@@ -345,8 +346,8 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('basic setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),],'description':descPages, }),
-        ('details',            {'fields': ['pub_date','notes','template',], 'classes': ['collapse'],}),
+        ('setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),],'description':descPages, }),
+        ('page info',            {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
         ('accessibility',      {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
         ('overrides',          {'fields': [('suppress_modules','override_dims',), ],}),
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
