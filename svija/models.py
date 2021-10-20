@@ -101,10 +101,10 @@ class Language(models.Model):
 
     # 3 deprecated fields
     flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
-    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
 
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
@@ -317,7 +317,7 @@ class PrefixModules(models.Model):
         verbose_name_plural = "The following modules are required by a combination code"
         ordering = ["zindex"]
 
-#———————————————————————————————————————— site settings · combination code & robots
+#———————————————————————————————————————— settings · combination code & robots
 
 class Settings(models.Model):
 
