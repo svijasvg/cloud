@@ -23,7 +23,7 @@ from django.http import QueryDict
 def SendView(request):
 
   if not request.user.is_superuser:
-    response = PageView(request, 'en','missing',)
+    response = HttpResponse(0)
     response.status_code = 404
     return response
 
