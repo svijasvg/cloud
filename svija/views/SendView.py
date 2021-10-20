@@ -1,119 +1,49 @@
 #———————————————————————————————————————— SendView.py
+
+#———————————————————————————————————————— comments
 #
-# going to /fr/send will send a test email
-# this is to eliminate confusion about
-# where send failures come from
+#   /send?to=andrew@svija.love&bcc=camrias@free.fr
 #
-#———————————————————————————————————————— imports
+#   to send a test email, to make sure that
+#   the mail parameters are correct
+#
+#   sending parameters are drawn from
+#   system settings
+#
+#———————————————————————————————————————— import
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Settings, Language
-from svija.views import PageView
+from svija.models import Settings
 from modules import send_mail
+from django.http import QueryDict
 
 #———————————————————————————————————————— send mail
 
-
 def SendView(request):
-    if not request.user.is_superuser:
-        response = PageView(request, 'en','missing',)
-        response.status_code = 404
-        return response
 
-    settings = get_object_or_404(Settings, active=True)
-    language_code = settings.language.code
-    this_language = Language.objects.get(code=language_code)
+  if not request.user.is_superuser:
+    response = PageView(request, 'en','missing',)
+    response.status_code = 404
+    return response
 
-    response = sendx(this_language)
+  settings = get_object_or_404(Settings, active=True)
 
+  subject  = "⚠️ test email from " + settings.url
+  to     = request.GET.get('to', '')
+  bcc    = request.GET.get('bcc', '')
+  body   = 'If you have received this message, your email is working' 
+
+  if to == '':
+    response =  "<pre>\n\n    Please include an email address:\n\n      " + settings.url + "/send?to=somebody@example.com&bcc=somebodyelse&website.com\n\n    bcc is optional"
     return HttpResponse(response)
 
+  response = send_mail.send(settings, subject, to, bcc, body)
 
-#———————————————————————————————————————— imported from send_mail.py
+  if response == '': response = 'mail sent successfully'
+  response = '<html><body><pre>\n\n    ' + str(response)
 
-#———————————————————————————————————————— imports
+  return HttpResponse(response)
 
-import sys
-import os
-import cgi
-import re
-import socket
-from email.mime.text import MIMEText
-import smtplib
-from smtplib import SMTPException
-from django.core.mail import get_connection, send_mail
-
-#———————————————————————————————————————— errors to browser
-
-import cgitb
-cgitb.enable() 
-
-#———————————————————————————————————————— function
-
-def sendx(language):
-    settings = get_object_or_404(Settings, active=True)
-
-#———————————————————————————————————————— module paths
-
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    if not path in sys.path: sys.path.insert(1, path)
-    del path
-
-    fail = '' # send mail if not '' at end
-
-    naim = 'test name' 
-    addr = 'example@example.com' 
-    body = 'email is working' 
-
-    #———————————————————————————————————————— sendmail
-
-    fail = mailit(settings, language, body)
-
-    if fail == '': fail = 'mail sent successfully'
-    return '<html><body><pre>' + str(fail)
-
-#———————————————————————————————————————— function
-
-def mailit(settings, language, body):
-
-    fail = ''
-
-    #—————————— site settings
-
-    ht  = settings.mail_srv
-    pt  = settings.mail_port
-    un  = settings.mail_id
-    pw  = settings.mail_pass
-    tls = settings.mail_tls
-
-    #—————————— language settings
-
-    subject  = language.subject
-    to       = language.email
-    bcc      = language.bcc
-#   default  = language.default
-    no_email = language.no_email
-
-    # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
-    ht = socket.gethostbyname(ht)
-
-    connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
-
-    frm = settings.url + '<'+to+'>'
-
-    try:
-        send_mail(
-            subject,
-            body,
-            frm,
-            [to, bcc,],
-            fail_silently=True,
-            connection=connection,
-        )
-    except SMTPException as e:
-        fail = e
-
-    return fail
 
 #———————————————————————————————————————— fin
