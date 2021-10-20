@@ -90,8 +90,8 @@ class Notes(models.Model):
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
-    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
+
     #efault = models.CharField(max_length=20, default='', verbose_name='default page')
     default  = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
@@ -100,6 +100,7 @@ class Language(models.Model):
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
     # 3 deprecated fields
+    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
     no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
 
