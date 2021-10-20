@@ -123,12 +123,13 @@ ul.messagelist li a
 
 /*———————————————————————————————————————— top right "add page" bubble */
 
-.object-tools a.addlink
+.object-tools a.addlink,
+.object-tools a.historylink
 
   {         color:var(--color);
        background:var(--bg-dark);
     border-radius:5px;
-      padding-top:6px;
+      padding-top:4px;
     padding-right:10px; }
 
 /*———————————————————————————————————————— black bars in middle of page */
