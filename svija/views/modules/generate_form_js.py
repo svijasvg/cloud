@@ -22,9 +22,10 @@ def generate_form_js(language):
     form_js += 'var name_init = "'       + scape(language.form_name      ) + '";\n'
     form_js += 'var business_init = "'   + scape(language.form_business  ) + '";\n'
     form_js += 'var address_init = "'    + scape(language.form_email     ) + '";\n'
-    form_js += 'var message_init = "'    + scape(language.form_status    ) + '";\n'
+    form_js += 'var message_init = "'    + scape(language.form_message   ) + '";\n'
     form_js += 'var send_init = "'       + scape(language.form_send      ) + '";\n'
 
+    form_js += 'var status_init = "'     + scape(language.form_status    ) + '";\n'
     form_js += 'var status_sending = "'  + scape(language.form_sending   ) + '";\n'
     form_js += 'var status_failed = "'   + scape(language.form_alert_fail) + '";\n'
     form_js += 'var status_received = "' + scape(language.form_rcvd      ) + '";\n'
