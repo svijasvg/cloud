@@ -40,18 +40,18 @@
 
 @media (prefers-color-scheme: dark) {
 
-:root { --bg-head:     hsl(0, 0%,  20%);
-        --bg-dark:     hsl(0, 0%,  20%);
-        --bg-med:      hsl(0, 0%,  30%);
-        --bg-bright:   hsl(0, 0%,  12%);
-        --text-dark:   hsl(0, 0%,  80%);
-        --text-med:    hsl(0, 0%,  50%);
-        --text-bright: hsl(0, 0%,  50%);
-
-        --body-bg:     hsl(0, 0%,  10%); }
-
-body { background-color:var(--bg-dark) !important; }
-
+        :root { --bg-head:     hsl(0, 0%,  20%);
+                --bg-dark:     hsl(0, 0%,  20%);
+                --bg-med:      hsl(0, 0%,  30%);
+                --bg-bright:   hsl(0, 0%,  12%);
+                --text-dark:   hsl(0, 0%,  80%);
+                --text-med:    hsl(0, 0%,  50%);
+                --text-bright: hsl(0, 0%,  50%);
+        
+                --body-bg:     hsl(0, 0%,  10%); }
+        
+        body { background-color:var(--bg-dark) !important; }
+        
 }
 
 :root { --link:        var(--text-dark); 
@@ -215,7 +215,7 @@ tr.model-settings,
 tr.model-language,
 tr.model-responsive
 
-  { background-color:var(--bg-med);
+  { background-color:var(--bg-med) !important;
        border-radius:5px; }
 
 tr.model-settings   a:link, tr.model-settings   a:visited,
