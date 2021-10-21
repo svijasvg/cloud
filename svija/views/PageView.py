@@ -55,64 +55,55 @@ from modules.get_fonts import *
 from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
+from modules.get_screen_code import *
 from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 #rom modules.page_version import *
 from django.http import Http404
 
+#———————————————————————————————————————— ▼ PageView(request, language_code, request_slug):
+#
+#   this method adds a screen code (/mb, /cp) to the request path
+#   then calls the real pageview function, which is cached
 
-#———————————————————————————————————————— main view definition
-
+@never_cache
 def PageView(request, language_code, request_slug):
 
-  screen_code = request.COOKIES.get('screen_code')
-
-#———————————————————————————————————————— get smallest resolution screen code
-
-  if (screen_code == None): 
-    all_screens = Responsive.objects.order_by('limit')
-
-    if (len(all_screens) > 1): screen_code = all_screens[1].code
-    else: screen_code = all_screens[0].code
-
-#———————————————————————————————————————— use cached page view
-
+  screen_code = get_screen_code(request)
   request.path += '/' + screen_code
   return SubPageView(request, language_code, request_slug, screen_code)
 
-
-#———————————————————————————————————————— ▼ cached view definition
+#———————————————————————————————————————— ▼ SubPageView(request, language_code, request_slug, screen_code):
 #
 #   different according to screen code because screen code
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
 def SubPageView(request, language_code, request_slug, screen_code):
-#   return HttpResponse(language_code + ' : ' + request_slug + ' : ' + screen_code)
-#   return HttpResponse(request.path) # //mb or /en/contact/mb
+
+    #eturn HttpResponse("debugging message." + request.path)
+
+    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
+    if not page: raise Http404 # passed to file Error404.py
 
     #———————————————————————————————————————— main settings
     # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
     settings        = Settings.objects.filter(active=True).first()
     language        = Language.objects.filter(code=language_code).first()
+
+    # now called screen
     responsive      = Responsive.objects.filter(code=screen_code).first()
 
-    #############################################################
-
-    page            = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
-    if not page: raise Http404
-
-        #eturn HttpResponse("page not found: " + language_code + ':' + screen_code + ':' + request_slug)
-
-    # SHOULDN'T BE first() BECAUSE THAT ONLY GETS ONE SCRIPT WHEN THERE COULD BE SEVERA
-    defaultscripts  = DefaultScripts.objects.filter(Q(responsive__code=screen_code) & Q(active=True)).first()
-
     use_p3          = settings.p3_color
-    template        = 'svija/' + page.template.filename
+
+    # deprecated
+    #emplate        = 'svija/' + page.template.filename
+
+    template        = 'svija/svija.html'
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
-    content_blocks = []
+    content_blocks  = []
 
     if page.override_dims: page_width = page.width
     else:                  page_width = responsive.width
@@ -134,33 +125,39 @@ def SubPageView(request, language_code, request_slug, screen_code):
     screens = Responsive.objects.all()
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
+    system_js = '// '+request.path + '\n// '+request_slug + '\n//' + screen_code + system_js
 
-    #———————————————————————————————————————— default & optional scripts
-
-    content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
-    content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
-
-    #———————————————————————————————————————— page: SVG's
+    #———————————————————————————————————————— page SVG's & scripts
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
-    svgs, css_dimensions = get_page_svgs(page, page_width, use_p3)
+    svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
-    #———————————————————————————————————————— page: scripts & modules
+    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
+
+    #———————————————————————————————————————— scripts
+
+    page_scripts_raw = page.default_scripts.all().filter(active=True)
+    for this_set in page_scripts_raw:
+      content_blocks.append( scripts_to_page_obj( 'scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
+
+#   deprecated
+#   content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
+#   content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
+
+    #———————————————————————————————————————— page modules
 
     # pagemodules CONTAIN modules, but are not modules
     # can't use get_modules to get them because the modules are INSIDE pagemodules
 
-    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
-
     page_modules_raw = page.pagemodules_set.all().order_by('zindex')
-    page_modules = get_page_modules('page modules', page_modules_raw, page_width, use_p3)
+    page_modules = get_page_modules('page modules', page_modules_raw, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— modules
 
     if not page.suppress_modules:
         screen_modules = Module.objects.filter(Q(screen__code=screen_code) & Q(active=True) & Q(optional=True)).order_by('display_order')
-        module_content = get_modules('screen modules', screen_modules, page_width, use_p3)
+        module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 
     #———————————————————————————————————————— combine content blocks

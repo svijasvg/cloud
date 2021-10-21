@@ -12,7 +12,7 @@ from PageView import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
-def get_page_modules(label, all_modules, page_width, use_p3):
+def get_page_modules(label, all_modules, screen_code, page, page_width, use_p3):
 
     head_css = head_js = body_js = svgs = html = form = ''
 
@@ -26,7 +26,7 @@ def get_page_modules(label, all_modules, page_width, use_p3):
 
         hj = hc = bj = sv = ht = fm = ''
 
-        s, c = get_single_svg(this_module, page_width, use_p3)
+        s, c = get_single_svg(this_module, screen_code, page_width, use_p3)
         svgs     += s
         head_css += c
 

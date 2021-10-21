@@ -1,52 +1,98 @@
-#   return HttpResponse("debugging message.")
-#———————————————————————————————————————— 404 error
-# https://websiteadvantage.com.au/404-Error-Handler-Checker
+#———————————————————————————————————————— Error404.py
 
-# Links folder redirection breaks if the prefix does not exist
-# instead of defaulting to en, need to get site default language
+#———————————————————————————————————————— notes
+#
+#   https://websiteadvantage.com.au/404-Error-Handler-Checker
+#
+#   Links folder redirection breaks if the prefix does not exist
+#   instead of defaulting to en, need to get site default language
+#
+#   return HttpResponse("debugging message.")
+#
+#———————————————————————————————————————— imports
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
-from svija.models import Forwards, Prefix, Settings
-from svija.views import PageView
+from svija.models import Forwards, Language, Settings
+from svija.views import SubPageView
 
-@never_cache
+from modules.get_screen_code import *
+
+#———————————————————————————————————————— Error404(request, *args, **kwargs):
+
+@never_cache # we'll see if this is a problem
 def Error404(request, *args, **kwargs):
-    requested = request.path[1:]
 
-    #————— check fer redirect
+  request_path = request.path[1:] # remove leading slash
 
-    # 3 cases:
-    # external site, starts with http or https
-    # internal address, with prefix like /fr/
-    # internal address, with no prefix like /admin/svija/help/
+  missing_page = 'missing'
+  missing_msg = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "' + missing_page + '".'
 
-    try:
-        redirect_obj = Forwards.objects.get(from_url=requested, active=True)
+#———————————————————————————————————————— check for redirect
 
-        if redirect_obj.to_prefix[0:4] == 'http': # or https
-            return HttpResponsePermanentRedirect(redirect_obj.to_prefix + '://' + redirect_obj.to_page)
-        elif redirect_obj.to_prefix != '':
-            return HttpResponsePermanentRedirect('/'+redirect_obj.to_prefix + '/' + redirect_obj.to_page)
-        else:
-            return HttpResponsePermanentRedirect('' + redirect_obj.to_page)
+  # 3 cases:
+  # external site, starts with http or https
+  # internal address, with prefix like /fr/
+  # internal address, with no prefix like /admin/svija/help/
 
-    except ObjectDoesNotExist: pass
+  try:
+    redirect_obj = Forwards.objects.get(from_url=request_path, active=True)
+    return HttpResponsePermanentRedirect(redirect_obj.to_page)
 
-    # get prefix if possible, otherwise get site default prefix
+  except ObjectDoesNotExist: pass
 
-    path1 = request.path.split('/')[1]
-    try:
-        prefix = Prefix.objects.get(path=path1)
-    except ObjectDoesNotExist:
-        settings = get_object_or_404(Settings,active=True)
-        path1 = settings.prefix.path
+  try:
+    redirect_obj = Forwards.objects.get(from_url='/'+request_path, active=True)
+    return HttpResponsePermanentRedirect(redirect_obj.to_page)
 
-    response = PageView(request, path1, 'missing',)
+  except ObjectDoesNotExist: pass
+
+#———————————————————————————————————————— "missing" page is missing
+
+  if missing_page in request_path:
+    response = HttpResponse(missing_msg)
     response.status_code = 404
     return response
+
+#———————————————————————————————————————— language if specified
+
+  request_path_code = 'none'
+
+  if '/' in request_path:
+    request_path_code = request.path.split('/')[1]
+  
+  try:
+    language_code = Language.objects.get(code=request_path_code).code
+  except:
+    try:
+      settings = Settings.objects.get(active=True)
+      language_code = settings.language.code
+    except:
+      response = HttpResponse(missing_msg)
+      response.status_code = 404
+      return response
+
+#———————————————————————————————————————— get screen if possible
+
+  screen_code = get_screen_code(request)
+
+#———————————————————————————————————————— update the request.path to missing
+
+  request.path = '/' + language_code + '/' + missing_page + '/' + screen_code
+
+#———————————————————————————————————————— return correct missing page
+
+  try:
+    response = SubPageView(request, language_code, missing_page, screen_code)
+  except:
+    response = HttpResponse(missing_msg)
+    #esponse = HttpResponse(request.path)
+
+  response.status_code = 404
+  return response
+
 
 #———————————————————————————————————————— fin

@@ -1,25 +1,115 @@
 #———————————————————————————————————————— MailView.py
-# /fr/mail sends mail (needs language code)
 
+#———————————————————————————————————————— notes
+#
+#   E0 = missing email or message
+#   E1 = email failes whitelist
+#   E2 = name failed blacklist
+#   E3 = body failed blacklist
+#
+#———————————————————————————————————————— import
+
+import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Prefix, Settings
-
-#———————————————————————————————————————— send mail
-
+from svija.models import Language, Settings
 from modules import send_mail
 
-def MailView(request, lng):
-    if request.method != 'POST': return HttpResponse(0)
+#———————————————————————————————————————— MailView(request):
 
-    ua = request.META['HTTP_USER_AGENT']
+def MailView(request):
 
-    pfix = get_object_or_404(Prefix, path=lng)
-    lng = pfix.language
+  # comment out these lines for testing
 
-    settings = get_object_or_404(Settings,active=True)
-    response = send_mail.send(settings, lng, request.POST, ua)
+  if request.method != 'POST':
+    response = HttpResponse(0)
+    response.status_code = 404
+    return response
 
-    return HttpResponse(response)
+  addr = request.get('email').lower()
+  naim = str(request.get('name'))
+  body = request.get('message')
+
+# addr = "hompty.hooby@freedom.org"
+# naim = ""
+# body = "me`'ssage body"
+
+#———————————————————————————————————————— parameters
+
+  fail = '' # mail will be sent if not '' at end
+
+  settings = get_object_or_404(Settings, active=True)
+  language = settings.language
+
+  to       = language.email
+  bcc      = language.bcc
+  subject  = language.subject
+
+#———————————————————————————————————————— missing fields
+
+  if addr == '' or body=='':
+    return HttpResponse('E0')
+
+#———————————————————————————————————————— validate email
+
+  whitelistmail = re.compile("[a-z,0-9,\.,_,-]+\@[a-z,0-9,\.,-]+\.[a-z]+")
+
+  if not whitelistmail.match(addr):
+    return HttpResponse('E1')
+
+#———————————————————————————————————————— validate name & body
+
+  blacklist = ".*[\\|\^|\$|\||\*|\+|\[|\{|<|>]+.*"
+
+  if re.match(blacklist, naim):
+    return HttpResponse('E2')
+
+  if re.match(blacklist, body):
+    return HttpResponse('E3')
+
+#———————————————————————————————————————— get name if not supplied
+
+  name = prettify(naim, addr)
+
+#———————————————————————————————————————— visible "from" address
+
+  frm = settings.url+ ' <' + settings.mail_id + '>'
+
+#———————————————————————————————————————— convert quote to harmless equivalent
+
+  body = re.sub('"', "''", body)
+  body = re.sub("'", "’" , body)
+  body = re.sub("`", "’" , body)
+
+#———————————————————————————————————————— from info in body
+
+  sender_info = language.mail_frm + ' ' + name + ' (' + addr + ')\n\n'
+  body = sender_info + body 
+
+#———————————————————————————————————————— send the message
+
+  response = send_mail.send(settings, subject, to, bcc, body)
+
+# if response == '': response = 'mail sent successfully'
+# response = '<html><body><pre>\n\n    ' + str(response)
+
+  return HttpResponse(response)
+
+
+#———————————————————————————————————————— functions
+
+#———————————————————————————————————————— prettify(name, addr):
+
+def prettify(name, addr):
+
+  if name != '': return name
+
+  name, crap = addr.split('@')
+  name = re.sub("_", " ", name)
+  name = re.sub("\.", " ", name)
+  name = name.title() # http://www.codetable.net/Group/miscellaneous-symbols
+
+  return name
+
 
 #———————————————————————————————————————— fin

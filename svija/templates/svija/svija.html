@@ -23,7 +23,7 @@ page_loaded = false;
 {% include "svija/js/cookies.js" %}
 {% include "svija/js/screens.js" %}
 {% include "svija/js/rem.js" %}
-{% include "svija/js/choose_language.js" %}
+{% include "svija/js/languages.js" %}
 {% include "svija/js/on_resize.js" %}
 {% include "svija/js/tap_highlight.js" %}
 {{ js }}
@@ -57,6 +57,8 @@ if (tracking_on)
 {{ body }}
 
 <script>
+
+  {% include "svija/js/page_background.js" %}
 
   document.getElementById("initial_scroll_div").outerHTML = "";
   page_loaded = true;

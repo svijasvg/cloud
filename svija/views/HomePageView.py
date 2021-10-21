@@ -1,5 +1,9 @@
 #———————————————————————————————————————— HomePageView.py
-
+#
+#   accepts request.path / or /en
+#
+#   returns request for /en/home
+#
 #———————————————————————————————————————— imports
 
 #rom django.http import HttpResponse

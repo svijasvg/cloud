@@ -23,20 +23,51 @@
     font-style: normal;
 }
 
+/*———————————————————————————————————————— colors */
+
+/* in sync/Svija/Admin Customization:
+
+  --color:          rgb( 70%, 100%,   0% );
+  --color-contrast: rgb(  0%,   0%,   0% ); */
+
+:root { --bg-head:     hsl(0, 0%,  20%);
+        --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  90%);
+        --bg-bright:   hsl(0, 0%, 100%);
+        --text-dark:   hsl(0, 0%,  20%);
+        --text-med:    hsl(0, 0%,  70%);
+        --text-bright: hsl(0, 0%,  90%); }
+
+@media (prefers-color-scheme: dark) {
+
+        :root { --bg-head:     hsl(0, 0%,  20%);
+                --bg-dark:     hsl(0, 0%,  20%);
+                --bg-med:      hsl(0, 0%,  30%);
+                --bg-bright:   hsl(0, 0%,  12%);
+                --text-dark:   hsl(0, 0%,  80%);
+                --text-med:    hsl(0, 0%,  50%);
+                --text-bright: hsl(0, 0%,  50%);
+        
+                --body-bg:     hsl(0, 0%,  10%); }
+        
+        body { background-color:var(--bg-dark) !important; }
+        
+}
+
+:root { --link:        var(--text-dark); 
+        --link-hover:  var(--text-dark); }
+
+
 /*———————————————————————————————————————— header bar */
 
-:root { --dark-gray:  hsl(0, 0%,20%);
-        --gray-text:  hsl(0, 0%,50%);
-        --light-gray: hsl(0, 0%,90%); }
-
 #header
-                       { background-color:var(--dark-gray);
-                         border-bottom:1px solid var(--color); }
+  { background-color:var(--bg-head);
+       border-bottom:1px solid var(--color); }
 
 #svija-admin-logo
 
-                       { background-color:var(--color);
-                         margin:5px 0 5px -12px; }
+  { background-color:var(--color);
+    margin:5px 0 5px -12px; }
 
 /*———————————————————————————————————————— small text at right of header */
 
@@ -48,55 +79,58 @@
 #header div#user-tools a:link,                    /* user tools links */
 #header div#user-tools a:visited
 
-                       { color:var(--color);
-                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
-                         text-decoration:none; }
+  { color:var(--color);
+    border-bottom:1px solid #0000;
+    text-decoration:none; }
 
 #header div#user-tools a:hover,
 #header div#user-tools a:active
 
-                       { color:white;
-                         border-bottom:1px solid white; }
+  { color: var(--text-bright);
+    border-bottom:1px solid var(--text-bright); }
 
 /*———————————————————————————————————————— nav bar */
 
-div.breadcrumbs        { background-color:var(--dark-gray);
-                         color:var(--light-gray); }
+div.breadcrumbs
+
+  { background-color:var(--bg-dark);
+               color:var(--text-med); }
 
 div.breadcrumbs a:link,
 div.breadcrumbs a:visited
 
-                       { color:hsl(0,0%,70%);
-                         border-bottom:1px solid hsla(0, 0%, 0%, 0);
-                         text-decoration:none; }
+  { color:hsl(0,0%,70%);
+    border-bottom:1px solid hsla(0, 0%, 0%, 0);
+    text-decoration:none; }
 
 div.breadcrumbs a:hover,
 div.breadcrumbs a:active
 
-                       { color:white;
-                         border-bottom:1px solid white; }
+                       { color:var(--text-bright);
+                         border-bottom:1px solid var(--text-bright); }
 
 /*———————————————————————————————————————— message bar under header (page updated) */
 
 ul.messagelist li
 
-  { color:var(--dark-gray);
+  { color:var(--bg-dark);
     background:var(--color); }
 
 ul.messagelist li a
 
-  { color: var(--dark-gray);
+  { color: var(--bg-dark);
     font-weight:bold; }
 
 /*———————————————————————————————————————— top right "add page" bubble */
 
-.object-tools a.addlink {
-  color:var(--color);
-  background:var(--dark-gray);
-  border-radius:5px;
-  padding-top:6px;
-  padding-right:10px;
-}
+.object-tools a.addlink,
+.object-tools a.historylink
+
+  {         color:var(--color);
+       background:var(--bg-dark);
+    border-radius:5px;
+      padding-top:4px;
+    padding-right:10px; }
 
 /*———————————————————————————————————————— black bars in middle of page */
 
@@ -104,16 +138,31 @@ ul.messagelist li a
 .module h2,      /* filter header, model detail header NEED TO FIX UPPERCASE SOMEWHERE */
 .inline-group h2 /* inline models headers */
 
-                       { background-color:var(--dark-gray);
-                         border-radius:5px;
-                         text-transform:uppercase; }
+  { background-color:var(--bg-dark);
+               color:var(--color);
+      text-transform:uppercase;
+       border-radius:5px; }
 
-/*———————————————————————————————————————— basic links & list of modelsi */
+/*———————————————————————————————————————— initially-hidden fields */
 
-:root {
-  --link:                var(--gray-text); 
-  --link-hover:          black;
-}
+fieldset.collapsed h2
+
+  { background-color:var(--bg-dark) !important;
+               color:var(--text-med) !important;
+      text-transform:uppercase;
+       border-radius:5px; }
+
+fieldset.collapsed .collapse-toggle,   /* (SHOW) link */
+fieldset.collapse .collapse-toggle   /* (HIDE) link */
+
+  { color:var(--color) !important; }
+
+fieldset.collapse  /* background of hidden blocks when made visible */
+
+  { background-color:var(--bg-med);
+       border-radius:5px; }
+
+/*———————————————————————————————————————— basic links & list of models */
 
 a:link, a:visited      { color: var(--link);
                          text-decoration: none; }
@@ -121,55 +170,37 @@ a:link, a:visited      { color: var(--link);
 a:hover, a:active      { color: var(--link-hover);
                          text-decoration: underline; }
 
-/*———————————————————————————————————————— initially-hidden fields */
-
-fieldset.collapsed .collapse-toggle { color:var(--color); } /* show hidden fields */
-
-/* module collapse collapsed */
-fieldset.module        { } /* main model settings (not inlines or collapsed */
-fieldset.collapse      { background-color:var(--light-gray); border-radius:5px; } /* background of hidden blocks when made visible */
-
-.module h2, .module caption, .inline-group h2,                                    /* background bar of uncollapsed module */
-fieldset.collapsed h2                                                             /* background bars of collapsed areas */
-
-                       { background-color:var(--dark-gray) !important;
-                         color:var(--light-gray) !important;
-                         border-radius:5px; }
-
-fieldset.collapsed .collapse-toggle                                               /* (SHOW) link */
-
-                       { color:var(--color)!important; }
-
 /*———————————————————————————————————————— help tip */
 
-div.description{
-  color:var(--dark-gray);
-  background-color:var(--color);
-  padding:5px 15px 5px 15px;
-  margin-left:10px;
-  margin-bottom:7px;
-  border-radius:0px 0px 2px 2px;
-  display: inline-block;
-  font-size:12px;
-}
+div.description
 
-div.description::before {
-  content: '★ ';
-}
+  {            color:var(--color-contrast);
+    background-color:var(--color);
+             padding:5px 15px 5px 15px;
+         margin-left:10px;
+       margin-bottom:7px;
+       border-radius:0px 0px 2px 2px;
+             display:inline-block;
+           font-size:12px; }
+
+div.description::before
+
+  { content: '★ '; }
 
 div.description a:link,
-div.description a:visited{
-  color:var(--dark-gray);
-  border-bottom:1px dotted var(--dark-gray);
-  padding-bottom:0;
-}
+div.description a:visited
+
+  { text-decoration:none;
+              color:var(--color-contrast);
+              font-weight:bold;
+      border-bottom:1px solid var(--color-contrast);
+     padding-bottom:0; }
 
 div.description a:hover,
-div.description a:active{
-  text-decoration:none;
-  border-bottom:1px solid var(--dark-gray);
-  color:black;
-}
+div.description a:active
+
+  {         color:var(--color-contrast);
+    border-bottom:3px solid var(--color-contrast); }
 
 /*———————————————————————————————————————— model list global */
 
@@ -183,62 +214,76 @@ div.description a:active{
 
 tr.model-settings,
 tr.model-language,
-tr.model-prefix,
 tr.model-responsive
 
-  { background-color:var(--light-gray);
+  { background-color:var(--bg-med) !important;
        border-radius:5px; }
 
 tr.model-settings   a:link, tr.model-settings   a:visited,
 tr.model-language   a:link, tr.model-language   a:visited,
-tr.model-prefix     a:link, tr.model-prefix     a:visited,
 tr.model-responsive a:link, tr.model-responsive a:visited
 
-  { color:var(--dark-gray); }
+  {           color:var(--text-dark);
+    text-decoration:none; }
 
 tr.model-settings   a:hover, tr.model-settings   a:active,
 tr.model-language   a:hover, tr.model-language   a:active,
-tr.model-prefix     a:hover, tr.model-prefix     a:active,
 tr.model-responsive a:hover, tr.model-responsive a:active
 
-  { color:var(--dark-gray); }
+  {        color:var(--text-dark);
+    padding-left:1rem; }
 
-/*———————————————————————————————————————— model list 2.x · modules & pages */
+/*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
-tr.model-font,
-tr.model-page, tr.model-module
+tr.model-page,
+tr.model-module,
+tr.model-font
 
-  { background-color:var(--color); border-radius:5px; }
+  { background-color:var(--color);
+    border:1px solid var(--bg-med); }
 
-tr.model-font           a:link, tr.model-font          a:visited,
+/* bottom borders */
+tr.model-page th, tr.model-page td, tr.model-page th,
+tr.model-module th, tr.model-module td, tr.model-module th
+
+  { border-bottom: 1px solid var(--bg-bright); }
+
 tr.model-page   a:link, tr.model-page   a:visited,
-tr.model-module a:link, tr.model-module a:visited
+tr.model-module a:link, tr.model-module a:visited,
+tr.model-font   a:link, tr.model-font   a:visited
 
-  { color:var(--dark-gray); }
+  {           color:var(--color-contrast);
+    text-decoration:none; }
 
-tr.model-font          a:hover, tr.model-font          a:active,
 tr.model-page   a:hover, tr.model-page   a:active,
-tr.model-module a:hover, tr.model-module a:active
+tr.model-module a:hover, tr.model-module a:active,
+tr.model-font   a:hover, tr.model-font   a:active
 
-  { color:var(--color-contrast); }
+  {        color:var(--color-contrast);
+    padding-left:1rem; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
 tr.model-defaultscripts,
-tr.model-optionalscript
+tr.model-forwards,
+tr.model-robots
 
-  { background-color:var(--light-gray);
-       border-radius:5px; }
+  { background-color:var(--bg-bright);
+    border:1px solid var(--bg-med); }
 
-tr.model-defaultscripts  a:link, tr.model-defaultscripts a:visited,
-tr.model-optionalscript         a:link, tr.model-optionalscript        a:visited
+tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
+tr.model-forwards       a:link, tr.model-forwards       a:visited,
+tr.model-robots         a:link, tr.model-robots         a:visited
 
-  { color:var(--dark-gray); }
+  {           color:var(--text-dark);
+    text-decoration:none; }
 
 tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
-tr.model-optionalscript        a:hover, tr.model-optionalscript        a:active
+tr.model-forwards       a:hover, tr.model-forwards       a:active,
+tr.model-robots         a:hover, tr.model-robots         a:active
 
-  { color:var(--dark-gray); }
+  {        color:var(--text-dark);
+    padding-left:1rem; }
 
 /*———————————————————————————————————————— buttons */
 
@@ -248,39 +293,45 @@ input[type=button],
 .submit-row input,
 a.button
 
-  { color:var(--dark-gray);
-    background:var(--light-gray); }
+  {      color:var(--text-dark);
+    background:var(--bg-med); }
 
-.button:hover,
+           .button:hover,
 input[type=submit]:hover,
 input[type=button]:hover,
-.submit-row input:hover,
-a.button:hover
+ .submit-row input:hover,
+          a.button:hover
 
-/*———————————————————————————————————————— buttons */
+  { color:var(--color-contrast);
+     background:var(--color); }
+
+/*———————————————————————————————————————— default buttons */
 
 .button.default,
 input[type=submit].default,
 .submit-row input.default
 
-  { color:var(--color-contrast);
-    background:var(--color); }
+  {      color:var(--color-contrast);
+    background:var(--color);
+       outline:0 !important; } /* blue accessibility outline around default button */
 
 .button.default:hover,
 input[type=submit].default:hover,
 .submit-row input.default:hover
 
-  { color:var(--color);
+  {      color:var(--color);
     background:var(--color-contrast); }
-
-/* type=submit class="default" */
 
 .button.default:focus,
 input[type=submit].default:focus,
 .submit-row input.default:focus
 
-  { color:var(--color-contrast);
+  {      color:var(--color-contrast);
     background:var(--color); }
+
+/*———————————————————————————————————————— tiny original name text */
+
+td.original p{ display:none; }
 
 
 /*———————————————————————————————————————— fin */

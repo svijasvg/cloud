@@ -25,14 +25,18 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 class Forwards(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
+
+    # renma to_url
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
+
+    # deprecated
+    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
 
     def __str__(self):
         return self.from_url
     class Meta:
         verbose_name = "redirect"
-        verbose_name_plural = "4.2 · Redirects"
+        verbose_name_plural = "3.2 · Redirects"
 
 #———————————————————————————————————————— fonts · no dependencies
 
@@ -86,8 +90,8 @@ class Notes(models.Model):
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
-    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
+
     #efault = models.CharField(max_length=20, default='', verbose_name='default page')
     default  = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
@@ -95,18 +99,20 @@ class Language(models.Model):
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
+    # 3 deprecated fields
+    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
+    no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
+
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
-
-    # 3 deprecated fields
-    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc: address',blank=True,)
-    no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
 
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
     form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)
     form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
+    form_message    = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial value',)
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
@@ -163,7 +169,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         verbose_name = "robots.txt"
-        verbose_name_plural = "4.1 · Robots.txt"
+        verbose_name_plural = "3.3 · Robots.txt"
 
 #———————————————————————————————————————— template · no dependencies
 
@@ -182,6 +188,7 @@ class Template(models.Model):
 
 #———————————————————————————————————————— optional scripts · no dependencies
 
+#deprecated
 class OptionalScript(models.Model):
 
     name = models.CharField(max_length=200, default='')
@@ -199,8 +206,8 @@ class OptionalScript(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
-        verbose_name = "optional script"
-        verbose_name_plural = "3.2 · Optional Scripts"
+        verbose_name = "DEPRECATED was optional script"
+        verbose_name_plural = "DEPRECATED · was Optional Scripts"
 
 #———————————————————————————————————————— modules · no dependencies
 
@@ -248,25 +255,28 @@ class ModuleScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "extra script"
-        verbose_name_plural = "extra scripts"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— default scripts · responsive
+#———————————————————————————————————————— script · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
     active = models.BooleanField(default=True, verbose_name='active',)
+
+    # deprecated
+    responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
+
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "default scripts"
-        verbose_name_plural = "3.1 · Default Scripts"
+        verbose_name = "scripts"
+        verbose_name_plural = "3.1 · Scripts"
 
 class DefaultScriptTypes(models.Model):
-    scripts = models.ForeignKey(DefaultScripts, on_delete=models.PROTECT)
+    scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
@@ -275,7 +285,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "included script"
+        verbose_name = "single script"
+        verbose_name_plural = "single scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
@@ -306,13 +317,13 @@ class PrefixModules(models.Model):
         verbose_name_plural = "The following modules are required by a combination code"
         ordering = ["zindex"]
 
-#———————————————————————————————————————— site settings · combination code & robots
+#———————————————————————————————————————— settings · combination code & robots
 
 class Settings(models.Model):
 
     active        = models.BooleanField(default=False, verbose_name='online',)
     robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
-    url           = models.CharField(max_length=200, default='', verbose_name='site URL',)
+    url           = models.CharField(max_length=200, default='', verbose_name='site address',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
     language      = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='default language')
 
@@ -346,14 +357,13 @@ class Page(models.Model):
     visitable = models.BooleanField(default=True, verbose_name='published',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
-    template = models.ForeignKey(Template, default=0, on_delete=models.PROTECT, )
-    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
+    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
-    pub_date    = models.DateTimeField(default=datetime.now, blank=True)
+    pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
     url    = models.CharField(max_length=200, default='', verbose_name='address')
 
     # used in page construction
@@ -372,9 +382,11 @@ class Page(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
-    # deprectaed
+    # deprecated
+    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
+    template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
 
     def __unicode__(self):
         return self.name
@@ -386,6 +398,7 @@ class Page(models.Model):
 #   def __str__(self):
 #       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
 
+#———————————————————————————————————————— page models
 
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
@@ -397,7 +410,8 @@ class PageScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script"
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
         ordering = ["order"]
 
 class Svg(models.Model):
@@ -413,15 +427,15 @@ class Svg(models.Model):
         ordering = ["zindex"]
 
 class PageModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
-    page   = models.ForeignKey(Page,   on_delete=models.PROTECT)
+    page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "The following module is required by a page"
-        verbose_name_plural = "The following modules are required by a page"
+        verbose_name = "link to module"
+        verbose_name_plural = "links to modules"
         ordering = ["zindex"]
 
 

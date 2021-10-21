@@ -28,10 +28,10 @@ urlpatterns = [
 #———————————————————————————————————————— email sending
 
     # used by contact page
-    path('<slug:lng>/mail', views.MailView),
+    path('mail', views.MailView),
 
     # send test mail to see what happens
-    path('<slug:lng>/send', views.SendView),
+    path('send', views.SendView),
 
 #———————————————————————————————————————— placed images (in Links folder)
 
@@ -62,7 +62,7 @@ urlpatterns = [
     re_path(r'^fonts/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"   }),
     re_path(r'^files/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"       }),
     re_path(r'^images/(?P<path>.*)$(?i)',  static.serve, {'document_root': proj_folder + "/sync/Svija/Icons"              }),
-    re_path(r'^scripts/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"       }),
+#   re_path(r'^scripts/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"       }),
 
 
 ]

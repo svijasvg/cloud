@@ -4,3 +4,4 @@ untracked/*
 .DS*                                                                             
 "Icon\r"                                                                         
 *__pycache__*
+*.swp

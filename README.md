@@ -10,7 +10,7 @@ renamed dev branch to beta
 
 ---
 
-Version 2.2.5
+Version 2.2.6
 
 A set of tools for building web sites using Adobe Illustrator.
 Includes a CMS for managing pages and menus.

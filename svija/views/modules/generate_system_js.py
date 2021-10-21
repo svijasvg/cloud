@@ -1,5 +1,11 @@
 #———————————————————————————————————————— views/modules/generate_system_js.py
 
+#———————————————————————————————————————— notes
+#
+#
+#
+#
+#
 #———————————————————————————————————————— imports
 
 from svija.models import Prefix, Responsive
@@ -42,10 +48,7 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
     if settings.tracking_on: system_js += "var tracking_on = true;\n"
     else:                    system_js += "var tracking_on = false;\n"
 
-    # page url
-    if settings.secure: page_url = 'https://'
-    else:               page_url = 'http://'
-
+    page_url = 'https://'
     page_url += settings.url + '/' + language_code + '/' + request_slug
 
     system_js += "var page_url = '" + page_url + "';\n"
