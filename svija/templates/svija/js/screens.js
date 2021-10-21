@@ -31,4 +31,4 @@ for (const [key, value] of Object.entries(all_screens)) {
 setCookie('screen_code', correct_screen_code, 7);
 
 if (screen_code != correct_screen_code)
-  setTimeout(window.location.reload.bind(window.location), 50);
+  setTimeout(window.location.reload.bind(window.location), 5);
