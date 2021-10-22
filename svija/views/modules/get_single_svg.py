@@ -16,6 +16,9 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
     if not hasattr(target_obj, 'filename'): return svg, css
 
     ai_name = target_obj.filename
+    if ai_name == '':
+      return svg, css
+
 
     # remove everything in beginning of path if necessary
     # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai

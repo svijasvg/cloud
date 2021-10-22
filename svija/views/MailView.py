@@ -2,6 +2,10 @@
 
 #———————————————————————————————————————— notes
 #
+#   accepts three POST variables
+#
+#   name   email   message
+#
 #   E0 = missing email or message
 #   E1 = email failes whitelist
 #   E2 = name failed blacklist
@@ -26,9 +30,9 @@ def MailView(request):
     response.status_code = 404
     return response
 
-  addr = request.get('email').lower()
-  naim = str(request.get('name'))
-  body = request.get('message')
+  addr = request.POST.get('email').lower()
+  naim = str(request.POST.get('name'))
+  body = request.POST.get('message')
 
 # addr = "hompty.hooby@freedom.org"
 # naim = ""

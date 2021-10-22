@@ -6,6 +6,7 @@ from svija.models import Responsive
 
 def get_screen_code(request):
 
+  #ode = request.COOKIES['screen_code'] # exception if not found
   code = request.COOKIES.get('screen_code')
   if code != None: return code 
 

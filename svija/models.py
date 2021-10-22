@@ -135,9 +135,7 @@ class Responsive(models.Model):
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
-    canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
 
-    meta_tag = models.CharField(max_length=200, default='', blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
@@ -150,6 +148,8 @@ class Responsive(models.Model):
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
     # deprecated
+    canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
+    meta_tag = models.CharField(max_length=200, default='', blank=True)
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
     description = models.CharField(max_length=200, default='', blank=True)
 
@@ -265,6 +265,7 @@ class ModuleScripts(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
     active = models.BooleanField(default=True, verbose_name='active',)
+    instructions = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     # deprecated
     responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
@@ -285,8 +286,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "single script"
-        verbose_name_plural = "single scripts"
+        verbose_name = "script"
+        verbose_name_plural = "scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
@@ -295,8 +296,8 @@ class Prefix(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     path = models.CharField(max_length=2, default='', verbose_name='code',)
     default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
-    language = models.ForeignKey(Language, default=0, on_delete=models.PROTECT, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, verbose_name='screen size',)
+    language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
@@ -306,8 +307,8 @@ class Prefix(models.Model):
         ordering = ['display_order']
 
 class PrefixModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
-    prefix = models.ForeignKey(Prefix, on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):

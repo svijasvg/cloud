@@ -37,7 +37,7 @@ class page_obj():
 #unctions = ['get_script',         'cache_per_user',           'combine_content',
 #            'contains_form',      'generate_accessibility',   'generate_form_js',
 #            'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
-#            'meta_canonical',     'redirect_if_home',         'scripts_to_page_obj', ]
+#            'redirect_if_home',         'scripts_to_page_obj', ]
 
 #or function in functions:
 #   x = importlib.import_module('.'+function , 'modules')
@@ -56,7 +56,6 @@ from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
 from modules.get_screen_code import *
-from modules.meta_canonical import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 #rom modules.page_version import *
@@ -67,7 +66,7 @@ from django.http import Http404
 #   this method adds a screen code (/mb, /cp) to the request path
 #   then calls the real pageview function, which is cached
 
-@never_cache
+# @never_cache
 def PageView(request, language_code, request_slug):
 
   screen_code = get_screen_code(request)
@@ -114,11 +113,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
     if redirect: return HttpResponsePermanentRedirect(redirect)
 
     #———————————————————————————————————————— metatags, system js & fonts
-
-    # <meta rel="alternate" media="only screen and (max-width: 640px)" href="http://ozake.com/em/works" >
-    meta_canon = meta_canonical(
-                      responsive,     language, settings.secure,
-        settings.url, language_code, request_slug, )
 
     meta_fonts, font_css = get_fonts()
 
@@ -176,7 +170,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
     context = {
         'comments'      : language.comment,
         'title'         : page.title + ' ' + language.title,
-        'meta_canon'    : meta_canon,
         'meta_fonts'    : meta_fonts,
         'touch'         : language.touch,
         'system_js'     : system_js,
