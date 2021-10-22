@@ -135,9 +135,7 @@ class Responsive(models.Model):
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
-    canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
 
-    meta_tag = models.CharField(max_length=200, default='', blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
@@ -150,6 +148,8 @@ class Responsive(models.Model):
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
     # deprecated
+    canonical = models.BooleanField(default=False, verbose_name='canonical page for search engines',)
+    meta_tag = models.CharField(max_length=200, default='', blank=True)
     source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
     description = models.CharField(max_length=200, default='', blank=True)
 

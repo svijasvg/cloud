@@ -204,8 +204,8 @@ class ResponsiveAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('details',{'fields': ['name', 'code', 'limit', 'canonical', 'meta_tag', 'display_order'],'description':descScreens,}),
-        ('dimensions',{'fields': ['width', 'visible', 'offsetx', 'offsety', ]}),
+        ('details',{'fields': [('name', 'limit',),('code',  'display_order'),],'description':descScreens,}),
+        ('dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
 #       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
     ]   
 
