@@ -44,7 +44,7 @@ urlpatterns = [
 
     # why is there a language code in the first line?
     re_path(r'^(?P<language_code>)$', views.HomePageView),          # root url
-    re_path(r'^(?P<language_code>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
+    re_path(r'^(?P<language_code>[\w-]{1,20})/$', views.HomePageView), # two letters followed by slash
 
 #———————————————————————————————————————— regular pages
 

@@ -15,7 +15,6 @@ from modules.cache_per_user import *
 #———————————————————————————————————————— definition
 
 def HomePageView(request, language_code):
-# return HttpResponse('HomePageView: '+request.path +', '+language_code)
 
 #———————————————————————————————————————— get default language for site
 
