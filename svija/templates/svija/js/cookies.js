@@ -10,10 +10,13 @@ function setCookie(cname, cvalue, exdays) {
   var name = cname + '=' + cvalue + '; ';
   var expy = 'expires=' + d.toUTCString(); + '; ';
   var domn = '; domain=' + window.location.hostname + '; ';
-  var path = '/; ';
+  var path = 'path=/; ';
 //var secr = 'secure;';
   var secr = '';
 
+  var complete = name + expy + domn + path + secr;
+  // alert('setting: '+complete);
+  // screen_code=mb; expires=Fri, 29 Oct 2021 08:54:53 GMT; domain=svija.dev; /; 
   document.cookie = name + expy + domn + path + secr;
 }
 
@@ -27,3 +30,8 @@ function getCookie(cname) {
   }
   return "";
 }
+
+
+// screen_code=mb;
+// csrftoken=ul3cs75jZmvmDx7bkw9NPRGOU2n8FMV0sBugyA4DIZ83dWvoa9qrWzaNiS5GZuk4;
+// screen_code=cp
