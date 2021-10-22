@@ -296,8 +296,8 @@ class Prefix(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     path = models.CharField(max_length=2, default='', verbose_name='code',)
     default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.PROTECT, verbose_name='screen size',)
-    language = models.ForeignKey(Language, default=0, on_delete=models.PROTECT, )
+    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, verbose_name='screen size',)
+    language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
     module = models.ManyToManyField(Module, through='PrefixModules')
     def __str__(self):
         return self.path
@@ -307,8 +307,8 @@ class Prefix(models.Model):
         ordering = ['display_order']
 
 class PrefixModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.PROTECT)
-    prefix = models.ForeignKey(Prefix, on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)
     def __str__(self):

@@ -58,11 +58,11 @@ urlpatterns = [
 
 #———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^customization/(?P<path>.*)$(?i)',    static.serve, {'document_root': proj_folder + "/sync/Svija/Svija Admin"}),
-    re_path(r'^fonts/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"    }),
-    re_path(r'^files/(?P<path>.*)$(?i)',   static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"        }),
-    re_path(r'^images/(?P<path>.*)$(?i)',  static.serve, {'document_root': proj_folder + "/sync/Svija/Images"              }),
-#   re_path(r'^scripts/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"        }),
+    re_path(r'^customization/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Svija Admin"}),
+    re_path(r'^fonts/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"    }),
+    re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"        }),
+    re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/sync/Svija/Images"              }),
+#   re_path(r'^scripts/(?P<path>.*)$(?i)',       static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"        }),
 
 
 ]
