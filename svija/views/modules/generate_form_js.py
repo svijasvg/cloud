@@ -51,7 +51,11 @@ def generate_form_js(language):
 #———————————————————————————————————————— function
 
 def scape(str):
+
+# only double quotes are escaped because only double quotes
+# are used to assign the values to a variable
+
   str = str.replace('"', '\\"')
-  str = str.replace("'", "\\'")
+# str = str.replace("'", "\\'")
   return str
 
