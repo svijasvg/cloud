@@ -2,7 +2,6 @@
 
 #———————————————————————————————————————— instructional notes
 
-descLanguages    = "Languages supported by your website."
 descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
 #escOptional     = "Optional scripts can be added via the settings for each page."
@@ -94,6 +93,8 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— language · no dependencies
 
+descLanguages    = "Supported languages · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
+
 from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
@@ -105,7 +106,7 @@ class LanguageAdmin(admin.ModelAdmin):
     fieldsets = [ 
         ('name, two-letter code', {'fields': [('name', 'code'),('default','display_order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
-        ('email parameters',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
+        ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
         ('status messages', {'fields': ['form_status', 'form_sending', 'form_alert_fail','form_rcvd','form_alert_rcvd',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
@@ -150,7 +151,7 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— scripts · dependent on responsive
 
-descDefault = "Scripts · can be included via <a href=\"/admin/svija/page/\">page settings</a>."
+descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -167,6 +168,7 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
         ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
+        ('Instructions', {'fields': ['instructions', ], 'classes': ['collapse'],}),
     ]   
     inlines = [DefaultScriptTypesInline]
 
@@ -191,7 +193,7 @@ admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
-descScreens      = "Define the screen sizes supported by the website. Maximum pixel width 0 = unlimited."
+descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>languages</a>."
 
 from .models import Responsive
 class ResponsiveAdmin(admin.ModelAdmin):
@@ -211,7 +213,7 @@ admin.site.register(Responsive, ResponsiveAdmin)
 
 #———————————————————————————————————————— modules · no dependencies
 
-descModules = "Modules are reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
+descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 
 from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
@@ -279,7 +281,7 @@ from urllib.parse import quote
 
 mailLink     = "mailto:support@svija.love?subject=custom domain request&body="
 mailBody     = quote("I would like to change the address of my Svija website:\n\n    from:\n    to:\n\nThank you,\n")
-descSettings = "Changing the address of your website is easy — email <a href='" + mailLink + mailBody + "'>support@svija.love</a>."
+descSettings = "To change the address of your website just email <a href='" + mailLink + mailBody + "'>support@svija.love</a>."
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
@@ -291,7 +293,7 @@ class SettingsAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
         ('main settings',   {'fields': [('url', 'active', 'p3_color',), ('analytics_id','tracking_on', ), ('language',), 'robots',],'description': descSettings,}),
-        ('mail parameters', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
+        ('mail settings', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #       ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
     ]   
 
@@ -299,7 +301,7 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— page
 
-descPages  = "Settings that are specific to a single page."
+descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
 from .models import Page, Svg

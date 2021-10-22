@@ -265,6 +265,7 @@ class ModuleScripts(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
     active = models.BooleanField(default=True, verbose_name='active',)
+    instructions = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     # deprecated
     responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
@@ -285,8 +286,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "single script"
-        verbose_name_plural = "single scripts"
+        verbose_name = "script"
+        verbose_name_plural = "scripts"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
