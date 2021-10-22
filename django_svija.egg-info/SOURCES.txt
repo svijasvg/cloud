@@ -160,6 +160,9 @@ svija/migrations/0142_auto_20211020_0950.py
 svija/migrations/0143_alter_page_template.py
 svija/migrations/0144_alter_language_bcc.py
 svija/migrations/0145_alter_settings_url.py
+svija/migrations/0146_auto_20211022_0915.py
+svija/migrations/0147_rename_insructions_defaultscripts_instructions.py
+svija/migrations/0148_auto_20211022_0936.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/admin-extra.css
@@ -226,7 +229,6 @@ svija/views/modules/get_screen_code.py
 svija/views/modules/get_script.py
 svija/views/modules/get_settings.py
 svija/views/modules/get_single_svg.py
-svija/views/modules/meta_canonical.py
 svija/views/modules/page_version.py
 svija/views/modules/redirect_if_home.py
 svija/views/modules/scripts_to_page_obj.py
