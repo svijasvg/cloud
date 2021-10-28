@@ -23,10 +23,10 @@ from modules.get_screen_code import *
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
-@never_cache # we'll see if this is a problem
+#@never_cache # we'll see if this is a problem
 def Error404(request, *args, **kwargs):
 
-  request_path = request.path[1:] # remove leading slash
+  request_path = request.path[1:-1] # remove leading slash
 
   missing_page = 'missing'
   missing_msg = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "' + missing_page + '".'
@@ -34,20 +34,22 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— check for redirect
 
   # 3 cases:
+
   # external site, starts with http or https
   # internal address, with prefix like /fr/
   # internal address, with no prefix like /admin/svija/help/
 
+  # redirects will pass by HomeView.py first as a possible language code
+  # that will add a trailing slash
+
   try:
     redirect_obj = Forwards.objects.get(from_url=request_path, active=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_page)
-
   except ObjectDoesNotExist: pass
 
   try:
     redirect_obj = Forwards.objects.get(from_url='/'+request_path, active=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_page)
-
   except ObjectDoesNotExist: pass
 
 #———————————————————————————————————————— "missing" page is missing
@@ -87,6 +89,7 @@ def Error404(request, *args, **kwargs):
 
   try:
     response = SubPageView(request, language_code, missing_page, screen_code)
+
   except:
     response = HttpResponse(missing_msg)
     #esponse = HttpResponse(request.path)

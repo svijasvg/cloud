@@ -5,8 +5,8 @@
 from . import views
 from django.urls import path, re_path
 from django.views import static
-from django.views.generic import RedirectView
-from django.views.decorators.cache import cache_page
+#rom django.views.generic import RedirectView
+#rom django.views.decorators.cache import cache_page
 import os
 
 #———————————————————————————————————————— variables
@@ -43,7 +43,7 @@ urlpatterns = [
 #———————————————————————————————————————— home pages
 
     # why is there a language code in the first line?
-    re_path(r'^(?P<language_code>)$', views.HomePageView),          # root url
+    re_path(r'^(?P<language_code>)$'            , views.HomePageView), # root url
     re_path(r'^(?P<language_code>[\w-]{1,20})/$', views.HomePageView), # two letters followed by slash
 
 #———————————————————————————————————————— regular pages

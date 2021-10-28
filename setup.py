@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-svija',
-    version='2.2.7',
+    version='2.2.8',
     packages=find_packages(),
     include_package_data=True,
 #   package_data={'fixtures': ['svija/fixtures/*.json']},

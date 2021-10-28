@@ -152,6 +152,7 @@ admin.site.register(Robots, RobotsAdmin)
 #———————————————————————————————————————— scripts · dependent on responsive
 
 descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
 from .models import DefaultScripts, DefaultScriptTypes
 class DefaultScriptTypesInline(admin.TabularInline):
@@ -162,13 +163,13 @@ class DefaultScriptTypesInline(admin.TabularInline):
 class DefaultScriptsAdmin(admin.ModelAdmin):
 
     # display on parent scripts
-    list_display = ('name', 'active', 'responsive', )
+    list_display = ('name', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
         ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
-        ('Instructions', {'fields': ['instructions', ], 'classes': ['collapse'],}),
+        ('Instructions', {'fields': [('url', 'notes'),], 'classes': ['collapse'],'description':descDefaultx, }),
     ]   
     inlines = [DefaultScriptTypesInline]
 
@@ -214,6 +215,7 @@ admin.site.register(Responsive, ResponsiveAdmin)
 #———————————————————————————————————————— modules · no dependencies
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
+descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
 from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
@@ -242,8 +244,8 @@ class ModuleAdmin(admin.ModelAdmin):
 
     fieldsets = [ 
        ('NAME & FILENAME', {'fields': [('name', 'active','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
-       ('Instructions', {'fields': ['notes', ], 'classes': ['collapse'],}), 
-       ('PLACEMENT', {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
+       ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
+       ('PLACEMENT'      , {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptsInline]

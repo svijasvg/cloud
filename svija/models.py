@@ -225,7 +225,8 @@ class Module(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
-    notes = RichTextField(default='', blank=True, verbose_name='Instructions')
+    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
@@ -236,6 +237,7 @@ class Module(models.Model):
 
     # deprecated
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
+    notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     def __unicode__(self):
         return self.name
@@ -259,16 +261,18 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— script · responsive
+#———————————————————————————————————————— scripts · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
     active = models.BooleanField(default=True, verbose_name='active',)
-    instructions = RichTextField(default='', blank=True, verbose_name='Instructions')
+    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    notes = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     # deprecated
     responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
+    instructions = RichTextField(default='', blank=True,)
 
     def __str__(self):
         return self.name
