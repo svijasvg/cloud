@@ -19,13 +19,21 @@
 {% block usertools %}
 {% if has_permission %}
 <div id="user-tools">
+  <script>
+    
+    var hrf = location.href;
+    hrf = hrf.replace('https://', '');
+    hrf = hrf.split('/')[0];
+
+  </script>
 
   {% block welcome-msg %}
   {% endblock %}
 
   {% block userlinks %}
     {% if site_url %}
-      <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ·
+      <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ·
+      <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> · -->
     {% endif %}
     <a href=/c>Clear Cache</a> · 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ·&nbsp;

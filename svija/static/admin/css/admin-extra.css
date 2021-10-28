@@ -231,7 +231,7 @@ tr.model-language   a:hover, tr.model-language   a:active,
 tr.model-responsive a:hover, tr.model-responsive a:active
 
   {        color:var(--text-dark);
-    padding-left:1rem; }
+    padding-left:0.3rem; }
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
@@ -260,7 +260,7 @@ tr.model-module a:hover, tr.model-module a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
   {        color:var(--color-contrast);
-    padding-left:1rem; }
+    padding-left:0.3rem; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
@@ -283,7 +283,7 @@ tr.model-forwards       a:hover, tr.model-forwards       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
   {        color:var(--text-dark);
-    padding-left:1rem; }
+    padding-left:0.3rem; }
 
 /*———————————————————————————————————————— buttons */
 
