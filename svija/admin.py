@@ -42,50 +42,6 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
-#———————————————————————————————————————— help · no dependencies · DEPRECATED
-
-# descHelp         = "Articles or useful information to help you with Svija."
-#   from .models import Help
-#   class HelpAdmin(admin.ModelAdmin):
-#   
-#       # display on parent page
-#       list_display = ('name', 'cat1', 'cat2','link',)
-#       list_filter = ('cat1', 'cat2',)
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('meta',    {'fields': ['name', 'cat1', 'cat2', 'link',], 'description':descHelp,}),
-#           ('contents',    {'fields': ['contents',], }),
-#       ]   
-#   
-#       class Media:
-#           js = ('ckeditor.js',) 
-#   
-#   admin.site.register(Help, HelpAdmin)
-
-#———————————————————————————————————————— notes · no dependencies · DEPRECATED
-
-#descNotes        = "This is a place where you can leave messages for yourself or your coworkers"
-#   from .models import Notes
-#   class NotesAdmin(admin.ModelAdmin):
-#   
-#       # display on parent page
-#       list_display = ('name', 'category', 'author',)
-#       list_filter = ('category', 'author',)
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('meta',    {'fields': ['name','category', 'author',], 'description':descNotes, }),
-#           ('contents',    {'fields': ['contents',], }),
-#       ]   
-#   
-#       class Media:
-#           js = ('ckeditor.js',) 
-#   
-#   admin.site.register(Notes, NotesAdmin)
-
 #———————————————————————————————————————— language · no dependencies
 
 descLanguages    = "Supported languages · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
@@ -130,23 +86,6 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— template · no dependencies · DEPRECATED
-
-# descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
-#   from .models import Template
-#   class TemplateAdmin(admin.ModelAdmin):
-#   
-#       # display on parent template
-#       list_display = ('name', 'display_order', 'active', 'description', 'filename', )
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('Name & Filename (in svija/templates)', {'fields': ['name', 'display_order', 'active', 'filename','description', ],'description':descTemplates,}),
-#       ]   
-#   
-#   admin.site.register(Template, TemplateAdmin)
-
 #———————————————————————————————————————— scripts · dependent on responsive
 
 descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
@@ -172,23 +111,6 @@ class DefaultScriptsAdmin(admin.ModelAdmin):
     inlines = [DefaultScriptTypesInline]
 
 admin.site.register(DefaultScripts, DefaultScriptsAdmin)
-
-#———————————————————————————————————————— optional scripts · no dependencies · DEPRECATED
-
-#   from .models import OptionalScript
-#   class OptionalScriptAdmin(admin.ModelAdmin):
-#   
-#       # display on parent menu
-#       list_display = ('name', 'sort1', 'type','active',)
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('name & sorting', {'fields': ['name', 'active', 'type', 'sort1',],'description':descOptional,}),
-#           ('content',        {'fields': ['content',                      ],}),
-#       ]   
-#   
-#   admin.site.register(OptionalScript, OptionalScriptAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
@@ -235,13 +157,13 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'active',)
+    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'published',)
     list_filter = ('screen', 'language', 'optional', 'sort1', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'published','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
        ('PLACEMENT'      , {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   
@@ -249,32 +171,6 @@ class ModuleAdmin(admin.ModelAdmin):
     inlines = [ModuleScriptsInline]
 
 admin.site.register(Module, ModuleAdmin)
-
-#———————————————————————————————————————— prefix · depends on responsive & language · DEPRECATED
-
-#descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
-#   from .models import Prefix
-#   class ModuleInlinePrefix(admin.TabularInline):
-#       model = Prefix.module.through
-#       extra = 0 
-#       fields = ('module', 'prefix', 'zindex', 'active',)
-#       verbose_name = "module"
-#       verbose_name_plural = "modules"
-#   
-#   class PrefixAdmin(admin.ModelAdmin):
-#   
-#       # display on parent menu
-#       list_display = ('path', 'language', 'responsive', 'default', 'display_order',)
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('display name', {'fields': ['path', 'default', 'language', 'responsive', 'display_order', ],'description':descCombinations,}),
-#       ]   
-#   
-#       inlines = [ModuleInlinePrefix, ]
-#   
-#   admin.site.register(Prefix, PrefixAdmin)
 
 #———————————————————————————————————————— settings · depends on robots & prefix
 
@@ -317,13 +213,6 @@ class DefaultScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "scripts"
     classes = ['collapse']
-
-#   class OptionalScriptInline(admin.TabularInline):
-#       model = Page.optional_script.through
-#       extra = 0 
-#       verbose_name = "optional script"
-#       verbose_name_plural = "optional scripts"
-#       classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
