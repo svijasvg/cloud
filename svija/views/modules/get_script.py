@@ -1,12 +1,15 @@
-
 #———————————————————————————————————————— add a script, returns string
 # add a script (supplied or from file)
 # with comment including it's name
 # used in sort_modules
 
+#———————————————————————————————————————— import
+
 import os
 import pathlib
 import re
+
+#———————————————————————————————————————— get_script(kind, name, content):
 
 def get_script(kind, name, content):
 
@@ -15,13 +18,16 @@ def get_script(kind, name, content):
     filename = re.compile("^[a-z,0-9,\s,\.,_,+,\-,&]+\.[a-z]{2,4}$", re.I) 
 
     if filename.match(content):
-        source_path = os.path.abspath(os.path.dirname(__name__)) + '/sync/Svija/Site Scripts/' + content
+        sub_path = '/sync/Svija/Site Scripts/' + content
+        source_path = os.path.abspath(os.path.dirname(__name__)) + sub_path 
         path = pathlib.Path(source_path)
         if not path.exists():
-            name = 'file not found: ' + content
+            #ame = 'file not found: ' + content
+            name = 'file not found: ' + sub_path
             content = ''
         else:
-            name = 'file: ' + name
+            #ame = 'file: ' + name
+            name = 'file: ' + content + ' (' + name + ')'
             with open(source_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 

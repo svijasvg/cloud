@@ -217,7 +217,7 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name = models.CharField(max_length=200, default='')
-    active = models.BooleanField(default=True, verbose_name='published',)
+    published = models.BooleanField(default=True, verbose_name='published',)
     optional = models.BooleanField(default=False, verbose_name='always include',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
@@ -225,7 +225,7 @@ class Module(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
-    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
@@ -244,8 +244,10 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'sort1', 'name', 'screen',]
+        ordering = ['-published', 'sort1', 'name', 'screen',]
         verbose_name_plural = "2.2 · Modules"
+
+#———————————————————————————————————————— module scripts · no dependencies
 
 class ModuleScripts(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -267,7 +269,7 @@ class ModuleScripts(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
     active = models.BooleanField(default=True, verbose_name='active',)
-    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    url = models.CharField(max_length=60, default='', blank=True, verbose_name='link',)
     notes = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     # deprecated
