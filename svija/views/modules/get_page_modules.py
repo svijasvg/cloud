@@ -24,8 +24,10 @@ def get_page_modules(label, all_modules, language_code, screen_code, page, page_
   for this_page_module in all_modules:
     this_module = this_page_module.module
     hj = hc = bj = sv = ht = fm = ''
-    if this_module.published and this_module.language.code == language_code:
-  
+
+    if (this_module.published
+    and this_module.language.code == language_code
+    and this_module.screen.code   == screen_code):
   
       s, c = get_single_svg(this_module, screen_code, page_width, use_p3)
       svgs   += s
