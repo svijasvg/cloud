@@ -225,7 +225,7 @@ class Module(models.Model):
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
-    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
@@ -267,7 +267,7 @@ class ModuleScripts(models.Model):
 class DefaultScripts(models.Model):
     name = models.CharField(max_length=200, default='', verbose_name='name')
     active = models.BooleanField(default=True, verbose_name='active',)
-    url = models.CharField(max_length=60, default='', verbose_name='link',)
+    url = models.CharField(max_length=60, default='', blank=True, verbose_name='link',)
     notes = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     # deprecated
