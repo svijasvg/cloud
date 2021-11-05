@@ -1,15 +1,6 @@
 #———————————————————————————————————————— models.py
 
-#———————————————————————————————————————— instructional notes
-
-descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
-descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
-#escOptional     = "Optional scripts can be added via the settings for each page."
-descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
-descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
-descNotes        = "This is a place where you can leave messages for yourself or your coworkers"
-descHelp         = "Articles or useful information to help you with Svija."
-
+#———————————————————————————————————————— import
 
 from django.contrib import admin
 
@@ -33,6 +24,8 @@ admin.site.register(Forwards, ForwardsAdmin)
 
 #———————————————————————————————————————— fonts · no dependencies
 
+descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
+
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
@@ -51,6 +44,7 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— help · no dependencies · DEPRECATED
 
+# descHelp         = "Articles or useful information to help you with Svija."
 #   from .models import Help
 #   class HelpAdmin(admin.ModelAdmin):
 #   
@@ -72,6 +66,7 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— notes · no dependencies · DEPRECATED
 
+#descNotes        = "This is a place where you can leave messages for yourself or your coworkers"
 #   from .models import Notes
 #   class NotesAdmin(admin.ModelAdmin):
 #   
@@ -99,7 +94,7 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'default', 'title', 'email',)
+    list_display = ('name', 'code', 'display_order', 'default', 'title', 'email',)
     save_on_top = True
     save_as = True
 
@@ -115,6 +110,8 @@ class LanguageAdmin(admin.ModelAdmin):
 admin.site.register(Language, LanguageAdmin)
 
 #———————————————————————————————————————— robots · no dependencies
+
+descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
 
 from .models import Robots
 class RobotsAdmin(admin.ModelAdmin):
@@ -135,6 +132,7 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— template · no dependencies · DEPRECATED
 
+# descTemplates    = "A template is the HTML container that displays Illustrator files. Use the debug template to expose the parts of the page separately."
 #   from .models import Template
 #   class TemplateAdmin(admin.ModelAdmin):
 #   
@@ -254,6 +252,7 @@ admin.site.register(Module, ModuleAdmin)
 
 #———————————————————————————————————————— prefix · depends on responsive & language · DEPRECATED
 
+#descCombinations = "Combination Codes are the first part of the page address. They represent a specific <b>language/screen size combination</b>."
 #   from .models import Prefix
 #   class ModuleInlinePrefix(admin.TabularInline):
 #       model = Prefix.module.through
@@ -301,10 +300,7 @@ class SettingsAdmin(admin.ModelAdmin):
 
 admin.site.register(Settings, SettingsAdmin)
 
-#———————————————————————————————————————— page
-
-descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
-descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
+#———————————————————————————————————————— page inlines
 
 from .models import Page, Svg
 
@@ -345,6 +341,12 @@ class PageScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
+
+#———————————————————————————————————————— page
+
+descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
+descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
+
 
 class PageAdmin(admin.ModelAdmin):
 
