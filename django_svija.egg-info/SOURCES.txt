@@ -165,6 +165,8 @@ svija/migrations/0147_rename_insructions_defaultscripts_instructions.py
 svija/migrations/0148_auto_20211022_0936.py
 svija/migrations/0149_auto_20211028_1656.py
 svija/migrations/0150_auto_20211028_1701.py
+svija/migrations/0151_auto_20211105_0933.py
+svija/migrations/0152_auto_20211105_1008.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/admin-extra.css
