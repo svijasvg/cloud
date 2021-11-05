@@ -144,13 +144,13 @@ def SubPageView(request, language_code, request_slug, screen_code):
     # can't use get_modules to get them because the modules are INSIDE pagemodules
 
     page_modules_raw = page.pagemodules_set.filter(active=True).order_by('zindex')
-    page_modules = get_page_modules('page modules', page_modules_raw, screen_code, page, page_width, use_p3)
+    page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— modules
 
     if not page.suppress_modules:
-        screen_modules = Module.objects.filter(Q(screen__code=screen_code) & Q(published=True) & Q(optional=True)).order_by('display_order')
+        screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(published=True) & Q(optional=True)).order_by('display_order')
         module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 

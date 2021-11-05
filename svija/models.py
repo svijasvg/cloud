@@ -247,6 +247,8 @@ class Module(models.Model):
         ordering = ['-published', 'sort1', 'name', 'screen',]
         verbose_name_plural = "2.2 · Modules"
 
+#———————————————————————————————————————— module scripts · no dependencies
+
 class ModuleScripts(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
