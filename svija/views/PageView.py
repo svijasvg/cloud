@@ -143,7 +143,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     # pagemodules CONTAIN modules, but are not modules
     # can't use get_modules to get them because the modules are INSIDE pagemodules
 
-    page_modules_raw = page.pagemodules_set.all().order_by('zindex')
+    page_modules_raw = page.pagemodules_set.filter(active=True).order_by('zindex')
     page_modules = get_page_modules('page modules', page_modules_raw, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
