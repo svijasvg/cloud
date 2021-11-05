@@ -32,11 +32,11 @@
 
   {% block userlinks %}
     {% if site_url %}
-      <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ·
-      <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> · -->
+      <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ∴
+      <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ∴ -->
     {% endif %}
-    <a href=/c>Clear Cache</a> · 
-    <a href=https://tech.svija.love target=_blank>Documentation</a> ·&nbsp;
+    <a href=/c>Clear Cache</a> ∴ 
+    <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
     v2.2.9<br>
 
     {% if user.is_active and user.is_staff %}
@@ -44,9 +44,9 @@
       {% if docsroot %}
       {% endif %}
     {% endif %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong> ·
+    <strong>{% firstof user.get_short_name user.get_username %}</strong> ∴
     {% if user.has_usable_password %}
-    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ·
+    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ∴
     {% endif %}
     <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
     
