@@ -6,6 +6,8 @@
 #
 #   name   email   message
 #
+#   returns '' if successful
+#
 #   E0 = missing email or message
 #   E1 = email failes whitelist
 #   E2 = name failed blacklist
@@ -86,6 +88,8 @@ def MailView(request):
   body = re.sub("`", "’" , body)
 
 #———————————————————————————————————————— from info in body
+
+# name is undefined in the following line
 
   sender_info = language.mail_frm + ' ' + name + ' (' + addr + ')\n\n'
   body = sender_info + body 
