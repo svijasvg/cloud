@@ -13,6 +13,7 @@ from django.core.cache import cache
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_protect
 
 from svija.models import *
 
@@ -79,6 +80,7 @@ def PageView(request, language_code, request_slug):
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
+@csrf_protect
 def SubPageView(request, language_code, request_slug, screen_code):
 
     #eturn HttpResponse("debugging message." + request.path)
