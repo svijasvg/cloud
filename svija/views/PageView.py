@@ -59,6 +59,7 @@ from modules.get_page_svgs import *
 from modules.get_screen_code import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
+from modules.scripts_to_page import *
 #rom modules.page_version import *
 from django.http import Http404
 
@@ -132,13 +133,16 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #———————————————————————————————————————— scripts
 
+    # deprecated
     page_scripts_raw = page.default_scripts.all().filter(active=True)
     for this_set in page_scripts_raw:
-      content_blocks.append( scripts_to_page_obj( 'scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
+      content_blocks.append( scripts_to_page_obj( 'deprecated scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
 
-#   deprecated
-#   content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
-#   content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
+    # new, not working
+    page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
+    for this_set in page_scripts_raw:
+      zoupi = 0
+#     content_blocks.append( scripts_to_page( 'xxx scripts' , this_set.scriptscripts_set.all(),'', '', ) )
 
     #———————————————————————————————————————— page modules
 

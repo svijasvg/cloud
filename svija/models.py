@@ -401,7 +401,6 @@ class Page(models.Model):
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
@@ -428,6 +427,7 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprecated
+    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
@@ -445,7 +445,6 @@ class Page(models.Model):
 
 #———————————————————————————————————————— page models
 
-#deprecated
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
