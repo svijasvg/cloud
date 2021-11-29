@@ -38,9 +38,9 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
 
     all_x_screens = []
     for one_screen in screens:
-        all_x_screens.append( str(one_screen.limit) +  ":'" + one_screen.code + "'")
+        all_x_screens.append( str(one_screen.limit) +  ', "' + one_screen.code +'"')
 
-    system_js += "var all_screens = {" + ', '.join(all_x_screens) + "};\n" 
+    system_js += "var all_screens = [[" + '], ['.join(all_x_screens) + "]];\n" 
 
 #———————————————————————————————————————— data
 

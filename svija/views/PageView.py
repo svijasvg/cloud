@@ -118,7 +118,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     meta_fonts, font_css = get_fonts()
 
-    screens = Responsive.objects.all()
+    screens = Responsive.objects.order_by('limit')
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
     system_js = '// '+request.path + '\n// '+request_slug + '\n//' + screen_code + system_js
