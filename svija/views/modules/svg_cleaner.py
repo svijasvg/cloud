@@ -64,7 +64,9 @@ def clean(file_path, temp_id, use_p3):
 
     #———————————————————————————————— replace '.st0' style definitions at top of SVG
 
-    if line[1:4] == '.st':
+    # https://docs.python.org/3.3/tutorial/introduction.html#lists
+
+    if line[0:4] == '\t.st' or line[1:5] == '\t.st':
       parts = line.split('.st')
       line = '\t.st' + svg_ID + parts[1]
 
