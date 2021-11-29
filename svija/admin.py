@@ -244,11 +244,12 @@ class SvgInline(admin.TabularInline):
     fields = ('active','filename','zindex',)
     verbose_name_plural = 'Illustrator files'
 
+# deprecated
 class DefaultScriptsInline(admin.TabularInline):
     model = Page.default_scripts.through
     extra = 0 
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
+    verbose_name = "deprecated script"
+    verbose_name_plural = "deprecated scripts"
     classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
@@ -257,6 +258,15 @@ class ModuleInlinePage(admin.TabularInline):
     fields = ('active', 'module', 'zindex', )
     verbose_name = "module"
     verbose_name_plural = "modules"
+    classes = ['collapse']
+
+from .models import PageScript
+class ScriptInlinePage(admin.TabularInline):
+    model = Page.script.through
+    extra = 0 
+    fields = ('active', 'script', 'order', )
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
     classes = ['collapse']
 
 from .models import PageScripts
@@ -290,7 +300,7 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, PageScriptsInline]
+    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, ScriptInlinePage, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 

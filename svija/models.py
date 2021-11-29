@@ -328,8 +328,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script"
-        verbose_name_plural = "scripts"
+        verbose_name = "script deprecated"
+        verbose_name_plural = "scripts deprecated"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
@@ -417,7 +417,9 @@ class Page(models.Model):
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
+
     module = models.ManyToManyField(Module, through='PageModules')
+    script = models.ManyToManyField(Script, through='PageScript')
 
     override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
@@ -443,6 +445,7 @@ class Page(models.Model):
 
 #———————————————————————————————————————— page models
 
+#deprecated
 class PageScripts(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
@@ -480,6 +483,18 @@ class PageModules(models.Model):
         verbose_name = "link to module"
         verbose_name_plural = "links to modules"
         ordering = ["zindex"]
+
+class PageScript(models.Model):
+    page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    order  = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.script.name
+    class Meta:
+        verbose_name = "link to script"
+        verbose_name_plural = "links to script"
+        ordering = ["order"]
 
 
 #———————————————————————————————————————— fin
