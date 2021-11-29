@@ -86,7 +86,7 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— scripts · dependent on responsive
+#———————————————————————————————————————— deprecated scripts · dependent on responsive
 
 descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
 descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -132,7 +132,44 @@ class ResponsiveAdmin(admin.ModelAdmin):
 
 admin.site.register(Responsive, ResponsiveAdmin)
 
-#———————————————————————————————————————— modules · no dependencies
+#———————————————————————————————————————— script · no dependencies
+
+descScript0 = "0 Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+descScript1 = "1 Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
+
+from .models import ScriptScripts
+class ScriptScriptsInline(admin.TabularInline):
+    model = ScriptScripts
+    extra = 0 
+    fields = ('active', 'name', 'type', 'order', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+# https://stackoverflow.com/questions/5852540/django-admin-display-multiple-fields-on-the-same-line
+#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+
+from .models import Script
+class ScriptAdmin(admin.ModelAdmin):
+
+    # display on parent script
+    list_display = ('name', 'load_order',  'sort1', 'active',)
+    list_filter = ('sort1', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': ['name', 'active','sort1', 'load_order', ], 'description':descScript0, }),
+       ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
+    ]   
+
+    inlines = [ScriptScriptsInline]
+
+admin.site.register(Script, ScriptAdmin)
+
+#———————————————————————————————————————— module · no dependencies
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"

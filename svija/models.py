@@ -227,8 +227,7 @@ class Script(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'sort1', 'name', 'load_order',]
-        :wa
-        verbose_name_plural = "3.1 · Scriptsx"
+        verbose_name_plural = "3.1 · Scripts"
 
 #———————————————————————————————————————— script scripts · script
 
@@ -317,7 +316,7 @@ class DefaultScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "scripts"
-        verbose_name_plural = "3.1 · Scripts"
+        verbose_name_plural = "9.1 · Scripts"
 
 class DefaultScriptTypes(models.Model):
     scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
