@@ -141,7 +141,7 @@ from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'order', 'name', 'content','active',)
+    fields = ('name', 'active','type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -204,7 +204,7 @@ class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('zindex', 'filename',)
-    fields = ('filename','zindex','active',)
+    fields = ('filename','active','zindex',)
     verbose_name_plural = 'Illustrator files'
 
 class DefaultScriptsInline(admin.TabularInline):
@@ -217,7 +217,7 @@ class DefaultScriptsInline(admin.TabularInline):
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
     extra = 0 
-    fields = ('module', 'zindex', 'active',)
+    fields = ('module', 'active', 'zindex', )
     verbose_name = "module"
     verbose_name_plural = "modules"
     classes = ['collapse']
@@ -226,7 +226,7 @@ from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
-    fields = ('type', 'order', 'name', 'content','active',)
+    fields = ('name', 'active', 'type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
