@@ -209,6 +209,43 @@ class OptionalScript(models.Model):
         verbose_name = "DEPRECATED was optional script"
         verbose_name_plural = "DEPRECATED · was Optional Scripts"
 
+#———————————————————————————————————————— scripts · no dependencies
+
+class Script(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort1 = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
+    load_order = models.PositiveSmallIntegerField(default=0, verbose_name='load order')
+
+    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['-active', 'sort1', 'name', 'load_order',]
+        :wa
+        verbose_name_plural = "3.1 · Scriptsx"
+
+#———————————————————————————————————————— script scripts · script
+
+class ScriptScripts(models.Model):
+    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
+        ordering = ["order"]
+
 #———————————————————————————————————————— modules · no dependencies
 
 positions = ('absolute', 'floating', 'none',)
@@ -228,7 +265,6 @@ class Module(models.Model):
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
@@ -236,6 +272,7 @@ class Module(models.Model):
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     # deprecated
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
@@ -263,7 +300,7 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— scripts · responsive
+#———————————————————————————————————————— deprecated scripts · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
