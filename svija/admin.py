@@ -134,8 +134,8 @@ admin.site.register(Responsive, ResponsiveAdmin)
 
 #———————————————————————————————————————— script · no dependencies
 
-descScript0 = "0 Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
-descScript1 = "1 Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
+descScript0 = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+descScript1 = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
 from .models import ScriptScripts
 class ScriptScriptsInline(admin.TabularInline):
@@ -161,7 +161,7 @@ class ScriptAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': ['name', 'active','sort1', 'load_order', ], 'description':descScript0, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active',),('sort1', 'load_order',), ], 'description':descScript0, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
     ]   
 

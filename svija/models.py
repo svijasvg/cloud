@@ -216,7 +216,7 @@ class Script(models.Model):
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='active',)
     sort1 = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
-    load_order = models.PositiveSmallIntegerField(default=0, verbose_name='load order')
+    load_order = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name='load order')
 
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
