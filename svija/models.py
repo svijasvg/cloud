@@ -108,17 +108,21 @@ class Language(models.Model):
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
+    # field labels
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
     form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)
     form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email',)
     form_message    = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial value',)
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
+    # status messages
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial status',)
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='sending failed',)
-    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent',)
-    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent (alert)',)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent',)
+
+    # alerts
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent (alert)',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed (alert)',)
 
     comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
 
