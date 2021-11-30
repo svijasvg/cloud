@@ -1,51 +1,51 @@
-#———————————————————————————————————————— views/modules/get_modules.py
+#———————————————————————————————————————— views/modules/scripts_to_page.py
 
 #———————————————————————————————————————— notes
 #
-#   very similar to modules/scripts_to_page.py
+#   very similar to modules/get_page_modules.py
 #
-#   accepts a list of modules, some inactive
-#   a module has exactly 1 svg filename, and it can be empty
+#   accepts a list of scripts , some inactive
 #
+#   returns a list of page objects
+#   a page object contains css, headjs, bodyjs, svg, html, form etc.
 #
-#
-#
-#
+#   when python is updated to at least 3.10, use pattern matching (like case/switch)
+#   https://stackoverflow.com/questions/11479816/what-is-the-python-equivalent-for-a-case-switch-statement
 #
 #———————————————————————————————————————— imports
 
-from modules.svg_cleaner import *
-from modules.get_single_svg import *
 from modules.get_script import *
 from PageView import page_obj
 
-#———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
-def get_page_modules(label, all_module_links, language_code, screen_code, page, page_width, use_p3):
+
+#———————————————————————————————————————— def get_modules(label, all_scriptset_links, page_width, use_p3):
+
+def scripts_to_page(label, all_scriptset_links):
 
   #comments
   hjc = hcc = bjc = svc = htc = fmc = ''
 
   comment_list = result_list = []
 
-  # go through all modules-linked-in-page
-  for this_module_link in all_module_links:
-    this_module = this_module_link.module
+  # go through all scripts-linked-in-page
+  for this_scriptset_link in all_scriptset_links:
+    this_scriptset = this_scriptset_link.script
 
     hj = hc = bj = sv = ht = fm = ''
 
-    if (this_module.published
-    and this_module.language.code == language_code
-    and this_module.screen.code   == screen_code):
-  
-      s, c = get_single_svg(this_module, screen_code, page_width, use_p3)
-      svgs   += s
-      head_css += c
-  
-      sv = s
-      hc = c
-  
-      for this_script in this_module.modulescripts_set.all():
+    if this_scriptset.active:
+
+      #
+      #
+      #
+      #
+      # only in get_page_modules.py
+      #
+      #
+      #
+
+      for this_script in this_scriptset.scriptscripts_set.all():
         if this_script.active:
     
           if this_script.type == 'head JS':

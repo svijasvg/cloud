@@ -11,13 +11,10 @@ function setCookie(cname, cvalue, exdays) {
   var expy = 'expires=' + d.toUTCString(); + '; ';
   var domn = '; domain=' + window.location.hostname + '; ';
   var path = 'path=/; ';
-//var secr = 'secure;';
-  var secr = '';
+  var secu = 'samesite=lax; secure;';
 
-  var complete = name + expy + domn + path + secr;
-  // alert('setting: '+complete);
-  // screen_code=mb; expires=Fri, 29 Oct 2021 08:54:53 GMT; domain=svija.dev; /; 
-  document.cookie = name + expy + domn + path + secr;
+  var complete = name + expy + domn + path + secu;
+  document.cookie = complete;
 }
 
 function getCookie(cname) {

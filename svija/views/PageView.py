@@ -13,6 +13,7 @@ from django.core.cache import cache
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_protect
 
 from svija.models import *
 
@@ -58,6 +59,7 @@ from modules.get_page_svgs import *
 from modules.get_screen_code import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
+from modules.scripts_to_page import *
 #rom modules.page_version import *
 from django.http import Http404
 
@@ -79,6 +81,7 @@ def PageView(request, language_code, request_slug):
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
+@csrf_protect
 def SubPageView(request, language_code, request_slug, screen_code):
 
     #eturn HttpResponse("debugging message." + request.path)
@@ -116,27 +119,31 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     meta_fonts, font_css = get_fonts()
 
-    screens = Responsive.objects.all()
+    screens = Responsive.objects.order_by('limit')
 
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
-    system_js = '// '+request.path + '\n// '+request_slug + '\n//' + screen_code + system_js
 
-    #———————————————————————————————————————— page SVG's & scripts
+    #———————————————————————————————————————— page SVG's and scripts
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    #———————————————————————————————————————— scripts
+    #———————————————————————————————————————— deprecated scripts
 
+    # deprecated
     page_scripts_raw = page.default_scripts.all().filter(active=True)
     for this_set in page_scripts_raw:
-      content_blocks.append( scripts_to_page_obj( 'scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
+      content_blocks.append( scripts_to_page_obj( 'deprecated scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
 
-#   deprecated
-#   content_blocks.append( scripts_to_page_obj( 'default' , defaultscripts.defaultscripttypes_set.all(),'', '', ) )
-#   content_blocks.append( scripts_to_page_obj( 'optional', page.optional_script.all(), '', '', ) )
+    #———————————————————————————————————————— new scripts
+
+    page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
+    page_scripts = scripts_to_page('script scripts', page_scripts_raw)
+    content_blocks.extend(page_scripts)
+#   cb2 = content_blocks[0].head_js
+#   page.title = cb2 + ' — '
 
     #———————————————————————————————————————— page modules
 
@@ -147,7 +154,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
-    #———————————————————————————————————————— modules
+    #———————————————————————————————————————— "always include" modules
 
     if not page.suppress_modules:
         screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(published=True) & Q(optional=True)).order_by('display_order')

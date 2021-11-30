@@ -58,8 +58,8 @@ class LanguageAdmin(admin.ModelAdmin):
         ('name, two-letter code', {'fields': [('name', 'code'),('default','display_order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
-        ('contact form labels', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
-        ('status messages', {'fields': ['form_status', 'form_sending', 'form_alert_fail','form_rcvd','form_alert_rcvd',], 'classes': ['collapse'],}),
+        ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
+        ('status message & alerts', {'fields': ['form_status', 'form_sending','form_rcvd','form_alert_rcvd', 'form_alert_fail',], 'classes': ['collapse'],}),
         ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
     ]   
 
@@ -86,7 +86,7 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— scripts · dependent on responsive
+#———————————————————————————————————————— deprecated scripts · dependent on responsive
 
 descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
 descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -132,7 +132,44 @@ class ResponsiveAdmin(admin.ModelAdmin):
 
 admin.site.register(Responsive, ResponsiveAdmin)
 
-#———————————————————————————————————————— modules · no dependencies
+#———————————————————————————————————————— script · no dependencies
+
+descScript0 = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+descScript1 = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
+
+from .models import ScriptScripts
+class ScriptScriptsInline(admin.TabularInline):
+    model = ScriptScripts
+    extra = 0 
+    fields = ('active', 'name', 'type', 'order', 'content',)
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
+
+# https://stackoverflow.com/questions/5852540/django-admin-display-multiple-fields-on-the-same-line
+#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
+#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+
+from .models import Script
+class ScriptAdmin(admin.ModelAdmin):
+
+    # display on parent script
+    list_display = ('name', 'sort', 'active',)
+    list_filter = ('sort', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+       ('NAME & FILENAME', {'fields': [('name', 'active',),('sort', ), ], 'description':descScript0, }),
+       ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
+    ]   
+
+    inlines = [ScriptScriptsInline]
+
+admin.site.register(Script, ScriptAdmin)
+
+#———————————————————————————————————————— module · no dependencies
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -141,7 +178,7 @@ from .models import ModuleScripts
 class ModuleScriptsInline(admin.TabularInline):
     model = ModuleScripts
     extra = 0 
-    fields = ('type', 'order', 'name', 'content','active',)
+    fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
@@ -204,29 +241,39 @@ class SvgInline(admin.TabularInline):
     model = Svg
     extra = 0 
     #fields = ('zindex', 'filename',)
-    fields = ('filename','zindex','active',)
+    fields = ('active','filename','zindex',)
     verbose_name_plural = 'Illustrator files'
 
+# deprecated
 class DefaultScriptsInline(admin.TabularInline):
     model = Page.default_scripts.through
     extra = 0 
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
+    verbose_name = "deprecated script"
+    verbose_name_plural = "deprecated scripts"
     classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
     extra = 0 
-    fields = ('module', 'zindex', 'active',)
+    fields = ('active', 'module', 'zindex', )
     verbose_name = "module"
     verbose_name_plural = "modules"
+    classes = ['collapse']
+
+from .models import PageScript
+class ScriptInlinePage(admin.TabularInline):
+    model = Page.script.through
+    extra = 0 
+    fields = ('active', 'script', 'order', )
+    verbose_name = "script"
+    verbose_name_plural = "scripts"
     classes = ['collapse']
 
 from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
-    fields = ('type', 'order', 'name', 'content','active',)
+    fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
@@ -253,7 +300,7 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, PageScriptsInline]
+    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, ScriptInlinePage, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 

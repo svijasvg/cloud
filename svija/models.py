@@ -108,17 +108,21 @@ class Language(models.Model):
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
+    # field labels
     form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
     form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)
     form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email',)
     form_message    = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial value',)
     form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
 
+    # status messages
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial status',)
     form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='sending failed',)
-    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent',)
-    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='once sent (alert)',)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent',)
+
+    # alerts
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent (alert)',)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed (alert)',)
 
     comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
 
@@ -209,6 +213,41 @@ class OptionalScript(models.Model):
         verbose_name = "DEPRECATED was optional script"
         verbose_name_plural = "DEPRECATED · was Optional Scripts"
 
+#———————————————————————————————————————— scripts · no dependencies
+
+class Script(models.Model):
+
+    name = models.CharField(max_length=200, default='')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    sort = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
+
+    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
+
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['-active', 'sort', 'name', ]
+        verbose_name_plural = "3.1 · Scripts"
+
+#———————————————————————————————————————— script scripts · script
+
+class ScriptScripts(models.Model):
+    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "included script"
+        verbose_name_plural = "included scripts"
+        ordering = ["order"]
+
 #———————————————————————————————————————— modules · no dependencies
 
 positions = ('absolute', 'floating', 'none',)
@@ -228,7 +267,6 @@ class Module(models.Model):
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
@@ -236,6 +274,7 @@ class Module(models.Model):
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     # deprecated
+    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
@@ -263,7 +302,7 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— scripts · responsive
+#———————————————————————————————————————— deprecated scripts · responsive
 
 #lass Shared(models.Model):
 class DefaultScripts(models.Model):
@@ -280,7 +319,7 @@ class DefaultScripts(models.Model):
         return self.name
     class Meta:
         verbose_name = "scripts"
-        verbose_name_plural = "3.1 · Scripts"
+        verbose_name_plural = "9.1 · Scripts"
 
 class DefaultScriptTypes(models.Model):
     scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
@@ -292,8 +331,8 @@ class DefaultScriptTypes(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "script"
-        verbose_name_plural = "scripts"
+        verbose_name = "script deprecated"
+        verbose_name_plural = "scripts deprecated"
         ordering = ["order"]
 
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
@@ -365,7 +404,6 @@ class Page(models.Model):
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
@@ -381,7 +419,9 @@ class Page(models.Model):
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
+
     module = models.ManyToManyField(Module, through='PageModules')
+    script = models.ManyToManyField(Script, through='PageScript')
 
     override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
     width = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
@@ -390,6 +430,7 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprecated
+    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
     optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
@@ -444,6 +485,18 @@ class PageModules(models.Model):
         verbose_name = "link to module"
         verbose_name_plural = "links to modules"
         ordering = ["zindex"]
+
+class PageScript(models.Model):
+    page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    order  = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.script.name
+    class Meta:
+        verbose_name = "link to script"
+        verbose_name_plural = "links to script"
+        ordering = ["order"]
 
 
 #———————————————————————————————————————— fin

@@ -6,6 +6,8 @@
 #
 #   name   email   message
 #
+#   returns '' if successful
+#
 #   E0 = missing email or message
 #   E1 = email failes whitelist
 #   E2 = name failed blacklist
@@ -38,12 +40,19 @@ def MailView(request):
 # naim = ""
 # body = "me`'ssage body"
 
-#———————————————————————————————————————— parameters
+#———————————————————————————————————————— setup
 
+  settings = Settings.objects.filter(active=True).first()
   fail = '' # mail will be sent if not '' at end
 
-  settings = get_object_or_404(Settings, active=True)
-  language = settings.language
+#———————————————————————————————————————— language
+
+
+  if 'language' in request.POST:
+    furn_code = request.POST.get('language')
+    language = Language.objects.filter(code=furn_code).first()
+  else:
+   language = settings.language
 
   to       = language.email
   bcc      = language.bcc
@@ -86,6 +95,8 @@ def MailView(request):
   body = re.sub("`", "’" , body)
 
 #———————————————————————————————————————— from info in body
+
+# name is undefined in the following line
 
   sender_info = language.mail_frm + ' ' + name + ' (' + addr + ')\n\n'
   body = sender_info + body 
