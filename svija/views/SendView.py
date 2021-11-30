@@ -35,7 +35,7 @@ def SendView(request):
   body   = 'If you have received this message, your email is working' 
 
   if to == '':
-    response =  "<pre>\n\n    Please include an email address:\n\n      " + settings.url + "/send?to=somebody@example.com&bcc=somebodyelse&website.com\n\n    bcc is optional"
+    response =  "<pre>\n\n    Please include an email address:\n\n      " + settings.url + "/send?to=somebody@example.com&bcc=somebodyelse@website.com\n\n    bcc is optional"
     return HttpResponse(response)
 
   response = send_mail.send(settings, subject, to, bcc, body)
