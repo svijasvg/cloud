@@ -1,9 +1,16 @@
 #———————————————————————————————————————— views/modules/get_modules.py
+
+#———————————————————————————————————————— notes
 #
 #   very similar to modules/scripts_to_page.py
 #
 #   accepts a list of modules, some inactive
 #   a module has exactly 1 svg filename, and it can be empty
+#
+#
+#
+#
+#
 #
 #———————————————————————————————————————— imports
 
@@ -14,17 +21,17 @@ from PageView import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
-def get_page_modules(label, all_modules, language_code, screen_code, page, page_width, use_p3):
+def get_page_modules(label, all_module_links, language_code, screen_code, page, page_width, use_p3):
 
-  head_css = head_js = body_js = svgs = html = form = ''
+  #comments
+  hjc = hcc = bjc = svc = htc = fmc = ''
 
-  module_list = []
+  comment_list = result_list = []
 
-  head_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
-  body_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+  # go through all modules-linked-in-page
+  for this_module_link in all_module_links:
+    this_module = this_module_link.module
 
-  for this_page_module in all_modules:
-    this_module = this_page_module.module
     hj = hc = bj = sv = ht = fm = ''
 
     if (this_module.published
@@ -42,27 +49,31 @@ def get_page_modules(label, all_modules, language_code, screen_code, page, page_
         if this_script.active:
     
           if this_script.type == 'head JS':
-            head_js += get_script('js', this_script.name, this_script.content)
             hj += get_script('js', this_script.name, this_script.content)
+            hjc = '\n\n//———————————————————————————————————————— ' + label + '\n'
     
           if this_script.type == 'CSS':
-            head_css += get_script('css', this_script.name, this_script.content)
             hc += get_script('css', this_script.name, this_script.content)
+            hcc = '\n\n//———————————————————————————————————————— ' + label + '\n'
     
           if this_script.type == 'body JS':
-            body_js += get_script('js', this_script.name, this_script.content)
             bj += get_script('js', this_script.name, this_script.content)
-    
-          # SVG handled outside of loop
+            bjc = '\n\n//———————————————————————————————————————— ' + label + '\n'
     
           if this_script.type == 'HTML':
-            html += get_script('html', this_script.name, this_script.content)
             ht += get_script('html', this_script.name, this_script.content)
+            htc = '\n\n//———————————————————————————————————————— ' + label + '\n'
     
           if this_script.type == 'form':
-            form += get_script('html', this_script.name, this_script.content)
             fm += get_script('html', this_script.name, this_script.content)
+            fmc = '\n\n//———————————————————————————————————————— ' + label + '\n'
   
-    module_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+    result_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
-  return module_list
+  comment_list.append(page_obj(hjc, hcc, bjc, svc, htc, fmc))
+  final_list = comment_list + result_list
+
+  return final_list
+
+
+#———————————————————————————————————————— fin
