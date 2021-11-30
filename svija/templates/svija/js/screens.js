@@ -32,8 +32,11 @@ for (var x=0; x<all_screens.length; x++){
 
 setCookie('screen_code', correct_screen_code, 7);
 
+//alert('server: ' + screen_code + ', calculated: ' + correct_screen_code);
+
 if (screen_code != correct_screen_code){
   if (window.location.href.indexOf('?')>0)
     alert(document.cookie);
-  setTimeout(window.location.reload.bind(window.location), 5);
+  location.reload();
+  //setTimeout(window.location.reload.bind(window.location), 5);
 }
