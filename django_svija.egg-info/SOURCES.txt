@@ -167,6 +167,13 @@ svija/migrations/0149_auto_20211028_1656.py
 svija/migrations/0150_auto_20211028_1701.py
 svija/migrations/0151_auto_20211105_0933.py
 svija/migrations/0152_auto_20211105_1008.py
+svija/migrations/0153_script_scriptscripts.py
+svija/migrations/0154_auto_20211129_1504.py
+svija/migrations/0155_auto_20211129_1521.py
+svija/migrations/0156_alter_script_load_order.py
+svija/migrations/0157_auto_20211130_1004.py
+svija/migrations/0158_auto_20211130_1326.py
+svija/migrations/0159_auto_20211130_1328.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/admin-extra.css
@@ -235,6 +242,7 @@ svija/views/modules/get_settings.py
 svija/views/modules/get_single_svg.py
 svija/views/modules/page_version.py
 svija/views/modules/redirect_if_home.py
+svija/views/modules/scripts_to_page.py
 svija/views/modules/scripts_to_page_obj.py
 svija/views/modules/send_mail.py
 svija/views/modules/sitemap.py
