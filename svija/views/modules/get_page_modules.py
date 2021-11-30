@@ -1,8 +1,10 @@
 #———————————————————————————————————————— views/modules/get_modules.py
-
-# accepts a list of modules, some inactive
-# a module has exactly 1 svg filename, and it can be empty
-
+#
+#   very similar to modules/scripts_to_page.py
+#
+#   accepts a list of modules, some inactive
+#   a module has exactly 1 svg filename, and it can be empty
+#
 #———————————————————————————————————————— imports
 
 from modules.svg_cleaner import *
