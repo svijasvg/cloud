@@ -219,8 +219,7 @@ class Script(models.Model):
 
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='active',)
-    sort1 = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
-    load_order = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name='load order')
+    sort = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
 
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
@@ -230,7 +229,7 @@ class Script(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'sort1', 'name', 'load_order',]
+        ordering = ['-active', 'sort', 'name', ]
         verbose_name_plural = "3.1 · Scripts"
 
 #———————————————————————————————————————— script scripts · script
