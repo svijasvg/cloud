@@ -124,25 +124,27 @@ def SubPageView(request, language_code, request_slug, screen_code):
     system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
     system_js = '// '+request.path + '\n// '+request_slug + '\n//' + screen_code + system_js
 
-    #———————————————————————————————————————— page SVG's & scripts
+    #———————————————————————————————————————— page SVG's and scripts
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    #———————————————————————————————————————— scripts
+    #———————————————————————————————————————— deprecated scripts
 
     # deprecated
     page_scripts_raw = page.default_scripts.all().filter(active=True)
     for this_set in page_scripts_raw:
       content_blocks.append( scripts_to_page_obj( 'deprecated scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
 
-    # new, not working
+    #———————————————————————————————————————— new scripts
+
     page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
-    for this_set in page_scripts_raw:
-      zoupi = 0
-#     content_blocks.append( scripts_to_page( 'xxx scripts' , this_set.scriptscripts_set.all(),'', '', ) )
+    page_scripts = scripts_to_page('script scripts', page_scripts_raw)
+    content_blocks.extend(page_scripts)
+#   cb2 = content_blocks[0].head_js
+#   page.title = cb2 + ' — '
 
     #———————————————————————————————————————— page modules
 
@@ -153,7 +155,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
-    #———————————————————————————————————————— modules
+    #———————————————————————————————————————— "always include" modules
 
     if not page.suppress_modules:
         screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(published=True) & Q(optional=True)).order_by('display_order')
