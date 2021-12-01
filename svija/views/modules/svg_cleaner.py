@@ -1,4 +1,6 @@
-#———————————————————————————————————————— svg.py
+#———————————————————————————————————————— svg_cleaner.py
+
+#———————————————————————————————————————— notes
 #
 #   remove 1st two lines of SVG (XML)
 #
@@ -8,48 +10,55 @@
 #
 #   update font definitions
 #
-#———————————————————————————————————————— program
+#———————————————————————————————————————— import
 
 import os, re, io
-from svija.models import Font
-from django.core.exceptions import ObjectDoesNotExist
 
-def clean(file_path, temp_id, use_p3):
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from svija.models import Font
+
+#———————————————————————————————————————— def
+
+def clean(file_path, svg_filename, use_p3):
 
   # if unspecified, ID will be filename with extension removed (-en.svg)
-  svg_ID     = cleanup(temp_id)
+  svg_ID         = cleanup(svg_filename)
   width = height = 0
-  line_number  = 2
-  first_line   = ''
-  final_svg    = ''
-  debug      = 'working'
+  line_number    = 2
+  first_line     = ''
+  final_svg      = ''
+  debug          = 'working'
 
-  #———————————————————————————————————— list of woff & google fonts in DB
+  #———————————————————————————————————————— list of woff & google fonts in DB
+  #                                     used fonts will be added to
+  #                                     fonts_to_add
 
-  goog_fonts  = Font.objects.filter(google=True)
-  file_fonts  = Font.objects.filter(google=False)
+  goog_fonts  = Font.objects.filter(Q(active=True) & Q(google=True ))
+  file_fonts  = Font.objects.filter(Q(active=True) & Q(google=False))
   fonts_to_add  = []
 
-  #———————————————————————————————————— read in the SVG file
+  #———————————————————————————————————————— read SVG file
 
   with open(file_path, 'r', encoding='utf-8') as f:
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
-  #———————————————————————————————————— main loop to process SVG line by line
+  #———————————————————————————————————————— ▼ main loop to process SVG line by line
 
   lines_quantity = len(svg_lines)
-  while True:
 
+  while True:
     if line_number == lines_quantity-1: break # we're done
+
     line = svg_lines[line_number]
 
-    #———————————————————————————————— keep 1st line to update ID when done
+    #———————————————————————————————————————— keep 1st line to replace ID when done
 
     if line_number == 2:
       first_line = line
 
-    #———————————————————————————————— get dimensions from viewbox value in svg tag
+    #———————————————————————————————————————— get dimensions from viewbox value in svg tag
 
     # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
     # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
@@ -62,7 +71,7 @@ def clean(file_path, temp_id, use_p3):
       px_width = float(dimensions[2])
       px_height = float(dimensions[3])
 
-    #———————————————————————————————— replace '.st0' style definitions at top of SVG
+    #———————————————————————————————————————— replace '.st0' style definitions at top of SVG
 
     # https://docs.python.org/3.3/tutorial/introduction.html#lists
 
@@ -70,42 +79,43 @@ def clean(file_path, temp_id, use_p3):
       parts = line.split('.st')
       line = '\t.st' + svg_ID + parts[1]
 
-      #———————————————————————————— add P3 color definition
-      # fill:#FFFFFF, stroke:#9537FF
+    #———————————————————————————————————————— add P3 color definition
+    # fill:#FFFFFF, stroke:#9537FF
 
     if use_p3:
       if line.find('fill:#') > 0 or line.find('stroke:#') > 0 or line.find('stop-color:#') > 0:
         line = add_p3(line) 
 
-    #———————————————————————————————— change <path class="st2" to <path class="st[id]2"
-    #———————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
+    #———————————————————————————————————————— change <path class="st2" to <path class="st[id]2"
 
     if line.find('class="st') > 0:
       line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
 
+    #———————————————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
+
     if line.find('SVGID_') > 0:
       line = re.sub(r'SVGID_', r''+svg_ID+'_', line)
 
-    #———————————————————————————————— fix mixed text weight problem
-                    # search for <tspan x="400.88" where x != 0
+    #———————————————————————————————————————— fix mixed text weight problem
+    #                                         search for <tspan x="400.88" where x != 0
 
     exp = r'tspan x=\"[1-9]'
     regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
     if (re.search(exp, line)):
       line = clean_tspans(line)
   
-    #———————————————————————————————— get id if layer like "id example" exists
-                    # note that this means the ID could change at the end,
-                    # so .st[id]8 won't correspond
+    #———————————————————————————————————————— get id if layer like "id example" exists
+    #                                         note that this means the ID could change at the end,
+    #                                         so .st[id]8 won't correspond
 
 #     if line[1:10] == 'g id="id_':
 #       parts = line.split('"')
 #       svg_ID = parts[1][3:]
 
-    #————————————————————————————————— find fonts
-                     # .st2{font-family:'Signika-Regular';}
-                     # google font: need to use google-style CSS
-                     # missing font: need to add to fonts DB
+    #———————————————————————————————————————— find fonts
+    #                                         .st2{font-family:'Signika-Regular';}
+    #                                         google font: need to use google-style CSS
+    #                                         missing font: need to add to fonts DB
                  
     if line[1:4] == '.st':
       if line.find('family') > 0:
@@ -124,13 +134,13 @@ def clean(file_path, temp_id, use_p3):
           if len(file_font) <= 0:
             fonts_to_add.append(css_ref)
 
-    #————————————————————————————— close main loop
+    #———————————————————————————————————————— ▲ close main loop
 
     if line_number > 2:
       final_svg += '\n' + line;
     line_number += 1
 
-  #—————————————————————————————————————— add any missing fonts to DB
+  #———————————————————————————————————————— add missing fonts to DB
 
   fonts_to_add = remove_duplicates(fonts_to_add)
 
@@ -139,8 +149,8 @@ def clean(file_path, temp_id, use_p3):
     p = Font.objects.create(css = new_font.css, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=True)
     p.save
 
-  #—————————————————————————————————————— add new ID if necessary
-                      # single-layer AI docs have ID with layer name
+  #———————————————————————————————————————— add new ID if necessary
+  #                                     single-layer AI docs have ID with layer name
 
   if first_line.find('id="') > 0:
     parts = first_line.split('"')
@@ -148,14 +158,15 @@ def clean(file_path, temp_id, use_p3):
   else:
     first_line = first_line.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
 
-  #—————————————————————————————————————— return SVG ID, dimensions & contents
+  #———————————————————————————————————————— return SVG ID, dimensions & contents
 
 #  return svg_ID, px_width, px_height, debug
   return svg_ID, px_width, px_height, first_line+final_svg
 
-#———————————————————————————————————————————————————————————————————————————————————————————
-#———————————————————————————————————————— functions ————————————————————————————————————————
-#———————————————————————————————————————————————————————————————————————————————————————————
+
+#———————————————————————————————————————— functions 
+
+#———————————————————————————————————————— add new font
 
 def create_new_font(css_ref, new_font):
 
@@ -313,44 +324,50 @@ def clean_tspans(line):
 # adds definition after fill:#FFFFFF, stroke:#9537FF
 # called line 75
 
-def add_p3(result):
+def add_p3(orig_line):
 
-  result = new_func(result, 'fill:')
-  result = new_func(result, 'stroke:')
-  result = new_func(result, 'stop-color:')
+  new_line = orig_line
+  new_line = color_replace(new_line, 'fill:')
+  new_line = color_replace(new_line, 'stroke:')
+  new_line = color_replace(new_line, 'stop-color:')
 
-  return result
+  return new_line
 
-#———————————————————————————————————————— replace given string
+#———————————————————————————————————————— replace color of a given property
 
-def new_func(str, target):
-  blocks = str.split(target)
+def color_replace(orig_line, property):
+# return orig_line
+  blocks = orig_line.split(property + '#') # 'fill:#' for example
 
-  result = blocks[0]
+  new_line = blocks[0]
   for x in range(0,len(blocks)-1,2):
-    color = blocks[x+1][0:7]
-    if color[0:2] != 'no':
-      rest = blocks[x+1][7:]
-      p3 = hex_to_p3(color)
-      result += target + color + ';' + target + p3 + rest
-    else: result += target + blocks[x+1]
-  return result
+
+    hex_color = '#' + blocks[x+1][0:6]
+    rest      = blocks[x+1][6:]
+
+    p3_color  = hex_to_p3(hex_color)
+    new_line += property + hex_color + ';' + property + p3_color + ';' + rest
+
+  return new_line
 
 #———————————————————————————————————————— convert hex color to P3 color
+#                                         accepts format #45ED8F
 
-def hex_to_p3(color):
-  r = hex_to_int(color[1:3])
-  g = hex_to_int(color[3:5])
-  b = hex_to_int(color[5:7])
+def hex_to_p3(hex_color):
+  r = hex_to_int(hex_color[1:3])
+  g = hex_to_int(hex_color[3:5])
+  b = hex_to_int(hex_color[5:7])
   return 'color(display-p3 '+ r + ' ' + g + ' ' + b + ')'
 
 #———————————————————————————————————————— convert hex value to 0-1 value
+#                                         numbers starting 0x are hexadecimal
 
-def hex_to_int(hex):
-  hex = '0x'+hex[0:]
+def hex_to_int(raw_hex):
+
+  hex = '0x'+raw_hex
   p3 = int(hex, 0)
-  result = p3
   p3 = round(p3/255,3)
   return str(p3)
+
 
 #———————————————————————————————————————— fin
