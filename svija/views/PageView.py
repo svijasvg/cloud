@@ -142,8 +142,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
     page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
     page_scripts = scripts_to_page('script scripts', page_scripts_raw)
     content_blocks.extend(page_scripts)
-#   cb2 = content_blocks[0].head_js
-#   page.title = cb2 + ' — '
 
     #———————————————————————————————————————— page modules
 
