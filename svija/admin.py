@@ -88,29 +88,29 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— deprecated scripts · dependent on responsive
 
-descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
-descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
-
-from .models import DefaultScripts, DefaultScriptTypes
-class DefaultScriptTypesInline(admin.TabularInline):
-    model = DefaultScriptTypes
-    extra = 0 
-    fields = ('type', 'active', 'order', 'name', 'content',)
-
-class DefaultScriptsAdmin(admin.ModelAdmin):
-
-    # display on parent scripts
-    list_display = ('name', 'active', )
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
-        ('Instructions', {'fields': [('url', 'notes'),], 'classes': ['collapse'],'description':descDefaultx, }),
-    ]   
-    inlines = [DefaultScriptTypesInline]
-
-admin.site.register(DefaultScripts, DefaultScriptsAdmin)
+#   descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+#   descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
+#   
+#   from .models import DefaultScripts, DefaultScriptTypes
+#   class DefaultScriptTypesInline(admin.TabularInline):
+#       model = DefaultScriptTypes
+#       extra = 0 
+#       fields = ('type', 'active', 'order', 'name', 'content',)
+#   
+#   class DefaultScriptsAdmin(admin.ModelAdmin):
+#   
+#       # display on parent scripts
+#       list_display = ('name', 'active', )
+#       save_on_top = True
+#       save_as = True
+#   
+#       fieldsets = [ 
+#           ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
+#           ('Instructions', {'fields': [('url', 'notes'),], 'classes': ['collapse'],'description':descDefaultx, }),
+#       ]   
+#       inlines = [DefaultScriptTypesInline]
+#   
+#   admin.site.register(DefaultScripts, DefaultScriptsAdmin)
 
 #———————————————————————————————————————— screen size · no dependencies
 
@@ -244,13 +244,13 @@ class SvgInline(admin.TabularInline):
     fields = ('active','filename','zindex',)
     verbose_name_plural = 'Illustrator files'
 
-# deprecated
-class DefaultScriptsInline(admin.TabularInline):
-    model = Page.default_scripts.through
-    extra = 0 
-    verbose_name = "deprecated script"
-    verbose_name_plural = "deprecated scripts"
-    classes = ['collapse']
+#   # deprecated
+#   class DefaultScriptsInline(admin.TabularInline):
+#       model = Page.default_scripts.through
+#       extra = 0 
+#       verbose_name = "deprecated script"
+#       verbose_name_plural = "deprecated scripts"
+#       classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
@@ -293,14 +293,14 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),],'description':descPages, }),
-        ('page info',            {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
+        ('setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),('suppress_modules','override_dims',),],'description':descPages, }),
         ('accessibility',      {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('overrides',          {'fields': [('suppress_modules','override_dims',), ],}),
+        ('page info',            {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
         ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, ScriptInlinePage, PageScriptsInline]
+    inlines = [ModuleInlinePage, ScriptInlinePage, SvgInline, PageScriptsInline]
+#   inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, ScriptInlinePage, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
 #   inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 
