@@ -1,0 +1,24 @@
+in addition to the normal web page being open and normally usable, there is the animation lab page that can be resized etc.
+need to decide which layout is best: wide & short, A4, or tall & thin
+the point is to be able to work on an animation and see its effects
+to make it easier, we need to be able to see where objects are at all times
+panes:
+main programming workspace A- A+ buttons
+list of page scripts containing animation information from page (choose which one to modify)
+list of SVG's › (or one pane for each svg)
+list of user-created ID's in each SVG (2 pane for both)
+prefs : hightlighting style (background, outline, color, transparency, blinking)
+GSAP tips windows
+list of pagescripts anim info  with activate or no or checkboxes & edit button & new button & copy button
+made for a big monitor? Svija pages work at small sizes, there's no reason you couldn't reduce the svija
+should work on 1280x800 screen, even if the Svija page is tiny
+prefs : rows & colums of text (button "update")
+
+animation lab
+animation lab has list of non .st0 id's, choose your formatting to highlight
+javascript in main doc to launch anim lab
+choose key combination in admin
+anim lab w rem, responsive mais A+ A-
+
+how will animations be loaded / updated? choice of pagescripts
+list of page

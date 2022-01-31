@@ -1,0 +1,42 @@
+https://github.com/graphite-project/graphite-web/issues/668
+export GRAPHITE_ROOT=/opt/graphite
+PYTHONPATH=$GRAPHITE_ROOT/webapp django-admin.py dumpdata --settings=graphite.settings > sqllite_graphite_dump.json
+this should be easy to test.
+./manage.py dumpdata > working.json
+took 1 second to run for Ozake, not a huge hit for once a day
+The basic theory is that backups are made when the page is loaded (depending on admin prefs), and downloaded every time the site is synced.
+We are going to benefit by rewriting the sync script to add a lite mode, only download or upload one file (would be nice to add dependencies in Links and Fonts at some point)
+not: models.py/admin.py:
+setting for interval between backups
+which backups to make: 1 day, 1 week, 1 month, 3 months, 1 year
+total number of backups to keep in stock (if smaller than prev. set to prev.)
+better just to configure the program, just have interval (manik could be weekly, staffeur monthly etc.)
+make a backup every day & 1/7 of the time don't replace – it make it older
+when it's a week old it , ¼ of the time don't replace, let it age
+when that one's a month old, ⅓ of the time don't replace, let it age
+when that one's three months old, ¼ of the time don't replace, let it age
+views.py:
+when page is loaded, check if a restore is called for (either in settings, restore on next visit, or because a restore db is present
+if there's a restore programmed, do it (adding comment in source code?)
+don't forget to run the postgresql script or try --natural to get rid of problem data
+if there's not a restore programmed, check dump interval
+if the most recent dump in /backups/ is not within the interval
+create a dump in/backups/
+delete databases that don't meet the "keep" requirement*
+sync script:
+if sync up or sync down:
+do not touch anything in the /sync/backups folder
+sync the backups folder down
+also allow sync up only new for colleagues working on project
+also allow sync down by filename for colleagues working on project
+possible to not download backups (might take a long time if there are many)
+lite mode for working on one page
+restore:
+from admin page?
+upload a file, would be best
+restore on next visit from [filename]
+if you upload a fresh db in sync folder (not in sub folder)
+it will automatically replace the existing site (with backup made of existing)
+call files backup.svj
+views don't get called when cached… need to make sure that cache is emptied frequently enough to generate dumps
+backups are in root folder like sync, not in same folder as sync

@@ -1,0 +1,25 @@
+when page loads, in SVG, replace image reference:
+Links/home-hero-DSC_0020.jpg 
+with image width & resolution info
+treated/home-hero-DSC_0020-1680X20Q75D [day, second].jpg
+need parameters in admin/responsive for image quality & size
+page width = 1680
+pixel size = 20x (skip decimal, 20 = 2)
+quality = 0-100
+if Image is missing, go get original image and create correct size & quality
+models.py › responsive
+image resolution compared to SVG width (2x, etc.) 2-digit integer
+image quality (0-100)
+admin.py › responsive
+image resolution compared to SVG width (2x, etc.)
+image quality (0-100)
+views.py, when image is requested:
+check that referrer is site not hacker
+check uploaded image to get modified date
+check in /cached-images/ to see if appropriate image exists with correct date
+if it exists: use it
+else: treat the image then return the new image
+delete same image with wrong date
+need a way to clear image cache : page view URL with check for admin?
+need a way to exempt an image (just name it _x ?) so that overriding is possible
+

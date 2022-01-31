@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
