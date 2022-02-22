@@ -30,13 +30,13 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('css', 'family', 'style', 'source', 'google', 'active', )
-    list_filter = ('family', 'google', 'active', )
+    list_display = ('css', 'family', 'style', 'source', 'google', 'active', 'category',)
+    list_filter = ('category', 'google', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font info',    {'fields': ['css', 'family', 'style', 'source', 'google', 'active',], 'description':descFonts,}),
+        ('font information',    {'fields': [('css', 'category',), ('family', 'style',), ('source', 'google',), 'active',], 'description':descFonts,}),
 
     ]   
 
@@ -194,8 +194,8 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'sort1', 'published',)
-    list_filter = ('screen', 'language', 'optional', 'sort1', )
+    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'published', 'sort1',)
+    list_filter = ('sort1', 'screen', 'language', 'optional', )
     save_on_top = True
     save_as = True
 
@@ -287,16 +287,16 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', )
-    list_filter = ('screen', 'language', )
+    list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', 'category',)
+    list_filter = ('category', 'screen', 'language', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('setup',        {'fields': ['visitable', ('url', 'screen'),('title', 'language'),('suppress_modules','override_dims',),],'description':descPages, }),
-        ('accessibility',      {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('page info',            {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
-        ('new dimensions',     {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
+        ('setup',          {'fields': ['visitable', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override_dims',),],'description':descPages, }),
+        ('accessibility',  {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
+        ('page info',      {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
+        ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
     inlines = [ModuleInlinePage, ScriptInlinePage, SvgInline, PageScriptsInline]

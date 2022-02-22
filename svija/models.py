@@ -47,13 +47,14 @@ class Font(models.Model):
     source = models.CharField(max_length=100, default='SOURCE NEEDED', verbose_name='WOFF filename', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
     active = models.BooleanField(default=True, verbose_name='include',)
+    category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     def __str__(self):
         return self.css
     class Meta:
         verbose_name = "font"
         verbose_name_plural = "2.3 · Fonts"
-        ordering = ['-active', 'family', 'style']
+        ordering = ['-active', 'category', 'family', 'style']
 
 #———————————————————————————————————————— help · no dependencies
 
@@ -260,13 +261,12 @@ class Module(models.Model):
     optional = models.BooleanField(default=False, verbose_name='always include',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
+    sort1 = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
-
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
     corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
@@ -409,7 +409,8 @@ class Page(models.Model):
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
     pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
-    url    = models.CharField(max_length=200, default='', verbose_name='address')
+    url         = models.CharField(max_length=200, default='', verbose_name='address')
+    category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)
