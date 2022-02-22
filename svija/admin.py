@@ -215,7 +215,7 @@ from urllib.parse import quote
 
 mailLink     = "mailto:support@svija.love?subject=custom domain request&body="
 mailBody     = quote("I would like to change the address of my Svija website:\n\n    from:\n    to:\n\nThank you,\n")
-descSettings = "To change the address of your website just email <a href='" + mailLink + mailBody + "'>support@svija.love</a>."
+descSettings = "To request a different website address, please visit <a href='https://tech.svija.love/url' target='_blank'>tech.svija.love/url</a>."
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
