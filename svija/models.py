@@ -46,7 +46,7 @@ class Font(models.Model):
     style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     source = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
     google = models.BooleanField(default=True, verbose_name='Google font',)
-    active = models.BooleanField(default=True, verbose_name='include',)
+    active = models.BooleanField(default=True, verbose_name='active',)
     category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     def __str__(self):
