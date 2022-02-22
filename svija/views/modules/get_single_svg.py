@@ -42,7 +42,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     if not path.exists():
         #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
-        svg = '<!-- missing svg: {} -->'.format(svg_path)
+        svg = '<!-- missing svg: {} -->'.format(svija_path+svg_name)
 
     else:
         is_module = hasattr(target_obj, 'css_id')
