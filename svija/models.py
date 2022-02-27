@@ -323,7 +323,6 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprecated
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
 
     def __unicode__(self):
