@@ -60,7 +60,6 @@ from modules.get_screen_code import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 from modules.scripts_to_page import *
-#rom modules.page_version import *
 from django.http import Http404
 
 #———————————————————————————————————————— ▼ PageView(request, language_code, request_slug):
