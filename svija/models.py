@@ -29,9 +29,6 @@ class Forwards(models.Model):
     # renma to_url
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
-    # deprecated
-    to_prefix = models.CharField(max_length=5, default='', verbose_name='HTTP or HTTPS', blank=True)
-
     def __str__(self):
         return self.from_url
     class Meta:
