@@ -283,7 +283,6 @@ class Settings(models.Model):
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
     # deprecated
-    cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
 
     def __str__(self):
