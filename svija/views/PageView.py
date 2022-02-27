@@ -124,7 +124,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
-    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
+    content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
 
     #———————————————————————————————————————— new scripts
 
