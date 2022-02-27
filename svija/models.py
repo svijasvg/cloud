@@ -146,7 +146,6 @@ class Responsive(models.Model):
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
     # deprecated
-    source_dir = models.CharField(max_length=200, default='', blank=True, verbose_name='folder in /sync',)
     description = models.CharField(max_length=200, default='', blank=True)
 
     def __str__(self):
