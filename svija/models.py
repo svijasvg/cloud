@@ -1,5 +1,6 @@
 #———————————————————————————————————————— models.py
 
+# deprecated #rename
 # model names are SINGULAR
 
 #———————————————————————————————————————— notes about this document
@@ -18,6 +19,8 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
+from ckeditor.fields import RichTextField
+
 #———————————————————————————————————————— array: types of scripts
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
@@ -28,7 +31,7 @@ class Redirect(models.Model):
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
 
-    # renma to_url
+    # rename to to_url
     to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     def __str__(self):
@@ -40,13 +43,13 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
-    css    = models.CharField(max_length=100, default='', verbose_name='SVG name')
-    family = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style  = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    source = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
-    google = models.BooleanField(default=True, verbose_name='Google font',)
-    active = models.BooleanField(default=True, verbose_name='active',)
-    category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
+    css      = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
+    style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    source   = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
+    google   = models.BooleanField(default=True, verbose_name='Google font',)
+    active   = models.BooleanField(default=True, verbose_name='active',)
+    category = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     def __str__(self):
         return self.css
@@ -61,7 +64,6 @@ class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
 
-    #efault = models.CharField(max_length=20, default='', verbose_name='default page')
     default  = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
@@ -89,7 +91,7 @@ class Language(models.Model):
     form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent (alert)',)
     form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed (alert)',)
 
-    comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.com for more information!', verbose_name='source code message', )
+    comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.love for more information!', verbose_name='source code message', )
 
     def __str__(self):
         return self.name
@@ -104,7 +106,6 @@ class Screen(models.Model):
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
-
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
@@ -112,6 +113,7 @@ class Screen(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
 
+    # deprecated
     # not currently implemented, so hidden
     img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
@@ -128,6 +130,7 @@ class Screen(models.Model):
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
     contents = models.TextField(max_length=5000, default='', verbose_name='file contents',blank=True,)
+
     def __str__(self):
         return self.name
     class Meta:
@@ -140,6 +143,8 @@ class Script(models.Model):
 
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='active',)
+
+    # rename to category
     sort = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
 
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
@@ -181,10 +186,13 @@ class Module(models.Model):
     optional = models.BooleanField(default=False, verbose_name='always include',)
     screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+
+    # rename to category
     sort1 = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
+
     url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
@@ -217,7 +225,7 @@ class ModuleScript(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— settings · combination code & robots
+#———————————————————————————————————————— Settings · Language & Robots
 
 class Settings(models.Model):
 
@@ -244,11 +252,11 @@ class Settings(models.Model):
         verbose_name = "website"
         verbose_name_plural = "1.1 · URL & Settings"
 
-#———————————————————————————————————————— page · uses template & prefix
-
-from ckeditor.fields import RichTextField
+#———————————————————————————————————————— Page · uses template & prefix
 
 class Page(models.Model): 
+
+    # rename to published
     visitable = models.BooleanField(default=True, verbose_name='published',)
     screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
@@ -289,9 +297,8 @@ class Page(models.Model):
 #   def __str__(self):
 #       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
 
-#———————————————————————————————————————— page models
+#———————————————————————————————————————— Page models
 
-# rename to pageModule
 class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -329,8 +336,6 @@ class Illustrator(models.Model):
         verbose_name_plural = "Illustrator files"
         ordering = ["zindex"]
 
-# scripts added at bottom of page
-# should be renamed to AdditonalScrpts
 class AdditionalScript(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
