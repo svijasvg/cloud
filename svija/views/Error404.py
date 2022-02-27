@@ -16,7 +16,7 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
-from svija.models import Forwards, Language, Settings
+from svija.models import Redirect, Language, Settings
 from svija.views import SubPageView
 
 from modules.get_screen_code import *
@@ -43,12 +43,12 @@ def Error404(request, *args, **kwargs):
   # that will add a trailing slash
 
   try:
-    redirect_obj = Forwards.objects.get(from_url=request_path, active=True)
+    redirect_obj = Redirect.objects.get(from_url=request_path, active=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_page)
   except ObjectDoesNotExist: pass
 
   try:
-    redirect_obj = Forwards.objects.get(from_url='/'+request_path, active=True)
+    redirect_obj = Redirect.objects.get(from_url='/'+request_path, active=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_page)
   except ObjectDoesNotExist: pass
 

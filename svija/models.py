@@ -1,6 +1,8 @@
 #———————————————————————————————————————— models.py
 
-#———————————————————————————————————————— notes
+# model names are SINGULAR
+
+#———————————————————————————————————————— notes about this document
 
 # CHANGING MODEL NAMES IMPLIES CHANGING STATIC/ADMIN_EXTRA.CSS
 
@@ -22,7 +24,7 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 #———————————————————————————————————————— redirects · no dependencies
 
-class Forwards(models.Model): 
+class Redirect(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
 

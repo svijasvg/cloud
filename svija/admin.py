@@ -4,12 +4,12 @@
 
 from django.contrib import admin
 
-#———————————————————————————————————————— redirects · no dependencies
+#———————————————————————————————————————— redirect · no dependencies
 
-descRedirects = "<b>Forward</b> an old page to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
+descRedirect = "<b>Forward</b> an old page to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
 
-from .models import Forwards
-class ForwardsAdmin(admin.ModelAdmin):
+from .models import Redirect
+class RedirectAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_display = ('from_url', 'to_page', 'active', )
@@ -17,10 +17,10 @@ class ForwardsAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('redirect settings',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirects,}),
+        ('redirect settings',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirect,}),
     ]   
 
-admin.site.register(Forwards, ForwardsAdmin)
+admin.site.register(Redirect, RedirectAdmin)
 
 #———————————————————————————————————————— fonts · no dependencies
 
