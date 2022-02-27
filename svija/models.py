@@ -238,7 +238,6 @@ class Module(models.Model):
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     # deprecated
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
     def __unicode__(self):
@@ -247,7 +246,7 @@ class Module(models.Model):
         return self.name
     class Meta:
         ordering = ['-published', 'sort1', 'name', 'screen',]
-        verbose_name_plural = "2.2 · Modules"
+        verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
 
@@ -404,7 +403,8 @@ class Page(models.Model):
         return self.url
     class Meta:
         ordering = ['-visitable', 'url', 'language', 'screen', '-pub_date', ]
-        verbose_name_plural = "2.1 · Pages"
+        verbose_name_plural = "2.2 · Pages"
+    eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 #   def __str__(self):
 #       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
 
