@@ -18,11 +18,11 @@ from django.utils import timezone
 # pip install django-model-utils
 from model_utils import Choices
 
-#———————————————————————————————————————— types of scripts
+#———————————————————————————————————————— array: types of scripts
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
-#———————————————————————————————————————— redirects · no dependencies
+#———————————————————————————————————————— Redirect · no dependencies
 
 class Redirect(models.Model): 
     active = models.BooleanField(default=True, verbose_name='active',)
@@ -54,22 +54,6 @@ class Font(models.Model):
         verbose_name = "font"
         verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'category', 'family', 'style']
-
-#———————————————————————————————————————— help · no dependencies
-
-from ckeditor.fields import RichTextField
-
-class Help(models.Model):
-    name = models.CharField(max_length=200, default='')
-    cat1 = models.CharField(max_length=100, default='', verbose_name='main category', blank=True,)
-    cat2 = models.CharField(max_length=100, default='', verbose_name='sub  category', blank=True,)
-    link = models.CharField(max_length=100, default='', verbose_name='link', blank=True,)
-    contents = RichTextField()
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "help article"
-        verbose_name_plural = "4.5 · Help"
 
 #———————————————————————————————————————— notes · no dependencies
 
