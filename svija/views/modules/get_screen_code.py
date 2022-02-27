@@ -2,7 +2,7 @@
 
 #———————————————————————————————————————— definition
 
-from svija.models import Responsive 
+from svija.models import Screen 
 
 def get_screen_code(request):
 
@@ -12,7 +12,7 @@ def get_screen_code(request):
 
 #———————————————————————————————————————— get smallest resolution screen code
 
-  all_screens = Responsive.objects.order_by('limit')
+  all_screens = Screen.objects.order_by('limit')
 
   if (len(all_screens) == 1):
     code = all_screens[0].code

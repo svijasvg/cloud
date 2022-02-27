@@ -8,7 +8,7 @@
 #
 #———————————————————————————————————————— imports
 
-from svija.models import Responsive
+from svija.models import Screen
 
 #     need current language code
 #     all prefixes where language=language code
@@ -19,7 +19,7 @@ from svija.models import Responsive
 
 def generate_system_js(version, settings, page, language_code, request_slug, this_screen, screens):
 
-#   this_screen = Responsive.objects.filter(code=screen).first()
+#   this_screen = Screen.objects.filter(code=screen).first()
 
     system_js = "//———————————————————————————————————————— system js\n\n"
     

@@ -97,9 +97,9 @@ class Language(models.Model):
         ordering = ['display_order']
         verbose_name_plural = "1.2 · Languages"
 
-#———————————————————————————————————————— screen size was responsive · no dependencies
+#———————————————————————————————————————— screen size · no dependencies
 
-class Responsive(models.Model):
+class Screen(models.Model):
     name = models.CharField(max_length=200, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
     limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
@@ -194,7 +194,7 @@ class Module(models.Model):
     name = models.CharField(max_length=200, default='')
     published = models.BooleanField(default=True, verbose_name='published',)
     optional = models.BooleanField(default=False, verbose_name='always include',)
-    screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
     sort1 = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
@@ -265,7 +265,7 @@ from ckeditor.fields import RichTextField
 
 class Page(models.Model): 
     visitable = models.BooleanField(default=True, verbose_name='published',)
-    screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
 
     # unused or meta
