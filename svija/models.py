@@ -145,9 +145,6 @@ class Responsive(models.Model):
     img_multiply = models.DecimalField(default=2.4, max_digits=2, decimal_places=1, verbose_name='resolution multiple')
     img_quality  = models.PositiveSmallIntegerField(default=0, verbose_name='JPG quality (0-100)')
 
-    # deprecated
-    description = models.CharField(max_length=200, default='', blank=True)
-
     def __str__(self):
         return self.name
     class Meta:
