@@ -134,21 +134,6 @@ class Robots(models.Model):
         verbose_name = "robots.txt"
         verbose_name_plural = "3.3 · Robots.txt"
 
-#———————————————————————————————————————— template · no dependencies
-
-class Template(models.Model):
-    name = models.CharField(max_length=200, default='')
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='filename',)
-    description = models.CharField(max_length=200, default='', blank=True)
-    active = models.BooleanField(default=True, verbose_name='active',)
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['-active', 'display_order']
-        verbose_name_plural = "4.3 · Templates"
-
 #———————————————————————————————————————— scripts · no dependencies
 
 class Script(models.Model):
