@@ -269,7 +269,7 @@ class Page(models.Model):
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
 
-    module = models.ManyToManyField(Module, through='PageModules')
+    module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
     override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
@@ -292,7 +292,7 @@ class Page(models.Model):
 #———————————————————————————————————————— page models
 
 # rename to pageModule
-class PageModules(models.Model):
+class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')

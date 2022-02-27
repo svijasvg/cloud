@@ -239,13 +239,6 @@ from .models import Page, Illustrator
 from .models import PageScript
 from .models import AdditionalScript
 
-class IllustratorInlinePage(admin.TabularInline):
-    model = Illustrator
-    extra = 0 
-    #fields = ('zindex', 'filename',)
-    fields = ('active','filename','zindex',)
-    verbose_name_plural = 'Illustrator files'
-
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
     extra = 0 
@@ -261,6 +254,13 @@ class ScriptInlinePage(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "scripts"
     classes = ['collapse']
+
+class IllustratorInlinePage(admin.TabularInline):
+    model = Illustrator
+    extra = 0 
+    #fields = ('zindex', 'filename',)
+    fields = ('active','filename','zindex',)
+    verbose_name_plural = 'Illustrator files'
 
 class AdditionalScriptInline(admin.TabularInline):
     model = AdditionalScript
