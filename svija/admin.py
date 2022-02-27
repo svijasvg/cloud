@@ -235,22 +235,16 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— page inlines
 
-from .models import Page, Svg
+from .models import Page, Illustrator
+from .models import PageScript
+from .models import PageScripts
 
-class SvgInline(admin.TabularInline):
-    model = Svg
+class IllustratorInlinePage(admin.TabularInline):
+    model = Illustrator
     extra = 0 
     #fields = ('zindex', 'filename',)
     fields = ('active','filename','zindex',)
     verbose_name_plural = 'Illustrator files'
-
-#   # deprecated
-#   class DefaultScriptsInline(admin.TabularInline):
-#       model = Page.default_scripts.through
-#       extra = 0 
-#       verbose_name = "deprecated script"
-#       verbose_name_plural = "deprecated scripts"
-#       classes = ['collapse']
 
 class ModuleInlinePage(admin.TabularInline):
     model = Page.module.through
@@ -260,7 +254,6 @@ class ModuleInlinePage(admin.TabularInline):
     verbose_name_plural = "modules"
     classes = ['collapse']
 
-from .models import PageScript
 class ScriptInlinePage(admin.TabularInline):
     model = Page.script.through
     extra = 0 
@@ -269,7 +262,6 @@ class ScriptInlinePage(admin.TabularInline):
     verbose_name_plural = "scripts"
     classes = ['collapse']
 
-from .models import PageScripts
 class PageScriptsInline(admin.TabularInline):
     model = PageScripts
     extra = 0 
@@ -299,7 +291,7 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [ModuleInlinePage, ScriptInlinePage, SvgInline, PageScriptsInline]
+    inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

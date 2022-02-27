@@ -253,7 +253,7 @@ class Page(models.Model):
     screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
 
-    # unused or meta
+    # meta
     notes = models.TextField(max_length=2000, default='', blank=True)
     from datetime import datetime
     pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
@@ -291,32 +291,6 @@ class Page(models.Model):
 
 #———————————————————————————————————————— page models
 
-class PageScripts(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "included script"
-        verbose_name_plural = "included scripts"
-        ordering = ["order"]
-
-class Svg(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    filename = models.CharField(max_length=200, default='')
-    zindex = models.IntegerField(default=0, verbose_name='z index')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.filename
-    class Meta:
-        verbose_name = "Illustrator file"
-        verbose_name_plural = "Illustrator files"
-        ordering = ["zindex"]
-
 class PageModules(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -329,6 +303,7 @@ class PageModules(models.Model):
         verbose_name_plural = "links to modules"
         ordering = ["zindex"]
 
+# script like module, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     script = models.ForeignKey(Script, on_delete=models.CASCADE)
@@ -339,6 +314,35 @@ class PageScript(models.Model):
     class Meta:
         verbose_name = "link to script"
         verbose_name_plural = "links to script"
+        ordering = ["order"]
+
+# to rename to Illustrator
+class Illustrator(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    filename = models.CharField(max_length=200, default='')
+    zindex = models.IntegerField(default=0, verbose_name='z index')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.filename
+    class Meta:
+        verbose_name = "Illustrator file"
+        verbose_name_plural = "Illustrator files"
+        ordering = ["zindex"]
+
+# scripts added at bottom of page
+# should be renamed to AdditonalScrpts
+class PageScripts(models.Model):
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    order = models.IntegerField(default=0, verbose_name='load order')
+    active = models.BooleanField(default=True, verbose_name='active',)
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = "included script 328"
+        verbose_name_plural = "included scripts 329"
         ordering = ["order"]
 
 

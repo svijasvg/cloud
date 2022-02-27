@@ -9,7 +9,7 @@ from modules.get_single_svg import *
 def get_page_svgs(screen_code, page, page_width, use_p3):
 
     svgs = ''
-    all_svgs  = page.svg_set.filter(active=True).order_by('zindex')
+    all_svgs  = page.illustrator_set.filter(active=True).order_by('zindex')
 
     css = svgs = ''
 
