@@ -8,7 +8,7 @@
 #
 #———————————————————————————————————————— imports
 
-from svija.models import Prefix, Responsive
+from svija.models import Responsive
 
 #     need current language code
 #     all prefixes where language=language code

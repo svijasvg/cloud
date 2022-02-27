@@ -209,7 +209,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
 admin.site.register(Module, ModuleAdmin)
 
-#———————————————————————————————————————— settings · depends on robots & prefix
+#———————————————————————————————————————— settings · depends on robots
 
 from urllib.parse import quote
 

@@ -261,34 +261,6 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
-
-class Prefix(models.Model):
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    path = models.CharField(max_length=2, default='', verbose_name='code',)
-    default = models.CharField(max_length=20, default='', verbose_name='default page')
-    responsive = models.ForeignKey(Responsive, default=0, on_delete=models.CASCADE, verbose_name='screen size',)
-    language = models.ForeignKey(Language, default=0, on_delete=models.CASCADE, )
-    module = models.ManyToManyField(Module, through='PrefixModules')
-    def __str__(self):
-        return self.path
-    class Meta:
-        verbose_name = "combination"
-        verbose_name_plural = "1.4 · Combination Codes"
-        ordering = ['display_order']
-
-class PrefixModules(models.Model):
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    prefix = models.ForeignKey(Prefix, on_delete=models.CASCADE)
-    zindex = models.IntegerField(default=0, verbose_name='z index')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.module.name
-    class Meta:
-        verbose_name = "The following module is required by a combination code"
-        verbose_name_plural = "The following modules are required by a combination code"
-        ordering = ["zindex"]
-
 #———————————————————————————————————————— settings · combination code & robots
 
 class Settings(models.Model):
@@ -311,7 +283,6 @@ class Settings(models.Model):
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
     # deprecated
-    prefix        = models.ForeignKey(Prefix, default=0, on_delete=models.PROTECT, verbose_name='combination code default')
     cached        = models.BooleanField(default=False, verbose_name='admins see cached content',)
     secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
 
@@ -357,7 +328,6 @@ class Page(models.Model):
 
     # deprecated
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
-    prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
     template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
 
     def __unicode__(self):
