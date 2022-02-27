@@ -129,13 +129,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
 
-    #———————————————————————————————————————— deprecated scripts
-
-    # deprecated
-#   page_scripts_raw = page.default_scripts.all().filter(active=True)
-#   for this_set in page_scripts_raw:
-#     content_blocks.append( scripts_to_page_obj( 'deprecated scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
-
     #———————————————————————————————————————— new scripts
 
     page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')

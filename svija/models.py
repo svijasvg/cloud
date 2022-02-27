@@ -261,39 +261,6 @@ class ModuleScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— deprecated scripts · responsive
-
-#lass Shared(models.Model):
-class DefaultScripts(models.Model):
-    name = models.CharField(max_length=200, default='', verbose_name='name')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    url = models.CharField(max_length=60, default='', blank=True, verbose_name='link',)
-    notes = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
-
-    # deprecated
-    responsive = models.ForeignKey(Responsive, default=2, on_delete=models.PROTECT, verbose_name='screen size',)
-    instructions = RichTextField(default='', blank=True,)
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "scripts"
-        verbose_name_plural = "9.1 · Scripts"
-
-class DefaultScriptTypes(models.Model):
-    scripts = models.ForeignKey(DefaultScripts, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "script deprecated"
-        verbose_name_plural = "scripts deprecated"
-        ordering = ["order"]
-
 #———————————————————————————————————————— deprecated prefixes combination codes · screen size & language
 
 class Prefix(models.Model):
@@ -389,7 +356,6 @@ class Page(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     # deprecated
-    default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
     template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
