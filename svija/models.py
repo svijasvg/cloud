@@ -55,21 +55,6 @@ class Font(models.Model):
         verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'category', 'family', 'style']
 
-#———————————————————————————————————————— notes · no dependencies
-
-from ckeditor.fields import RichTextField
-
-class Notes(models.Model):
-    name = models.CharField(max_length=200, default='')
-    category = models.CharField(max_length=100, default='', verbose_name='sort category', blank=True,)
-    author = models.CharField(max_length=100, default='', verbose_name='author', blank=True,)
-    contents = RichTextField()
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "note"
-        verbose_name_plural = "4.4 · My Notes"
-
 #———————————————————————————————————————— language · no dependencies
 
 class Language(models.Model):
