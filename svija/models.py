@@ -178,29 +178,6 @@ class Template(models.Model):
         ordering = ['-active', 'display_order']
         verbose_name_plural = "4.3 · Templates"
 
-#———————————————————————————————————————— optional scripts · no dependencies
-
-#deprecated
-class OptionalScript(models.Model):
-
-    name = models.CharField(max_length=200, default='')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    sort1 = models.CharField(max_length=100, default='', verbose_name='sort category', blank=True,)
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-
-    # deprecated
-    sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
-
-    def __unicode__(self):
-        return self.name
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['-active', 'type', 'name', 'sort1', 'sort2']
-        verbose_name = "DEPRECATED was optional script"
-        verbose_name_plural = "DEPRECATED · was Optional Scripts"
-
 #———————————————————————————————————————— scripts · no dependencies
 
 class Script(models.Model):
@@ -419,7 +396,6 @@ class Page(models.Model):
 
     # deprecated
     default_scripts = models.ManyToManyField(DefaultScripts, blank=True)
-    optional_script = models.ManyToManyField(OptionalScript, blank=True)
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
     prefix = models.ForeignKey(Prefix, default=3, on_delete=models.PROTECT, verbose_name='combination code',)
     template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
