@@ -238,7 +238,6 @@ class Module(models.Model):
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     # deprecated
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
     sort2 = models.CharField(max_length=100, default='', verbose_name='sub category', blank=True,)
     notes = RichTextField(default='', blank=True, verbose_name='Instructions')
 
@@ -367,7 +366,6 @@ class Page(models.Model):
     visitable = models.BooleanField(default=True, verbose_name='published',)
     screen = models.ForeignKey(Responsive, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
-    cache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
     # unused or meta
     notes = models.TextField(max_length=2000, default='', blank=True)
