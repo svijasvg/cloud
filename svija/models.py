@@ -322,9 +322,6 @@ class Page(models.Model):
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
-    # deprecated
-    template = models.ForeignKey(Template, default=2, on_delete=models.PROTECT, )
-
     def __unicode__(self):
         return self.name
     def __str__(self):

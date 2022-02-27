@@ -99,9 +99,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     use_p3          = settings.p3_color
 
-    # deprecated
-    #emplate        = 'svija/' + page.template.filename
-
     template        = 'svija/svija.html'
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
     content_blocks  = []
