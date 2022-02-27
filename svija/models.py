@@ -282,9 +282,6 @@ class Settings(models.Model):
     mail_port     = models.IntegerField(default=0, verbose_name='email server port')
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
-    # deprecated
-    secure        = models.BooleanField(default=True, verbose_name='HTTPS',)
-
     def __str__(self):
         return self.url
     class Meta:
