@@ -32,7 +32,7 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
         sv = s
         hc = c
 
-        for this_script in this_module.modulescripts_set.all():
+        for this_script in this_module.modulescript_set.all():
             if this_script.active:
     
                 if this_script.type == 'head JS':

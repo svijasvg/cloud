@@ -174,9 +174,9 @@ admin.site.register(Script, ScriptAdmin)
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
-from .models import ModuleScripts
-class ModuleScriptsInline(admin.TabularInline):
-    model = ModuleScripts
+from .models import ModuleScript
+class ModuleScriptInline(admin.TabularInline):
+    model = ModuleScript
     extra = 0 
     fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
@@ -205,7 +205,7 @@ class ModuleAdmin(admin.ModelAdmin):
        ('PLACEMENT'      , {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   
 
-    inlines = [ModuleScriptsInline]
+    inlines = [ModuleScriptInline]
 
 admin.site.register(Module, ModuleAdmin)
 

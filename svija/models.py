@@ -37,7 +37,7 @@ class Redirect(models.Model):
         verbose_name = "redirect"
         verbose_name_plural = "3.2 · Redirects"
 
-#———————————————————————————————————————— fonts · no dependencies
+#———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
     css    = models.CharField(max_length=100, default='', verbose_name='SVG name')
@@ -55,7 +55,7 @@ class Font(models.Model):
         verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'category', 'family', 'style']
 
-#———————————————————————————————————————— language · no dependencies
+#———————————————————————————————————————— Language · no dependencies
 
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -97,7 +97,7 @@ class Language(models.Model):
         ordering = ['display_order']
         verbose_name_plural = "1.2 · Languages"
 
-#———————————————————————————————————————— screen size · no dependencies
+#———————————————————————————————————————— Screen · no dependencies
 
 class Screen(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -123,7 +123,7 @@ class Screen(models.Model):
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
 
-#———————————————————————————————————————— robots · no dependencies
+#———————————————————————————————————————— Robots · no dependencies
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -134,7 +134,7 @@ class Robots(models.Model):
         verbose_name = "robots.txt"
         verbose_name_plural = "3.3 · Robots.txt"
 
-#———————————————————————————————————————— scripts · no dependencies
+#———————————————————————————————————————— Script · no dependencies
 
 class Script(models.Model):
 
@@ -169,7 +169,7 @@ class ScriptScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— modules · no dependencies
+#———————————————————————————————————————— Module · no dependencies
 
 positions = ('absolute', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
@@ -203,7 +203,7 @@ class Module(models.Model):
 
 #———————————————————————————————————————— module scripts · no dependencies
 
-class ModuleScripts(models.Model):
+class ModuleScript(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
