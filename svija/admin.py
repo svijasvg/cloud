@@ -300,9 +300,6 @@ class PageAdmin(admin.ModelAdmin):
     ]   
 
     inlines = [ModuleInlinePage, ScriptInlinePage, SvgInline, PageScriptsInline]
-#   inlines = [SvgInline, DefaultScriptsInline, ModuleInlinePage, ScriptInlinePage, PageScriptsInline]
-#   inlines = [SvgInline, ModuleInlinePage, OptionalScriptInline, PageScriptsInline]
-#   inlines = [SvgInline, ModuleInlinePage, PageScriptsInline]
 
 admin.site.register(Page, PageAdmin)
 

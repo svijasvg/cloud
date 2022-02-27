@@ -237,9 +237,6 @@ class Module(models.Model):
     horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
-    # deprecated
-    notes = RichTextField(default='', blank=True, verbose_name='Instructions')
-
     def __unicode__(self):
         return self.name
     def __str__(self):
