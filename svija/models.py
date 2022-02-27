@@ -291,6 +291,7 @@ class Page(models.Model):
 
 #———————————————————————————————————————— page models
 
+# rename to pageModule
 class PageModules(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -316,7 +317,6 @@ class PageScript(models.Model):
         verbose_name_plural = "links to script"
         ordering = ["order"]
 
-# to rename to Illustrator
 class Illustrator(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     filename = models.CharField(max_length=200, default='')
@@ -331,7 +331,7 @@ class Illustrator(models.Model):
 
 # scripts added at bottom of page
 # should be renamed to AdditonalScrpts
-class PageScripts(models.Model):
+class AdditionalScript(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name = models.CharField(max_length=200, default='')
@@ -341,8 +341,8 @@ class PageScripts(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "included script 328"
-        verbose_name_plural = "included scripts 329"
+        verbose_name = "additional script"
+        verbose_name_plural = "additional scripts"
         ordering = ["order"]
 
 

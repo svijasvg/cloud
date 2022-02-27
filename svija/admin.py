@@ -237,7 +237,7 @@ admin.site.register(Settings, SettingsAdmin)
 
 from .models import Page, Illustrator
 from .models import PageScript
-from .models import PageScripts
+from .models import AdditionalScript
 
 class IllustratorInlinePage(admin.TabularInline):
     model = Illustrator
@@ -262,8 +262,8 @@ class ScriptInlinePage(admin.TabularInline):
     verbose_name_plural = "scripts"
     classes = ['collapse']
 
-class PageScriptsInline(admin.TabularInline):
-    model = PageScripts
+class AdditionalScriptInline(admin.TabularInline):
+    model = AdditionalScript
     extra = 0 
     fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
@@ -291,7 +291,7 @@ class PageAdmin(admin.ModelAdmin):
         ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, PageScriptsInline]
+    inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, AdditionalScriptInline]
 
 admin.site.register(Page, PageAdmin)
 
