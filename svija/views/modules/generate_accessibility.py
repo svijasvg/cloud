@@ -8,12 +8,10 @@
 def generate_accessibility(domain, pages, page):
     links = ''
     for this_page in pages:
-        canonical = this_page.prefix.responsive.canonical
-        if canonical==True:
-            prefix = this_page.prefix.path
-            tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
-            if this_page.url != 'missing':
-                links += tag.format(domain,prefix,this_page.url,this_page.accessibility_name)
+      prefix = this_page.prefix.path
+      tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
+      if this_page.url != 'missing':
+          links += tag.format(domain,prefix,this_page.url,this_page.accessibility_name)
 
 #---------------------------------------- add capture
 

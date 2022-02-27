@@ -97,10 +97,6 @@ class Language(models.Model):
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
-    # 3 deprecated fields
-    flag = models.CharField(max_length=10, default='', blank=True, verbose_name='flag emoji',)
-    no_email = models.CharField(max_length=200, default='', verbose_name='sender if only phone number is given',blank=True,)
-
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
