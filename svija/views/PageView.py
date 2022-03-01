@@ -85,7 +85,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #eturn HttpResponse("debugging message." + request.path)
 
-    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
+    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
     if not page: raise Http404 # passed to file Error404.py
 
     #———————————————————————————————————————— main settings

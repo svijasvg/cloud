@@ -27,7 +27,7 @@ def SitemapView(request):
 def sitemap(domain, pages):
     results = []
     for page in pages:
-        if page.visitable == True:
+        if page.published == True:
           prefix = page.language.code
           if page.url != 'missing':
               results.append('http://'+domain+'/'+prefix+'/'+page.url)
