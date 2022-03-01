@@ -105,13 +105,9 @@ class Language(models.Model):
 class Screen(models.Model):
     name = models.CharField(max_length=200, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-
-    # rename to pixels
-    pixels = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
-
-    # rename to order
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
+    pixels = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
@@ -144,7 +140,7 @@ class Script(models.Model):
     active = models.BooleanField(default=True, verbose_name='active',)
 
     # rename to category
-    sort = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
+    category = models.CharField(max_length=100, default='', verbose_name='category (optional)', blank=True,)
 
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
@@ -154,7 +150,7 @@ class Script(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'sort', 'name', ]
+        ordering = ['-active', 'category', 'name', ]
         verbose_name_plural = "3.1 · Scripts"
 
 #———————————————————————————————————————— script scripts · script

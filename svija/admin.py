@@ -129,13 +129,13 @@ from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
 
     # display on parent script
-    list_display = ('name', 'sort', 'active',)
-    list_filter = ('sort', )
+    list_display = ('name', 'category', 'active',)
+    list_filter = ('category', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active',),('sort', ), ], 'description':descScript0, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active',),('category', ), ], 'description':descScript0, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
     ]   
 
