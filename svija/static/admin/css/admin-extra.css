@@ -1,28 +1,5 @@
 /*———————————————————————————————————————— static/admin/css/admin-extra.css */
 
-/*———————————————————————————————————————— fonts */
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-600.woff');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-regular.woff');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-300.woff');
-    font-weight: 300;
-    font-style: normal;
-}
-
 /*———————————————————————————————————————— colors */
 
 /* in sync/Svija/Admin Customization:
@@ -58,6 +35,29 @@
 :root { --link:        var(--text-dark); 
         --link-hover:  var(--text-dark); }
 
+
+/*———————————————————————————————————————— fonts */
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-600.woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-regular.woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-300.woff');
+    font-weight: 300;
+    font-style: normal;
+}
 
 /*———————————————————————————————————————— header bar */
 
@@ -229,8 +229,8 @@ tr.model-settings a:hover, tr.model-settings a:active,
 tr.model-language a:hover, tr.model-language a:active,
 tr.model-screen   a:hover, tr.model-screen   a:active
 
-  {        color:var(--text-dark);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
@@ -258,8 +258,8 @@ tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
-  {        color:var(--dark);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
@@ -281,8 +281,8 @@ tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
 tr.model-forwards       a:hover, tr.model-forwards       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
-  {        color:var(--text-dark);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
 
 /*———————————————————————————————————————— buttons */
 
