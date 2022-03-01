@@ -144,7 +144,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     #———————————————————————————————————————— "always include" modules
 
     if not page.suppress_modules:
-        screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('display_order')
+        screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
         module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 
