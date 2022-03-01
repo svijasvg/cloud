@@ -146,7 +146,7 @@ def clean(file_path, svg_filename, use_p3):
 
   for css_ref in fonts_to_add:
     new_font = create_new_font(css_ref, Font())
-    p = Font.objects.create(css = new_font.svg_ref, family = new_font.family, style=new_font.style, source=new_font.source, google=False, active=True)
+    p = Font.objects.create(css = new_font.svg_ref, family = new_font.family, style=new_font.style, source=new_font.woff, google=False, active=True)
     p.save
 
   #———————————————————————————————————————— add new ID if necessary
@@ -207,7 +207,7 @@ def create_new_font(css_ref, new_font):
   if weight_style == '':
     weight_style = 'Regular'
 
-  new_font.svg_ref, new_font.family, new_font.style, new_font.source = css, family, weight_style, source
+  new_font.svg_ref, new_font.family, new_font.style, new_font.woff = css, family, weight_style, source
 
   return new_font
 
