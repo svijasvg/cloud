@@ -27,8 +27,9 @@
 
 /* in sync/Svija/Admin Customization:
 
-  --color:          rgb( 70%, 100%,   0% );
-  --color-contrast: rgb(  0%,   0%,   0% ); */
+  --main:
+  --accent:
+  --dark:     */
 
 :root { --bg-head:     hsl(0, 0%,  20%);
         --bg-dark:     hsl(0, 0%,  20%);
@@ -62,7 +63,7 @@
 
 #header
   { background-color:var(--bg-head);
-       border-bottom:1px solid var(--color); }
+       border-bottom:1px solid var(--accent); }
 
 #svija-admin-logo
   { margin:5px 0 5px -12px; }
@@ -71,13 +72,13 @@
 
 #header div#user-tools { line-height:1.8em; } /* welcome */
 
-#header div#user-tools { color:var(--color);} /* welcome */
-#header strong         { color:var(--color);} /* user name */
+#header div#user-tools { color:var(--main);} /* welcome */
+#header strong         { color:var(--accent);} /* user name */
 
 #header div#user-tools a:link,                    /* user tools links */
 #header div#user-tools a:visited
 
-  { color:var(--color);
+  { color:var(--main);
     border-bottom:1px solid #0000;
     text-decoration:none; }
 
@@ -112,7 +113,7 @@ div.breadcrumbs a:active
 ul.messagelist li
 
   { color:var(--bg-dark);
-    background:var(--color); }
+    background:var(--main); }
 
 ul.messagelist li a
 
@@ -124,7 +125,7 @@ ul.messagelist li a
 .object-tools a.addlink,
 .object-tools a.historylink
 
-  {         color:var(--color);
+  {         color:var(--main);
        background:var(--bg-dark);
     border-radius:5px;
       padding-top:4px;
@@ -137,7 +138,7 @@ ul.messagelist li a
 .inline-group h2 /* inline models headers */
 
   { background-color:var(--bg-dark);
-               color:var(--color);
+               color:var(--main);
       text-transform:uppercase;
        border-radius:5px; }
 
@@ -153,7 +154,7 @@ fieldset.collapsed h2
 fieldset.collapsed .collapse-toggle,   /* (SHOW) link */
 fieldset.collapse .collapse-toggle   /* (HIDE) link */
 
-  { color:var(--color) !important; }
+  { color:var(--main) !important; }
 
 fieldset.collapse  /* background of hidden blocks when made visible */
 
@@ -172,8 +173,8 @@ a:hover, a:active      { color: var(--link-hover);
 
 div.description
 
-  {            color:var(--color-contrast);
-    background-color:var(--color);
+  {            color:var(--dark);
+    background-color:var(--accent);
              padding:5px 15px 5px 15px;
          margin-left:10px;
        margin-bottom:7px;
@@ -189,16 +190,16 @@ div.description a:link,
 div.description a:visited
 
   { text-decoration:none;
-              color:var(--color-contrast);
+              color:var(--dark);
               font-weight:bold;
-      border-bottom:1px solid var(--color-contrast);
+      border-bottom:1px solid var(--dark);
      padding-bottom:0; }
 
 div.description a:hover,
 div.description a:active
 
-  {         color:var(--color-contrast);
-    border-bottom:3px solid var(--color-contrast); }
+  {         color:var(--dark);
+    border-bottom:3px solid var(--dark); }
 
 /*———————————————————————————————————————— model list global */
 
@@ -237,7 +238,7 @@ tr.model-page,
 tr.model-module,
 tr.model-font
 
-  { background-color:var(--color);
+  { background-color:var(--main);
     border:1px solid var(--bg-med); }
 
 /* bottom borders */
@@ -250,14 +251,14 @@ tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
 tr.model-font   a:link, tr.model-font   a:visited
 
-  {           color:var(--color-contrast);
+  {           color:var(--dark);
     text-decoration:none; }
 
 tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
-  {        color:var(--color-contrast);
+  {        color:var(--dark);
     padding-left:0.3rem; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
@@ -300,8 +301,8 @@ input[type=button]:hover,
  .submit-row input:hover,
           a.button:hover
 
-  { color:var(--color-contrast);
-     background:var(--color); }
+  { color:var(--dark);
+     background:var(--main); }
 
 /*———————————————————————————————————————— default buttons */
 
@@ -309,23 +310,23 @@ input[type=button]:hover,
 input[type=submit].default,
 .submit-row input.default
 
-  {      color:var(--color-contrast);
-    background:var(--color);
+  {      color:var(--dark);
+    background:var(--main);
        outline:0 !important; } /* blue accessibility outline around default button */
 
 .button.default:hover,
 input[type=submit].default:hover,
 .submit-row input.default:hover
 
-  {      color:var(--color);
-    background:var(--color-contrast); }
+  {      color:var(--main);
+    background:var(--dark); }
 
 .button.default:focus,
 input[type=submit].default:focus,
 .submit-row input.default:focus
 
-  {      color:var(--color-contrast);
-    background:var(--color); }
+  {      color:var(--dark);
+    background:var(--main); }
 
 /*———————————————————————————————————————— tiny original name text */
 
