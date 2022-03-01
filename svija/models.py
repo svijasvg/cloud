@@ -42,18 +42,18 @@ class Redirect(models.Model):
 
 class Font(models.Model): 
     # rename to svg
-    svg_name = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    svg_ref = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    woff     = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
 
-    # rename to woff
-    source   = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
     google   = models.BooleanField(default=True, verbose_name='Google font',)
     active   = models.BooleanField(default=True, verbose_name='active',)
+
     category = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     def __str__(self):
-        return self.svg_name
+        return self.svg_ref
     class Meta:
         verbose_name = "font"
         verbose_name_plural = "2.3 · Fonts"

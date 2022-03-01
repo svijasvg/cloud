@@ -30,13 +30,13 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('svg_name', 'family', 'style', 'source', 'google', 'active', 'category',)
+    list_display = ('svg_ref', 'family', 'style', 'woff', 'google', 'active', 'category',)
     list_filter = ('category', 'google', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font information',    {'fields': [('svg_name', 'category',), ('family', 'style',), ('source', 'google',), 'active',], 'description':descFonts,}),
+        ('font information',    {'fields': [('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), 'active',], 'description':descFonts,}),
 
     ]   
 
