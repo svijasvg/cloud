@@ -17,7 +17,7 @@ def get_fonts():
     for this_font in font_objs:
         if this_font.active:
             svg_ref = this_font.svg_ref
-            font_src  = this_font.source
+            font_src  = this_font.woff
 
             if this_font.google:
                 req = this_font.style.lower().replace(' ','')
