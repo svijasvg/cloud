@@ -50,12 +50,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'display_order', 'default', 'title', 'email',)
+    list_display = ('name', 'code', 'display_order', 'default_page', 'title', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code', {'fields': [('name', 'code'),('default','display_order',),],'description':descLanguages, }),
+        ('name, two-letter code', {'fields': [('name', 'code'),('default_page','display_order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),

@@ -41,7 +41,6 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
-    # rename to svg
     svg_ref = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
@@ -64,9 +63,7 @@ class Font(models.Model):
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
-
-    # rename to page
-    default       = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
+    default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
 
     # rename to order
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
