@@ -65,8 +65,7 @@ class Language(models.Model):
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
 
-    # rename to order
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
@@ -75,7 +74,6 @@ class Language(models.Model):
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
 
-    # rename to from
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
     # field labels
@@ -99,7 +97,7 @@ class Language(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['display_order']
+        ordering = ['order']
         verbose_name_plural = "1.2 · Languages"
 
 #———————————————————————————————————————— Screen · no dependencies
@@ -109,10 +107,10 @@ class Screen(models.Model):
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
 
     # rename to pixels
-    limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
+    pixels = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
     # rename to order
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
@@ -122,7 +120,7 @@ class Screen(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['display_order']
+        ordering = ['order']
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
 
@@ -270,12 +268,12 @@ class Page(models.Model):
 
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
-    url         = models.CharField(max_length=200, default='', verbose_name='address')
-    category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
+    url       = models.CharField(max_length=200, default='', verbose_name='address')
+    category  = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
 
     # meta
-    notes       = models.TextField(max_length=2000, default='', blank=True)
-    pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
+    notes     = models.TextField(max_length=2000, default='', blank=True)
+    pub_date  = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
 
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)

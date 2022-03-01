@@ -50,12 +50,12 @@ from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('name', 'code', 'display_order', 'default_page', 'title', 'email',)
+    list_display = ('name', 'code', 'order', 'default_page', 'title', 'email',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code', {'fields': [('name', 'code'),('default_page','display_order',),],'description':descLanguages, }),
+        ('name, two-letter code', {'fields': [('name', 'code'),('default_page','order',),],'description':descLanguages, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
@@ -64,6 +64,26 @@ class LanguageAdmin(admin.ModelAdmin):
     ]   
 
 admin.site.register(Language, LanguageAdmin)
+
+#———————————————————————————————————————— Screen · no dependencies
+
+descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>languages</a>."
+
+from .models import Screen
+class ScreenAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('name', 'code', 'width', 'order', )
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('details',{'fields': [('name', 'pixels',),('code',  'order'),],'description':descScreens,}),
+        ('dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
+#       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
+    ]   
+
+admin.site.register(Screen, ScreenAdmin)
 
 #———————————————————————————————————————— Robots · no dependencies
 
@@ -85,26 +105,6 @@ class RobotsAdmin(admin.ModelAdmin):
     verbose_name_plural = "robots.txt"
 
 admin.site.register(Robots, RobotsAdmin)
-
-#———————————————————————————————————————— Screen · no dependencies
-
-descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>languages</a>."
-
-from .models import Screen
-class ScreenAdmin(admin.ModelAdmin):
-
-    # display on parent page
-    list_display = ('name', 'code', 'width', 'display_order', )
-    save_on_top = True
-    save_as = True
-
-    fieldsets = [ 
-        ('details',{'fields': [('name', 'limit',),('code',  'display_order'),],'description':descScreens,}),
-        ('dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
-#       ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
-    ]   
-
-admin.site.register(Screen, ScreenAdmin)
 
 #———————————————————————————————————————— Script · no dependencies
 
