@@ -190,10 +190,8 @@ class Module(models.Model):
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='position')
     corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
-
-    # rename to offsetx & offsety
-    offsetx = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
-    offsety = models.FloatField(default=0, verbose_name='vertical offset (px)',)
+    offsetx  = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
+    offsety  = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     def __unicode__(self):
         return self.name
@@ -251,7 +249,7 @@ class Settings(models.Model):
 class Page(models.Model): 
 
     # rename to published
-    visitable = models.BooleanField(default=True, verbose_name='published',)
+    published = models.BooleanField(default=True, verbose_name='published',)
 
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
@@ -286,7 +284,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ['-visitable', 'url', 'language', 'screen', '-pub_date', ]
+        ordering = ['-published', 'url', 'language', 'screen', '-pub_date', ]
         verbose_name_plural = "2.2 · Pages"
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 

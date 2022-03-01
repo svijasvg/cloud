@@ -246,13 +246,13 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'screen', 'language', 'title', 'visitable', 'suppress_modules', 'pub_date', 'category',)
+    list_display = ('url', 'screen', 'language', 'title', 'published', 'suppress_modules', 'pub_date', 'category',)
     list_filter = ('category', 'screen', 'language', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('setup',          {'fields': ['visitable', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override_dims',),],'description':descPages, }),
+        ('setup',          {'fields': ['published', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override_dims',),],'description':descPages, }),
         ('accessibility',  {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
         ('page info',      {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
         ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
