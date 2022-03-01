@@ -119,12 +119,6 @@ class ScriptScriptsInline(admin.TabularInline):
     verbose_name = "script"
     verbose_name_plural = "scripts"
 
-# https://stackoverflow.com/questions/5852540/django-admin-display-multiple-fields-on-the-same-line
-#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
-#   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
-#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
-#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
-
 from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
 
@@ -164,15 +158,15 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_display = ('name', 'screen', 'language', 'always', 'display_order', 'css_id',  'active', 'sort1',)
-    list_filter = ('sort1', 'screen', 'language', 'always', )
+    list_display = ('name', 'screen', 'language', 'always', 'order', 'css_id',  'active', 'category',)
+    list_filter = ('category', 'screen', 'language', 'always', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-       ('PLACEMENT'      , {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
+       ('PLACEMENT'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptInline]

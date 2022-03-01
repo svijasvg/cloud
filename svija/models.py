@@ -179,12 +179,9 @@ class Module(models.Model):
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+    category = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
+    order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
-    # rename to category
-    sort1 = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
-
-    # rename to order
-    display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
 
@@ -195,15 +192,15 @@ class Module(models.Model):
     corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
 
     # rename to offsetx & offsety
-    horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
-    vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
+    offsetx = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
+    offsety = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
     def __unicode__(self):
         return self.name
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'sort1', 'name', 'screen',]
+        ordering = ['-active', 'category', 'order', 'name', 'screen',]
         verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
