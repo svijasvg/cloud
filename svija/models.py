@@ -138,10 +138,7 @@ class Script(models.Model):
 
     name = models.CharField(max_length=200, default='')
     active = models.BooleanField(default=True, verbose_name='active',)
-
-    # rename to category
     category = models.CharField(max_length=100, default='', verbose_name='category (optional)', blank=True,)
-
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
@@ -179,7 +176,7 @@ class Module(models.Model):
     name      = models.CharField(max_length=200, default='')
 
     # rename to active
-    published = models.BooleanField(default=True, verbose_name='published',)
+    active = models.BooleanField(default=True, verbose_name='active',)
 
     # rename always
     optional  = models.BooleanField(default=False, verbose_name='always include',)
@@ -209,7 +206,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-published', 'sort1', 'name', 'screen',]
+        ordering = ['-active', 'sort1', 'name', 'screen',]
         verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
