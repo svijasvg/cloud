@@ -25,7 +25,7 @@ def HomePageView(request, language_code):
 #———————————————————————————————————————— get default page for language
 
   language = get_object_or_404(Language, code=language_code)
-  default_page = language.default
+  default_page = language.default_page
 
 #———————————————————————————————————————— return regular view
 

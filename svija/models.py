@@ -270,7 +270,6 @@ class Page(models.Model):
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
-    # rename to override
     override = models.BooleanField(default=False, verbose_name='override default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
