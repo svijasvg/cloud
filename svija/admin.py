@@ -12,12 +12,12 @@ from .models import Redirect
 class RedirectAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('from_url', 'to_page', 'active', )
+    list_display = ('from_url', 'to_url', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('redirect settings',    {'fields': ['from_url', 'to_page','active',], 'description':descRedirect,}),
+        ('redirect settings',    {'fields': ['from_url', 'to_url','active',], 'description':descRedirect,}),
     ]   
 
 admin.site.register(Redirect, RedirectAdmin)

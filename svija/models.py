@@ -1,6 +1,5 @@
 #———————————————————————————————————————— models.py
 
-# deprecated #rename
 # model names are SINGULAR
 # 252 language, permit unknown results — see link somewhere
 
@@ -33,7 +32,7 @@ class Redirect(models.Model):
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
 
     # rename to to_url
-    to_page = models.CharField(max_length=200, default='', verbose_name='new URL')
+    to_url = models.CharField(max_length=200, default='', verbose_name='new URL')
 
     def __str__(self):
         return self.from_url
