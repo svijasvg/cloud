@@ -284,6 +284,12 @@ tr.model-robots         a:hover, tr.model-robots         a:active
   {           color:var(--text-dark);
 		text-decoration:underline; }
 
+/*———————————————————————————————————————— control */
+
+tr.model-control
+
+  { display:none; }
+
 /*———————————————————————————————————————— buttons */
 
 .button,

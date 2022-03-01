@@ -25,6 +25,19 @@ from datetime import datetime
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
+#———————————————————————————————————————— Control · no dependencies
+
+class Control(models.Model): 
+    limit    = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
+    password = models.CharField(max_length=20, default='', verbose_name='password')
+    cached   = models.BooleanField(default=False, verbose_name='cache active',)
+
+    def __str__(self):
+        return self.from_url
+    class Meta:
+        verbose_name = "control"
+        verbose_name_plural = "Control"
+
 #———————————————————————————————————————— Redirect · no dependencies
 
 class Redirect(models.Model): 

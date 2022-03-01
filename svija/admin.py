@@ -3,6 +3,23 @@
 #———————————————————————————————————————— import
 
 from django.contrib import admin
+from urllib.parse import quote
+
+#———————————————————————————————————————— Control · no dependencies
+
+from .models import Control
+class ControlAdmin(admin.ModelAdmin):
+
+    # display on parent page
+    list_display = ('limit', 'cached',)
+    save_on_top = True
+    save_as = True
+
+    fieldsets = [ 
+        ('site settings',   {'fields': [('limit', 'cached',), 'password',],}),
+    ]   
+
+admin.site.register(Control, ControlAdmin)
 
 #———————————————————————————————————————— Redirect · no dependencies
 
@@ -164,7 +181,7 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
        ('PLACEMENT'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
     ]   
@@ -175,7 +192,6 @@ admin.site.register(Module, ModuleAdmin)
 
 #———————————————————————————————————————— Settings · depends on robots
 
-from urllib.parse import quote
 
 mailLink     = "mailto:support@svija.love?subject=custom domain request&body="
 mailBody     = quote("I would like to change the address of my Svija website:\n\n    from:\n    to:\n\nThank you,\n")
