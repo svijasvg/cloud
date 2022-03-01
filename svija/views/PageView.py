@@ -103,7 +103,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
     content_blocks  = []
 
-    if page.override_dims: page_width = page.width
+    if page.override: page_width = page.width
     else:                  page_width = responsive.width
 
     #———————————————————————————————————————— redirect if /en/home or /en or /fr/accueil
