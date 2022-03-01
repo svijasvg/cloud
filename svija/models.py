@@ -2,13 +2,13 @@
 
 # deprecated #rename
 # model names are SINGULAR
+# 252 language, permit unknown results — see link somewhere
 
-#———————————————————————————————————————— notes about this document
+#———————————————————————————————————————— random notes
 
-# CHANGING MODEL NAMES IMPLIES CHANGING STATIC/ADMIN_EXTRA.CSS
+# changing model names implies changing static/admin_extra.css
 
-# on_delete
-#https://stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
+# on_delete: stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
 #———————————————————————————————————————— imports
 
@@ -20,6 +20,7 @@ from django.utils import timezone
 from model_utils import Choices
 
 from ckeditor.fields import RichTextField
+from datetime import datetime
 
 #———————————————————————————————————————— array: types of scripts
 
@@ -43,9 +44,12 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
+    # rename to svg
     css      = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+
+    # rename to woff
     source   = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
     google   = models.BooleanField(default=True, verbose_name='Google font',)
     active   = models.BooleanField(default=True, verbose_name='active',)
@@ -64,7 +68,10 @@ class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
 
-    default  = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
+    # rename to page
+    default       = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
+
+    # rename to order
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
@@ -73,6 +80,8 @@ class Language(models.Model):
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
+
+    # rename to from
     mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
 
     # field labels
@@ -104,8 +113,11 @@ class Language(models.Model):
 class Screen(models.Model):
     name = models.CharField(max_length=200, default='')
     code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
+
+    # rename to pixels
     limit = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
 
+    # rename to order
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
@@ -147,7 +159,7 @@ class Script(models.Model):
     # rename to category
     sort = models.CharField(max_length=100, default='', verbose_name='sort label (optional)', blank=True,)
 
-    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     def __unicode__(self):
@@ -181,23 +193,31 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 class Module(models.Model):
 
-    name = models.CharField(max_length=200, default='')
+    name      = models.CharField(max_length=200, default='')
+
+    # rename to active
     published = models.BooleanField(default=True, verbose_name='published',)
-    optional = models.BooleanField(default=False, verbose_name='always include',)
-    screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+
+    # rename always
+    optional  = models.BooleanField(default=False, verbose_name='always include',)
+    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
 
     # rename to category
     sort1 = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
+
+    # rename to order
     display_order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file (optional)',)
 
-    url = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
-    position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
-    corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
+    position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='position')
+    corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
+
+    # rename to offsetx & offsety
     horz_offset = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
     vert_offset = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
@@ -258,15 +278,15 @@ class Page(models.Model):
 
     # rename to published
     visitable = models.BooleanField(default=True, verbose_name='published',)
-    screen = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
 
-    # meta
-    notes = models.TextField(max_length=2000, default='', blank=True)
-    from datetime import datetime
-    pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
+    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
+    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     url         = models.CharField(max_length=200, default='', verbose_name='address')
     category    = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
+
+    # meta
+    notes       = models.TextField(max_length=2000, default='', blank=True)
+    pub_date    = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
 
     # used in page construction
     title  = models.CharField(max_length=200, default='', blank=True)
@@ -280,8 +300,9 @@ class Page(models.Model):
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
+    # rename to override
     override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
-    width = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
@@ -294,11 +315,10 @@ class Page(models.Model):
         ordering = ['-visitable', 'url', 'language', 'screen', '-pub_date', ]
         verbose_name_plural = "2.2 · Pages"
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-#   def __str__(self):
-#       return '{} - {} ({})'.format(self.pk, self.name, self.pcode)
 
 #———————————————————————————————————————— Page models
 
+# foreignkey, available sitewide
 class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -311,7 +331,7 @@ class PageModule(models.Model):
         verbose_name_plural = "links to modules"
         ordering = ["zindex"]
 
-# script like module, available sitewide
+# foreignkey, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     script = models.ForeignKey(Script, on_delete=models.CASCADE)
