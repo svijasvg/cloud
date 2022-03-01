@@ -164,13 +164,13 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_display = ('name', 'screen', 'language', 'optional', 'display_order', 'css_id',  'active', 'sort1',)
-    list_filter = ('sort1', 'screen', 'language', 'optional', )
+    list_display = ('name', 'screen', 'language', 'always', 'display_order', 'css_id',  'active', 'sort1',)
+    list_filter = ('sort1', 'screen', 'language', 'always', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','optional'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('sort1', 'screen'), ('css_id', 'language',), ('filename','display_order', ),], 'description':descModules, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
        ('PLACEMENT'      , {'fields': [('horz_offset', 'position', ), ( 'vert_offset', 'corner', ),],'description': positdesc,}),
     ]   

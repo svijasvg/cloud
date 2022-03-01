@@ -174,12 +174,9 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name      = models.CharField(max_length=200, default='')
-
-    # rename to active
     active = models.BooleanField(default=True, verbose_name='active',)
 
-    # rename always
-    optional  = models.BooleanField(default=False, verbose_name='always include',)
+    always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
 
