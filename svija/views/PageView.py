@@ -108,7 +108,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #———————————————————————————————————————— redirect if /en/home or /en or /fr/accueil
 
-    redirect = redirect_if_home(request.path, settings.language.code, language.default)
+    redirect = redirect_if_home(request.path, settings.language.code, language.default_page)
     if redirect: return HttpResponsePermanentRedirect(redirect)
 
     #———————————————————————————————————————— metatags, system js & fonts
