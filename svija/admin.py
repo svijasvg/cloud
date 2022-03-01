@@ -252,7 +252,7 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('setup',          {'fields': ['published', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override_dims',),],'description':descPages, }),
+        ('setup',          {'fields': ['published', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override',),],'description':descPages, }),
         ('accessibility',  {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
         ('page info',      {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
         ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),

@@ -248,9 +248,7 @@ class Settings(models.Model):
 
 class Page(models.Model): 
 
-    # rename to published
     published = models.BooleanField(default=True, verbose_name='published',)
-
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     url       = models.CharField(max_length=200, default='', verbose_name='address')
@@ -273,11 +271,11 @@ class Page(models.Model):
     script = models.ManyToManyField(Script, through='PageScript')
 
     # rename to override
-    override_dims = models.BooleanField(default=False, verbose_name='override default dimensions',)
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
-    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
-    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
+    override = models.BooleanField(default=False, verbose_name='override default dimensions',)
+    width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
+    visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
+    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
+    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     def __unicode__(self):
         return self.name
