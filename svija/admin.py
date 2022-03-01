@@ -4,7 +4,7 @@
 
 from django.contrib import admin
 
-#———————————————————————————————————————— redirect · no dependencies
+#———————————————————————————————————————— Redirect · no dependencies
 
 descRedirect = "<b>Forward</b> an old page to a new one, or to create <b>shortcuts</b> for pages you visit frequently."
 
@@ -22,7 +22,7 @@ class RedirectAdmin(admin.ModelAdmin):
 
 admin.site.register(Redirect, RedirectAdmin)
 
-#———————————————————————————————————————— fonts · no dependencies
+#———————————————————————————————————————— Font · no dependencies
 
 descFonts        = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
 
@@ -30,19 +30,19 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('css', 'family', 'style', 'source', 'google', 'active', 'category',)
+    list_display = ('svg_name', 'family', 'style', 'source', 'google', 'active', 'category',)
     list_filter = ('category', 'google', 'active', )
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('font information',    {'fields': [('css', 'category',), ('family', 'style',), ('source', 'google',), 'active',], 'description':descFonts,}),
+        ('font information',    {'fields': [('svg_name', 'category',), ('family', 'style',), ('source', 'google',), 'active',], 'description':descFonts,}),
 
     ]   
 
 admin.site.register(Font, FontAdmin)
 
-#———————————————————————————————————————— language · no dependencies
+#———————————————————————————————————————— Language · no dependencies
 
 descLanguages    = "Supported languages · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
 
@@ -65,7 +65,7 @@ class LanguageAdmin(admin.ModelAdmin):
 
 admin.site.register(Language, LanguageAdmin)
 
-#———————————————————————————————————————— robots · no dependencies
+#———————————————————————————————————————— Robots · no dependencies
 
 descRobots       = "Directives telling search engines whether or not to index your website — <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>more info</a>."
 
@@ -86,33 +86,7 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— deprecated scripts · dependent on responsive
-
-#   descDefault = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
-#   descDefaultx = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
-#   
-#   from .models import DefaultScripts, DefaultScriptTypes
-#   class DefaultScriptTypesInline(admin.TabularInline):
-#       model = DefaultScriptTypes
-#       extra = 0 
-#       fields = ('type', 'active', 'order', 'name', 'content',)
-#   
-#   class DefaultScriptsAdmin(admin.ModelAdmin):
-#   
-#       # display on parent scripts
-#       list_display = ('name', 'active', )
-#       save_on_top = True
-#       save_as = True
-#   
-#       fieldsets = [ 
-#           ('Name', {'fields': [('name', 'active',), ],'description':descDefault, }),
-#           ('Instructions', {'fields': [('url', 'notes'),], 'classes': ['collapse'],'description':descDefaultx, }),
-#       ]   
-#       inlines = [DefaultScriptTypesInline]
-#   
-#   admin.site.register(DefaultScripts, DefaultScriptsAdmin)
-
-#———————————————————————————————————————— screen size · no dependencies
+#———————————————————————————————————————— Screen · no dependencies
 
 descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>languages</a>."
 
@@ -132,7 +106,7 @@ class ScreenAdmin(admin.ModelAdmin):
 
 admin.site.register(Screen, ScreenAdmin)
 
-#———————————————————————————————————————— script · no dependencies
+#———————————————————————————————————————— Script · no dependencies
 
 descScript0 = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
 descScript1 = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -169,7 +143,7 @@ class ScriptAdmin(admin.ModelAdmin):
 
 admin.site.register(Script, ScriptAdmin)
 
-#———————————————————————————————————————— module · no dependencies
+#———————————————————————————————————————— Module · no dependencies
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -209,7 +183,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
 admin.site.register(Module, ModuleAdmin)
 
-#———————————————————————————————————————— settings · depends on robots
+#———————————————————————————————————————— Settings · depends on robots
 
 from urllib.parse import quote
 
@@ -233,7 +207,9 @@ class SettingsAdmin(admin.ModelAdmin):
 
 admin.site.register(Settings, SettingsAdmin)
 
-#———————————————————————————————————————— page inlines
+#———————————————————————————————————————— Page
+
+#———————————————————————————————————————— Page inlines
 
 from .models import Page, Illustrator
 from .models import PageScript
@@ -270,7 +246,8 @@ class AdditionalScriptInline(admin.TabularInline):
     verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
 
-#———————————————————————————————————————— page
+
+#———————————————————————————————————————— main class
 
 descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
