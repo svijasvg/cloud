@@ -151,7 +151,7 @@ class Screen(models.Model):
 
 # Create or retrieve a placeholder
 def get_sentinel_robots():
-    return Robots.objects.get_or_create(name="undefined",code="na")[0]
+    return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
 
 # Create an additional method to return only the id - default expects an id and not a Model object
 def get_sentinel_robots_id():
