@@ -42,7 +42,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     if not path.exists():
         #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
-        svg = '<!-- missing svg: {} -->'.format(svija_path+svg_name)
+        svg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
 
     else:
         is_module = hasattr(target_obj, 'css_id')
@@ -54,7 +54,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
 
         svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
-        svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+#       svg = '\n<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
 
         if svg_width > page_width:
             page_ratio = svg_height/svg_width
