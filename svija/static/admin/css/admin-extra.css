@@ -142,6 +142,13 @@ ul.messagelist li a
       text-transform:uppercase;
        border-radius:5px; }
 
+/*———————————————————————————————————————— user permissions */
+
+div.selector-chosen h2
+
+  { background-color:var(--bg-dark);
+               color:var(--main); }
+
 /*———————————————————————————————————————— initially-hidden fields */
 
 fieldset.collapsed h2
