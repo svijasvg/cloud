@@ -11,12 +11,12 @@ from .models import Control
 class ControlAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('limit', 'cached',)
+    list_display = ('limit', 'used', 'cached',)
     save_on_top = True
     save_as = True
 
     fieldsets = [ 
-        ('site settings',   {'fields': [('limit', 'cached',), 'password',],}),
+        ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),],}),
     ]   
 
 admin.site.register(Control, ControlAdmin)

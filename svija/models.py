@@ -29,6 +29,7 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 class Control(models.Model): 
     limit    = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
+    used     = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
     password = models.CharField(max_length=20, default='', verbose_name='password')
     cached   = models.BooleanField(default=False, verbose_name='cache active',)
 
