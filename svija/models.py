@@ -79,6 +79,14 @@ class Font(models.Model):
 
 #———————————————————————————————————————— Language · no dependencies
 
+# Create or retrieve a placeholder
+def get_sentinel_language():
+    return Language.objects.get_or_create(name="undefined",code="na")[0]
+
+# Create an additional method to return only the id - default expects an id and not a Model object
+def get_sentinel_language_id():
+    return get_sentinel_language().id
+
 class Language(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
@@ -140,6 +148,14 @@ class Screen(models.Model):
         verbose_name_plural = "1.3 · Screen Sizes"
 
 #———————————————————————————————————————— Robots · no dependencies
+
+# Create or retrieve a placeholder
+def get_sentinel_robots():
+    return Robots.objects.get_or_create(name="undefined",code="na")[0]
+
+# Create an additional method to return only the id - default expects an id and not a Model object
+def get_sentinel_robots_id():
+    return get_sentinel_robots().id
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -240,11 +256,13 @@ class ModuleScript(models.Model):
 
 class Settings(models.Model):
 
-    active        = models.BooleanField(default=False, verbose_name='online',)
-    robots        = models.ForeignKey(Robots, default=0, on_delete=models.PROTECT, verbose_name='robots.txt')
+		# https://stackoverflow.com/a/67298691/72958 & see language model for other necessary parts
+    robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_language), verbose_name='robots.txt')
+    language      = models.ForeignKey(Language, default=get_sentinel_language_id, on_delete=models.SET(get_sentinel_language), verbose_name='default language')
+
+    active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
-    language      = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='default language')
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
@@ -360,3 +378,4 @@ class AdditionalScript(models.Model):
 
 
 #———————————————————————————————————————— fin
+
