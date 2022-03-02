@@ -9,6 +9,8 @@
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="Admin">
+  <script src="{% static "admin/js/clear-cache.js" %}"></src>
+
 {% endblock %}
 
 {% block branding %}
@@ -21,10 +23,10 @@
 <div id="user-tools">
   <script>
     
+		// address for link in header
     var hrf = location.href;
     hrf = hrf.replace('https://', '');
     hrf = hrf.split('/')[0];
-
   </script>
 
   {% block welcome-msg %}
@@ -35,7 +37,7 @@
       <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ∴
       <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ∴ -->
     {% endif %}
-    <a href=/csync>Clear Cache</a> ∴ 
+    <a href="javascript:clear()">Clear Cache</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
     v2.2.13<br>
 
