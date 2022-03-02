@@ -7,9 +7,8 @@
 
 def generate_accessibility(domain, pages, page):
     links = ''
-    for this_page in pages:
-#     prefix = this_page.prefix.path
-      prefix = 'en' 
+    for this_page in pages.order_by('url'):
+      prefix = this_page.language.code
       tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
       if this_page.url != 'missing':
           links += tag.format(domain,prefix,this_page.url,this_page.accessibility_name)
