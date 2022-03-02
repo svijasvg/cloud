@@ -7,11 +7,13 @@
 
 def generate_accessibility(domain, pages, page):
     links = ''
+    prev  = ''
     for this_page in pages.order_by('url'):
       prefix = this_page.language.code
       tag = '<a href=http://{0}/{1}/{2}>{3}</a> · '
-      if this_page.url != 'missing':
+      if this_page.url != 'missing' and this_page.url != prev:
           links += tag.format(domain,prefix,this_page.url,this_page.accessibility_name)
+          prev = this_page.url
 
 #---------------------------------------- add capture
 
