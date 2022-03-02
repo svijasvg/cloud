@@ -22,7 +22,8 @@ urlpatterns = [
 
 #———————————————————————————————————————— exact addresses
 
-    path('csync', views.ClearCacheSyncView),
+    path('csync', views.ClearCacheView),
+#   path('csync', views.ClearCacheSyncView),
 
 #———————————————————————————————————————— email sending
 
