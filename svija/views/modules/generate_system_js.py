@@ -17,7 +17,7 @@ from svija.models import Screen
 #     fr = fr['desktop'], fm['mobile']
 
 
-def generate_system_js(version, settings, page, language_code, request_slug, this_screen, screens):
+def generate_system_js(user, version, settings, page, language_code, request_slug, this_screen, screens):
 
 #   this_screen = Screen.objects.filter(code=screen).first()
 
@@ -52,6 +52,11 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
     page_url += settings.url + '/' + language_code + '/' + request_slug
 
     system_js += "var page_url = '" + page_url + "';\n"
+
+#———————————————————————————————————————— admin signed in?
+
+    if user.is_superuser:
+      system_js += "var admin=true;\n"
 
 #———————————————————————————————————————— page dimension information
 

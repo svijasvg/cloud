@@ -117,7 +117,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     screens = Screen.objects.order_by('pixels')
 
-    system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
+    system_js = generate_system_js(request.user, svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
     #———————————————————————————————————————— page SVG's and scripts
 
