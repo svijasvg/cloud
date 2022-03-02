@@ -27,11 +27,16 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 #———————————————————————————————————————— Control · no dependencies
 
+# _h fields are not in admin, but are updated when password is correct by cache_per_user module
+
 class Control(models.Model): 
     limit    = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
+    limit_h  = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
     used     = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
-    password = models.CharField(max_length=20, default='', verbose_name='password')
+    used_h   = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
     cached   = models.BooleanField(default=False, verbose_name='cache active',)
+    cached_h = models.BooleanField(default=False, verbose_name='cache active',)
+    password = models.CharField(max_length=20, default='', verbose_name='password')
 
     def __str__(self):
         return self.from_url

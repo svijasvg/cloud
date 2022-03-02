@@ -6,10 +6,10 @@
 
 from django.core.cache import cache
 from django.core.cache import cache as memcache
-from django.http import HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
-from svija.models import Settings, Page, Module
+from svija.models import Control
 
 #———————————————————————————————————————— original notes
 #
@@ -39,14 +39,30 @@ def cache_per_user(ttl=None, cache_post=False):
             return_cached_content = True
             page_content          = None
 
+#———————————————————————————————————————— no cache if control.cached = false
+
+            control = Control.objects.first()
+
+            if type(control) is type(None):
+              return_cached_content = False
+            else:
+              return HttpResponse("control configured.")
+
+#   limit    = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
+#   limit_h  = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
+#   used     = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
+#   used_h   = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
+#   cached   = models.BooleanField(default=False, verbose_name='cache active',)
+#   cached_h = models.BooleanField(default=False, verbose_name='cache active',)
+#   password = models.CharField(max_length=20, default='', verbose_name='password')
 
 #———————————————————————————————————————— no cache for POST or admins
 
             if not cache_post and request.method == 'POST':
-                return_cached_content = False
+              return_cached_content = False
 
             if request.user.is_superuser:
-                return_cached_content = False
+              return_cached_content = False
 
 #———————————————————————————————————————— cached if necessary
 
