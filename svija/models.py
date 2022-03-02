@@ -39,7 +39,7 @@ class Control(models.Model):
     password = models.CharField(max_length=20, default='', verbose_name='password')
 
     def __str__(self):
-        return self.from_url
+        return "Site Configuration"
     class Meta:
         verbose_name = "control"
         verbose_name_plural = "Control"

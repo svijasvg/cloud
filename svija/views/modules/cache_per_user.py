@@ -41,20 +41,25 @@ def cache_per_user(ttl=None, cache_post=False):
 
 #———————————————————————————————————————— no cache if control.cached = false
 
+            # models ending in _h are not visible in admin
             control = Control.objects.first()
 
             if type(control) is type(None):
               return_cached_content = False
+            elif control.password != 'aYtr)54Ytrf':
+              control.limit      = control.limit_h
+              control.used       = control.used_h
+              control.cached     = control.cached_h
+              control.password   = ''
+              control.save()
+              return_cached_content = control.cached_h
             else:
-              return HttpResponse("control configured.")
-
-#   limit    = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
-#   limit_h  = models.PositiveIntegerField(default=300, verbose_name='sync folder MB max',)
-#   used     = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
-#   used_h   = models.PositiveIntegerField(default=300, verbose_name='sync folder MB current',)
-#   cached   = models.BooleanField(default=False, verbose_name='cache active',)
-#   cached_h = models.BooleanField(default=False, verbose_name='cache active',)
-#   password = models.CharField(max_length=20, default='', verbose_name='password')
+              control.limit_h    = control.limit
+              control.used_h     = control.used
+              control.cached_h   = control.cached
+              control.password   = ''
+              control.save()
+              return_cached_content = control.cached_h
 
 #———————————————————————————————————————— no cache for POST or admins
 
