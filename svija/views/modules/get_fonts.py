@@ -19,6 +19,14 @@ def get_fonts():
             svg_ref = this_font.svg_ref
             font_src  = this_font.woff
 
+            # remove everything in beginning of path if necessary
+            # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/sync/Svija/Fonts/Woff Files/clarendon.woff
+        
+            if font_src.find('/') > -1:
+              font_src = font_src.rpartition("/")[2]
+              this_font.woff = font_src
+              this_font.save()
+
             if this_font.google:
                 req = this_font.style.lower().replace(' ','')
                 req = this_font.family.replace(' ','+') + ':' + req 
