@@ -241,28 +241,28 @@ tr.model-screen   a:hover, tr.model-screen   a:active
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
-tr.model-page,
 tr.model-module,
+tr.model-page,
 tr.model-font
 
   { background-color:var(--main);
     border:1px solid var(--bg-med); }
 
 /* bottom borders */
-tr.model-page th, tr.model-page td, tr.model-page th,
-tr.model-module th, tr.model-module td, tr.model-module th
+tr.model-module th, tr.model-module td, tr.model-module th,
+tr.model-page th, tr.model-page td, tr.model-page th
 
   { border-bottom: 1px solid var(--bg-bright); }
 
-tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
+tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-font   a:link, tr.model-font   a:visited
 
   {           color:var(--dark);
     text-decoration:none; }
 
-tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
+tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
   {           color:var(--text-dark);
@@ -270,22 +270,22 @@ tr.model-font   a:hover, tr.model-font   a:active
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
-tr.model-defaultscripts,
-tr.model-forwards,
+tr.model-script,
+tr.model-redirect,
 tr.model-robots
 
   { background-color:var(--bg-bright);
     border:1px solid var(--bg-med); }
 
-tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
-tr.model-forwards       a:link, tr.model-forwards       a:visited,
+tr.model-script a:link, tr.model-script a:visited,
+tr.model-redirect       a:link, tr.model-redirect       a:visited,
 tr.model-robots         a:link, tr.model-robots         a:visited
 
   {           color:var(--text-dark);
     text-decoration:none; }
 
-tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
-tr.model-forwards       a:hover, tr.model-forwards       a:active,
+tr.model-script a:hover, tr.model-script a:active,
+tr.model-redirect       a:hover, tr.model-redirect       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
   {           color:var(--text-dark);
