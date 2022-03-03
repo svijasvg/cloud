@@ -26,7 +26,7 @@ def LinksView(request, request_prefix, placed_file):
 
     if not exists(img_path):
       img_path = os.getcwd() + '/static/svija/images/ff0000.'+ type
-      not_Found = True
+      not_found = True
 
 #———————————————————————————————————————— return file contents
 
