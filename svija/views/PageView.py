@@ -60,7 +60,6 @@ from modules.get_screen_code import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 from modules.scripts_to_page import *
-#rom modules.page_version import *
 from django.http import Http404
 
 #———————————————————————————————————————— ▼ PageView(request, language_code, request_slug):
@@ -86,7 +85,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #eturn HttpResponse("debugging message." + request.path)
 
-    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(visitable=True)).first()
+    page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
     if not page: raise Http404 # passed to file Error404.py
 
     #———————————————————————————————————————— main settings
@@ -96,46 +95,36 @@ def SubPageView(request, language_code, request_slug, screen_code):
     language        = Language.objects.filter(code=language_code).first()
 
     # now called screen
-    responsive      = Responsive.objects.filter(code=screen_code).first()
+    responsive      = Screen.objects.filter(code=screen_code).first()
 
     use_p3          = settings.p3_color
-
-    # deprecated
-    #emplate        = 'svija/' + page.template.filename
 
     template        = 'svija/svija.html'
     accessible      = generate_accessibility(settings.url, Page.objects.all(), page)
     content_blocks  = []
 
-    if page.override_dims: page_width = page.width
+    if page.override: page_width = page.width
     else:                  page_width = responsive.width
 
     #———————————————————————————————————————— redirect if /en/home or /en or /fr/accueil
 
-    redirect = redirect_if_home(request.path, settings.language.code, language.default)
+    redirect = redirect_if_home(request.path, settings.language.code, language.default_page)
     if redirect: return HttpResponsePermanentRedirect(redirect)
 
     #———————————————————————————————————————— metatags, system js & fonts
 
     meta_fonts, font_css = get_fonts()
 
-    screens = Responsive.objects.order_by('limit')
+    screens = Screen.objects.order_by('pixels')
 
-    system_js = generate_system_js(svija.views.version, settings, page, language_code, request_slug, responsive, screens)
+    system_js = generate_system_js(request.user, svija.views.version, settings, page, language_code, request_slug, responsive, screens)
 
     #———————————————————————————————————————— page SVG's and scripts
 
 #   return HttpResponse("debugging message: "+str(page_width)) # 1200
     svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
-    content_blocks.append( scripts_to_page_obj('page', page.pagescripts_set.all(), svgs, css_dimensions))
-
-    #———————————————————————————————————————— deprecated scripts
-
-    # deprecated
-    page_scripts_raw = page.default_scripts.all().filter(active=True)
-    for this_set in page_scripts_raw:
-      content_blocks.append( scripts_to_page_obj( 'deprecated scripts' , this_set.defaultscripttypes_set.all(),'', '', ) )
+    content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
 
     #———————————————————————————————————————— new scripts
 
@@ -145,17 +134,17 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     #———————————————————————————————————————— page modules
 
-    # pagemodules CONTAIN modules, but are not modules
-    # can't use get_modules to get them because the modules are INSIDE pagemodules
+    # pagemodule CONTAIN modules, but are not modules
+    # can't use get_modules to get them because the modules are INSIDE pagemodule
 
-    page_modules_raw = page.pagemodules_set.filter(active=True).order_by('zindex')
+    page_modules_raw = page.pagemodule_set.filter(active=True).order_by('zindex')
     page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
     content_blocks.extend(page_modules)
 
     #———————————————————————————————————————— "always include" modules
 
     if not page.suppress_modules:
-        screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(published=True) & Q(optional=True)).order_by('display_order')
+        screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
         module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 

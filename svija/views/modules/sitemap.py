@@ -19,7 +19,7 @@
 def create(domain, pages):
     results = ''
     for page in pages:
-        if page.visitable == True:
+        if page.published == True:
           prefix = page.prefix
           if page.url != 'missing':
               results += '\nhttp://'+domain+'/'+prefix.path+'/'+page.url

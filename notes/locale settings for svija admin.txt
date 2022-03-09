@@ -1,0 +1,5 @@
+added 
+
+'django.middleware.locale.LocaleMiddleware'
+
+to settings.py at end of middleware section

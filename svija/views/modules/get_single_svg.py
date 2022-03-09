@@ -42,7 +42,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     if not path.exists():
         #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
-        svg = '<!-- missing svg: {} -->'.format(svg_path)
+        svg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
 
     else:
         is_module = hasattr(target_obj, 'css_id')
@@ -54,7 +54,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
 
         svg_ID, svg_width, svg_height, svg_content = clean(svg_path, temp_id, use_p3)
-        svg = '<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+#       svg = '\n<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
 
         if svg_width > page_width:
             page_ratio = svg_height/svg_width
@@ -82,8 +82,8 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 def calculate_css(this_svg):
     pos = this_svg.position
     cor = this_svg.corner
-    horz = this_svg.horz_offset
-    vert = this_svg.vert_offset
+    horz = this_svg.offsetx
+    vert = this_svg.offsety
 
     if cor == 'bottom left' or cor == 'bottom right':
         vert = 0 - vert
@@ -132,5 +132,5 @@ def dic_corners(cor, pos):
 #   css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
 #   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
 #   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
-#   horz_offset = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
-#   vert_offset = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
+#   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
+#   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)

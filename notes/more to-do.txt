@@ -1,0 +1,117 @@
+———————————————————————————————————————— small improvements
+
+admin module with all prefixes and all-page list
+cross-site html in Svija? allow inclusing of html from other sites
+automatic conversion to flag in modules & pages (use entities in program)
+might want to remove 2-character limit for prefixes to allow things like "realisations". if I create multiple prefixes (realisations, fr) in a a single language/responsive, does it create an error for the default page? probably not because the site has a default prefix
+skip css by adding form fields: bottom align footer, give vertical positioning for second (after header) svg's
+rediriger une adresse telle que /contact à /en/contact selon la langue par défaut
+auto-create snippet if there's not one already
+need links between same pages in different languages
+/r shows most recent SVG with default settings
+french descriptions for all fieldsets
+hiddtn table with common flag emoji, add automatically
+add forgot password link
+https://stackoverflow.com/questions/2272002/adding-forgot-password-feature-to-django-admin-site
+admin.py hide if empty show if data
+html in snippet, go back to accessibility
+
+———————————————————————————————————————— housekeeping possibilites
+
+link do housekeeping now
+in admin need list of uploaded files svg & folders
+in admin need list of svgs & folders, printout of all uploads?
+add function to page load for admins only or scheduled: datadump
+- remove "update needed" from source if google font is checked
+- backup database dump
+add edit history (names, dates & times)
+add sizes to svg's for pages, check placed images for sizes
+svg filesizes in admin, warning banners on pages, admin menu when logged in
+
+———————————————————————————————————————— investigate
+
+use css or other to make web pages printable IT'S ENOUGH TO NOT HAVE A MARGIN
+fetch JS & promises
+
+———————————————————————————————————————— big improvements
+
+swipe navigation
+img serving
+animation lab popup to develop animations : show id's of each SVG element, work with JS in a separate window, keep at end, save to page, to file etc.
+add integration of sound effects
+bulk actions (mark pages as active): https://docs.djangoproject.com/en/2.2/ref/contrib/admin/actions/
+add database creation script to backup so with all files, you have everything to recreate the site
+admin menu when logged in w dropdown page list
+automatic menu generation
+admin module / top bar w/ all pages
+
+not trivial: dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
+
+capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
+
+need links between same pages in different languages
+
+in admin need list of uploaded files svg & folders
+print hierarchie with pipe characters in monospaced font?
+
+add languages, see:
+https://stackoverflow.com/questions/21469470/how-can-i-change-django-admin-language
+in comments
+
+dans les pages admin, remplacer date créé par date modifié
+https://stackoverflow.com/questions/37540744/django-datetime-default-value-in-migrations
+if I add date modified, I have to do manual migrations the fist time
+
+change anim lab becomes object finder
+add real return email addresses
+download .zip's of modules
+
+———————————————————————————————————————— huge improvements
+
+capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
+dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
+
+accepter PDF comme input have a list of font widths for substituting common fonts
+version of program as mac/pc app to host site locally
+
+———————————————————————————————————————— working from here down
+
+https://stackoverflow.com/questions/6541477/ordering-choices-in-modelform-manytomanyfield-django/6541738#6541738
+https://stackoverflow.com/questions/8992865/django-admin-sort-foreign-key-field-list
+
+———————————————————————————————————————— done
+
+permettre d'utiliser les scripts & seo téléchargés aussi bien que les scripts collés dans les pages admin
+fix ID's of svg pages in illustrator, right now they're just "Pagename"
+fonts family & style not recorded correctly when missing
+fixed caching issues
+change font name to CSS ref.
+language choice in cookie warning doesn't do anything
+permettre des espaces dans les noms de fichiers SVG etc.
+change custom scripts to user scripts in page admin
+use "slug" where appropriate
+fix capitalization of "Add another Svg file" in admin › page
+wrong label for templates in admin.py (shows URL, notname)
+need to check if menu is oversized, too
+in svg_cleaner reduce oversiized SVG's to page width, other stay the same
+change Links to lower case
+svija help table like notes but w URL for original page, redirect /a
+fix incorrect text "load zindex" on page admin
+FIX ON DELETE link use PROTECT
+change button color so green is save red is delete
+changes to admin.py are not reflected witouth starting uwsgi
+jp cache probs ?
+help text in french (started)
+fixed admin colors to match screenshots of Django defaults
+use defailt live for new page in modeld.py
+cookie module
+admin reduce text contrast
+change rezise so it just updates rem & pixel
+strip out x & y coords for non x=0 tspans
+check AI script removes PDF compat & compression
+add function at end of source to do onload
+spaces in svg filenames won't work
+integrate cookie warning in admin.py
+need an error code for mail sending problems - maybe diffrerent messages for each type of error.
+print the name of the script before each script: when reading source, should be easy to recognize the source of each script
+in addition to .st0 style definitions, replace "#SVGID_4_" definitions

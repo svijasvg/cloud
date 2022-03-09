@@ -6,10 +6,10 @@
 
 from django.core.cache import cache
 from django.core.cache import cache as memcache
-from django.http import HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
-from svija.models import Settings, Page, Module
+from svija.models import Control
 
 #———————————————————————————————————————— original notes
 #
@@ -39,14 +39,35 @@ def cache_per_user(ttl=None, cache_post=False):
             return_cached_content = True
             page_content          = None
 
+#———————————————————————————————————————— no cache if control.cached = false
+
+            # models ending in _h are not visible in admin
+            control = Control.objects.first()
+
+            if type(control) is type(None):
+              return_cached_content = False
+            elif control.password != 'aYtr)54Ytrf':
+              control.limit      = control.limit_h
+              control.used       = control.used_h
+              control.cached     = control.cached_h
+              control.password   = ''
+              control.save()
+              return_cached_content = control.cached_h
+            else:
+              control.limit_h    = control.limit
+              control.used_h     = control.used
+              control.cached_h   = control.cached
+              control.password   = ''
+              control.save()
+              return_cached_content = control.cached_h
 
 #———————————————————————————————————————— no cache for POST or admins
 
             if not cache_post and request.method == 'POST':
-                return_cached_content = False
+              return_cached_content = False
 
             if request.user.is_superuser:
-                return_cached_content = False
+              return_cached_content = False
 
 #———————————————————————————————————————— cached if necessary
 

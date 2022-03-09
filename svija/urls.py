@@ -22,8 +22,8 @@ urlpatterns = [
 
 #———————————————————————————————————————— exact addresses
 
-    path('c', views.ClearCacheView),
-    path('csync', views.ClearCacheSyncView),
+    path('csync', views.ClearCacheView),
+#   path('csync', views.ClearCacheSyncView),
 
 #———————————————————————————————————————— email sending
 
@@ -62,7 +62,7 @@ urlpatterns = [
     re_path(r'^fonts/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"    }),
     re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"        }),
     re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/sync/Svija/Images"              }),
-#   re_path(r'^scripts/(?P<path>.*)$(?i)',       static.serve, {'document_root': proj_folder + "/sync/Svija/Site Scripts"        }),
+#   re_path(r'^scripts/(?P<path>.*)$(?i)',       static.serve, {'document_root': proj_folder + "/sync/Svija/Scripts"        }),
 
 
 ]

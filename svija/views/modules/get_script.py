@@ -18,7 +18,7 @@ def get_script(kind, name, content):
     filename = re.compile("^[a-z,0-9,\s,\.,_,+,\-,&]+\.[a-z]{2,4}$", re.I) 
 
     if filename.match(content):
-        sub_path = '/sync/Svija/Site Scripts/' + content
+        sub_path = '/sync/Svija/Scripts/' + content
         source_path = os.path.abspath(os.path.dirname(__name__)) + sub_path 
         path = pathlib.Path(source_path)
         if not path.exists():

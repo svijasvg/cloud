@@ -1,0 +1,3 @@
+the key is to do an onscroll
+set timeout
+smoothscroll back to center

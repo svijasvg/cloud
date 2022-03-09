@@ -1,34 +1,12 @@
 /*———————————————————————————————————————— static/admin/css/admin-extra.css */
 
-/*———————————————————————————————————————— fonts */
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-600.woff');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-regular.woff');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-300.woff');
-    font-weight: 300;
-    font-style: normal;
-}
-
 /*———————————————————————————————————————— colors */
 
 /* in sync/Svija/Admin Customization:
 
-  --color:          rgb( 70%, 100%,   0% );
-  --color-contrast: rgb(  0%,   0%,   0% ); */
+  --main:
+  --accent:
+  --dark:     */
 
 :root { --bg-head:     hsl(0, 0%,  20%);
         --bg-dark:     hsl(0, 0%,  20%);
@@ -58,28 +36,49 @@
         --link-hover:  var(--text-dark); }
 
 
+/*———————————————————————————————————————— fonts */
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-600.woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-regular.woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/open-sans-v20-latin-300.woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
 /*———————————————————————————————————————— header bar */
 
 #header
   { background-color:var(--bg-head);
-       border-bottom:1px solid var(--color); }
+       border-bottom:1px solid var(--accent); }
 
 #svija-admin-logo
-
-  { background-color:var(--color);
-    margin:5px 0 5px -12px; }
+  { margin:5px 0 5px -12px; }
 
 /*———————————————————————————————————————— small text at right of header */
 
 #header div#user-tools { line-height:1.8em; } /* welcome */
 
-#header div#user-tools { color:var(--color);} /* welcome */
-#header strong         { color:var(--color);} /* user name */
+#header div#user-tools { color:var(--main);} /* welcome */
+#header strong         { color:var(--accent);} /* user name */
 
 #header div#user-tools a:link,                    /* user tools links */
 #header div#user-tools a:visited
 
-  { color:var(--color);
+  { color:var(--main);
     border-bottom:1px solid #0000;
     text-decoration:none; }
 
@@ -114,7 +113,7 @@ div.breadcrumbs a:active
 ul.messagelist li
 
   { color:var(--bg-dark);
-    background:var(--color); }
+    background:var(--main); }
 
 ul.messagelist li a
 
@@ -126,7 +125,7 @@ ul.messagelist li a
 .object-tools a.addlink,
 .object-tools a.historylink
 
-  {         color:var(--color);
+  {         color:var(--main);
        background:var(--bg-dark);
     border-radius:5px;
       padding-top:4px;
@@ -139,9 +138,16 @@ ul.messagelist li a
 .inline-group h2 /* inline models headers */
 
   { background-color:var(--bg-dark);
-               color:var(--color);
+               color:var(--main);
       text-transform:uppercase;
        border-radius:5px; }
+
+/*———————————————————————————————————————— user permissions */
+
+div.selector-chosen h2
+
+  { background-color:var(--bg-dark);
+               color:var(--main); }
 
 /*———————————————————————————————————————— initially-hidden fields */
 
@@ -155,7 +161,7 @@ fieldset.collapsed h2
 fieldset.collapsed .collapse-toggle,   /* (SHOW) link */
 fieldset.collapse .collapse-toggle   /* (HIDE) link */
 
-  { color:var(--color) !important; }
+  { color:var(--main) !important; }
 
 fieldset.collapse  /* background of hidden blocks when made visible */
 
@@ -174,8 +180,8 @@ a:hover, a:active      { color: var(--link-hover);
 
 div.description
 
-  {            color:var(--color-contrast);
-    background-color:var(--color);
+  {            color:var(--dark);
+    background-color:var(--accent);
              padding:5px 15px 5px 15px;
          margin-left:10px;
        margin-bottom:7px;
@@ -191,16 +197,16 @@ div.description a:link,
 div.description a:visited
 
   { text-decoration:none;
-              color:var(--color-contrast);
+              color:var(--dark);
               font-weight:bold;
-      border-bottom:1px solid var(--color-contrast);
+      border-bottom:1px solid var(--dark);
      padding-bottom:0; }
 
 div.description a:hover,
 div.description a:active
 
-  {         color:var(--color-contrast);
-    border-bottom:3px solid var(--color-contrast); }
+  {         color:var(--dark);
+    border-bottom:3px solid var(--dark); }
 
 /*———————————————————————————————————————— model list global */
 
@@ -214,76 +220,82 @@ div.description a:active
 
 tr.model-settings,
 tr.model-language,
-tr.model-responsive
+tr.model-screen    
 
   { background-color:var(--bg-med) !important;
        border-radius:5px; }
 
-tr.model-settings   a:link, tr.model-settings   a:visited,
-tr.model-language   a:link, tr.model-language   a:visited,
-tr.model-responsive a:link, tr.model-responsive a:visited
+tr.model-settings a:link, tr.model-settings a:visited,
+tr.model-language a:link, tr.model-language a:visited,
+tr.model-screen   a:link, tr.model-screen   a:visited
 
   {           color:var(--text-dark);
     text-decoration:none; }
 
-tr.model-settings   a:hover, tr.model-settings   a:active,
-tr.model-language   a:hover, tr.model-language   a:active,
-tr.model-responsive a:hover, tr.model-responsive a:active
+tr.model-settings a:hover, tr.model-settings a:active,
+tr.model-language a:hover, tr.model-language a:active,
+tr.model-screen   a:hover, tr.model-screen   a:active
 
-  {        color:var(--text-dark);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
-tr.model-page,
 tr.model-module,
+tr.model-page,
 tr.model-font
 
-  { background-color:var(--color);
+  { background-color:var(--main);
     border:1px solid var(--bg-med); }
 
 /* bottom borders */
-tr.model-page th, tr.model-page td, tr.model-page th,
-tr.model-module th, tr.model-module td, tr.model-module th
+tr.model-module th, tr.model-module td, tr.model-module th,
+tr.model-page th, tr.model-page td, tr.model-page th
 
   { border-bottom: 1px solid var(--bg-bright); }
 
-tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-module a:link, tr.model-module a:visited,
+tr.model-page   a:link, tr.model-page   a:visited,
 tr.model-font   a:link, tr.model-font   a:visited
 
-  {           color:var(--color-contrast);
+  {           color:var(--dark);
     text-decoration:none; }
 
-tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-module a:hover, tr.model-module a:active,
+tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-font   a:hover, tr.model-font   a:active
 
-  {        color:var(--color-contrast);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
-tr.model-defaultscripts,
-tr.model-forwards,
+tr.model-script,
+tr.model-redirect,
 tr.model-robots
 
   { background-color:var(--bg-bright);
     border:1px solid var(--bg-med); }
 
-tr.model-defaultscripts a:link, tr.model-defaultscripts a:visited,
-tr.model-forwards       a:link, tr.model-forwards       a:visited,
+tr.model-script a:link, tr.model-script a:visited,
+tr.model-redirect       a:link, tr.model-redirect       a:visited,
 tr.model-robots         a:link, tr.model-robots         a:visited
 
   {           color:var(--text-dark);
     text-decoration:none; }
 
-tr.model-defaultscripts a:hover, tr.model-defaultscripts a:active,
-tr.model-forwards       a:hover, tr.model-forwards       a:active,
+tr.model-script a:hover, tr.model-script a:active,
+tr.model-redirect       a:hover, tr.model-redirect       a:active,
 tr.model-robots         a:hover, tr.model-robots         a:active
 
-  {        color:var(--text-dark);
-    padding-left:0.3rem; }
+  {           color:var(--text-dark);
+		text-decoration:underline; }
+
+/*———————————————————————————————————————— control */
+
+tr.model-control
+
+  { display:none; }
 
 /*———————————————————————————————————————— buttons */
 
@@ -302,8 +314,8 @@ input[type=button]:hover,
  .submit-row input:hover,
           a.button:hover
 
-  { color:var(--color-contrast);
-     background:var(--color); }
+  { color:var(--dark);
+     background:var(--main); }
 
 /*———————————————————————————————————————— default buttons */
 
@@ -311,23 +323,23 @@ input[type=button]:hover,
 input[type=submit].default,
 .submit-row input.default
 
-  {      color:var(--color-contrast);
-    background:var(--color);
+  {      color:var(--dark);
+    background:var(--main);
        outline:0 !important; } /* blue accessibility outline around default button */
 
 .button.default:hover,
 input[type=submit].default:hover,
 .submit-row input.default:hover
 
-  {      color:var(--color);
-    background:var(--color-contrast); }
+  {      color:var(--main);
+    background:var(--dark); }
 
 .button.default:focus,
 input[type=submit].default:focus,
 .submit-row input.default:focus
 
-  {      color:var(--color-contrast);
-    background:var(--color); }
+  {      color:var(--dark);
+    background:var(--main); }
 
 /*———————————————————————————————————————— tiny original name text */
 

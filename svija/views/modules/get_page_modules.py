@@ -38,7 +38,7 @@ def get_page_modules(label, all_module_links, language_code, screen_code, page, 
 
 #———————————————————————————————————————— if active
 
-    if (this_module.published
+    if (this_module.always
     and this_module.language.code == language_code
     and this_module.screen.code   == screen_code):
   

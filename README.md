@@ -6,18 +6,17 @@
 
 # Svija: web sites with SVG instead of HTML
 
-Version 2.2.12
+Version 2.2.13
 
 A set of tools for building web sites using Adobe Illustrator.
 Includes a CMS for managing pages and menus.
 
 Detailed documentation is available at **[tech.svija.love][1]**
 
-Visit **[svija.love][2]** for an overview of the project.
+---
+### Updating/Creating a New Version
 
-If you're interested, we can help you set up an account for free.
-Just go to our **[contact page][3]** and ask!
+Please see the [admin-update][2] repository.
 
 [1]: https://tech.svija.love "Visit the documentation site"
-[2]: https://svija.love "Visit the main site"
-[3]: https://svija.love/en/contact "Contact us"
+[2]: https://github.com/svijalove/admin-update

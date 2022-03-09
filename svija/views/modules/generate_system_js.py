@@ -8,7 +8,7 @@
 #
 #———————————————————————————————————————— imports
 
-from svija.models import Prefix, Responsive
+from svija.models import Screen
 
 #     need current language code
 #     all prefixes where language=language code
@@ -17,9 +17,9 @@ from svija.models import Prefix, Responsive
 #     fr = fr['desktop'], fm['mobile']
 
 
-def generate_system_js(version, settings, page, language_code, request_slug, this_screen, screens):
+def generate_system_js(user, version, settings, page, language_code, request_slug, this_screen, screens):
 
-#   this_screen = Responsive.objects.filter(code=screen).first()
+#   this_screen = Screen.objects.filter(code=screen).first()
 
     system_js = "//———————————————————————————————————————— system js\n\n"
     
@@ -38,7 +38,7 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
 
     all_x_screens = []
     for one_screen in screens:
-        all_x_screens.append( str(one_screen.limit) +  ', "' + one_screen.code +'"')
+        all_x_screens.append( str(one_screen.pixels) +  ', "' + one_screen.code +'"')
 
     system_js += "var all_screens = [[" + '], ['.join(all_x_screens) + "]];\n" 
 
@@ -53,11 +53,16 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
 
     system_js += "var page_url = '" + page_url + "';\n"
 
+#———————————————————————————————————————— admin signed in?
+
+    if user.is_superuser:
+      system_js += "var admin=true;\n"
+
 #———————————————————————————————————————— page dimension information
 
     dim_js = ''
 
-    if page.override_dims:
+    if page.override:
         dim_js += '\n// overridden in page settings:\n'
 
         dim_js += 'var page_width = '     + str(page.width  ) + ';\n'
@@ -73,15 +78,6 @@ def generate_system_js(version, settings, page, language_code, request_slug, thi
 
     system_js += dim_js
 
-#———————————————————————————————————————— unused scrolling
-
-# get scroll position too
-#   override_dims = models.BooleanField(default=False, verbose_name='override dimensions',)
-#   width = models.PositiveSmallIntegerField(default=0, verbose_name='page width in pixels')
-#   visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
-#   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
-#   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
-    
     return system_js
 
 #———————————————————————————————————————— fin
