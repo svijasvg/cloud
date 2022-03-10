@@ -37,6 +37,7 @@ setCookie('screen_code', correct_screen_code, 7);
 if (screen_code != correct_screen_code){
   //      if (window.location.href.indexOf('?')>0)
   //        alert(document.cookie);
+  history.scrollRestoration = 'manual';
   location.reload();
   //setTimeout(window.location.reload.bind(window.location), 5);
 }
