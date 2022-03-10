@@ -50,7 +50,7 @@ def get_page_modules(label, all_module_links, language_code, screen_code, page, 
   
 #———————————————————————————————————————— iterate through scripts
 
-      for this_script in this_module.modulescripts_set.all():
+      for this_script in this_module.modulescript_set.all():
         if this_script.active:
     
           if this_script.type == 'head JS':
