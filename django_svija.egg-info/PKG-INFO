@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: django-svija
-Version: 2.2.13
+Version: 2.2.14
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://docs.svija.love/
 Author: Andrew Swift
@@ -14,7 +14,7 @@ Description: [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-
         
         # Svija: web sites with SVG instead of HTML
         
-        Version 2.2.13
+        Version 2.2.14
         
         A set of tools for building web sites using Adobe Illustrator.
         Includes a CMS for managing pages and menus.

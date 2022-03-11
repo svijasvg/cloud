@@ -256,6 +256,7 @@ svija/templates/svija/svija_token.html
 svija/templates/svija/css/.svija.css.un~
 svija/templates/svija/css/svija.css
 svija/templates/svija/js/.cookies.js.un~
+svija/templates/svija/js/.initial_scroll.js.un~
 svija/templates/svija/js/.languages.js.un~
 svija/templates/svija/js/.on_resize.js.un~
 svija/templates/svija/js/.page_background.js.un~
