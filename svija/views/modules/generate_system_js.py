@@ -8,6 +8,7 @@
 #
 #———————————————————————————————————————— imports
 
+import time
 from svija.models import Screen
 
 #     need current language code
@@ -33,6 +34,10 @@ def generate_system_js(user, version, settings, page, language_code, request_slu
 
     # responsive information
     system_js += 'var screen_code = "' + this_screen.code +'";\n'
+
+    # milliseconds
+    system_js += 'var milliseconds = "' + str(time.time_ns()) +'";\n'
+
 
 #———————————————————————————————————————— screens
 

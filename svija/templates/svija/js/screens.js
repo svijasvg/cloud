@@ -2,6 +2,8 @@
 
 //———————————————————————————————————————— system js
 
+// defined higher in the page:
+//
 // var screen_code = "cp";
 // var all_screens = {0:'cp', 400:'mb'};
 
@@ -30,14 +32,17 @@ for (var x=0; x<all_screens.length; x++){
 
 //———————————————————————————————————————— set cookie & redirect
 
+// this is not working:
+var cvalue = getCookie('screen_code');
 setCookie('screen_code', correct_screen_code, 7);
 
-//alert('server: ' + screen_code + ', calculated: ' + correct_screen_code);
+console.log('ms: ' + milliseconds + ', cookie: '+ screen_code + ' correct: '+correct_screen_code);
 
 if (screen_code != correct_screen_code){
-  //      if (window.location.href.indexOf('?')>0)
-  //        alert(document.cookie);
   history.scrollRestoration = 'manual';
-  location.reload();
-  //setTimeout(window.location.reload.bind(window.location), 5);
+//window.location = document.URL; // reloads perceptibly
+//window.location.reload(); // what I've been doing
+//window.location.replace(document.URL); doesn't work
+
+  setTimeout(window.location.reload.bind(window.location), 15);
 }
