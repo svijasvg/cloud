@@ -1,6 +1,6 @@
 //———————————————————————————————————————— template: screens.js
 
-//———————————————————————————————————————— system js
+//———————————————————————————————————————— pre-existing values
 
 // defined higher in the page:
 //
@@ -32,17 +32,10 @@ for (var x=0; x<all_screens.length; x++){
 
 //———————————————————————————————————————— set cookie & redirect
 
-// this is not working:
 var cvalue = getCookie('screen_code');
 setCookie('screen_code', correct_screen_code, 7);
 
-console.log('ms: ' + milliseconds + ', cookie: '+ screen_code + ' correct: '+correct_screen_code);
-
 if (screen_code != correct_screen_code){
   history.scrollRestoration = 'manual';
-//window.location = document.URL; // reloads perceptibly
-//window.location.reload(); // what I've been doing
-//window.location.replace(document.URL); doesn't work
-
-  setTimeout(window.location.reload.bind(window.location), 15);
+  window.location.replace(document.URL);
 }

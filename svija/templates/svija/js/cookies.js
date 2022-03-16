@@ -2,6 +2,9 @@
 
 function setCookie(cname, cvalue, exdays) {
 
+  var earl = window.location.hostname;
+  deleteParentCookieIfNecessary(cname, earl);
+
   if (exdays > 7) exdays = 7; // max in Safari
 
   var d = new Date();
@@ -9,9 +12,11 @@ function setCookie(cname, cvalue, exdays) {
 
   var name = cname + '=' + cvalue + '; ';
   var expy = 'expires=' + d.toUTCString(); + '; ';
-  var domn = '; domain=' + window.location.hostname + '; ';
+  var domn = '; domain=' + earl + '; ';
   var path = 'path=/; ';
   var secu = 'samesite=lax; secure;';
+
+  
 
   var complete = name + expy + domn + path + secu;
   document.cookie = complete;
@@ -28,7 +33,10 @@ function getCookie(cname) {
   return "";
 }
 
-
-// screen_code=mb;
-// csrftoken=ul3cs75jZmvmDx7bkw9NPRGOU2n8FMV0sBugyA4DIZ83dWvoa9qrWzaNiS5GZuk4;
-// screen_code=cp
+function deleteParentCookieIfNecessary(cname, domain){
+  var parts = domain.split('.');
+  if (parts.length > 2){ // on subdomain
+    var domain = parts.slice(-2).join('.');
+    document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
+  }
+}
