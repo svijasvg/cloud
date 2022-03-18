@@ -31,11 +31,7 @@ page_loaded = false;
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
   <script>
 
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-if (tracking_on)
-  gtag('config', '{{ analytics_id }}');
+{% include "svija/js/analytics.js" %}
 
   </script>
   <script src="{% static 'svija/scripts/gsap.min.js' %}"></script>
