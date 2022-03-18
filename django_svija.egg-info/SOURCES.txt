@@ -255,6 +255,7 @@ svija/templates/svija/svija.html
 svija/templates/svija/svija_token.html
 svija/templates/svija/css/.svija.css.un~
 svija/templates/svija/css/svija.css
+svija/templates/svija/js/.analytics.js.un~
 svija/templates/svija/js/.cookies.js.un~
 svija/templates/svija/js/.initial_scroll.js.un~
 svija/templates/svija/js/.languages.js.un~
@@ -263,8 +264,8 @@ svija/templates/svija/js/.page_background.js.un~
 svija/templates/svija/js/.rem.js.un~
 svija/templates/svija/js/.resolution.js.un~
 svija/templates/svija/js/.screens.js.un~
+svija/templates/svija/js/analytics.js
 svija/templates/svija/js/cookies.js
-svija/templates/svija/js/google_analytics.js
 svija/templates/svija/js/initial_scroll.js
 svija/templates/svija/js/languages.js
 svija/templates/svija/js/on_resize.js
