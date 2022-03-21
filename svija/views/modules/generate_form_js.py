@@ -36,7 +36,7 @@ def generate_form_js(language):
 #var alert_failed   = 'Your message could not be sent.\n\nPlease send it directly to '
 #                   + address_failed.replace(/x/g,'');
 
-    alert_char  = 'x' # should be calculated
+    alert_char  = 'qx' # should be calculated
     alert_email = alert_char.join(list(language.email))
 
     form_js += 'var alert_email  = "'   + alert_email + '";\n'
