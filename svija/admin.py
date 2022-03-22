@@ -268,10 +268,22 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('setup',          {'fields': ['published', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override',),],'description':descPages, }),
-        ('accessibility',  {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('page info',      {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
-        ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
+        ('setup',          {'fields': [
+                                       'published',
+                                       ('url', 'screen'),
+                                       ('title', 'language'),
+                                      ],'description':descPages, }),
+        ('more settings',  {'fields': [
+                               ('category','suppress_modules',),
+                               ('width', 'offsetx', 'override',),
+                               ('visible', 'offsety',),
+                               'accessibility_name',
+                               'accessibility_text',
+                               'pub_date','notes',
+                             ], 'classes': ['collapse'],}),
+
+#       ('page info',      {'fields': [], 'classes': ['collapse'],}),
+#       ('new dimensions', {'fields': [ ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
     inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, AdditionalScriptInline]
