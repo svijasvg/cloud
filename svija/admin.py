@@ -286,7 +286,7 @@ class PageAdmin(admin.ModelAdmin):
 #       ('new dimensions', {'fields': [ ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, AdditionalScriptInline]
+    inlines = [IllustratorInlinePage, AdditionalScriptInline, ModuleInlinePage, ScriptInlinePage, ]
 
 admin.site.register(Page, PageAdmin)
 
