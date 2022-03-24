@@ -499,4 +499,8 @@ div#changelist-filter h2{
   color:var(--main);
 }
 
+/*———————————————————————————————————————— log-in logo */
+
+h1#site-name{ margin:0; }
+
 /*———————————————————————————————————————— fin */
