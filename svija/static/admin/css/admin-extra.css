@@ -509,5 +509,30 @@ h1#site-name{ margin:0; }
     width: 821px !important;
 }
 
+/*———————————————————————————————————————— drag & drop hints */
+
+/* ————— module */
+
+div.fieldBox.field-filename input{
+	border:dashed 1px var(--dark);
+}
+
+/* ————— page */
+
+td.field-filename::after{
+    content: "  < drag Illustrator file";
+		padding-left:20px;
+}
+
+td.field-filename input{
+	border:dashed 1px var(--dark);
+}
+
+/* ————— font */
+
+div.fieldBox.field-woff input{
+	border:dashed 1px var(--dark);
+}
+
 
 /*———————————————————————————————————————— fin */

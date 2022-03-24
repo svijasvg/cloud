@@ -63,7 +63,7 @@ class Font(models.Model):
     svg_ref = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
     style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    woff     = models.CharField(max_length=100, default='—', verbose_name='WOFF filename', blank=True)
+    woff     = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
     google   = models.BooleanField(default=True, verbose_name='Google font',)
     active   = models.BooleanField(default=True, verbose_name='active',)
