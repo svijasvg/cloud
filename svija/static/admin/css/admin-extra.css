@@ -289,7 +289,7 @@ tr.model-font   a:link, tr.model-font   a:visited{
 tr.model-module a:hover, tr.model-module a:active,
 tr.model-page   a:hover, tr.model-page   a:active,
 tr.model-font   a:hover, tr.model-font   a:active{
-              color:var(--text-dark);
+              color:var(--dark);
     text-decoration:underline;
 }
 
