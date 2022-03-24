@@ -503,4 +503,11 @@ div#changelist-filter h2{
 
 h1#site-name{ margin:0; }
 
+/*———————————————————————————————————————— notes field */
+
+.colM .aligned .vLargeTextField, .colM .aligned .vXMLLargeTextField {
+    width: 821px !important;
+}
+
+
 /*———————————————————————————————————————— fin */
