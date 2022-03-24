@@ -165,6 +165,7 @@ class ModuleScriptInline(admin.TabularInline):
     fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
+    classes = ['collapse']
 
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."

@@ -409,7 +409,7 @@ fieldset.module h2{
   color: var(--main) !important;
 }
 
-/*———————————————————————————————————————— collapsed inline models
+/*———————————————————————————————————————— collapsible inline models
 
     fieldset module.collapse.collapsed */
 
@@ -492,5 +492,11 @@ fieldset.module.aligned.collapse.collapsed h2::before{
 	content: "▶ ";
 }
 
+/*———————————————————————————————————————— right-column filter heading */
+
+div#changelist-filter h2{
+	background-color:var(--dark);
+  color:var(--main);
+}
 
 /*———————————————————————————————————————— fin */
