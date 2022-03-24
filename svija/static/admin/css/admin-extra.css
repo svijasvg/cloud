@@ -411,10 +411,10 @@ fieldset.module h2{
 
 /*———————————————————————————————————————— collapsible inline models
 
-    fieldset module.collapse.collapsed */
+    fieldset module.collapse */
 
 fieldset.module.collapse{
-  background-color:#eee !important;
+  background-color:var(--bg-med) !important;
   margin:20px 0px !important;
 }
 
@@ -422,6 +422,10 @@ fieldset.module.collapse h2{
   background-color:var(--dark);
   border-radius:5px;
   color: var(--main) !important;
+}
+
+fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+	color:var(--text-bright) !important;
 }
 
 /* ————— collapsed ————— */
@@ -446,6 +450,10 @@ fieldset.module.collapse.collapsed h2::before{
 	content: "▶ ";
 }
 
+fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+	color:var(--text) !important;
+}
+
 /*———————————————————————————————————————— regular models
 
     fieldset module.aligned */
@@ -462,7 +470,7 @@ fieldset.module.aligned h2{
     fieldset module.aligned.collapse */
 
 fieldset.module.aligned.collapse{
-  background-color:#eee !important;
+  background-color:var(--bg-med) !important;
   margin:20px 0px !important;
 }
 
@@ -470,6 +478,10 @@ fieldset.module.aligned.collapse h2{
   background-color:var(--dark);
   border-radius:5px;
   color: var(--main) !important;
+}
+
+fieldset.module.aligned.collapse h2 a.collapse-toggle:link{
+	color:var(--text-bright) !important;
 }
 
 /* ————— collapsed ————— */
@@ -490,6 +502,10 @@ fieldset.module.aligned.collapse.collapsed h2{
 
 fieldset.module.aligned.collapse.collapsed h2::before{
 	content: "▶ ";
+}
+
+fieldset.module.aligned.collapse.collapsed h2 a.collapse-toggle:link{
+	color:var(--link) !important;
 }
 
 /*———————————————————————————————————————— right-column filter heading */
