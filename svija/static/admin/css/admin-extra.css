@@ -170,7 +170,7 @@ ul.messagelist li{
 
 ul.messagelist li a{
     color: var(--bg-dark);
-    font-weight:bold;
+    font-weight:600;
 }
 
 /*———————————————————————————————————————— top right "add page" bubble */
@@ -222,7 +222,7 @@ div.description a:link,
 div.description a:visited{
     text-decoration:none;
               color:var(--dark);
-              font-weight:bold;
+              font-weight:600;
       border-bottom:1px solid var(--dark);
      padding-bottom:0;
 }
