@@ -181,9 +181,9 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
-       ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-       ('PLACEMENT'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
+       ('Name & Filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
+       ('Instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
+       ('Placement'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptInline]
@@ -273,13 +273,13 @@ class PageAdmin(admin.ModelAdmin):
                                        ('url', 'screen'),
                                        ('title', 'language'),
                                       ],'description':descPages, }),
-        ('more settings',  {'fields': [
+        ('More Settings',  {'fields': [
                                ('category','suppress_modules',),
                                ('width', 'offsetx', 'override',),
                                ('visible', 'offsety',),
                                'accessibility_name',
                                'accessibility_text',
-                               'pub_date','notes',
+                               'notes', 'pub_date',
                              ], 'classes': ['collapse'],}),
 
 #       ('page info',      {'fields': [], 'classes': ['collapse'],}),

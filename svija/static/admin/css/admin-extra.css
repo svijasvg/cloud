@@ -1,5 +1,16 @@
 /*———————————————————————————————————————— static/admin/css/admin-extra.css */
 
+/*———————————————————————————————————————— notes
+    Development takes place in:
+
+      /home/svija210901/static/admin/css 
+
+    when done copy back to:
+
+      /opt/Svija-Admin/svija/static/admin/css
+
+		don't forget to copy fonts as well!  */
+
 /*———————————————————————————————————————— colors */
 
 /* in sync/Svija/Admin Customization:
@@ -32,41 +43,81 @@
         
 }
 
+
 :root { --link:        var(--text-dark); 
         --link-hover:  var(--text-dark); }
 
 
 /*———————————————————————————————————————— fonts */
 
-@font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-600.woff');
-    font-weight: 700;
-    font-style: normal;
+@font-face { /* light */
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-Light.woff');
+    font-weight: 300; font-style: normal;
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-regular.woff');
-    font-weight: 400;
-    font-style: normal;
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-LightItalic.woff');
+    font-weight: 300; font-style: italic;
+}
+
+@font-face { /* regular */
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-Opt-X.woff');
+    font-weight: 400; font-style: normal;
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../fonts/open-sans-v20-latin-300.woff');
-    font-weight: 300;
-    font-style: normal;
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-RegularItalic.woff');
+    font-weight: 400; font-style: italic;
+}
+
+@font-face { /* semibold */
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-Semibold.woff');
+    font-weight: 600; font-style: normal;
+}
+
+@font-face {
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-SemiboldItalic.woff');
+    font-weight: 600; font-style: italic;
+}
+
+@font-face { /* bold */
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-Bold.woff');
+    font-weight: 700; font-style: normal;
+}
+
+@font-face {
+    font-family: Open Sans;
+    src: url('../fonts/OpenSans-BoldItalic.woff');
+    font-weight: 700; font-style: italic;
+}
+
+/* redefined defaults */
+body{
+	font-family:Open Sans !important;
+}
+
+strong, b,
+.required label, label.required {
+	font-weight: 600 !important;
 }
 
 /*———————————————————————————————————————— header bar */
 
-#header
-  { background-color:var(--bg-head);
-       border-bottom:1px solid var(--accent); }
+#header{
+  background-color:var(--bg-head);
+       border-bottom:1px solid var(--accent);
+}
 
-#svija-admin-logo
-  { margin:5px 0 5px -12px; }
+#svija-admin-logo{
+  margin:5px 0 5px -12px;
+}
 
 /*———————————————————————————————————————— small text at right of header */
 
@@ -76,137 +127,111 @@
 #header strong         { color:var(--accent);} /* user name */
 
 #header div#user-tools a:link,                    /* user tools links */
-#header div#user-tools a:visited
-
-  { color:var(--main);
+#header div#user-tools a:visited{
+    color:var(--main);
     border-bottom:1px solid #0000;
-    text-decoration:none; }
+    text-decoration:none;
+}
 
 #header div#user-tools a:hover,
-#header div#user-tools a:active
-
-  { color: var(--text-bright);
-    border-bottom:1px solid var(--text-bright); }
+#header div#user-tools a:active{
+    color: var(--text-bright);
+    border-bottom:1px solid var(--text-bright);
+}
 
 /*———————————————————————————————————————— nav bar */
 
-div.breadcrumbs
-
-  { background-color:var(--bg-dark);
-               color:var(--text-med); }
+div.breadcrumbs{
+    background-color:var(--bg-dark);
+               color:var(--text-med);
+}
 
 div.breadcrumbs a:link,
-div.breadcrumbs a:visited
+div.breadcrumbs a:visited{
 
-  { color:hsl(0,0%,70%);
+    color:hsl(0,0%,70%);
     border-bottom:1px solid hsla(0, 0%, 0%, 0);
-    text-decoration:none; }
+    text-decoration:none;
+}
 
 div.breadcrumbs a:hover,
-div.breadcrumbs a:active
+div.breadcrumbs a:active{
 
-                       { color:var(--text-bright);
-                         border-bottom:1px solid var(--text-bright); }
+                         color:var(--text-bright);
+                         border-bottom:1px solid var(--text-bright);
+}
 
 /*———————————————————————————————————————— message bar under header (page updated) */
 
-ul.messagelist li
+ul.messagelist li{
+    color:var(--bg-dark);
+    background:var(--main);
+}
 
-  { color:var(--bg-dark);
-    background:var(--main); }
-
-ul.messagelist li a
-
-  { color: var(--bg-dark);
-    font-weight:bold; }
+ul.messagelist li a{
+    color: var(--bg-dark);
+    font-weight:bold;
+}
 
 /*———————————————————————————————————————— top right "add page" bubble */
 
 .object-tools a.addlink,
-.object-tools a.historylink
-
-  {         color:var(--main);
+.object-tools a.historylink{
+            color:var(--main);
        background:var(--bg-dark);
     border-radius:5px;
       padding-top:4px;
-    padding-right:10px; }
-
-/*———————————————————————————————————————— black bars in middle of page */
-
-.module caption, /* bars on admin page & app/svija page */
-.module h2,      /* filter header, model detail header NEED TO FIX UPPERCASE SOMEWHERE */
-.inline-group h2 /* inline models headers */
-
-  { background-color:var(--bg-dark);
-               color:var(--main);
-      text-transform:uppercase;
-       border-radius:5px; }
+    padding-right:10px;
+}
 
 /*———————————————————————————————————————— user permissions */
 
-div.selector-chosen h2
-
-  { background-color:var(--bg-dark);
-               color:var(--main); }
-
-/*———————————————————————————————————————— initially-hidden fields */
-
-fieldset.collapsed h2
-
-  { background-color:var(--bg-dark) !important;
-               color:var(--text-med) !important;
-      text-transform:uppercase;
-       border-radius:5px; }
-
-fieldset.collapsed .collapse-toggle,   /* (SHOW) link */
-fieldset.collapse .collapse-toggle   /* (HIDE) link */
-
-  { color:var(--main) !important; }
-
-fieldset.collapse  /* background of hidden blocks when made visible */
-
-  { background-color:var(--bg-med);
-       border-radius:5px; }
+div.selector-chosen h2{
+    background-color:var(--bg-dark);
+               color:var(--main);
+}
 
 /*———————————————————————————————————————— basic links & list of models */
 
-a:link, a:visited      { color: var(--link);
-                         text-decoration: none; }
+a:link, a:visited{
+  color: var(--link);
+  text-decoration: none;
+}
 
-a:hover, a:active      { color: var(--link-hover);
-                         text-decoration: underline; }
+a:hover, a:active{
+  color: var(--link-hover);
+  text-decoration: underline;
+}
 
 /*———————————————————————————————————————— help tip */
 
-div.description
-
-  {            color:var(--dark);
+div.description{
+               color:var(--dark);
     background-color:var(--accent);
              padding:5px 15px 5px 15px;
          margin-left:10px;
        margin-bottom:7px;
        border-radius:0px 0px 2px 2px;
              display:inline-block;
-           font-size:12px; }
+           font-size:12px;
+}
 
-div.description::before
-
-  { content: '★ '; }
+div.description::before{ content: '★ '; }
 
 div.description a:link,
-div.description a:visited
-
-  { text-decoration:none;
+div.description a:visited{
+    text-decoration:none;
               color:var(--dark);
               font-weight:bold;
       border-bottom:1px solid var(--dark);
-     padding-bottom:0; }
+     padding-bottom:0;
+}
 
 div.description a:hover,
-div.description a:active
-
-  {         color:var(--dark);
-    border-bottom:3px solid var(--dark); }
+div.description a:active{
+            color:var(--dark);
+    border-bottom:3px solid var(--dark);
+}
 
 /*———————————————————————————————————————— model list global */
 
@@ -220,82 +245,80 @@ div.description a:active
 
 tr.model-settings,
 tr.model-language,
-tr.model-screen    
-
-  { background-color:var(--bg-med) !important;
-       border-radius:5px; }
+tr.model-screen{
+    background-color:var(--bg-med) !important;
+       border-radius:5px;
+}
 
 tr.model-settings a:link, tr.model-settings a:visited,
 tr.model-language a:link, tr.model-language a:visited,
-tr.model-screen   a:link, tr.model-screen   a:visited
-
-  {           color:var(--text-dark);
-    text-decoration:none; }
+tr.model-screen   a:link, tr.model-screen   a:visited{
+              color:var(--text-dark);
+    text-decoration:none;
+}
 
 tr.model-settings a:hover, tr.model-settings a:active,
 tr.model-language a:hover, tr.model-language a:active,
-tr.model-screen   a:hover, tr.model-screen   a:active
-
-  {           color:var(--text-dark);
-		text-decoration:underline; }
+tr.model-screen   a:hover, tr.model-screen   a:active{
+              color:var(--text-dark);
+    text-decoration:underline;
+}
 
 /*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
 
 tr.model-module,
 tr.model-page,
-tr.model-font
-
-  { background-color:var(--main);
-    border:1px solid var(--bg-med); }
+tr.model-font{
+    background-color:var(--main);
+    border:1px solid var(--bg-med);
+}
 
 /* bottom borders */
 tr.model-module th, tr.model-module td, tr.model-module th,
-tr.model-page th, tr.model-page td, tr.model-page th
-
-  { border-bottom: 1px solid var(--bg-bright); }
+tr.model-page th, tr.model-page td, tr.model-page th{
+    border-bottom: 1px solid var(--bg-bright);
+}
 
 tr.model-module a:link, tr.model-module a:visited,
 tr.model-page   a:link, tr.model-page   a:visited,
-tr.model-font   a:link, tr.model-font   a:visited
-
-  {           color:var(--dark);
-    text-decoration:none; }
+tr.model-font   a:link, tr.model-font   a:visited{
+              color:var(--dark);
+    text-decoration:none;
+}
 
 tr.model-module a:hover, tr.model-module a:active,
 tr.model-page   a:hover, tr.model-page   a:active,
-tr.model-font   a:hover, tr.model-font   a:active
-
-  {           color:var(--text-dark);
-		text-decoration:underline; }
+tr.model-font   a:hover, tr.model-font   a:active{
+              color:var(--text-dark);
+    text-decoration:underline;
+}
 
 /*———————————————————————————————————————— model list 3.x · accessory settings */
 
 tr.model-script,
 tr.model-redirect,
-tr.model-robots
-
-  { background-color:var(--bg-bright);
-    border:1px solid var(--bg-med); }
+tr.model-robots{
+    background-color:var(--bg-bright);
+    border:1px solid var(--bg-med);
+}
 
 tr.model-script a:link, tr.model-script a:visited,
 tr.model-redirect       a:link, tr.model-redirect       a:visited,
-tr.model-robots         a:link, tr.model-robots         a:visited
-
-  {           color:var(--text-dark);
-    text-decoration:none; }
+tr.model-robots         a:link, tr.model-robots         a:visited{
+              color:var(--text-dark);
+    text-decoration:none;
+}
 
 tr.model-script a:hover, tr.model-script a:active,
 tr.model-redirect       a:hover, tr.model-redirect       a:active,
-tr.model-robots         a:hover, tr.model-robots         a:active
+tr.model-robots         a:hover, tr.model-robots         a:active{
+              color:var(--text-dark);
+    text-decoration:underline;
+}
 
-  {           color:var(--text-dark);
-		text-decoration:underline; }
+/*———————————————————————————————————————— model list hidden · control */
 
-/*———————————————————————————————————————— control */
-
-tr.model-control
-
-  { display:none; }
+tr.model-control{ display:none; }
 
 /*———————————————————————————————————————— buttons */
 
@@ -303,47 +326,171 @@ tr.model-control
 input[type=submit],
 input[type=button],
 .submit-row input,
-a.button
-
-  {      color:var(--text-dark);
-    background:var(--bg-med); }
+a.button{
+         color:var(--text-dark);
+    background:var(--bg-med);
+}
 
            .button:hover,
 input[type=submit]:hover,
 input[type=button]:hover,
  .submit-row input:hover,
-          a.button:hover
-
-  { color:var(--dark);
-     background:var(--main); }
+          a.button:hover{
+    color:var(--dark);
+     background:var(--main);
+}
 
 /*———————————————————————————————————————— default buttons */
 
 .button.default,
 input[type=submit].default,
-.submit-row input.default
-
-  {      color:var(--dark);
+.submit-row input.default{
+         color:var(--dark);
     background:var(--main);
-       outline:0 !important; } /* blue accessibility outline around default button */
+       outline:0 !important;
+} /* blue accessibility outline around default button */
 
 .button.default:hover,
 input[type=submit].default:hover,
-.submit-row input.default:hover
-
-  {      color:var(--main);
-    background:var(--dark); }
+.submit-row input.default:hover{
+         color:var(--main);
+    background:var(--dark);
+}
 
 .button.default:focus,
 input[type=submit].default:focus,
-.submit-row input.default:focus
-
-  {      color:var(--dark);
-    background:var(--main); }
+.submit-row input.default:focus{
+         color:var(--dark);
+    background:var(--main);
+}
 
 /*———————————————————————————————————————— tiny original name text */
 
 td.original p{ display:none; }
+
+
+/* :::::::::::::::::::: bars & collapsed fields :::::::::::::::::::: */
+
+/*———————————————————————————————————————— black bars in middle of page */
+
+.module caption{ /* bars on admin page & app/svija page */
+  background-color:var(--bg-dark);
+             color:var(--main);
+    text-transform:uppercase;
+     border-radius:5px;
+}
+
+/*———————————————————————————————————————— reset margins
+
+    because we're moving them to H2 instead of fieldset */
+
+fieldset.module{
+   margin:0    !important;
+  padding:0    !important;
+   border:none !important;
+  border-radius:5px !important;
+}
+
+div.js-inline-admin-formset.inline-group{
+	margin:0 !important;
+}
+
+/*———————————————————————————————————————— regular inline models
+
+    fieldset module */
+
+fieldset.module{
+	margin:20px 0 10px 0 !important;
+}
+
+fieldset.module h2{
+  background-color:var(--dark);
+  border-radius:5px;
+  color: var(--main) !important;
+}
+
+/*———————————————————————————————————————— collapsed inline models
+
+    fieldset module.collapse.collapsed */
+
+fieldset.module.collapse{
+  background-color:#eee !important;
+  margin:20px 0px !important;
+}
+
+fieldset.module.collapse h2{
+  background-color:var(--dark);
+  border-radius:5px;
+  color: var(--main) !important;
+}
+
+/* ————— collapsed ————— */
+
+fieldset.module.collapse.collapsed{
+  background:none !important;
+      margin:0px 0px 0px 0px !important;
+}
+
+fieldset.module.collapse.collapsed h2{
+  background:none;
+  color:var(--text) !important;
+  text-transform:capitalize !important;
+  margin-top:0px !important;
+  margin-bottom:10px !important;
+	font-size:13px !important;
+	padding:0px 0px 0px 10px !important;
+	letter-spacing:0 !important;
+}
+
+fieldset.module.collapse.collapsed h2::before{
+	content: "▶ ";
+}
+
+/*———————————————————————————————————————— regular models
+
+    fieldset module.aligned */
+
+fieldset.module.aligned h2{
+  background-color:var(--dark);
+  border-radius:5px;
+  color: var(--main) !important;
+  text-transform:uppercase;
+}
+
+/*———————————————————————————————————————— collapsible regular models
+
+    fieldset module.aligned.collapse */
+
+fieldset.module.aligned.collapse{
+  background-color:#eee !important;
+  margin:20px 0px !important;
+}
+
+fieldset.module.aligned.collapse h2{
+  background-color:var(--dark);
+  border-radius:5px;
+  color: var(--main) !important;
+}
+
+/* ————— collapsed ————— */
+
+fieldset.module.aligned.collapse.collapsed{
+  background:none !important;
+      margin:0px 0px 8px 0px  !important;
+}
+
+fieldset.module.aligned.collapse.collapsed h2{
+  background:none;
+  color:var(--text) !important;
+  text-transform:capitalize;
+  margin:0px !important;
+	padding-top:5px !important;
+	letter-spacing:0 !important;
+}
+
+fieldset.module.aligned.collapse.collapsed h2::before{
+	content: "▶ ";
+}
 
 
 /*———————————————————————————————————————— fin */
