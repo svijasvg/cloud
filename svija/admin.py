@@ -165,6 +165,7 @@ class ModuleScriptInline(admin.TabularInline):
     fields = ('active', 'name', 'type', 'order', 'content',)
     verbose_name = "script"
     verbose_name_plural = "scripts"
+    classes = ['collapse']
 
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
@@ -181,9 +182,9 @@ class ModuleAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
-       ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-       ('PLACEMENT'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
+       ('Name & Filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
+       ('Instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
+       ('Placement'      , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
     ]   
 
     inlines = [ModuleScriptInline]
@@ -268,13 +269,25 @@ class PageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('setup',          {'fields': ['published', ('url', 'screen'),('title', 'language'),('category', 'suppress_modules','override',),],'description':descPages, }),
-        ('accessibility',  {'fields': ['accessibility_name','accessibility_text'], 'classes': ['collapse'],}),
-        ('page info',      {'fields': ['pub_date','notes',], 'classes': ['collapse'],}),
-        ('new dimensions', {'fields': [('width', 'offsetx'), ('visible', 'offsety'), ], 'classes': ['collapse'], 'description':descPixels,}),
+        ('setup',          {'fields': [
+                                       'published',
+                                       ('url', 'screen'),
+                                       ('title', 'language'),
+                                      ],'description':descPages, }),
+        ('More Settings',  {'fields': [
+                               ('category','suppress_modules',),
+                               ('width', 'offsetx', 'override',),
+                               ('visible', 'offsety',),
+                               'accessibility_name',
+                               'accessibility_text',
+                               'notes', 'pub_date',
+                             ], 'classes': ['collapse'],}),
+
+#       ('page info',      {'fields': [], 'classes': ['collapse'],}),
+#       ('new dimensions', {'fields': [ ], 'classes': ['collapse'], 'description':descPixels,}),
     ]   
 
-    inlines = [ModuleInlinePage, ScriptInlinePage, IllustratorInlinePage, AdditionalScriptInline]
+    inlines = [IllustratorInlinePage, AdditionalScriptInline, ModuleInlinePage, ScriptInlinePage, ]
 
 admin.site.register(Page, PageAdmin)
 

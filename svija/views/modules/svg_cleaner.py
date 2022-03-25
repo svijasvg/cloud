@@ -172,7 +172,7 @@ def create_new_font(css_ref, new_font):
 
   css = family = css_ref
   weight = style = width = ''
-  source = '———'
+  source = ''
 
   weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
   styles = ['Normal','Italic','Oblique',]

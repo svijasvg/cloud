@@ -30,3 +30,7 @@ svg{
    font: normal 1rem/1.4rem verdana;
   color: #999;
 }
+
+* {
+  box-sizing: border-box; /* width & height include padding & borders */
+}

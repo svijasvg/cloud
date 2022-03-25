@@ -3,7 +3,7 @@
 function setCookie(cname, cvalue, exdays) {
 
   var earl = window.location.hostname;
-  deleteParentCookieIfNecessary(cname, earl);
+//  deleteParentCookieIfNecessary(cname, earl);
 
   if (exdays > 7) exdays = 7; // max in Safari
 
@@ -18,7 +18,8 @@ function setCookie(cname, cvalue, exdays) {
 
   
 
-  var complete = name + expy + domn + path + secu;
+//var complete = name + expy + domn + path + secu;
+  var complete = name + expy + path + secu;
   document.cookie = complete;
 }
 
