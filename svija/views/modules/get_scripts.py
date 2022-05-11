@@ -80,7 +80,7 @@ def get_scripts(label, all_scripts):
   
 #———————————————————————————————————————— append iteration results
 
-      final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+    final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
 #———————————————————————————————————————— prepare return
 

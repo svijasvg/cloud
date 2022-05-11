@@ -80,7 +80,7 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
   
 #———————————————————————————————————————— append iteration results
 
-      final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+    final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
 #———————————————————————————————————————— prepare return
 
