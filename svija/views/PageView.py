@@ -126,8 +126,6 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
 
-    #———————————————————————————————————————— new scripts
-
     page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
     page_scripts = scripts_to_page('script scripts', page_scripts_raw)
     content_blocks.extend(page_scripts)
@@ -147,6 +145,8 @@ def SubPageView(request, language_code, request_slug, screen_code):
         screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
         module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
+
+   #———————————————————————————————————————— "always include" scripts
 
     #———————————————————————————————————————— combine content blocks
 

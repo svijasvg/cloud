@@ -304,6 +304,7 @@ class Page(models.Model):
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
+    suppress_scripts = models.BooleanField(default=False, verbose_name='suppress default scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')

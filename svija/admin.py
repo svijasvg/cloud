@@ -275,7 +275,7 @@ class PageAdmin(admin.ModelAdmin):
                                        ('title', 'language'),
                                       ],'description':descPages, }),
         ('More Settings',  {'fields': [
-                               ('category','suppress_modules',),
+                               ('category','suppress_modules','suppress_scripts',),
                                ('width', 'offsetx', 'override',),
                                ('visible', 'offsety',),
                                'accessibility_name',
