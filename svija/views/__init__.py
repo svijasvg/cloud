@@ -10,7 +10,6 @@ if not path in sys.path: sys.path.insert(1, path)
 
 #———————————————————————————————————————— all views
 
-
 #   path('<slug:lng>/mail', views.MailView),
 from .MailView       import *
 

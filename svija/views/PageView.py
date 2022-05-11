@@ -57,6 +57,7 @@ from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
 from modules.get_screen_code import *
+from modules.get_scripts import *
 from modules.redirect_if_home import *
 from modules.scripts_to_page_obj import *
 from modules.scripts_to_page import *
@@ -127,7 +128,7 @@ def SubPageView(request, language_code, request_slug, screen_code):
     content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
 
     page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
-    page_scripts = scripts_to_page('script scripts', page_scripts_raw)
+    page_scripts = scripts_to_page('page-specified scripts', page_scripts_raw)
     content_blocks.extend(page_scripts)
 
     #———————————————————————————————————————— page modules
@@ -143,10 +144,15 @@ def SubPageView(request, language_code, request_slug, screen_code):
 
     if not page.suppress_modules:
         screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
-        module_content = get_modules('screen modules', screen_modules, screen_code, page, page_width, use_p3)
+        module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
         content_blocks.extend(module_content)
 
    #———————————————————————————————————————— "always include" scripts
+
+    if not page.suppress_scripts:
+        screen_scripts = Module.objects.filter(Q(active=True) & Q(always=True)).order_by('order')
+        script_content = get_scripts('always-include scripts', screen_scripts, screen_code, page, page_width, use_p3)
+        content_blocks.extend(script_content)
 
     #———————————————————————————————————————— combine content blocks
 
