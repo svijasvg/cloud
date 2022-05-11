@@ -1,62 +1,93 @@
 #———————————————————————————————————————— views/modules/get_modules.py
 
-# accepts a list of modules, some inactive
-# a module has exactly 1 svg filename, and it can be empty
-
+#———————————————————————————————————————— notes
+#
+#   very similar:   get_page_scripts.py
+#                   get_page_modules.py
+#                   get_modules.py
+#                   get_scripts.py
+#
+#   accepts a list of modules, all active
+#   a module has exactly 1 svg filename, and it can be empty
+#
+#
+#
+#
+#
+#
+#
 #———————————————————————————————————————— imports
 
-from modules.svg_cleaner import *
 from modules.get_single_svg import *
 from modules.get_script import *
 from PageView import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
+# Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
+
 def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 
-    head_css = head_js = body_js = svgs = html = form = ''
+  #comments
+  hjc = hcc = bjc = svc = htc = fmc = ''
 
-    module_list = []
+  final_list = []
 
-    head_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
-    body_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+#———————————————————————————————————————— iterate through modules
 
-    for this_module in all_modules:
+  for this_group in all_modules:
 
-        hj = hc = bj = sv = ht = fm = ''
 
-        s, c = get_single_svg(this_module, screen_code, page_width, use_p3)
-        svgs     += s
-        head_css += c
+    hj = hc = bj = sv = ht = fm = ''
 
-        sv = s
-        hc = c
+#———————————————————————————————————————— get SVG's
 
-        for this_script in this_module.modulescript_set.all():
-            if this_script.active:
-    
-                if this_script.type == 'head JS':
-                    head_js += get_script('js', this_script.name, this_script.content)
-                    hj += get_script('js', this_script.name, this_script.content)
-    
-                if this_script.type == 'CSS':
-                    head_css += get_script('css', this_script.name, this_script.content)
-                    hc += get_script('css', this_script.name, this_script.content)
-    
-                if this_script.type == 'body JS':
-                    body_js += get_script('js', this_script.name, this_script.content)
-                    bj += get_script('js', this_script.name, this_script.content)
-    
-                # SVG handled outside of loop
-    
-                if this_script.type == 'HTML':
-                    html += get_script('html', this_script.name, this_script.content)
-                    ht += get_script('html', this_script.name, this_script.content)
-    
-                if this_script.type == 'form':
-                    form += get_script('html', this_script.name, this_script.content)
-                    fm += get_script('html', this_script.name, this_script.content)
-    
-        module_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+    # returns svg and css
+    sv, hc = get_single_svg(this_group, screen_code, page_width, use_p3)
 
-    return module_list
+
+
+
+
+#———————————————————————————————————————— deactivate from page?
+
+#   not called through page
+
+#———————————————————————————————————————— iterate through scripts
+
+    for this_script in this_group.modulescript_set.all():
+      if this_script.active:
+  
+        if this_script.type == 'head JS':
+          hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+          hj += get_script('js', this_script.name, this_script.content)
+  
+        if this_script.type == 'CSS':
+          hcc = '\n\n/*———————————————————————————————————————— ' + label + ' */\n\n'
+          hc += get_script('css', this_script.name, this_script.content)
+  
+        if this_script.type == 'body JS':
+          bjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+          bj += get_script('js', this_script.name, this_script.content)
+  
+        if this_script.type == 'HTML':
+          htc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
+          ht += get_script('html', this_script.name, this_script.content)
+  
+        if this_script.type == 'form':
+          fmc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
+          fm += get_script('html', this_script.name, this_script.content)
+  
+#———————————————————————————————————————— append iteration results
+
+      final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+
+#———————————————————————————————————————— prepare return
+
+  comments = page_obj(hjc, hcc, bjc, svc, htc, fmc)
+  final_list = [comments, *final_list]
+
+  return final_list
+
+
+#———————————————————————————————————————— fin
