@@ -1,8 +1,17 @@
 #———————————————————————————————————————— views/modules/get_scripts.py
 
-# accepts a list of modules, some inactive
-# a module has exactly 1 svg filename, and it can be empty
-
+#———————————————————————————————————————— notes
+#
+#    accepts a list of modules, some inactive
+#   a module has exactly 1 svg filename, and it can be empty
+#
+#
+#
+#
+#
+#
+#
+#
 #———————————————————————————————————————— imports
 
 from modules.svg_cleaner import *
@@ -12,27 +21,27 @@ from PageView import page_obj
 
 #———————————————————————————————————————— def get_scripts(label, all_scripts, page_width, use_p3):
 
-def get_scripts(label, all_modules, screen_code, page, page_width, use_p3):
+def get_scripts(label, all_scripts, screen_code, page, page_width, use_p3):
 
     head_css = head_js = body_js = svgs = html = form = ''
 
-    module_list = []
+    final_list = []
 
     head_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
     body_js += '\n\n//———————————————————————————————————————— ' + label + '\n\n'
 
-    for this_module in all_modules:
+    for this_script in all_scripts:
 
         hj = hc = bj = sv = ht = fm = ''
 
-        s, c = get_single_svg(this_module, screen_code, page_width, use_p3)
-        svgs     += s
-        head_css += c
+#       s, c = get_single_svg(this_script, screen_code, page_width, use_p3)
+#       svgs     += s
+#       head_css += c
 
-        sv = s
-        hc = c
+#       sv = s
+#       hc = c
 
-        for this_script in this_module.modulescript_set.all():
+        for this_script in this_script.modulescript_set.all():
             if this_script.active:
     
                 if this_script.type == 'head JS':
@@ -57,6 +66,8 @@ def get_scripts(label, all_modules, screen_code, page, page_width, use_p3):
                     form += get_script('html', this_script.name, this_script.content)
                     fm += get_script('html', this_script.name, this_script.content)
     
-        module_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+        final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
-    return module_list
+    return final_list
+
+#———————————————————————————————————————— fin
