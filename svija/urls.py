@@ -20,18 +20,19 @@ pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
 urlpatterns = [ 
 
-#———————————————————————————————————————— exact addresses
+#———————————————————————————————————————— exact addresse
 
     path('csync', views.ClearCacheView),
-#   path('csync', views.ClearCacheSyncView),
 
-#———————————————————————————————————————— email sending
-
-    # used by contact page
+    # used by contact page, try, trial etc.
     path('mail', views.MailView),
 
     # send test mail to see what happens
     path('send', views.SendView),
+
+#   path('lab', views.LabView),
+    path('robots.txt', views.RobotsView),
+    path('sitemap.txt', views.SitemapView),
 
 #———————————————————————————————————————— placed images (in Links folder)
 
@@ -44,26 +45,18 @@ urlpatterns = [
 
     # why is there a language code in the first line?
     re_path(r'^(?P<language_code>)$'            , views.HomePageView), # root url
-    re_path(r'^(?P<language_code>[\w-]{1,20})/$', views.HomePageView), # two letters followed by slash
+    re_path(r'^(?P<language_code>[\w-]{1,20})$', views.HomePageView), # two letters followed by slash
 
-#———————————————————————————————————————— regular pages
+#———————————————————————————————————————— secondary language pages
 
     path('<slug:language_code>/<slug:request_slug>', views.PageView),  # prefix/slug
 
-#———————————————————————————————————————— txt views
-
-    path('lab', views.LabView),
-    path('robots.txt', views.RobotsView),
-    path('sitemap.txt', views.SitemapView),
-
 #———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^customization/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Svija Admin"}),
-    re_path(r'^fonts/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files"    }),
-    re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"        }),
-    re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/sync/Svija/Images"              }),
-#   re_path(r'^scripts/(?P<path>.*)$(?i)',       static.serve, {'document_root': proj_folder + "/sync/Svija/Scripts"        }),
-
+    re_path(r'^customization/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/sync/Svija/Svija Admin"      }),
+    re_path(r'^fonts/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Fonts/WOFF Files" }),
+    re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"     }),
+    re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/sync/Svija/Images"           }),
 
 ]
 
