@@ -23,4 +23,4 @@ if (pinched) illustrator_pixel = illustrator_pixel*current_zoom/100;
 
 //———————————————————————————————————————— set the rem unit
 
-document.documentElement.style.fontSize = (10 * illustrator_pixel) + 'px';
+document.documentElement.style.fontSize = illustrator_pixel + 'px';

@@ -61,8 +61,8 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
             svg_width = page_width
             svg_height = round(page_width * page_ratio)
 
-        rem_width  = round(svg_width/10,  3)
-        rem_height = round(svg_height/10, 3)
+        rem_width  = round(svg_width,  3)
+        rem_height = round(svg_height, 3)
 
         if is_module:
             css_dims = '#' + svg_ID + '{\n'
@@ -94,8 +94,8 @@ def calculate_css(this_svg):
     posit  = dic_position(pos)
     offset = dic_corners(cor, pos)
 
-    xoff = str(horz/10) + 'rem'
-    yoff = str(vert/10) + 'rem'
+    xoff = str(horz) + 'rem'
+    yoff = str(vert) + 'rem'
     offset = offset.replace('xrem', xoff)
     offset = offset.replace('yrem', yoff)
     return posit + offset
