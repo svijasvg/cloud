@@ -19,9 +19,10 @@
 from django.shortcuts import get_object_or_404
 from svija.models import Language, Settings
 from modules.default_screen_code import *
-from svija.views import CachedPageView
+
+from PageObject import *
 from modules.cache_per_user import *
-from CachedPageView import *
+from modules.cached_page import *
 
 #———————————————————————————————————————— definition
 

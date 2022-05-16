@@ -20,7 +20,7 @@
 
 #rom modules.get_single_svg import *
 from modules.get_script import *
-from CachedPageView import page_obj
+from PageObject import page_obj
 
 #———————————————————————————————————————— def get_page_scripts(label, page_scripts):
 

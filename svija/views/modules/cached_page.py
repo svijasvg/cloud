@@ -11,59 +11,30 @@ import os, os.path, sys, pathlib, svija
 
 from django.core.cache import cache
 from django.db.models import Q
+from django.http import Http404
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_protect
 
 from svija.models import *
+from PageObject import *
 
-#———————————————————————————————————————— class page_obj():
-# must be here because this file has to come first in __init__.py
-# and it needs access to page_obj
-
-class page_obj():
-  def __init__(self, head_js, css, body_js, svgs, html, form):
-    self.head_js  = head_js
-    self.css    = css
-    self.body_js  = body_js
-    self.svgs     = svgs
-    self.html     = html
-    self.form     = form
-  def __getitem__(cls, x):
-    return getattr(cls, x)
-
-#———————————————————————————————————————— import
-
-#mport importlib
-
-# get list of modules from dir, not typing, prefix all with pageview_
-#unctions = ['get_script',     'cache_per_user',       'combine_content',
-#      'contains_form',    'generate_accessibility',   'generate_form_js',
-#      'generate_system_js', 'get_fonts', 'get_modules', 'get_page_svgs',
-#      'redirect_if_possible',     'scripts_to_page_obj', ]
-
-#or function in functions:
-#   x = importlib.import_module('.'+function , 'modules')
-#   getattr(x, function)
-
-
-from modules.get_script import *
 from modules.cache_per_user import *
 from modules.combine_content import *
 from modules.contains_form import *
+from modules.default_screen_code import *
 from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_fonts import *
-from modules.get_page_modules import *
 from modules.get_modules import *
+from modules.get_page_modules import *
+from modules.get_page_scripts import *
 from modules.get_page_svgs import *
-from modules.default_screen_code import *
+from modules.get_script import *
 from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
-from modules.get_page_scripts import *
-from django.http import Http404
 
 #———————————————————————————————————————— ▼ CachedPageView(request, language_code, request_slug, screen_code):
 #
@@ -74,7 +45,7 @@ from django.http import Http404
 @csrf_protect
 def CachedPageView(request, language_code, request_slug, screen_code):
 
-  return HttpResponse(language_code+':'+request_slug+':'+screen_code) # CORRECT
+# return HttpResponse(language_code+':'+request_slug+':'+screen_code) # CORRECT
 
   page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
   if not page: raise Http404 # passed to file Error404.py
@@ -127,8 +98,10 @@ def CachedPageView(request, language_code, request_slug, screen_code):
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
+
   page_modules_raw = page.pagemodule_set.filter(active=True).order_by('zindex')
   page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
+  return HttpResponse("debugging message.")
   content_blocks.extend(page_modules)
 
   #———————————————————————————————————————— "always include" modules

@@ -10,19 +10,16 @@ if not path in sys.path: sys.path.insert(1, path)
 
 #———————————————————————————————————————— all views
 
-from .ClearCacheView import *
-from .MailView       import *
-from .SendView       import *
-from .RobotsView     import *
-from .SitemapView    import *
-
-from .LinksView      import *
-
-from .CachedPageView import *
+from .PageObject     import *
 from .PageView       import *
 
+from .MailView       import *
+from .ClearCacheView import *
+from .SendView       import *
+from .LinksView      import *
+from .LabView        import *
+from .RobotsView     import *
+from .SitemapView    import *
 from .Error404       import *
-
-#rom .LabView        import *
 
 #———————————————————————————————————————— fin
