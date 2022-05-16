@@ -1,4 +1,4 @@
-#———————————————————————————————————————— HomePageView.py
+#———————————————————————————————————————— PageView.py
 #
 #———————————————————————————————————————— notes
 #
@@ -21,10 +21,11 @@ from svija.models import Language, Settings
 from modules.default_screen_code import *
 from svija.views import CachedPageView
 from modules.cache_per_user import *
+from CachedPageView import *
 
 #———————————————————————————————————————— definition
 
-def HomePageView(request, request_page='', request_lang=''):
+def PageView(request, request_page='', request_lang=''):
 
 #———————————————————————————————————————— lang is missing
 

@@ -18,6 +18,8 @@ from django.views.decorators.csrf import csrf_protect
 from svija.models import *
 
 #———————————————————————————————————————— class page_obj():
+# must be here because this file has to come first in __init__.py
+# and it needs access to page_obj
 
 class page_obj():
   def __init__(self, head_js, css, body_js, svgs, html, form):
@@ -72,7 +74,7 @@ from django.http import Http404
 @csrf_protect
 def CachedPageView(request, language_code, request_slug, screen_code):
 
-# return HttpResponse(language_code+':'+request_slug+':'+screen_code) CORRECT
+  return HttpResponse(language_code+':'+request_slug+':'+screen_code) # CORRECT
 
   page = Page.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
   if not page: raise Http404 # passed to file Error404.py

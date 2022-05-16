@@ -17,7 +17,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
 from svija.models import Redirect, Language, Settings
-from svija.views import SubPageView
+from svija.views import CachedPageView
 
 from modules.default_screen_code import *
 

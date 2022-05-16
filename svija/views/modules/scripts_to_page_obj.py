@@ -3,7 +3,7 @@
 #———————————————————————————————————————— imports
 
 from modules.get_script import *
-from PageView import page_obj
+from CachedPageView import page_obj
 
 #———————————————————————————————————————— def scripts_to_page_obj(label, script_list, svg_passthrough, css_dimensions):
 

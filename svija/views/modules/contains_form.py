@@ -1,6 +1,6 @@
 #———————————————————————————————————————— views/modules/contains_form.py
 
-from PageView import page_obj
+from CachedPageView import page_obj
 
 def contains_form(content_blocks):
     form = ''.join([ i['form'] for i in content_blocks] )

@@ -20,7 +20,7 @@
 
 from modules.get_single_svg import *
 from modules.get_script import *
-from PageView import page_obj
+from CachedPageView import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 

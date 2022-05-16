@@ -47,9 +47,9 @@ urlpatterns = [
 #   re_path(r'^(?P<page_name>)$'           , views.HomePageView), # root url
 #   re_path(r'^(?P<page_name>[\w-]{1,20})$', views.HomePageView), # two letters NOT followed by slash
 
-    path('',                                        views.HomePageView),   # prefix/slug
-    path('<slug:request_page>',                     views.HomePageView),   # prefix/slug
-    path('<slug:request_lang>/<slug:request_page>', views.HomePageView),   # prefix/slug
+    path('',                                        views.PageView),   # prefix/slug
+    path('<slug:request_page>',                     views.PageView),   # prefix/slug
+    path('<slug:request_lang>/<slug:request_page>', views.PageView),   # prefix/slug
 
 #———————————————————————————————————————— fonts, icons & scripts
 
