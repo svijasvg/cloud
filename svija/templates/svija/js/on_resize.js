@@ -17,7 +17,7 @@ function resizeWindow(){
   if (window_zoomed())                       return false; // zoomed, not resized
   
   var illustrator_pixel = window.innerWidth / visible_width;
-  document.documentElement.style.fontSize = (10 * illustrator_pixel) + 'px';
+  document.documentElement.style.fontSize = illustrator_pixel + 'px';
   var win_stored_ratio = get_ratio(win_precision); // width/height
   var win_stored_width = window.innerWidth;
 };  
