@@ -1,6 +1,6 @@
 #———————————————————————————————————————— redirect_if_possible.py
 
-#———————————————————————————————————————— redirect if it's a default page (path not shown)
+#———————————————————————————————————————— notes
 #
 #   called by the main page view to redirect if the slugs should be hidden
 #
@@ -16,7 +16,11 @@
 #   otherwise returns the new URL
 #   PageView will then issue a 302 redirect
 #
-#    return HttpResponse("debugging message.")
+#   return HttpResponse("debugging message.")
+#
+#   wrong screen code is handled separately, because
+#   this will issue a 302 redirect, and we don't want
+#   to redirect to the same URL
 #
 #———————————————————————————————————————— redirect_if_possible(request, site_lang, language_page):
 
@@ -24,8 +28,6 @@ def redirect_if_possible(request, site_lang, language_page):
 
   path_parts = request.path[1:].split('/'); # ignore leading slash
 
-  del path_parts[len(path_parts) - 1]       # remove screen code
-  
   orig_path = '/'.join(path_parts)
 
 #———————————————————————————————————————— remove page if default

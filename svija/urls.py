@@ -44,12 +44,12 @@ urlpatterns = [
 #———————————————————————————————————————— home pages
 
     # why is there a language code in the first line?
-    re_path(r'^(?P<page_name>)$'           , views.HomePageView), # root url
-    re_path(r'^(?P<page_name>[\w-]{1,20})$', views.HomePageView), # two letters NOT followed by slash
+#   re_path(r'^(?P<page_name>)$'           , views.HomePageView), # root url
+#   re_path(r'^(?P<page_name>[\w-]{1,20})$', views.HomePageView), # two letters NOT followed by slash
 
-#———————————————————————————————————————— secondary language pages
-
-    path('<slug:language_code>/<slug:request_slug>', views.PageView),  # prefix/slug
+    path('',                                        views.HomePageView),   # prefix/slug
+    path('<slug:request_page>',                     views.HomePageView),   # prefix/slug
+    path('<slug:request_lang>/<slug:request_page>', views.HomePageView),   # prefix/slug
 
 #———————————————————————————————————————— fonts, icons & scripts
 

@@ -1,8 +1,15 @@
 #———————————————————————————————————————— HomePageView.py
 #
-#   accepts request.path / or /en
+#———————————————————————————————————————— notes
 #
-#   returns request for /en/home
+#   we assume that the address is correct
+#   don't worry about redirects,
+#   they're handled after caching
+#
+#   NOTE: /fr will not go to french home page, because the assumption is that /fr is a page
+#   this may not be an actual problem, it just means that links will go to /fr/accueil
+#
+#   all we need is to supply missing parts
 #
 #   return HttpResponse("debugging message.")
 #
@@ -11,42 +18,45 @@
 #rom django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from svija.models import Language, Settings
-from svija.views import PageView
+from modules.default_screen_code import *
+from svija.views import CachedPageView
 from modules.cache_per_user import *
 
 #———————————————————————————————————————— definition
 
-def HomePageView(request, page_name):
+def HomePageView(request, request_page='', request_lang=''):
 
-  return HttpResponse("HomePageView.py")
-#   root: path: /, page_name: 
-#    /en: path: /en/, page_name: en
-#   same for other words instead of /en
+#———————————————————————————————————————— lang is missing
 
-#———————————————————————————————————————— get default language for site
+  if request_lang == '':
+    language = get_object_or_404(Settings, active=True).language
+    request_lang = language.code
 
-  settings = get_object_or_404(Settings, active=True)
+#———————————————————————————————————————— page is missing
 
-  # no path after hostname
-  if page_name == '':
-    language_code = settings.language.code
-    page_name = settings.language.default_page
+  # this only happens for the home page
+  # so we have already gotten settings above
 
-  # one word after hostname
-  else:
+  if request_page == '':
+    request_page = language.default_page
 
-    # if path is a language code
-    language = Language.objects.filter(code=page_name).first()
-    if type(language) != type(None):
-      language_code = page_name
-      page_name = language.default_page
+#———————————————————————————————————————— get screen code
 
-    # if path is not a language code
-    else:
-      language_code = settings.language.code 
+  screen_code = request.COOKIES.get('screen_code')
+  if screen_code == None:
+    screen_code = default_screen_code(request)
 
-#———————————————————————————————————————— return regular view
+#———————————————————————————————————————— status
 
-  return PageView(request, language_code, page_name)
+# return HttpResponse(request_lang + ':' + request_page + ':' + screen_code)
+# correct
+
+#   at this point we have language/page/screencode
+#   can make request for cached content
+
+#———————————————————————————————————————— return cached results
+
+  return CachedPageView(request, request_lang, request_page, screen_code)
+
 
 #———————————————————————————————————————— fin

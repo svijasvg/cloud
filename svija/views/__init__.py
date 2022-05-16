@@ -22,6 +22,7 @@ from .ClearCacheView import *
 #   path('<slug:lng>/send', views.SendView), depends on PageView
 from .SendView       import *
 
+from .CachedPageView   import *
 #   re_path(r'^(?P<path1>)$', views.HomePageView),          # root url
 #   re_path(r'^(?P<path1>[\w-]{2})/$', views.HomePageView), # two letters followed by slash
 from .HomePageView   import *

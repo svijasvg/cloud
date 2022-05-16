@@ -19,7 +19,7 @@ from django.views.decorators.cache import never_cache
 from svija.models import Redirect, Language, Settings
 from svija.views import SubPageView
 
-from modules.get_screen_code import *
+from modules.default_screen_code import *
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
@@ -79,16 +79,12 @@ def Error404(request, *args, **kwargs):
 
 #———————————————————————————————————————— get screen if possible
 
-  screen_code = get_screen_code(request)
-
-#———————————————————————————————————————— update the request.path to missing
-
-  request.path = '/' + language_code + '/' + missing_page + '/' + screen_code
+  screen_code = default_screen_code(request)
 
 #———————————————————————————————————————— return correct missing page
 
   try:
-    response = SubPageView(request, language_code, missing_page, screen_code)
+    response = CachedPageView(request, language_code, missing_page, screen_code)
 
   except:
     response = HttpResponse(missing_msg)

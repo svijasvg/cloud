@@ -56,7 +56,7 @@ from modules.get_fonts import *
 from modules.get_page_modules import *
 from modules.get_modules import *
 from modules.get_page_svgs import *
-from modules.get_screen_code import *
+from modules.default_screen_code import *
 from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
@@ -71,7 +71,7 @@ from django.http import Http404
 # @never_cache
 def PageView(request, language_code, request_slug):
 
-  screen_code = get_screen_code(request)
+  screen_code = default_screen_code(request)
   request.path += '/' + screen_code
   return SubPageView(request, language_code, request_slug, screen_code)
 
