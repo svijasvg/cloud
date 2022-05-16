@@ -1,4 +1,4 @@
-#———————————————————————————————————————— CachedPageView.py
+#———————————————————————————————————————— cached_page.py
 
 #———————————————————————————————————————— notes
 #
@@ -36,14 +36,14 @@ from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
 
-#———————————————————————————————————————— ▼ CachedPageView(request, language_code, request_slug, screen_code):
+#———————————————————————————————————————— ▼ cached_page(request, language_code, request_slug, screen_code):
 #
 #   different according to screen code because screen code
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
 @csrf_protect
-def CachedPageView(request, language_code, request_slug, screen_code):
+def cached_page(request, language_code, request_slug, screen_code):
 
 # return HttpResponse(language_code+':'+request_slug+':'+screen_code) # CORRECT
 
@@ -101,7 +101,7 @@ def CachedPageView(request, language_code, request_slug, screen_code):
 
   page_modules_raw = page.pagemodule_set.filter(active=True).order_by('zindex')
   page_modules = get_page_modules('page modules', page_modules_raw, language_code, screen_code, page, page_width, use_p3)
-  return HttpResponse("debugging message.")
+
   content_blocks.extend(page_modules)
 
   #———————————————————————————————————————— "always include" modules

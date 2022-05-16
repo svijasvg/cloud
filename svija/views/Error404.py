@@ -17,7 +17,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 
 from svija.models import Redirect, Language, Settings
-from svija.views import CachedPageView
+from modules.cached_page import *
 
 from modules.default_screen_code import *
 
@@ -84,7 +84,7 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— return correct missing page
 
   try:
-    response = CachedPageView(request, language_code, missing_page, screen_code)
+    response = cached_page(request, language_code, missing_page, screen_code)
 
   except:
     response = HttpResponse(missing_msg)

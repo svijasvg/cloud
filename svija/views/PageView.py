@@ -50,15 +50,12 @@ def PageView(request, request_page='', request_lang=''):
 
 #———————————————————————————————————————— status
 
-# return HttpResponse(request_lang + ':' + request_page + ':' + screen_code)
-# correct
-
 #   at this point we have language/page/screencode
 #   can make request for cached content
 
 #———————————————————————————————————————— return cached results
 
-  return CachedPageView(request, request_lang, request_page, screen_code)
+  return cached_page(request, request_lang, request_page, screen_code)
 
 
 #———————————————————————————————————————— fin

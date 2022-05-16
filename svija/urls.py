@@ -17,35 +17,26 @@ app_name = 'svija'
 rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
 pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
+#———————————————————————————————————————— ▼ url patterns
 
 urlpatterns = [ 
 
-#———————————————————————————————————————— exact addresse
+#———————————————————————————————————————— exact addresses
 
-    path('csync', views.ClearCacheView),
+    path('csync',       views.ClearCacheView),   # Sync + Admin top bar
+    path('mail',        views.MailView      ),
+    path('send',        views.SendView      ),   # send test mail to see what happens
+    path('robots.txt',  views.RobotsView    ),
+    path('sitemap.txt', views.SitemapView   ),
 
-    # used by contact page, try, trial etc.
-    path('mail', views.MailView),
-
-    # send test mail to see what happens
-    path('send', views.SendView),
-
-#   path('lab', views.LabView),
-    path('robots.txt', views.RobotsView),
-    path('sitemap.txt', views.SitemapView),
-
-#———————————————————————————————————————— placed images (in Links folder)
+#———————————————————————————————————————— images in Links folder
 
 #   replaced \w with A-Za-z0-9À-ÖØ-öø-ÿ to permit accented filenames & folders
 #   https://stackoverflow.com/questions/56279948/remove-special-characters-but-not-accented-letters
 
     re_path(r'^(?P<request_prefix>' + rp + ')/(?P<placed_file>' + pf + ')$(?i)', views.LinksView),
 
-#———————————————————————————————————————— home pages
-
-    # why is there a language code in the first line?
-#   re_path(r'^(?P<page_name>)$'           , views.HomePageView), # root url
-#   re_path(r'^(?P<page_name>[\w-]{1,20})$', views.HomePageView), # two letters NOT followed by slash
+#———————————————————————————————————————— SVG pages
 
     path('',                                        views.PageView),   # prefix/slug
     path('<slug:request_page>',                     views.PageView),   # prefix/slug
@@ -58,6 +49,12 @@ urlpatterns = [
     re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/sync/Svija/Shared Files"     }),
     re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/sync/Svija/Images"           }),
 
+
 ]
+
+#———————————————————————————————————————— unused but still in code
+
+#   path('lab', views.LabView),
+
 
 #———————————————————————————————————————— fin
