@@ -18,6 +18,7 @@ from modules.cache_per_user import *
 
 def HomePageView(request, page_name):
 
+  return HttpResponse("HomePageView.py")
 #   root: path: /, page_name: 
 #    /en: path: /en/, page_name: en
 #   same for other words instead of /en
