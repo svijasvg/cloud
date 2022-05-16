@@ -44,15 +44,35 @@ def cache_per_user(ttl=None, cache_post=False):
             # models ending in _h are not visible in admin
             control = Control.objects.first()
 
+            # if control model is missing, don't cache
             if type(control) is type(None):
               return_cached_content = False
+
+            # control exists · since password is not set
+            # we apply the limits imposed by control
+            elif control.password == '':
+              control.limit      = control.limit_h
+              control.used       = control.used_h
+              control.cached     = control.cached_h
+              return_cached_content = control.cached_h
+
+            # control exists · password is wrong
+            # we apply the limits imposed by control
+            # delete password for housekeeping
             elif control.password != 'aYtr)54Ytrf':
               control.limit      = control.limit_h
               control.used       = control.used_h
               control.cached     = control.cached_h
+
+              # reset in case 
               control.password   = ''
               control.save()
               return_cached_content = control.cached_h
+
+            # first visit sice control was updated
+            # we know because the password is filled
+            # so update the control model and
+            # delete password
             else:
               control.limit_h    = control.limit
               control.used_h     = control.used
@@ -70,7 +90,6 @@ def cache_per_user(ttl=None, cache_post=False):
               return_cached_content = False
 
 #———————————————————————————————————————— cached if necessary
-
 
             if return_cached_content:
                 page_content = memcache.get(CACHE_KEY, None)
