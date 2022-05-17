@@ -184,7 +184,7 @@ class Script(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'category', 'name', ]
-        verbose_name_plural = "3.1 · Scripts"
+        verbose_name_plural = "3.1 · Script Sets"
 
 #———————————————————————————————————————— script scripts · script
 
