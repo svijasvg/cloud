@@ -428,6 +428,14 @@ fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
 	color:var(--text-bright) !important;
 }
 
+fieldset.module.collapse a.collapse-toggle::before{
+	content: "◂ ";
+}
+
+fieldset.module.collapse a.collapse-toggle::after{
+	content: "";
+}
+
 /* ————— collapsed ————— */
 
 fieldset.module.collapse.collapsed{
@@ -446,8 +454,12 @@ fieldset.module.collapse.collapsed h2{
 	letter-spacing:0 !important;
 }
 
-fieldset.module.collapse.collapsed h2::before{
-	content: "▶ ";
+fieldset.module.collapse.collapsed a.collapse-toggle::before{
+	content: "";
+}
+
+fieldset.module.collapse.collapsed a.collapse-toggle::after{
+	content: " ▸";
 }
 
 fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
@@ -500,9 +512,9 @@ fieldset.module.aligned.collapse.collapsed h2{
 	letter-spacing:0 !important;
 }
 
-fieldset.module.aligned.collapse.collapsed h2::before{
+/* fieldset.module.aligned.collapse.collapsed h2::before{
 	content: "▶ ";
-}
+} */
 
 fieldset.module.aligned.collapse.collapsed h2 a.collapse-toggle:link{
 	color:var(--link) !important;
@@ -521,9 +533,11 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— notes field */
 
-.colM .aligned .vLargeTextField, .colM .aligned .vXMLLargeTextField {
-    width: 821px !important;
-}
+/*  caused unwanted scrollbars: */
+
+/*  .colM .aligned .vLargeTextField, .colM .aligned .vXMLLargeTextField {
+        width: 821px !important;
+    } */
 
 /*———————————————————————————————————————— drag & drop hints */
 

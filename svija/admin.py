@@ -146,7 +146,7 @@ class ScriptAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-       ('NAME & FILENAME', {'fields': [('name', 'active',),('category', ), ], 'description':descScript0, }),
+       ('NAME & FILENAME', {'fields': [('name', 'active',),('category', 'always',), ], 'description':descScript0, }),
        ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
     ]   
 
@@ -275,7 +275,7 @@ class PageAdmin(admin.ModelAdmin):
                                        ('title', 'language'),
                                       ],'description':descPages, }),
         ('More Settings',  {'fields': [
-                               ('category','suppress_modules',),
+                               ('category','suppress_modules','suppress_scripts',),
                                ('width', 'offsetx', 'override',),
                                ('visible', 'offsety',),
                                'accessibility_name',

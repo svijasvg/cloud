@@ -1,9 +1,13 @@
-#---------------------------------------- generate_accessibility.py
+#———————————————————————————————————————— generate_accessibility.py
 #
 #   creates links to all pages to make sure they're crawled correctly
 #   includes link to a capture of the home page for social media
 #
-#---------------------------------------- program
+#———————————————————————————————————————— import
+
+from modules.get_accessible import *
+
+#———————————————————————————————————————— program
 
 def generate_accessibility(domain, pages, page):
     links = ''
@@ -15,13 +19,13 @@ def generate_accessibility(domain, pages, page):
           links += tag.format(domain,prefix,this_page.url,this_page.accessibility_name)
           prev = this_page.url
 
-#---------------------------------------- add capture
+#———————————————————————————————————————— add capture
 
-    text = page.accessibility_text
+    text = get_accessibility(page.accessibility_text)
     capture = '/images/capture.jpg'
     tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
     results = tag.format(text,links,domain,capture)
 
     return results
 
-#---------------------------------------- fin
+#———————————————————————————————————————— fin

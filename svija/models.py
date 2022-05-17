@@ -171,9 +171,10 @@ class Robots(models.Model):
 
 class Script(models.Model):
 
-    name = models.CharField(max_length=200, default='')
-    active = models.BooleanField(default=True, verbose_name='active',)
-    category = models.CharField(max_length=100, default='', verbose_name='category (optional)', blank=True,)
+    name         = models.CharField(max_length=200, default='')
+    active       = models.BooleanField(default=True, verbose_name='active',)
+    always       = models.BooleanField(default=False, verbose_name='always include',)
+    category     = models.CharField(max_length=100, default='', verbose_name='category (optional)', blank=True,)
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
@@ -303,6 +304,7 @@ class Page(models.Model):
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
+    suppress_scripts = models.BooleanField(default=False, verbose_name='suppress default scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
