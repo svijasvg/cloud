@@ -34,6 +34,10 @@ urlpatterns = [
 #   replaced \w with A-Za-z0-9À-ÖØ-öø-ÿ to permit accented filenames & folders
 #   https://stackoverflow.com/questions/56279948/remove-special-characters-but-not-accented-letters
 
+#   at top of this file:
+#   rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+#   pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+
     re_path(r'^(?P<request_prefix>' + rp + ')/(?P<placed_file>' + pf + ')$(?i)', views.LinksView),
 
 #———————————————————————————————————————— SVG pages
@@ -41,6 +45,11 @@ urlpatterns = [
     path('',                                        views.PageView),   # prefix/slug
     path('<slug:request_page>',                     views.PageView),   # prefix/slug
     path('<slug:request_lang>/<slug:request_page>', views.PageView),   # prefix/slug
+
+#———————————————————————————————————————— redirects
+
+#   are handled by Error404.py
+#   this is determined by urls.py in the site project folders
 
 #———————————————————————————————————————— fonts, icons & scripts
 
