@@ -68,6 +68,15 @@ def Error404(request, *args, **kwargs):
       response.status_code = 404
       return response
 
+#———————————————————————————————————————— check for redirects
+
+  test_path = request.path[:-3] # get rid of screen code
+
+  try:
+    redirect_obj = Redirect.objects.get(from_url=test_path, active=True)
+    return HttpResponsePermanentRedirect(redirect_obj.to_url)
+  except ObjectDoesNotExist: pass
+
 #———————————————————————————————————————— get potential screen & language codes
 
   screen_code = ''
