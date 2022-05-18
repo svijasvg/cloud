@@ -123,9 +123,9 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— Script · no dependencies
+#———————————————————————————————————————— Script Set · no dependencies
 
-descScript0 = "Scripts are included via <a href=\"/admin/svija/page/\">page settings</a>."
+descScript0 = "Script Sets can also be included via <a href=\"/admin/svija/page/\">page settings</a>."
 descScript1 = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
 from .models import ScriptScripts

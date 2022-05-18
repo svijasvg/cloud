@@ -9,86 +9,127 @@
 #
 #   return HttpResponse("debugging message.")
 #
+# from django.http import HttpResponse
+# return HttpResponse("debugging message.")
+#
 #———————————————————————————————————————— imports
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
-
-from svija.models import Redirect, Language, Settings
 from modules.cached_page import *
-
 from modules.default_screen_code import *
+from svija.models import Redirect, Language, Settings
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
 #@never_cache # we'll see if this is a problem
 def Error404(request, *args, **kwargs):
 
-  request_path = request.path[1:-1] # remove leading slash
+  image_m = '<pre>\n\n   missing image'
+  broken  = '<pre>\n\n   Configuration Error\n\n   Please contact support@svija.com.'
+  missing = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "missing".'
 
-  missing_page = 'missing'
-  missing_msg = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "' + missing_page + '".'
+#———————————————————————————————————————— cases
+#
+#   page is definitely missing, all we can do is:
+#   - send the missing page
+#   - print a text message if the missing page is broken
+#   
+#   BUT, it would be better to
+#   - send a 404 page for the correct language
+#   - send a 404 page for the correct screen code
+#   - send someting small if the missing element is an image
+#
+#———————————————————————————————————————— possible URL's
+#
+#   /fr/accueilx/cp
+#   /fr/accueilx
+#   /fr
+#   /accueilx
+#   /Links/lmkjs
+#   /images/lkjmlkj
+#
+#   if we split it by slash:
+#   - the first part may be a language code
+#   - the last part may be a screen code
+#
+#———————————————————————————————————————— setup
 
-#———————————————————————————————————————— check for redirect
+  missing_page_exists = False
 
-  # 3 cases:
+#———————————————————————————————————————— check if image
 
-  # external site, starts with http or https
-  # internal address, with prefix like /fr/
-  # internal address, with no prefix like /admin/svija/help/
+  pf = '.+\.(jpeg|jpg|png|gif)$'
 
-  # redirects will pass by HomeView.py first as a possible language code
-  # that will add a trailing slash
-
-  try:
-    redirect_obj = Redirect.objects.get(from_url=request_path, active=True)
-    return HttpResponsePermanentRedirect(redirect_obj.to_url)
-  except ObjectDoesNotExist: pass
-
-  try:
-    redirect_obj = Redirect.objects.get(from_url='/'+request_path, active=True)
-    return HttpResponsePermanentRedirect(redirect_obj.to_url)
-  except ObjectDoesNotExist: pass
-
-#———————————————————————————————————————— "missing" page is missing
-
-  if missing_page in request_path:
-    response = HttpResponse(missing_msg)
-    response.status_code = 404
-    return response
-
-#———————————————————————————————————————— language if specified
-
-  request_path_code = 'none'
-
-  if '/' in request_path:
-    request_path_code = request.path.split('/')[1]
-  
-  try:
-    language_code = Language.objects.get(code=request_path_code).code
-  except:
-    try:
-      settings = Settings.objects.get(active=True)
-      language_code = settings.language.code
-    except:
-      response = HttpResponse(missing_msg)
+  if re.search(pf, request.path):
+      response             = HttpResponse(image_m)
       response.status_code = 404
       return response
 
-#———————————————————————————————————————— get screen if possible
+#———————————————————————————————————————— check for redirects
 
-  screen_code = default_screen_code(request)
-
-#———————————————————————————————————————— return correct missing page
+  test_path = request.path[:-3] # get rid of screen code
 
   try:
-    response = cached_page(request, language_code, missing_page, screen_code)
+    redirect_obj = Redirect.objects.get(from_url=test_path, active=True)
+    return HttpResponsePermanentRedirect(redirect_obj.to_url)
+  except ObjectDoesNotExist: pass
+
+#———————————————————————————————————————— get potential screen & language codes
+
+  lang_code   = ''
+  parts       = request.path[1:].split('/')
+
+  screen_code = request.COOKIES.get('screen_code')
+  if screen_code == None:
+    screen_code = ''
+
+  if len(parts) > 1:
+    screen_code = parts[-1]
+
+  if len(parts) > 2:
+    lang_code = parts[0]
+
+#———————————————————————————————————————— see if lang_code matches DB
+
+  try:
+    # codes correspond
+    language = Language.objects.get(code=lang_code)
+  except:
+    try:
+      # codes don't correspond, so use default
+      language  = Settings.objects.get(active=True).language
+      lang_code = language.code
+    except:
+      # site settings are broken
+      response             = HttpResponse(broken)
+      response.status_code = 404
+      return response
+
+#———————————————————————————————————————— see if screen code matches DB
+
+  try:
+    # codes correspond
+    screen  = Screen.objects.get(code=screen_code)
+  except:
+    try:
+      # codes don't correspond, so get default
+      screen_code = 'mb'
+      screen      = Screen.objects.get(code=screen_code)
+    except:
+      response             = HttpResponse(broken)
+      response.status_code = 404
+      return response
+
+#———————————————————————————————————————— have valid screen & language; get "missing" page
+
+  try:
+    response = cached_page(request, lang_code, 'missing', screen_code)
 
   except:
-    response = HttpResponse(missing_msg)
-    #esponse = HttpResponse(request.path)
+    response = HttpResponse(missing)
 
   response.status_code = 404
   return response

@@ -13,9 +13,12 @@
 #
 #   return HttpResponse("debugging message.")
 #
+# from django.http import HttpResponse
+# return HttpResponse("debugging message.")
+#
 #———————————————————————————————————————— imports
 
-#rom django.http import HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from svija.models import Language, Settings
 from modules.default_screen_code import *
@@ -48,10 +51,9 @@ def PageView(request, request_page='', request_lang=''):
   if screen_code == None:
     screen_code = default_screen_code(request)
 
-#———————————————————————————————————————— status
+#———————————————————————————————————————— add screen code to path for cache
 
-#   at this point we have language/page/screencode
-#   can make request for cached content
+  request.path += '/' + screen_code
 
 #———————————————————————————————————————— return cached results
 

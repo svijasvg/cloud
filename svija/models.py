@@ -68,7 +68,8 @@ class Font(models.Model):
     google   = models.BooleanField(default=True, verbose_name='Google font',)
     active   = models.BooleanField(default=True, verbose_name='active',)
 
-    category = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
+		# to rename
+    category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
 
     def __str__(self):
         return self.svg_ref
@@ -167,14 +168,16 @@ class Robots(models.Model):
         verbose_name = "robots.txt"
         verbose_name_plural = "3.3 · Robots.txt"
 
-#———————————————————————————————————————— Script · no dependencies
+#———————————————————————————————————————— Script Set · no dependencies
 
+# to rename
 class Script(models.Model):
 
     name         = models.CharField(max_length=200, default='')
     active       = models.BooleanField(default=True, verbose_name='active',)
     always       = models.BooleanField(default=False, verbose_name='always include',)
-    category     = models.CharField(max_length=100, default='', verbose_name='category (optional)', blank=True,)
+		# to rename
+    category     = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
@@ -184,7 +187,7 @@ class Script(models.Model):
         return self.name
     class Meta:
         ordering = ['-active', 'category', 'name', ]
-        verbose_name_plural = "3.1 · Scripts"
+        verbose_name_plural = "3.1 · Script Sets"
 
 #———————————————————————————————————————— script scripts · script
 
@@ -215,7 +218,8 @@ class Module(models.Model):
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
-    category = models.CharField(max_length=100, default='Main', verbose_name='category', blank=True,)
+		# to rename
+    category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
@@ -290,7 +294,8 @@ class Page(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
     url       = models.CharField(max_length=200, default='', verbose_name='address')
-    category  = models.CharField(max_length=200, default='Main', verbose_name='category', blank=True,)
+		# to rename
+    category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
 
     # meta
     notes     = models.TextField(max_length=2000, default='', blank=True)
