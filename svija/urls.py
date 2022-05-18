@@ -5,8 +5,6 @@
 from . import views
 from django.urls import path, re_path
 from django.views import static
-#rom django.views.generic import RedirectView
-#rom django.views.decorators.cache import cache_page
 import os
 
 #———————————————————————————————————————— variables
