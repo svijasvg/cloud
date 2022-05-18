@@ -79,9 +79,12 @@ def Error404(request, *args, **kwargs):
 
 #———————————————————————————————————————— get potential screen & language codes
 
-  screen_code = ''
   lang_code   = ''
   parts       = request.path[1:].split('/')
+
+  screen_code = request.COOKIES.get('screen_code')
+  if screen_code == None:
+    screen_code = ''
 
   if len(parts) > 1:
     screen_code = parts[-1]
