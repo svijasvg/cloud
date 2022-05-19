@@ -70,6 +70,7 @@ def cached_page(request, language_code, request_slug, screen_code):
 
   redirect = redirect_if_possible(request, settings.language.code, language.default_page)
 
+  #eturn HttpResponse("debugging message: " + redirect)
   if redirect: return HttpResponsePermanentRedirect(redirect)
 
   #———————————————————————————————————————— metatags, system js & fonts
