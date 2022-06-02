@@ -1,0 +1,79 @@
+/*———————————————————————————————————————— animations-1.0.2.css
+
+/*———————————————————————————————————————— notes
+*/
+
+/*———————————————————————————————————————— triggers */
+
+ circle[id^='delay_x2F_'],
+ellipse[id^='delay_x2F_'],
+      g[id^='delay_x2F_'],
+   path[id^='delay_x2F_'],
+polygon[id^='delay_x2F_'],
+   rect[id^='delay_x2F_'],
+
+ circle[id^='scroll_x2F_'],
+ellipse[id^='scroll_x2F_'],
+      g[id^='scroll_x2F_'],
+   path[id^='scroll_x2F_'],
+polygon[id^='scroll_x2F_'],
+   rect[id^='scroll_x2F_'],
+
+ circle[id^='user_x2F_'],
+ellipse[id^='user_x2F_'],
+      g[id^='user_x2F_'],
+   path[id^='user_x2F_'],
+polygon[id^='user_x2F_'],
+   rect[id^='user_x2F_'],
+
+/*———————————————————————————————————————— actions */
+
+ circle[id^='click_x2F_'],
+ellipse[id^='click_x2F_'],
+      g[id^='click_x2F_'],
+   path[id^='click_x2F_'],
+polygon[id^='click_x2F_'],
+   rect[id^='click_x2F_'],
+
+ circle[id^='msover_x2F_'],
+ellipse[id^='msover_x2F_'],
+      g[id^='msover_x2F_'],
+   path[id^='msover_x2F_'],
+polygon[id^='msover_x2F_'],
+   rect[id^='msover_x2F_'],
+
+ circle[id^='msout_x2F_'],
+ellipse[id^='msout_x2F_'],
+      g[id^='msout_x2F_'],
+   path[id^='msout_x2F_'],
+polygon[id^='msout_x2F_'],
+   rect[id^='msout_x2F_'],
+
+ circle[id^='msovout_x2F_'],
+ellipse[id^='msovout_x2F_'],
+      g[id^='msovout_x2F_'],
+   path[id^='msovout_x2F_'],
+polygon[id^='msovout_x2F_'],
+   rect[id^='msovout_x2F_'],
+
+ circle[id^='toggle_x2F_'],
+ellipse[id^='toggle_x2F_'],
+      g[id^='toggle_x2F_'],
+   path[id^='toggle_x2F_'],
+polygon[id^='toggle_x2F_'],
+   rect[id^='toggle_x2F_'],
+
+ circle[id^='anim_x2F_'],
+ellipse[id^='anim_x2F_'],
+      g[id^='anim_x2F_'],
+   path[id^='anim_x2F_'],
+polygon[id^='anim_x2F_'],
+   rect[id^='anim_x2F_'],
+
+/*———————————————————————————————————————— disappear */
+
+#x{ opacity:0; }
+
+
+/*———————————————————————————————————————— fin */
+

@@ -26,7 +26,8 @@
 
 def redirect_if_possible(request, site_lang, language_page):
 
-  path_parts = request.path[1:].split('/'); # ignore leading slash
+  path_parts = request.path[1:].split('/');   # ignore leading slash
+  del path_parts[len(path_parts) - 1]         # remove screen_code
 
   orig_path = '/'.join(path_parts)
 

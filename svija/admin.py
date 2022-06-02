@@ -140,7 +140,7 @@ from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
 
     # display on parent script
-    list_display = ('name', 'category', 'active',)
+    list_display = ('name', 'category', 'active','always',)
     list_filter = ('category', )
     save_on_top = True
     save_as = True

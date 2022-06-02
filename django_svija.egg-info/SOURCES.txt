@@ -6,6 +6,7 @@ django_svija.egg-info/PKG-INFO
 django_svija.egg-info/SOURCES.txt
 django_svija.egg-info/dependency_links.txt
 django_svija.egg-info/top_level.txt
+svija/Error404.py
 svija/__init__.py
 svija/admin.py
 svija/apps.py
@@ -227,6 +228,8 @@ svija/migrations/0210_alter_page_accessibility_name.py
 svija/migrations/0211_alter_font_woff.py
 svija/migrations/0212_script_always.py
 svija/migrations/0213_page_suppress_scripts.py
+svija/migrations/0214_alter_script_options.py
+svija/migrations/0215_auto_20220517_1111.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
