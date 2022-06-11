@@ -541,27 +541,9 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— drag & drop hints */
 
-/* ————— module */
-
-div.fieldBox.field-filename input{
-	border:dashed 1px var(--dark);
-}
-
-/* ————— page */
-
-td.field-filename::after{
-    content: "  < drag Illustrator file";
-		padding-left:20px;
-}
-
-td.field-filename input{
-	border:dashed 1px var(--dark);
-}
-
-/* ————— font */
-
-div.fieldBox.field-woff input{
-	border:dashed 1px var(--dark);
+div.fieldBox.field-filename input, /* module                    */
+td.field-filename input{           /* page                      */
+	border:solid 3px #F9991F;        /* matches red Delete button */
 }
 
 
