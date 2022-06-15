@@ -47,7 +47,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
     else:
         is_module = hasattr(target_obj, 'css_id')
 
-        temp_id = raw_name
+        temp_id = purify(raw_name)
         if is_module:
             if target_obj.css_id != '':
                 temp_id = target_obj.css_id
@@ -121,6 +121,11 @@ def dic_corners(cor, pos):
         'bottom right': 'left: ; right: xrem; top: ; bottom: yrem;\n',
         'bottom left' : 'left: xrem; right: ; top: ; bottom: yrem;\n',
     }[cor]
+
+#———————————————————————————————————————— dic_corners(cor, pos):
+
+def purify(inp):
+    return inp.replace('&', 'et')
 
 
 #———————————————————————————————————————— fin
