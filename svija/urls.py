@@ -12,10 +12,22 @@ import os
 proj_folder = os.path.abspath(os.path.dirname(__name__))
 
 app_name = 'svija'
-rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
-pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
-#———————————————————————————————————————— ▼ url patterns
+# for images in Links folder PREVIOUS
+#   rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+#   pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+
+# "../../Links/shadow drop.png"
+
+rp = '.*links'                  # image folder
+pf = '.*\.(jpeg|jpg|png|gif)'   # image file
+
+# https://www.regular-expressions.info/modifiers.html
+
+# (?i) makes regex case insensitive
+
+
+#:::::::::::::::::::::::::::::::::::::::: url patterns
 
 urlpatterns = [ 
 
@@ -33,8 +45,8 @@ urlpatterns = [
 #   https://stackoverflow.com/questions/56279948/remove-special-characters-but-not-accented-letters
 
 #   at top of this file:
-#   rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
-#   pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+#   rp = '.*links'                  # image folder
+#   pf = '.*\.(jpeg|jpg|png|gif)'   # image file
 
     re_path(r'^(?P<request_prefix>' + rp + ')/(?P<placed_file>' + pf + ')$(?i)', views.LinksView),
 
