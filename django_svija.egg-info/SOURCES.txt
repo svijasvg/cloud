@@ -230,6 +230,7 @@ svija/migrations/0212_script_always.py
 svija/migrations/0213_page_suppress_scripts.py
 svija/migrations/0214_alter_script_options.py
 svija/migrations/0215_auto_20220517_1111.py
+svija/migrations/0216_alter_module_filename.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
@@ -269,6 +270,8 @@ svija/templates/svija/svija_token.html
 svija/templates/svija/css/.svija.css.un~
 svija/templates/svija/css/svija.css
 svija/templates/svija/js/.analytics.js.un~
+svija/templates/svija/js/.animation-backup.css.un~
+svija/templates/svija/js/.animation-backup.js.un~
 svija/templates/svija/js/.cookies.js.un~
 svija/templates/svija/js/.initial_scroll.js.un~
 svija/templates/svija/js/.languages.js.un~
@@ -278,6 +281,8 @@ svija/templates/svija/js/.rem.js.un~
 svija/templates/svija/js/.resolution.js.un~
 svija/templates/svija/js/.screens.js.un~
 svija/templates/svija/js/analytics.js
+svija/templates/svija/js/animation-backup.css
+svija/templates/svija/js/animation-backup.js
 svija/templates/svija/js/cookies.js
 svija/templates/svija/js/initial_scroll.js
 svija/templates/svija/js/languages.js
