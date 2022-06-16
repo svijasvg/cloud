@@ -14,6 +14,7 @@ sync_folder = os.path.abspath(os.path.dirname(__name__)) + '/sync/'
 
 def LinksView(request, request_prefix, placed_file):
 
+#   return HttpResponse("debugging message: "+request_prefix+':'+placed_file)
     not_found = False
 
     img_path = sync_folder + request_prefix + '/' + placed_file

@@ -4,6 +4,7 @@
 
 import os
 import pathlib
+import unicodedata
 from modules.svg_cleaner import *
 
 #———————————————————————————————————————— get_single_svg(target_obj, page_width, use_p3):
@@ -28,7 +29,12 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
       target_obj.filename = ai_name
       target_obj.save()
 
+    # remove '.ai'
     raw_name = ai_name[:-3]
+
+    # escape single quotes
+#   raw_name = raw_name.replace("'", "\\/'")
+
     svg_name = raw_name + '_' + screen_code + '.svg'
 
     svija_path = '/sync/Svija/SVG Files/'
@@ -38,8 +44,12 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     svg_path = abs_path + svija_path + svg_name
 
-    path = pathlib.Path(svg_path)
+    # compensate for old version of rsync
+    # should have no effect if already normalized
+    svg_path = unicodedata.normalize('NFD', svg_path)
 
+    path = pathlib.Path(svg_path)
+    
     if not path.exists():
         #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
         svg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
@@ -47,7 +57,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
     else:
         is_module = hasattr(target_obj, 'css_id')
 
-        temp_id = raw_name
+        temp_id = purify(raw_name)
         if is_module:
             if target_obj.css_id != '':
                 temp_id = target_obj.css_id
@@ -121,6 +131,14 @@ def dic_corners(cor, pos):
         'bottom right': 'left: ; right: xrem; top: ; bottom: yrem;\n',
         'bottom left' : 'left: xrem; right: ; top: ; bottom: yrem;\n',
     }[cor]
+
+#———————————————————————————————————————— dic_corners(cor, pos):
+
+def purify(inp):
+    oup = inp.replace('&', 'et')
+    oup = oup.replace('(', 'lp')
+    oup = oup.replace(')', 'rp')
+    return oup
 
 
 #———————————————————————————————————————— fin

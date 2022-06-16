@@ -12,10 +12,22 @@ import os
 proj_folder = os.path.abspath(os.path.dirname(__name__))
 
 app_name = 'svija'
-rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
-pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
-#———————————————————————————————————————— ▼ url patterns
+# for images in Links folder PREVIOUS
+#   image_folder = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+#   image_file = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+
+# "../../Links/shadow drop.png"
+
+image_folder = '.*links'                  # image folder
+image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
+
+# https://www.regular-expressions.info/modifiers.html
+
+# (?i) makes regex case insensitive
+
+
+#:::::::::::::::::::::::::::::::::::::::: url patterns
 
 urlpatterns = [ 
 
@@ -28,15 +40,15 @@ urlpatterns = [
     path('sitemap.txt', views.SitemapView   ),
 
 #———————————————————————————————————————— images in Links folder
-
-#   replaced \w with A-Za-z0-9À-ÖØ-öø-ÿ to permit accented filenames & folders
-#   https://stackoverflow.com/questions/56279948/remove-special-characters-but-not-accented-letters
-
+#
+#   accepts any path ending in links › / › any path ending in .jpg etc.
+#
 #   at top of this file:
-#   rp = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
-#   pf = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
+#
+#   image_folder = '.*links'                  # image folder
+#   image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
 
-    re_path(r'^(?P<request_prefix>' + rp + ')/(?P<placed_file>' + pf + ')$(?i)', views.LinksView),
+    re_path(r'^(?P<request_prefix>' + image_folder + ')/(?P<placed_file>' + image_file + ')$(?i)', views.LinksView),
 
 #———————————————————————————————————————— SVG pages
 
@@ -46,8 +58,8 @@ urlpatterns = [
 
 #———————————————————————————————————————— redirects
 
-#   are handled by Error404.py
-#   this is determined by urls.py in the site project folders
+#   redirects are handled by Error404.py
+#   that filename is determined by urls.py in the site project folders
 
 #———————————————————————————————————————— fonts, icons & scripts
 

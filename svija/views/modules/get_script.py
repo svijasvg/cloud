@@ -8,6 +8,7 @@
 import os
 import pathlib
 import re
+import unicodedata
 
 #———————————————————————————————————————— get_script(kind, name, content):
 
@@ -19,6 +20,11 @@ def get_script(kind, name, content):
 
     if filename.match(content):
         sub_path = '/sync/Svija/Scripts/' + content
+
+        # compensate for old version of rsync
+        # should have no effect if already normalized
+        sub_path = unicodedata.normalize('NFD', sub_path)
+
         source_path = os.path.abspath(os.path.dirname(__name__)) + sub_path 
         path = pathlib.Path(source_path)
         if not path.exists():
