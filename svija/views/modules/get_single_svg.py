@@ -28,7 +28,12 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
       target_obj.filename = ai_name
       target_obj.save()
 
+    # remove '.ai'
     raw_name = ai_name[:-3]
+
+    # escape single quotes
+#   raw_name = raw_name.replace("'", "\\/'")
+
     svg_name = raw_name + '_' + screen_code + '.svg'
 
     svija_path = '/sync/Svija/SVG Files/'
@@ -125,7 +130,10 @@ def dic_corners(cor, pos):
 #———————————————————————————————————————— dic_corners(cor, pos):
 
 def purify(inp):
-    return inp.replace('&', 'et')
+    oup = inp.replace('&', 'et')
+    oup = oup.replace('(', 'lp')
+    oup = oup.replace(')', 'rp')
+    return oup
 
 
 #———————————————————————————————————————— fin
