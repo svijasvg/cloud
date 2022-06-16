@@ -4,6 +4,7 @@
 
 import os
 import pathlib
+import unicodedata
 from modules.svg_cleaner import *
 
 #———————————————————————————————————————— get_single_svg(target_obj, page_width, use_p3):
@@ -43,8 +44,12 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     svg_path = abs_path + svija_path + svg_name
 
-    path = pathlib.Path(svg_path)
+    # compensate for old version of rsync
+    # should have no effect if already normalized
+    svg_path = unicodedata.normalize('NFD', svg_path)
 
+    path = pathlib.Path(svg_path)
+    
     if not path.exists():
         #vg = '<!-- missing svg: {} -->'.format(target_obj.filename)
         svg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
