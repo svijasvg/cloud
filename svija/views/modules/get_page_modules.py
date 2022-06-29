@@ -2,9 +2,9 @@
 
 #———————————————————————————————————————— notes
 #
-#   very similar:   scripts_to_page.py
+#   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_modules.py
+#                   get_page_scripts.py
 #                   get_scripts.py
 #
 #   accepts a list of modules, some inactive
@@ -42,8 +42,7 @@ def get_page_modules(label, page_modules, language_code, screen_code, page, page
 
 #———————————————————————————————————————— get SVG's
 
-    if (this_group.always
-    and this_group.language.code == language_code
+    if (this_group.language.code == language_code
     and this_group.screen.code   == screen_code):
       svc = '\n\n<!--———————————————————————————————————————— ' + label + ' -->\n\n'
   

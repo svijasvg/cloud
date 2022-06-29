@@ -2,9 +2,9 @@
 
 #———————————————————————————————————————— notes
 #
-#   very similar:   get_page_scripts.py
+#   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_modules.py
+#                   get_page_scripts.py
 #                   get_scripts.py
 #
 #   accepts a list of modules, all active
@@ -44,7 +44,6 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 
     # returns svg and css
     sv, hc = get_single_svg(this_group, screen_code, page_width, use_p3)
-
 
 
 

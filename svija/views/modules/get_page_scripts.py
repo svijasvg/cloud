@@ -2,11 +2,10 @@
 
 #———————————————————————————————————————— notes
 #
-#   very similar:   get_page_scripts.py
+#   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_modules.py
+#                   get_page_scripts.py
 #                   get_scripts.py
-#
 #
 #   accepts a list of scripts , some inactive
 #
@@ -15,6 +14,7 @@
 #
 #   when python is updated to at least 3.10, use pattern matching (like case/switch)
 #   https://stackoverflow.com/questions/11479816/what-is-the-python-equivalent-for-a-case-switch-statement
+#
 #
 #———————————————————————————————————————— imports
 
