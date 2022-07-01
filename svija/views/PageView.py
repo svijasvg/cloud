@@ -34,8 +34,23 @@ def PageView(request, request_page='', request_lang=''):
 #———————————————————————————————————————— lang is missing
 
   if request_lang == '':
-    language = get_object_or_404(Settings, active=True).language
-    request_lang = language.code
+
+    # check if page corresponds to language
+    # settings = Settings.objects.get(active=True)
+    # Font.objects.filter(Q(active=True) & Q(google=True ))
+
+    languages = Language.objects.filter(Q(code=request_page))
+    if len(languages) > 0:
+      language = languages[0]
+      request_lang = request_page
+      request_page = ''
+      # return HttpResponse("debugging message: " + languages[0].name)
+    else:
+      # return HttpResponse("not a language")
+
+    # since 
+      language = get_object_or_404(Settings, active=True).language
+      request_lang = language.code
 
 #———————————————————————————————————————— page is missing
 
