@@ -234,8 +234,8 @@ class ScriptInlinePage(admin.TabularInline):
     model = Page.script.through
     extra = 0 
     fields = ('active', 'script', 'order', )
-    verbose_name = "script"
-    verbose_name_plural = "scripts"
+    verbose_name = "script set"
+    verbose_name_plural = "script sets"
     classes = ['collapse']
 
 class IllustratorInlinePage(admin.TabularInline):
