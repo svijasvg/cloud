@@ -31,7 +31,7 @@ from modules.cached_page import *
 
 def PageView(request, request_page='', request_lang=''):
 
-#———————————————————————————————————————— lang is missing
+#———————————————————————————————————————— lang is missing (one-part page address)
 
   if request_lang == '':
 
@@ -48,14 +48,12 @@ def PageView(request, request_page='', request_lang=''):
     else:
       # return HttpResponse("not a language")
 
-    # since 
       language = get_object_or_404(Settings, active=True).language
       request_lang = language.code
 
 #———————————————————————————————————————— page is missing
 
-  # this only happens for the home page
-  # so we have already gotten settings above
+  # happens for the home page or language home
 
   if request_page == '':
     request_page = language.default_page
