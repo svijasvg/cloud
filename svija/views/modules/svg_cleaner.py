@@ -63,9 +63,14 @@ def clean(file_path, svg_filename, use_p3):
     # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
     # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
 
+    # <svg version="1.1" id="zone_x2F_mainMenu_x2F__x3C_30_x2F__x25_150"
+	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
+	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
+
+
     if line_number == 3:
       parts1 = line.split('viewBox="')
-      parts2 = parts1[1].split('" ')
+      parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
       viewBox = parts2[0]
       dimensions = viewBox.split(' ')
       px_width = float(dimensions[2])
