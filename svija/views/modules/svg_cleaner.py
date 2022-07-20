@@ -99,7 +99,7 @@ def clean(file_path, svg_filename, use_p3):
     #———————————————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
 
     if line.find('SVGID_') > 0:
-      line = re.sub(r'SVGID_', r''+svg_ID+'_', line)
+      line = re.sub(r'SVGID_', r'SVGID_'+svg_ID+'_', line)
 
     #———————————————————————————————————————— fix mixed text weight problem
     #                                         search for <tspan x="400.88" where x != 0
