@@ -78,7 +78,7 @@ class Font(models.Model):
         verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'category', 'family', 'style']
 
-#———————————————————————————————————————— Language · no dependencies
+#———————————————————————————————————————— Section · no dependencies
 
 # Create or retrieve a placeholder
 def get_sentinel_language():
@@ -126,7 +126,7 @@ class Language(models.Model):
         return self.name
     class Meta:
         ordering = ['order']
-        verbose_name_plural = "1.2 · Languages"
+        verbose_name_plural = "1.2 · Sections"
 
 #———————————————————————————————————————— Screen · no dependencies
 
@@ -217,7 +217,7 @@ class Module(models.Model):
 
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
     category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
@@ -257,13 +257,13 @@ class ModuleScript(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— Settings · Language & Robots
+#———————————————————————————————————————— Settings · Section & Robots
 
 class Settings(models.Model):
 
-		# https://stackoverflow.com/a/67298691/72958 & see language model for other necessary parts
+		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
     robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_language), verbose_name='robots.txt')
-    language      = models.ForeignKey(Language, default=get_sentinel_language_id, on_delete=models.SET(get_sentinel_language), verbose_name='default language')
+    language      = models.ForeignKey(Language, default=get_sentinel_language_id, on_delete=models.SET(get_sentinel_language), verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
@@ -292,7 +292,7 @@ class Page(models.Model):
 
     published = models.BooleanField(default=True, verbose_name='published',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
+    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='section',)
     url       = models.CharField(max_length=200, default='', verbose_name='address')
 		# to rename
     category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
