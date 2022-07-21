@@ -177,7 +177,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_display = ('name', 'screen', 'language', 'always', 'order', 'css_id',  'active', 'category',)
-    list_filter = ('category', 'screen', 'language', 'always', )
+    list_filter = ('category', 'active', 'screen', 'language', 'always', )
     save_on_top = True
     save_as = True
 
@@ -264,7 +264,7 @@ class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_display = ('url', 'screen', 'language', 'title', 'published', 'suppress_modules', 'pub_date', 'category',)
-    list_filter = ('category', 'screen', 'language', )
+    list_filter = ('category', 'published', 'screen', 'language', )
     save_on_top = True
     save_as = True
 
