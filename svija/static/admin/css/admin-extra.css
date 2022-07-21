@@ -541,9 +541,16 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— drag & drop hints */
 
-div.fieldBox.field-filename input, /* module                    */
-td.field-filename input{           /* page                      */
-	border:solid 3px #F9991F;        /* matches red Delete button */
+div.fieldBox.field-filename input, /* module           */
+td.field-filename input{           /* page             */
+  border:3px solid #F9991F;        /* matches AI color */
+  background-color:#F9EEE0;
+}
+
+div.fieldBox.field-filename input:focus, /* module           */
+td.field-filename input:focus{           /* page             */
+  border:3px solid #F9991F;        /* matches AI color */
+  outline:3px solid #F9991F;
 }
 
 
