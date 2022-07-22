@@ -22,7 +22,6 @@ from PageObject import *
 from modules.cache_per_user import *
 from modules.combine_content import *
 from modules.contains_form import *
-from modules.default_screen_code import *
 from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *

@@ -20,8 +20,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Language, Settings
-from modules.default_screen_code import *
+from svija.models import Language, Settings, Screen
 
 from PageObject import *
 from modules.cache_per_user import *
@@ -62,7 +61,7 @@ def PageView(request, request_page='', request_lang=''):
 
   screen_code = request.COOKIES.get('screen_code')
   if screen_code == None:
-    screen_code = default_screen_code(request)
+    screen_code = Screen.objects.first().code;
 
 #———————————————————————————————————————— add screen code to path for cache
 

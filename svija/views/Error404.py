@@ -19,7 +19,6 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from modules.cached_page import *
-from modules.default_screen_code import *
 from svija.models import Screen, Redirect, Language, Settings
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
