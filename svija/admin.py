@@ -177,7 +177,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
     list_display = ('name', 'language', 'screen', 'filename', 'always', 'order', 'active', 'category',)
-    list_filter = ('category', 'active', 'screen', 'language', 'always', )
+    list_filter = ('language', 'screen', 'active', 'always', 'category', )
     save_on_top = True
     save_as = True
 
@@ -258,13 +258,14 @@ class AdditionalScriptInline(admin.TabularInline):
 
 descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
+descSuppress  = "Check to suppress default modules or scripts"
 
 
 class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
     list_display = ('url', 'language', 'screen', 'title', 'illustrator_file', 'published', 'suppress_modules', 'category',)
-    list_filter = ('category', 'published', 'screen', 'language', )
+    list_filter = ('language', 'screen', 'published', 'category', )
     save_on_top = True
     save_as = True
 
@@ -290,7 +291,7 @@ class PageAdmin(admin.ModelAdmin):
                                'accessibility_name',
                                'accessibility_text',
                                'notes', 'pub_date',
-                             ], 'classes': ['collapse'],}),
+                             ], 'description':descSuppress, 'classes': ['collapse'],}),
 
 #       ('page info',      {'fields': [], 'classes': ['collapse'],}),
 #       ('new dimensions', {'fields': [ ], 'classes': ['collapse'], 'description':descPixels,}),
