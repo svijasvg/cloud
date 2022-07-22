@@ -30,6 +30,7 @@ def Error404(request, *args, **kwargs):
   image_m = '<pre>\n\n   missing image'
   broken  = '<pre>\n\n   Configuration Error\n\n   Please contact support@svija.com.'
   missing = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "missing".'
+  missing +=     '\n\n   There should be one "missing" page for each section & screen size.'
 
 #———————————————————————————————————————— cases
 #
