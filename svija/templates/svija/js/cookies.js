@@ -1,23 +1,25 @@
 //———————————————————————————————————————— template: cookies.js
 
-function setCookie(cname, cvalue, exdays) {
-  cvalue = escape(cvalue);
+// same code in static/admin/js/same-page.js
+//              templates/svija/js/cookies.js
 
-//deleteParentCookieIfNecessary(cname, window.location.hostname);
+function setCookie(name, value, expires) {
+  value = escape(value);
 
-  if (exdays > 7) exdays = 7; // max in Safari
+//deleteParentCookieIfNecessary(name, window.location.hostname);
+
+  if (expires > 7) expires = 7; // max in Safari
 
   var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  d.setTime(d.getTime() + (expires*24*60*60*1000));
 
-  var expy = '; expires=' + d.toUTCString();;
+  var expy = '; expires=' + d.toUTCString();
   var path = '; path=/';
   var domn = '; domain='  + window.location.hostname;
   var secu = '; samesite=lax; secure;';
 
-  var complete = cvalue + expy + path + domn + secu;
-
-  document.cookie = name+complete;
+  var complete = value + expy + path + domn + secu;
+  document.cookie = name + '=' + complete;
 }
 
 function getCookie(cname) {

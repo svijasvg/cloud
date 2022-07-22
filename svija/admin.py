@@ -258,7 +258,6 @@ class AdditionalScriptInline(admin.TabularInline):
 
 descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
-descSuppress  = "Check to suppress default modules or scripts"
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -291,7 +290,7 @@ class PageAdmin(admin.ModelAdmin):
                  'accessibility_name',
                  'accessibility_text',
                  'notes', 'pub_date',
-               ], 'description':descSuppress, 'classes': ['collapse'],}),
+               ], 'classes': ['collapse'],}),
 
 #     ('page info',    {'fields': [], 'classes': ['collapse'],}),
 #     ('new dimensions', {'fields': [ ], 'classes': ['collapse'], 'description':descPixels,}),
