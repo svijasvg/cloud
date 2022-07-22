@@ -264,7 +264,7 @@ descSuppress  = "Check to suppress default modules or scripts"
 class PageAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('url', 'language', 'screen', 'title', 'illustrator_file', 'published', 'suppress_modules', 'category',)
+  list_display = ('url', 'language', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
   list_filter = ('language', 'screen', 'published', 'category', )
   save_on_top = True
   save_as = True
@@ -285,8 +285,8 @@ class PageAdmin(admin.ModelAdmin):
                      ('title', 'language'),
                     ],'description':descPages, }),
     ('More Settings',  {'fields': [
-                 ('category','suppress_modules','suppress_scripts',),
-                 ('width', 'offsetx', 'override',),
+                 ('category','incl_modules','incl_scripts',),
+                 ('width', 'offsetx', 'default_dims',),
                  ('visible', 'offsety',),
                  'accessibility_name',
                  'accessibility_text',

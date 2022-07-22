@@ -313,13 +313,13 @@ class Page(models.Model):
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility name')
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
-    suppress_modules = models.BooleanField(default=False, verbose_name='suppress modules',)
-    suppress_scripts = models.BooleanField(default=False, verbose_name='suppress scripts',)
+    incl_modules = models.BooleanField(default=True, verbose_name='include modules',)
+    incl_scripts = models.BooleanField(default=True, verbose_name='include scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
-    override = models.BooleanField(default=False, verbose_name='override default dimensions',)
+    default_dims = models.BooleanField(default=True, verbose_name='use default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')

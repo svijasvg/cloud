@@ -62,7 +62,7 @@ def cached_page(request, language_code, request_slug, screen_code):
   accessible    = generate_accessibility(settings.url, Page.objects.all(), page)
   content_blocks  = []
 
-  if page.override: page_width = page.width
+  if not page.default_dims: page_width = page.width
   else:          page_width = responsive.width
 
   #———————————————————————————————————————— redirect if /en/home or /home
@@ -103,14 +103,14 @@ def cached_page(request, language_code, request_slug, screen_code):
 
   #———————————————————————————————————————— "always include" modules
 
-  if not page.suppress_modules:
+  if page.incl_modules:
     screen_modules = Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
     module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
     content_blocks.extend(module_content)
 
    #———————————————————————————————————————— "always include" scripts
 
-  if not page.suppress_scripts:
+  if page.incl_scripts:
     screen_scripts = Script.objects.filter(Q(active=True) & Q(always=True))
     script_content = get_scripts('always-include scripts', screen_scripts)
     content_blocks.extend(script_content)

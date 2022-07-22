@@ -67,7 +67,7 @@ def generate_system_js(user, version, settings, page, language_code, request_slu
 
     dim_js = ''
 
-    if page.override:
+    if not page.default_dims:
         dim_js += '\n// overridden in page settings:\n'
 
         dim_js += 'var page_width = '     + str(page.width  ) + ';\n'
