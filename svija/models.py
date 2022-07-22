@@ -267,7 +267,7 @@ class ModuleScript(models.Model):
 class Settings(models.Model):
 
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
-    robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_language), verbose_name='robots.txt')
+    robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_robots_id), verbose_name='robots.txt')
     language      = models.ForeignKey(Language, default=get_default_section, on_delete=models.SET(get_sentinel_language), verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
