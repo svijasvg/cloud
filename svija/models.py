@@ -136,11 +136,11 @@ class Language(models.Model):
 #———————————————————————————————————————— Screen · no dependencies
 
 class Screen(models.Model):
-    name = models.CharField(max_length=200, default='')
-    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    name    = models.CharField(max_length=200, default='')
+    code    = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
+    order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    pixels = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
@@ -149,7 +149,7 @@ class Screen(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['order']
+        ordering = ['width']
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
 
