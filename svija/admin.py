@@ -268,17 +268,14 @@ class PageAdmin(admin.ModelAdmin):
     save_on_top = True
     save_as = True
 
-# all_svgs  = page.illustrator_set.filter(active=True).order_by('zindex')
+# https://stackoverflow.com/questions/38827608/get-list-display-in-django-admin-to-display-the-many-end-of-a-many-to-one-rela
 
-#   def get_queryset(self, obj):
-#       qs = super(PageAdmin, self).get_queryset(obj)
-#       return qs.prefetch_related('illustrator_fk')
-
-# def get_default_section():
-#   return Language.objects.first()
+    def get_queryset(self, obj):
+        qs = super(PageAdmin, self).get_queryset(obj)
+        return qs.prefetch_related('illustrator_fk')
 
     def ai_file(self,obj):
-        return "booby"
+        return list(obj.illustrator_fk.filter(active=True).order_by('zindex'))
 
     fieldsets = [ 
         ('setup',          {'fields': [
