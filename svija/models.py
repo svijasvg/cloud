@@ -228,7 +228,7 @@ class Module(models.Model):
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator filename (opt.)',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)

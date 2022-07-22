@@ -176,7 +176,7 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
     # display on parent module
-    list_display = ('name', 'language', 'screen', 'always', 'order', 'css_id',  'active', 'category',)
+    list_display = ('name', 'language', 'screen', 'filename', 'always', 'order', 'active', 'category',)
     list_filter = ('category', 'active', 'screen', 'language', 'always', )
     save_on_top = True
     save_as = True
@@ -263,7 +263,7 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'language', 'screen', 'title', 'ai_file', 'published', 'suppress_modules', 'category',)
+    list_display = ('url', 'language', 'screen', 'title', 'illustrator_file', 'published', 'suppress_modules', 'category',)
     list_filter = ('category', 'published', 'screen', 'language', )
     save_on_top = True
     save_as = True
@@ -274,8 +274,8 @@ class PageAdmin(admin.ModelAdmin):
         qs = super(PageAdmin, self).get_queryset(obj)
         return qs.prefetch_related('illustrator_fk')
 
-    def ai_file(self,obj):
-        return list(obj.illustrator_fk.filter(active=True).order_by('zindex'))
+    def illustrator_file(self,obj):
+        return obj.illustrator_fk.filter(active=True).first()
 
     fieldsets = [ 
         ('setup',          {'fields': [
