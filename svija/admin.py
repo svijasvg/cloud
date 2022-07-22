@@ -59,9 +59,9 @@ class FontAdmin(admin.ModelAdmin):
 
 admin.site.register(Font, FontAdmin)
 
-#———————————————————————————————————————— Language · no dependencies
+#———————————————————————————————————————— Section · no dependencies
 
-descLanguages    = "Supported languages · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
+descSection    = " sections of your website · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
 
 from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
@@ -72,7 +72,7 @@ class LanguageAdmin(admin.ModelAdmin):
     save_as = True
 
     fieldsets = [ 
-        ('name, two-letter code', {'fields': [('name', 'code'),('default_page','order',),],'description':descLanguages, }),
+        ('name, two-letter code', {'fields': [('name', 'code'),('default_page','order',),],'description':descSection, }),
         ('title & touch icon', {'fields': ['title', 'touch',],}),
         ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
         ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
