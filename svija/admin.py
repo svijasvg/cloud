@@ -263,10 +263,22 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 class PageAdmin(admin.ModelAdmin):
 
     # display on parent page
-    list_display = ('url', 'language', 'screen', 'title', 'published', 'suppress_modules', 'category',)
+    list_display = ('url', 'language', 'screen', 'title', 'ai_file', 'published', 'suppress_modules', 'category',)
     list_filter = ('category', 'published', 'screen', 'language', )
     save_on_top = True
     save_as = True
+
+# all_svgs  = page.illustrator_set.filter(active=True).order_by('zindex')
+
+#   def get_queryset(self, obj):
+#       qs = super(PageAdmin, self).get_queryset(obj)
+#       return qs.prefetch_related('illustrator_fk')
+
+# def get_default_section():
+#   return Language.objects.first()
+
+    def ai_file(self,obj):
+        return "booby"
 
     fieldsets = [ 
         ('setup',          {'fields': [
