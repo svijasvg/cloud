@@ -61,7 +61,7 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— Section · no dependencies
 
-descSection    = " Sections of your website · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
+descSection    = " Website sections · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
 
 from .models import Language
 class LanguageAdmin(admin.ModelAdmin):
@@ -84,7 +84,7 @@ admin.site.register(Language, LanguageAdmin)
 
 #———————————————————————————————————————— Screen · no dependencies
 
-descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>languages</a>."
+descScreens      = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>sections</a>."
 
 from .models import Screen
 class ScreenAdmin(admin.ModelAdmin):
