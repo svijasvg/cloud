@@ -319,7 +319,7 @@ class Page(models.Model):
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
-    default_dims = models.BooleanField(default=True, verbose_name='use default dimensions',)
+    default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
