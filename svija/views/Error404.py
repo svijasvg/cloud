@@ -60,6 +60,11 @@ def Error404(request, *args, **kwargs):
 
   missing_page_exists = False
 
+#———————————————————————————————————————— setup
+
+  if request.path[0:6] == '/admin':
+    return HttpResponsePermanentRedirect('/admin/svija/')
+
 #———————————————————————————————————————— check if image
 
   pf = '.+\.(jpeg|jpg|png|gif)$'
