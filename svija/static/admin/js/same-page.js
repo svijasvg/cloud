@@ -3,11 +3,6 @@
     sends user back to same admin page where they were
     so you can use Svija Sync to easily find your place
 
-    logic:
-    
-    if you arrive on admin page not from admin page,
-    you get sent to the last admin page you visited
- 
     short-lived cookie, only for a day */
 
 //———————————————————————————————————————— sumpin
@@ -19,11 +14,6 @@ const ref = document.referrer.substr(-7);
 const loc = location.href.substr(-7);
 const cky = getCookie(cname);
 
-
-console.log('referrer: '+ref);
-console.log('location: '+loc);
-console.log('cookie: '  +cky);
-
 var redirect = true;
 
 if ( cky == ''                            ) redirect = false; // if we don't have cookie
@@ -32,63 +22,31 @@ if ( ref != ''        && loc != ref       ) redirect = false; // referrer exists
 
 if (redirect) location.href = cky;
 
-/*—set cookie if:
+if (loc != '/admin/' && loc != '/svija/') setCookie(cname, location.href, 1); // if we're on a page worth remembering
+else                                      setCookie(cname, '',            1); // else delete cookie
 
-   not redirecting
-   page is not /svija/ or /admin/      */
+//———————————————————————————————————————— /templates/svija/js/cookies.js
 
-var earl = window.location.hostname;
-var d = new Date();
-d.setTime(d.getTime() + (exdays*24*60*60*1000));
+function setCookie(cname, cvalue, exdays) {
+  cvalue = escape(cvalue);
 
-if (loc != '/admin/' && loc != '/svija/')
-  setCookie(cname, location.href, d, '/',earl, 'samesite=lax; secure;');
-else
-  setCookie(cname, '', d, '/',earl, 'samesite=lax; secure;');
-
-//———————————————————————————————————————— new cookie function
-
-// https://social.msdn.microsoft.com/Forums/en-US/b949843d-1967-4cff-8a8e-2128ebab6f1c/cookie-path-not-set-correctly-using-safari-and-url-rewriting?forum=asphtmlcssjavascript
-
-function setCookie (name,value,expires,path,theDomain,secure) { 
-   value = escape(value);
-   var theCookie = value + 
-   ((expires)    ? "; expires=" + expires.toGMTString() : "") + 
-   ((path)       ? "; path="    + path   : "") + 
-   ((theDomain)  ? "; domain="  + theDomain : "") + 
-   ((secure)     ? "; secure"   : ""); 
-
-   console.log('cookie "'+name+'" = '+theCookie);
-   theCookie = name + "=" + theCookie;
-
-   document.cookie = theCookie;
-} 
-
-//———————————————————————————————————————— broken, from template: cookies.js
-
-function xsetCookie(cname, cvalue, exdays) {
-
-  var earl = window.location.hostname;
-//  deleteParentCookieIfNecessary(cname, earl);
+//deleteParentCookieIfNecessary(cname, window.location.hostname);
 
   if (exdays > 7) exdays = 7; // max in Safari
 
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
 
-  var name = cname + '=' + cvalue + '; ';
-  var expy = 'expires=' + d.toUTCString(); + '; ';
-  var domn = '; domain=' + earl + '; ';
-  var path = 'path=/admin/; ';
-  var secu = 'samesite=lax; secure;';
+  var expy = '; expires=' + d.toUTCString();;
+  var path = '; path=/';
+  var domn = '; domain='  + window.location.hostname;
+  var secu = '; samesite=lax; secure;';
 
-//var complete = name + expy + domn + path + secu;
-  var complete = name + expy + path + secu;
-console.log(complete);
-  document.cookie = complete;
+  var complete = cvalue + expy + path + domn + secu;
+
+  document.cookie = name+complete;
 }
 
-//———————————————————————————————————————— template: cookies.js
 
 function getCookie(cname) {
   var name = cname + "=";
@@ -100,8 +58,6 @@ function getCookie(cname) {
   }
   return "";
 }
-
-//———————————————————————————————————————— template: cookies.js
 
 function deleteParentCookieIfNecessary(cname, domain){
   var parts = domain.split('.');

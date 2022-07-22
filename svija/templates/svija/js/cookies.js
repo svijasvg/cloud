@@ -1,26 +1,23 @@
 //———————————————————————————————————————— template: cookies.js
 
 function setCookie(cname, cvalue, exdays) {
+  cvalue = escape(cvalue);
 
-  var earl = window.location.hostname;
-//  deleteParentCookieIfNecessary(cname, earl);
+//deleteParentCookieIfNecessary(cname, window.location.hostname);
 
   if (exdays > 7) exdays = 7; // max in Safari
 
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
 
-  var name = cname + '=' + cvalue + '; ';
-  var expy = 'expires=' + d.toUTCString(); + '; ';
-  var domn = '; domain=' + earl + '; ';
-  var path = 'path=/; ';
-  var secu = 'samesite=lax; secure;';
+  var expy = '; expires=' + d.toUTCString();;
+  var path = '; path=/';
+  var domn = '; domain='  + window.location.hostname;
+  var secu = '; samesite=lax; secure;';
 
-  
+  var complete = cvalue + expy + path + domn + secu;
 
-//var complete = name + expy + domn + path + secu;
-  var complete = name + expy + path + secu;
-  document.cookie = complete;
+  document.cookie = name+complete;
 }
 
 function getCookie(cname) {
@@ -29,7 +26,7 @@ function getCookie(cname) {
   for(var i=0; i<ca.length; i++) {
     var c = ca[i];
     while (c.charAt(0)==' ') c = c.substring(1);
-    if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+    if (c.indexOf(name) != -1) return unescape(c.substring(name.length,c.length));
   }
   return "";
 }
