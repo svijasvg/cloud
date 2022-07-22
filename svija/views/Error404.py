@@ -20,7 +20,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from modules.cached_page import *
 from modules.default_screen_code import *
-from svija.models import Redirect, Language, Settings
+from svija.models import Screen, Redirect, Language, Settings
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
@@ -118,12 +118,12 @@ def Error404(request, *args, **kwargs):
 
   try:
     # codes correspond
-    screen  = Screen.objects.get(code=screen_code)
+    screen = Screen.objects.get(code=screen_code)
   except:
     try:
       # codes don't correspond, so get default
-      screen_code = 'mb'
-      screen      = Screen.objects.get(code=screen_code)
+      screen      = Screen.objects.first();
+      screen_code = screen.code
     except:
       response             = HttpResponse(broken)
       response.status_code = 404
