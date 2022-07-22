@@ -5,7 +5,7 @@
 #   https://websiteadvantage.com.au/404-Error-Handler-Checker
 #
 #   Links folder redirection breaks if the prefix does not exist
-#   instead of defaulting to en, need to get site default language
+#   instead of defaulting to en, need to get site default section
 #
 #   return HttpResponse("debugging message.")
 #
@@ -39,7 +39,7 @@ def Error404(request, *args, **kwargs):
 #   - print a text message if the missing page is broken
 #   
 #   BUT, it would be better to
-#   - send a 404 page for the correct language
+#   - send a 404 page for the correct section
 #   - send a 404 page for the correct screen code
 #   - send someting small if the missing element is an image
 #
@@ -53,7 +53,7 @@ def Error404(request, *args, **kwargs):
 #   /images/lkjmlkj
 #
 #   if we split it by slash:
-#   - the first part may be a language code
+#   - the first part may be a section code
 #   - the last part may be a screen code
 #
 #———————————————————————————————————————— setup
@@ -83,9 +83,9 @@ def Error404(request, *args, **kwargs):
     return HttpResponsePermanentRedirect(redirect_obj.to_url)
   except ObjectDoesNotExist: pass
 
-#———————————————————————————————————————— get potential screen & language codes
+#———————————————————————————————————————— get potential screen & section codes
 
-  lang_code   = ''
+  sect_code   = ''
   parts       = request.path[1:].split('/')
 
   screen_code = request.COOKIES.get('screen_code')
@@ -96,18 +96,18 @@ def Error404(request, *args, **kwargs):
     screen_code = parts[-1]
 
   if len(parts) > 2:
-    lang_code = parts[0]
+    sect_code = parts[0]
 
-#———————————————————————————————————————— see if lang_code matches DB
+#———————————————————————————————————————— see if sect_code matches DB
 
   try:
     # codes correspond
-    language = Language.objects.get(code=lang_code)
+    section = Language.objects.get(code=sect_code)
   except:
     try:
       # codes don't correspond, so use default
-      language  = Settings.objects.get(active=True).language
-      lang_code = language.code
+      section  = Settings.objects.get(active=True).language
+      sect_code = section.code
     except:
       # site settings are broken
       response             = HttpResponse(broken)
@@ -129,10 +129,10 @@ def Error404(request, *args, **kwargs):
       response.status_code = 404
       return response
 
-#———————————————————————————————————————— have valid screen & language; get "missing" page
+#———————————————————————————————————————— have valid screen & section; get "missing" page
 
   try:
-    response = cached_page(request, lang_code, 'missing', screen_code)
+    response = cached_page(request, sect_code, 'missing', screen_code)
 
   except:
     response = HttpResponse(missing)
