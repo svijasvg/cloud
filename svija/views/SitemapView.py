@@ -28,7 +28,7 @@ def sitemap(domain, pages):
     results = []
     for page in pages:
         if page.published == True:
-          prefix = page.language.code
+          prefix = page.section.code
           if page.url != 'missing':
               results.append('http://'+domain+'/'+prefix+'/'+page.url)
 

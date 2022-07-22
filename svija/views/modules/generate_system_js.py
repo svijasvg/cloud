@@ -11,14 +11,14 @@
 import time
 from svija.models import Screen
 
-#     need current language code
-#     all prefixes where language=language code
+#     need current section code
+#     all prefixes where section=section code
 #     for eady prefix,
 #     
 #     fr = fr['desktop'], fm['mobile']
 
 
-def generate_system_js(user, version, settings, page, language_code, request_slug, this_screen, screens):
+def generate_system_js(user, version, settings, page, section_code, request_slug, this_screen, screens):
 
 #   this_screen = Screen.objects.filter(code=screen).first()
 
@@ -29,8 +29,8 @@ def generate_system_js(user, version, settings, page, language_code, request_slu
     # version information
     system_js += "var svija_version='" + version + "';\n"
 
-    # language information
-    system_js += 'var language_code = "' + language_code +'";\n'
+    # section information
+    system_js += 'var section_code = "' + section_code +'";\n'
 
     # responsive information
     system_js += 'var screen_code = "' + this_screen.code +'";\n'
@@ -54,7 +54,7 @@ def generate_system_js(user, version, settings, page, language_code, request_slu
     else:                    system_js += "var tracking_on = false;\n"
 
     page_url = 'https://'
-    page_url += settings.url + '/' + language_code + '/' + request_slug
+    page_url += settings.url + '/' + section_code + '/' + request_slug
 
     system_js += "var page_url = '" + page_url + "';\n"
 

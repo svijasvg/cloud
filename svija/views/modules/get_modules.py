@@ -24,7 +24,7 @@ from PageObject import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
-# Module.objects.filter(Q(language__code=language_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
+# Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
 
 def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 

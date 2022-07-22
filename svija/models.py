@@ -1,7 +1,7 @@
 #———————————————————————————————————————— models.py
 
 # model names are SINGULAR
-# 252 language, permit unknown results — see link somewhere
+# 252 section, permit unknown results — see link somewhere
 
 #———————————————————————————————————————— random notes
 
@@ -82,7 +82,7 @@ class Font(models.Model):
 
 # Create or retrieve a placeholder
 def get_sentinel_language():
-    return Language.objects.get_or_create(name="undefined", code="na")[0]
+    return Section.objects.get_or_create(name="undefined", code="na")[0]
 
 # Create an additional method to return only the id - default expects an id and not a Model object
 def get_sentinel_language_id():
@@ -91,9 +91,9 @@ def get_sentinel_language_id():
 # https://stackoverflow.com/questions/73069401/how-to-get-django-admin-pulldown-list-to-just-show-the-first-order-by-item-ins
 # so section pulldown will have first element selected
 def get_default_section():
-  return Language.objects.first()
+  return Section.objects.first()
 
-class Language(models.Model):
+class Section(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
@@ -163,6 +163,9 @@ def get_sentinel_robots():
 def get_sentinel_robots_id():
     return get_sentinel_robots().id
 
+def get_default_robots():
+  return Robots.objects.first()
+
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
     contents = models.TextField(max_length=5000, default='', verbose_name='file contents',blank=True,)
@@ -170,6 +173,7 @@ class Robots(models.Model):
     def __str__(self):
         return self.name
     class Meta:
+        ordering = ['name']
         verbose_name = "robots.txt"
         verbose_name_plural = "3.3 · Robots.txt"
 
@@ -222,7 +226,7 @@ class Module(models.Model):
 
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
     category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
@@ -267,8 +271,8 @@ class ModuleScript(models.Model):
 class Settings(models.Model):
 
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
-    robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_robots_id), verbose_name='robots.txt')
-    language      = models.ForeignKey(Language, default=get_default_section, on_delete=models.SET(get_sentinel_language), verbose_name='default section')
+    robots        = models.ForeignKey(Robots,   default=get_default_robots,   on_delete=get_default_robots, verbose_name='robots.txt')
+    section       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
@@ -297,7 +301,7 @@ class Page(models.Model):
 
     published = models.BooleanField(default=True, verbose_name='published',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
     url       = models.CharField(max_length=200, default='', verbose_name='address')
 		# to rename
     category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
@@ -330,7 +334,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ['-published', 'url', 'language', 'screen', '-pub_date', ]
+        ordering = ['-published', 'url', 'section', 'screen', '-pub_date', ]
         verbose_name_plural = "2.2 · Pages"
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 

@@ -1,35 +1,35 @@
-#———————————————————————————————————————— form-oriented language variables
+#———————————————————————————————————————— form-oriented section variables
 
 # added down below if there is a form
 
-#ef generate_form_js(language):
+#ef generate_form_js(section):
 
-#ef generate_form_js(core_content, language):
+#ef generate_form_js(core_content, section):
 
 #   if core_content['form'] == '':
 #       return core_content
 
-#———————————————————————————————————————— generate_form_js(language):
+#———————————————————————————————————————— generate_form_js(section):
 
-def generate_form_js(language):
+def generate_form_js(section):
 
     form_js = '\n//———————————————————————————————————————— mail form\n\n'
 
-    form_js += 'var form_dest = "'       + scape(language.email          ) + '";\n'
-    form_js += 'var form_subject = "'    + scape(language.subject        ) + '";\n'
-    form_js += 'var form_fromlable = "'  + scape(language.mail_frm       ) + '";\n'
+    form_js += 'var form_dest = "'       + scape(section.email          ) + '";\n'
+    form_js += 'var form_subject = "'    + scape(section.subject        ) + '";\n'
+    form_js += 'var form_fromlable = "'  + scape(section.mail_frm       ) + '";\n'
     
-    form_js += 'var name_init = "'       + scape(language.form_name      ) + '";\n'
-    form_js += 'var business_init = "'   + scape(language.form_business  ) + '";\n'
-    form_js += 'var address_init = "'    + scape(language.form_email     ) + '";\n'
-    form_js += 'var message_init = "'    + scape(language.form_message   ) + '";\n'
-    form_js += 'var send_init = "'       + scape(language.form_send      ) + '";\n'
+    form_js += 'var name_init = "'       + scape(section.form_name      ) + '";\n'
+    form_js += 'var business_init = "'   + scape(section.form_business  ) + '";\n'
+    form_js += 'var address_init = "'    + scape(section.form_email     ) + '";\n'
+    form_js += 'var message_init = "'    + scape(section.form_message   ) + '";\n'
+    form_js += 'var send_init = "'       + scape(section.form_send      ) + '";\n'
 
-    form_js += 'var status_init = "'     + scape(language.form_status    ) + '";\n'
-    form_js += 'var status_sending = "'  + scape(language.form_sending   ) + '";\n'
-    form_js += 'var status_failed = "'   + scape(language.form_alert_fail) + '";\n'
-    form_js += 'var status_received = "' + scape(language.form_rcvd      ) + '";\n'
-    form_js += 'var alert_received = "'  + scape(language.form_alert_rcvd) + '";\n'
+    form_js += 'var status_init = "'     + scape(section.form_status    ) + '";\n'
+    form_js += 'var status_sending = "'  + scape(section.form_sending   ) + '";\n'
+    form_js += 'var status_failed = "'   + scape(section.form_alert_fail) + '";\n'
+    form_js += 'var status_received = "' + scape(section.form_rcvd      ) + '";\n'
+    form_js += 'var alert_received = "'  + scape(section.form_alert_rcvd) + '";\n'
 
 #var address_failed = 'cxoxnxtxaxcxtx@xoxzxaxkxex.xcxom';
 
@@ -37,7 +37,7 @@ def generate_form_js(language):
 #                   + address_failed.replace(/x/g,'');
 
     alert_char  = 'qx' # should be calculated
-    alert_email = alert_char.join(list(language.email))
+    alert_email = alert_char.join(list(section.email))
 
     form_js += 'var alert_email  = "'   + alert_email + '";\n'
     form_js += 'var alert_char   = "'   + alert_char  + '";\n'

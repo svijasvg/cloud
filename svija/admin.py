@@ -63,8 +63,8 @@ admin.site.register(Font, FontAdmin)
 
 descSection  = " Website sections · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
 
-from .models import Language
-class LanguageAdmin(admin.ModelAdmin):
+from .models import Section
+class SectionAdmin(admin.ModelAdmin):
 
   # display on parent page
   list_display = ('name', 'code', 'order', 'default_page', 'title', 'email',)
@@ -80,11 +80,11 @@ class LanguageAdmin(admin.ModelAdmin):
     ('source code message', {'fields': ['comment'], 'classes': ['collapse']}),
   ]   
 
-admin.site.register(Language, LanguageAdmin)
+admin.site.register(Section, SectionAdmin)
 
 #———————————————————————————————————————— Screen · no dependencies
 
-descScreens    = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/language/'>sections</a>."
+descScreens    = "Supported screen sizes · maximum pixel width: <b>0 = unlimited</b> · see also <a href='/admin/svija/section/'>sections</a>."
 
 from .models import Screen
 class ScreenAdmin(admin.ModelAdmin):
@@ -176,13 +176,13 @@ from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
   # display on parent module
-  list_display = ('name', 'language', 'screen', 'filename', 'always', 'order', 'active', 'category',)
-  list_filter = ('language', 'screen', 'active', 'always', 'category', )
+  list_display = ('name', 'section', 'screen', 'filename', 'always', 'order', 'active', 'category',)
+  list_filter = ('section', 'screen', 'active', 'always', 'category', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-     ('Name & Filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'language',), ('filename','order', ),], 'description':descModules, }),
+     ('Name & Filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
      ('Instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
      ('Placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
   ]   
@@ -202,12 +202,12 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('url', 'active', 'language', 'robots',)
+  list_display = ('url', 'active', 'section', 'robots',)
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('main settings',   {'fields': [('url', 'active', 'p3_color',), ('analytics_id','tracking_on', ), ('language',), 'robots',],'description': descSettings,}),
+    ('main settings',   {'fields': [('url', 'active', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
     ('mail settings', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   
@@ -263,8 +263,8 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 class PageAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('url', 'language', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
-  list_filter = ('language', 'screen', 'published', 'category', )
+  list_display = ('url', 'section', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
+  list_filter = ('section', 'screen', 'published', 'category', )
   save_on_top = True
   save_as = True
 
@@ -281,7 +281,7 @@ class PageAdmin(admin.ModelAdmin):
     ('setup',      {'fields': [
                      'published',
                      ('url', 'screen'),
-                     ('title', 'language'),
+                     ('title', 'section'),
                     ],'description':descPages, }),
     ('More Settings',  {'fields': [
                  ('category','incl_modules','incl_scripts',),

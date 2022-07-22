@@ -19,7 +19,7 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from modules.cached_page import *
-from svija.models import Screen, Redirect, Language, Settings
+from svija.models import Screen, Redirect, Section, Settings
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
@@ -101,11 +101,11 @@ def Error404(request, *args, **kwargs):
 
   try:
     # codes correspond
-    section = Language.objects.get(code=sect_code)
+    section = Section.objects.get(code=sect_code)
   except:
     try:
       # codes don't correspond, so use default
-      section  = Settings.objects.get(active=True).language
+      section  = Settings.objects.get(active=True).section
       sect_code = section.code
     except:
       # site settings are broken

@@ -20,7 +20,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Language, Settings, Screen
+from svija.models import Section, Settings, Screen
 
 from PageObject import *
 from modules.cache_per_user import *
@@ -34,28 +34,28 @@ def PageView(request, request_page='', request_lang=''):
 
   if request_lang == '':
 
-    # check if page corresponds to language
+    # check if page corresponds to section
     # settings = Settings.objects.get(active=True)
     # Font.objects.filter(Q(active=True) & Q(google=True ))
 
-    languages = Language.objects.filter(Q(code=request_page))
-    if len(languages) > 0:
-      language = languages[0]
+    sections = Section.objects.filter(Q(code=request_page))
+    if len(sections) > 0:
+      section = sections[0]
       request_lang = request_page
       request_page = ''
-      # return HttpResponse("debugging message: " + languages[0].name)
+      # return HttpResponse("debugging message: " + sections[0].name)
     else:
-      # return HttpResponse("not a language")
+      # return HttpResponse("not a section")
 
-      language = get_object_or_404(Settings, active=True).language
-      request_lang = language.code
+      section = get_object_or_404(Settings, active=True).section
+      request_lang = section.code
 
 #———————————————————————————————————————— page is missing
 
-  # happens for the home page or language home
+  # happens for the home page or section home
 
   if request_page == '':
-    request_page = language.default_page
+    request_page = section.default_page
 
 #———————————————————————————————————————— get screen code
 
