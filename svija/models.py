@@ -313,8 +313,8 @@ class Page(models.Model):
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility name')
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
-    incl_modules = models.BooleanField(default=True, verbose_name='include modules',)
-    incl_scripts = models.BooleanField(default=True, verbose_name='include scripts',)
+    incl_modules = models.BooleanField(default=True, verbose_name='default modules',)
+    incl_scripts = models.BooleanField(default=True, verbose_name='default scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
