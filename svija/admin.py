@@ -228,7 +228,7 @@ class ModuleInlinePage(admin.TabularInline):
   fields = ('active', 'module', 'zindex', )
   verbose_name = "module"
   verbose_name_plural = "modules"
-  classes = ['collapse']
+  classes = ['collapse', 'ifempty',]
 
 class ScriptInlinePage(admin.TabularInline):
   model = Page.script.through
@@ -254,13 +254,14 @@ class AdditionalScriptInline(admin.TabularInline):
 #   classes = ['collapse']
 
 
-#———————————————————————————————————————— main class
-
 descPages  = "Settings that are specific to a single page · see also <a href='/admin/svija/module/'>modules</a>."
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
+# https://stackoverflow.com/questions/16014719/adding-a-jquery-script-to-the-django-admin-interface
 
 class PageAdmin(admin.ModelAdmin):
+  class Media:
+    js = ( 'admin/js/zcollapse-if-empty.js', )
 
   # display on parent page
   list_display = ('url', 'section', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
