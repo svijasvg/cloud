@@ -74,6 +74,11 @@ def Error404(request, *args, **kwargs):
       return response
 
 #———————————————————————————————————————— check for redirects
+# BROKEN, TWO THINGS:
+# return HttpResponse("debugging message: "+request.path) # https://svija.dev/a/b/c
+
+# the problem is that on first load, there's not a screen code, so  part of the path is being amputated for nothing
+
 
   test_path = request.path[:-3] # get rid of screen code
 

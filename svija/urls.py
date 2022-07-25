@@ -71,9 +71,4 @@ urlpatterns = [
 
 ]
 
-#———————————————————————————————————————— unused but still in code
-
-#   path('lab', views.LabView),
-
-
 #———————————————————————————————————————— fin
