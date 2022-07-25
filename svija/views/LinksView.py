@@ -1,5 +1,8 @@
 #———————————————————————————————————————— LinksView.py
-
+#
+#   Links folder redirection breaks if the prefix does not exist
+#   instead of defaulting to en, need to get site default section
+#
 # return HttpResponse("debugging message.")
 
 from django.core.exceptions import ObjectDoesNotExist

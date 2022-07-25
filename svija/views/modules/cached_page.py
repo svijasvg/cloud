@@ -67,9 +67,9 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— redirect if /en/home or /home
 
-  redirect = redirect_if_possible(request, settings.section.code, section.default_page)
-
-  if redirect: return HttpResponsePermanentRedirect(redirect)
+  if page.url != 'missing':
+    redirect = redirect_if_possible(request, settings.section.code, section.default_page)
+    if redirect: return HttpResponsePermanentRedirect(redirect)
 
   #———————————————————————————————————————— metatags, system js & fonts
 

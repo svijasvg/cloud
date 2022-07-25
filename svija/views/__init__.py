@@ -17,7 +17,6 @@ from .MailView       import *
 from .ClearCacheView import *
 from .SendView       import *
 from .LinksView      import *
-from .LabView        import *
 from .RobotsView     import *
 from .SitemapView    import *
 from .Error404       import *

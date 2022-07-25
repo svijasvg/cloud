@@ -7,7 +7,6 @@
 from django.core.cache import cache
 from django.core.cache import cache as memcache
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from svija.models import Control
 

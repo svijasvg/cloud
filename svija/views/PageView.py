@@ -65,7 +65,7 @@ def PageView(request, request_page='', request_lang=''):
 
 #———————————————————————————————————————— add screen code to path for cache
 
-  request.path += '/' + screen_code
+# request.path += '/' + screen_code
 
 #———————————————————————————————————————— return cached results
 
