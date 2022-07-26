@@ -314,7 +314,7 @@ class Page(models.Model):
     title  = models.CharField(max_length=200, default='', blank=True)
 
     # accessibility
-    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility name')
+    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='link name')
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
     incl_modules = models.BooleanField(default=True, verbose_name='default modules',)
