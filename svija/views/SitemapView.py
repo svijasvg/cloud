@@ -14,23 +14,32 @@
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Settings, Page
+from svija.models import Page, Section, Settings
 
 def SitemapView(request):
     settings = get_object_or_404(Settings,active=True)
     domain = settings.url
-    response = sitemap(domain, Page.objects.all())
+
+    default_code = settings.section.code
+
+    response = sitemap(domain, default_code, Page.objects.all())
     return HttpResponse(response, content_type='text/plain; charset=utf8')
 
 #———————————————————————————————————————— function
 
-def sitemap(domain, pages):
+def sitemap(domain, default_code, pages):
     results = []
+
     for page in pages:
         if page.published == True:
-          prefix = page.section.code
+          page_code = page.section.code
+          if page_code == default_code:
+              addr = 'http://'+domain+'/'+page.url
+          else:
+              addr = 'http://'+domain+'/'+page_code+'/'+page.url
+
           if page.url != 'missing':
-              results.append('http://'+domain+'/'+prefix+'/'+page.url)
+              results.append(addr)
 
     results = list(dict.fromkeys(results))
     return '\n'.join(results)
