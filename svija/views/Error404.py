@@ -33,7 +33,6 @@ from django.http import FileResponse, HttpResponse, HttpResponsePermanentRedirec
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from modules.cached_page import *
-from modules.missing_image import *
 from svija.models import Screen, Redirect, Section, Settings
 import re
 import os

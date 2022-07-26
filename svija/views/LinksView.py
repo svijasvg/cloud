@@ -10,7 +10,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
-#rom modules.missing_image import *
 from os.path import exists
 from svija.models import Settings
 
