@@ -553,5 +553,16 @@ td.field-filename input:focus{           /* page             */
   outline:3px solid #F9991F;
 }
 
+/*———————————————————————————————————————— date picker */
+
+.calendar td.selected a { /* selected */
+    background: var(--accent) !important;
+}
+
+.calendar td a:focus, .timelist a:focus, /* mouseover */
+.calendar td a:hover, .timelist a:hover {
+    background: var(--accent) !important;
+}
+
 
 /*———————————————————————————————————————— fin */
