@@ -165,7 +165,7 @@ class ModuleScriptInline(admin.TabularInline):
   fields = ('active', 'name', 'type', 'order', 'content',)
   verbose_name = "script"
   verbose_name_plural = "scripts"
-  classes = ['collapse']
+  classes = ['collapse', 'ifempty',]
 
 
 descModules = "Reusable content that can be included here or via <b><a href='/admin/svija/page/'>Page Settings</a></b>."
@@ -174,6 +174,9 @@ positdesc = 'Superimposed on the Illustrator page · negative: up ↖ left · po
 
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
+
+  class Media:
+    js = ( 'admin/js/ifempty.js', )
 
   # display on parent module
   list_display = ('name', 'section', 'screen', 'filename', 'always', 'order', 'active', 'category',)
@@ -236,7 +239,7 @@ class ScriptInlinePage(admin.TabularInline):
   fields = ('active', 'script', 'order', )
   verbose_name = "script set"
   verbose_name_plural = "script sets"
-  classes = ['collapse']
+  classes = ['collapse', 'ifempty',]
 
 class IllustratorInlinePage(admin.TabularInline):
   model = Illustrator
@@ -260,8 +263,9 @@ descPixels = "Values are in pixels · Check \"Override default dimensions\" to a
 # https://stackoverflow.com/questions/16014719/adding-a-jquery-script-to-the-django-admin-interface
 
 class PageAdmin(admin.ModelAdmin):
+
   class Media:
-    js = ( 'admin/js/zcollapse-if-empty.js', )
+    js = ( 'admin/js/ifempty.js', )
 
   # display on parent page
   list_display = ('url', 'section', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
