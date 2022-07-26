@@ -25,6 +25,7 @@ def LinksView(request, request_prefix, img_file):
   img_path    = sync_folder + request_prefix + '/' + img_file
 
 #———————————————————————————————————————— does file exist?
+# see also Error404.py
 
   if not exists(img_path):
     ext      = img_file.split('.')[-1].lower()
