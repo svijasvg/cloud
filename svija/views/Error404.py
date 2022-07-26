@@ -29,11 +29,14 @@
 #———————————————————————————————————————— imports
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.http import FileResponse, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from modules.cached_page import *
+from modules.missing_image import *
 from svija.models import Screen, Redirect, Section, Settings
+import re
+import os
 
 #———————————————————————————————————————— Error404(request, *args, **kwargs):
 
@@ -56,13 +59,19 @@ def Error404(request, *args, **kwargs):
     return HttpResponsePermanentRedirect('/admin/svija/')
 
 #———————————————————————————————————————— 2. is it an image?
+# see also LinksView.py
 
   pf = '.+\.(jpeg|jpg|png|gif)$'
+  img_file = request.path
 
   if re.search(pf, request.path):
-      response             = HttpResponse(missing_image)
-      response.status_code = 404
-      return response
+    ext      = img_file.split('.')[-1].lower()
+    img_path = os.getcwd() + '/static/svija/images/ff0000.'+ ext
+    img      = open(img_path, 'rb')
+
+    response = FileResponse(img)
+    response.status_code = 404
+    return response
 
 #———————————————————————————————————————— 3. is it a redirect?
 
