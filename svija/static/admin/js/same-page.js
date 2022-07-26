@@ -7,7 +7,7 @@
 
 //———————————————————————————————————————— sumpin
 
-console.log('line 10 of same-page.js');
+// console.log('line 10 of same-page.js');
 
 const cname  = 'adminPage';
 const exdays = 1;
