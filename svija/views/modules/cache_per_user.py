@@ -109,7 +109,7 @@ def cache_key(request):
     q.lists()
     urlencode = q.urlencode(safe='()')
 
-    return 'pageview_%s_%s' % (request.path, urlencode)
+    return 'pageview_%s_%s_%s' % (request.path, request.screen_code, urlencode)
 
 
 #———————————————————————————————————————— fin

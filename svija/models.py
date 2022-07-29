@@ -80,7 +80,7 @@ class Font(models.Model):
 
 #———————————————————————————————————————— Section · no dependencies
 
-# Create or retrieve a placeholder
+# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
 def get_sentinel_language():
     return Section.objects.get_or_create(name="undefined", code="na")[0]
 
@@ -155,7 +155,7 @@ class Screen(models.Model):
 
 #———————————————————————————————————————— Robots · no dependencies
 
-# Create or retrieve a placeholder
+# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
 def get_sentinel_robots():
     return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
 

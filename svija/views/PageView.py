@@ -60,12 +60,11 @@ def PageView(request, request_page='', request_lang=''):
 #———————————————————————————————————————— get screen code
 
   screen_code = request.COOKIES.get('screen_code')
-  if screen_code == None:
-    screen_code = Screen.objects.first().code;
 
-#———————————————————————————————————————— add screen code to path for cache
+  if str(screen_code) == 'None':
+    screen_code = Screen.objects.first().code
 
-# request.path += '/' + screen_code
+  request.screen_code = screen_code
 
 #———————————————————————————————————————— return cached results
 
