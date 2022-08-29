@@ -37,5 +37,6 @@ setCookie('screen_code', correct_screen_code, 7);
 
 if (screen_code != correct_screen_code){
   history.scrollRestoration = 'manual';
+  console.log('redirecting to '+correct_screen_code);
   window.location.replace(document.URL);
 }

@@ -2,47 +2,16 @@
 
 #———————————————————————————————————————— notes
 #
+#   the basic point is to see if:
+#
+#   1. is it an admin page? send to admin home
+#   2. is it an image? return image error
+#   3. is it a redirect? do that
+#   4. can we determine the the section? use that
+#   5. get default section
+#
 #   https://websiteadvantage.com.au/404-Error-Handler-Checker
 #
-#   Links folder redirection breaks if the prefix does not exist
-#   instead of defaulting to en, need to get site default language
-#
-#   return HttpResponse("debugging message.")
-#
-# from django.http import HttpResponse
-# return HttpResponse("debugging message.")
-#
-#———————————————————————————————————————— imports
-
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404
-from django.views.decorators.cache import never_cache
-from modules.cached_page import *
-from modules.default_screen_code import *
-from svija.models import Redirect, Language, Settings
-
-#———————————————————————————————————————— Error404(request, *args, **kwargs):
-
-#@never_cache # we'll see if this is a problem
-def Error404(request, *args, **kwargs):
-
-  image_m = '<pre>\n\n   missing image'
-  broken  = '<pre>\n\n   Configuration Error\n\n   Please contact support@svija.com.'
-  missing = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "missing".'
-
-#———————————————————————————————————————— cases
-#
-#   page is definitely missing, all we can do is:
-#   - send the missing page
-#   - print a text message if the missing page is broken
-#   
-#   BUT, it would be better to
-#   - send a 404 page for the correct language
-#   - send a 404 page for the correct screen code
-#   - send someting small if the missing element is an image
-#
-#———————————————————————————————————————— possible URL's
 #
 #   /fr/accueilx/cp
 #   /fr/accueilx
@@ -52,84 +21,114 @@ def Error404(request, *args, **kwargs):
 #   /images/lkjmlkj
 #
 #   if we split it by slash:
-#   - the first part may be a language code
-#   - the last part may be a screen code
+#   - the first part may be a section code
 #
-#———————————————————————————————————————— setup
+# from django.http import HttpResponse
+# return HttpResponse("debugging message.")
+#
+#———————————————————————————————————————— imports
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import FileResponse, HttpResponse, HttpResponsePermanentRedirect
+from django.shortcuts import get_object_or_404
+from django.views.decorators.cache import never_cache
+from modules.cached_page import *
+from svija.models import Screen, Redirect, Section, Settings
+import re
+import os
+
+#———————————————————————————————————————— Error404(request, *args, **kwargs):
+
+#@never_cache # we'll see if this is a problem
+def Error404(request, *args, **kwargs):
+
+#———————————————————————————————————————— variables
+
+  missing_image       = '<pre>\n\n   missing image'
+  msg_broken          = '<pre>\n\n   Configuration Error\n\n   Please contact support@svija.com.'
+  msg_missing         = '<pre>\n\n   Page Missing\n\n   To customize this message, add a page called "missing" to this section.'
+  msg_missing        +=      '\n\n   There should be a "missing" page for each screen size.'
 
   missing_page_exists = False
+  section_code        = ''
 
-#———————————————————————————————————————— check if image
+#———————————————————————————————————————— 1. is it an admin page?
+
+  if request.path[0:6] == '/admin':
+    return HttpResponsePermanentRedirect('/admin/svija/')
+
+#———————————————————————————————————————— 2. is it an image?
+# see also LinksView.py
 
   pf = '.+\.(jpeg|jpg|png|gif)$'
+  img_file = request.path
 
   if re.search(pf, request.path):
-      response             = HttpResponse(image_m)
-      response.status_code = 404
-      return response
+    ext      = img_file.split('.')[-1].lower()
+    img_path = os.getcwd() + '/static/svija/images/ff0000.'+ ext
+    img      = open(img_path, 'rb')
 
-#———————————————————————————————————————— check for redirects
+    response = FileResponse(img)
+    response.status_code = 404
+    return response
 
-  test_path = request.path[:-3] # get rid of screen code
+#———————————————————————————————————————— 3. is it a redirect?
 
   try:
-    redirect_obj = Redirect.objects.get(from_url=test_path, active=True)
+    redirect_obj = Redirect.objects.get(from_url=request.path, active=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_url)
   except ObjectDoesNotExist: pass
 
-#———————————————————————————————————————— get potential screen & language codes
 
-  lang_code   = ''
-  parts       = request.path[1:].split('/')
+#:::::::::::::::::::::::::::::::::::::::: it's definitely a missing page
+
+#———————————————————————————————————————— 4. is there a valid section code?
+
+  section_code = request.path[1:].split('/')[0]
+
+  if section_code != '':
+    try:
+      section = Section.objects.get(code=section_code)
+    except:
+      section_code = ''
+
+#———————————————————————————————————————— 5. get default if not
+
+  if section_code == '':
+    try:
+      section_code = Settings.objects.get(active=True).section.code
+    except:
+      response             = HttpResponse(msg_broken)
+      response.status_code = 404
+      return response
+
+#———————————————————————————————————————— 6. is there a valid screen code in a cookie?
 
   screen_code = request.COOKIES.get('screen_code')
-  if screen_code == None:
-    screen_code = ''
-
-  if len(parts) > 1:
-    screen_code = parts[-1]
-
-  if len(parts) > 2:
-    lang_code = parts[0]
-
-#———————————————————————————————————————— see if lang_code matches DB
-
-  try:
-    # codes correspond
-    language = Language.objects.get(code=lang_code)
-  except:
+  if screen_code == None: screen_code = ''
+ 
+  if screen_code != '':
     try:
-      # codes don't correspond, so use default
-      language  = Settings.objects.get(active=True).language
-      lang_code = language.code
+      screen = Screen.objects.get(code=screen_code)
     except:
-      # site settings are broken
-      response             = HttpResponse(broken)
+      pass
+
+#———————————————————————————————————————— 7. get default if not
+
+  if screen_code == '':
+    try:
+      screen_code = Screen.objects.first().code
+    except:
+      response             = HttpResponse(msg_broken)
       response.status_code = 404
       return response
 
-#———————————————————————————————————————— see if screen code matches DB
+#———————————————————————————————————————— have valid screen & section; get "missing" page
 
   try:
-    # codes correspond
-    screen  = Screen.objects.get(code=screen_code)
+    response = cached_page(request, section_code, 'missing', screen_code)
   except:
-    try:
-      # codes don't correspond, so get default
-      screen_code = 'mb'
-      screen      = Screen.objects.get(code=screen_code)
-    except:
-      response             = HttpResponse(broken)
-      response.status_code = 404
-      return response
-
-#———————————————————————————————————————— have valid screen & language; get "missing" page
-
-  try:
-    response = cached_page(request, lang_code, 'missing', screen_code)
-
-  except:
-    response = HttpResponse(missing)
+    response = HttpResponse(msg_missing)
 
   response.status_code = 404
   return response

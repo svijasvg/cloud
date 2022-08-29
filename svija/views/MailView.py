@@ -1,7 +1,7 @@
 #———————————————————————————————————————— MailView.py
 #
 #   remove references to address or name
-#   sender_info = language.mail_frm + ' ' + name + ' (' + addr + ')\n\n'
+#   sender_info = section.mail_frm + ' ' + name + ' (' + addr + ')\n\n'
 #   message = sender_info + message 
 #
 #———————————————————————————————————————— notes
@@ -19,7 +19,7 @@
 import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from svija.models import Language, Settings
+from svija.models import Section, Settings
 from modules import send_mail
 
 #———————————————————————————————————————— MailView(request):
@@ -27,7 +27,7 @@ from modules import send_mail
 def MailView(request):
 
   settings  = Settings.objects.filter(active=True).first()
-  language  = settings.language
+  section   = settings.section
   blacklist = ".*[\\|\^|\$|\||\*|\+|\[|\{|<|>]+.*"
 
 #———————————————————————————————————————— check for validity
@@ -45,21 +45,21 @@ def MailView(request):
   if re.match(blacklist, message):
     return HttpResponse('E2')
 
-#———————————————————————————————————————— get language from referrer
+#———————————————————————————————————————— get section from referrer
 
   referrer = request.META.get('HTTP_REFERER') # https://svija.love/en/try
   if referrer.count('/') > 3:
     parts = referrer.split('/')
     referring_code = parts[3]
-    ref_language = Language.objects.filter(code=referring_code).first()
-    if type(ref_language) is not type(None):
-      language = ref_language
+    ref_section = Section.objects.filter(code=referring_code).first()
+    if type(ref_section) is not type(None):
+      section = ref_section
 
-#———————————————————————————————————————— language-dependent parameters
+#———————————————————————————————————————— section-dependent parameters
 
-  to       = language.email
-  bcc      = language.bcc
-  subject  = language.subject
+  to       = section.email
+  bcc      = section.bcc
+  subject  = section.subject
 
 #———————————————————————————————————————— send message
 

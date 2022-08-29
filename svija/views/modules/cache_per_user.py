@@ -7,7 +7,6 @@
 from django.core.cache import cache
 from django.core.cache import cache as memcache
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
 from svija.models import Control
 
@@ -110,7 +109,7 @@ def cache_key(request):
     q.lists()
     urlencode = q.urlencode(safe='()')
 
-    return 'pageview_%s_%s' % (request.path, urlencode)
+    return 'pageview_%s_%s_%s' % (request.path, request.screen_code, urlencode)
 
 
 #———————————————————————————————————————— fin

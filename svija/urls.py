@@ -48,7 +48,7 @@ urlpatterns = [
 #   image_folder = '.*links'                  # image folder
 #   image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
 
-    re_path(r'^(?P<request_prefix>' + image_folder + ')/(?P<placed_file>' + image_file + ')$(?i)', views.LinksView),
+    re_path(r'^(?P<request_prefix>' + image_folder + ')/(?P<img_file>' + image_file + ')$(?i)', views.LinksView),
 
 #———————————————————————————————————————— SVG pages
 
@@ -70,10 +70,5 @@ urlpatterns = [
 
 
 ]
-
-#———————————————————————————————————————— unused but still in code
-
-#   path('lab', views.LabView),
-
 
 #———————————————————————————————————————— fin

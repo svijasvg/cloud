@@ -2,9 +2,9 @@
 
 #———————————————————————————————————————— notes
 #
-#   very similar:   get_page_scripts.py
+#   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_modules.py
+#                   get_page_scripts.py
 #                   get_scripts.py
 #
 #

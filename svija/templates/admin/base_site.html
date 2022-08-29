@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="Admin">
   <script src="{% static "admin/js/clear-cache.js" %}"></script>
+  <script src="{% static "admin/js/same-page.js" %}"></script>
 
 {% endblock %}
 
@@ -39,7 +40,7 @@
     {% endif %}
     <a href="javascript:clear()">Clear Cache</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
-    v2.2.19<br>
+    v2.2.20<br>
 
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}

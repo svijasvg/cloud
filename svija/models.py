@@ -1,7 +1,7 @@
 #———————————————————————————————————————— models.py
 
 # model names are SINGULAR
-# 252 language, permit unknown results — see link somewhere
+# 252 section, permit unknown results — see link somewhere
 
 #———————————————————————————————————————— random notes
 
@@ -78,17 +78,22 @@ class Font(models.Model):
         verbose_name_plural = "2.3 · Fonts"
         ordering = ['-active', 'category', 'family', 'style']
 
-#———————————————————————————————————————— Language · no dependencies
+#———————————————————————————————————————— Section · no dependencies
 
-# Create or retrieve a placeholder
+# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
 def get_sentinel_language():
-    return Language.objects.get_or_create(name="undefined",code="na")[0]
+    return Section.objects.get_or_create(name="undefined", code="na")[0]
 
 # Create an additional method to return only the id - default expects an id and not a Model object
 def get_sentinel_language_id():
     return get_sentinel_language().id
 
-class Language(models.Model):
+# https://stackoverflow.com/questions/73069401/how-to-get-django-admin-pulldown-list-to-just-show-the-first-order-by-item-ins
+# so section pulldown will have first element selected
+def get_default_section():
+  return Section.objects.first()
+
+class Section(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
@@ -126,16 +131,16 @@ class Language(models.Model):
         return self.name
     class Meta:
         ordering = ['order']
-        verbose_name_plural = "1.2 · Languages"
+        verbose_name_plural = "1.2 · Sections"
 
 #———————————————————————————————————————— Screen · no dependencies
 
 class Screen(models.Model):
-    name = models.CharField(max_length=200, default='')
-    code = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
-    order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    name    = models.CharField(max_length=200, default='')
+    code    = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
+    order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    pixels = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
@@ -144,19 +149,22 @@ class Screen(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['order']
+        ordering = ['width']
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
 
 #———————————————————————————————————————— Robots · no dependencies
 
-# Create or retrieve a placeholder
+# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
 def get_sentinel_robots():
     return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
 
 # Create an additional method to return only the id - default expects an id and not a Model object
 def get_sentinel_robots_id():
     return get_sentinel_robots().id
+
+def get_default_robots():
+  return Robots.objects.first()
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -165,6 +173,7 @@ class Robots(models.Model):
     def __str__(self):
         return self.name
     class Meta:
+        ordering = ['name']
         verbose_name = "robots.txt"
         verbose_name_plural = "3.3 · Robots.txt"
 
@@ -217,13 +226,13 @@ class Module(models.Model):
 
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, verbose_name='language')
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
     category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator filename (opt.)',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
     url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
@@ -257,13 +266,13 @@ class ModuleScript(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— Settings · Language & Robots
+#———————————————————————————————————————— Settings · Section & Robots
 
 class Settings(models.Model):
 
-		# https://stackoverflow.com/a/67298691/72958 & see language model for other necessary parts
-    robots        = models.ForeignKey(Robots,   default=get_sentinel_robots_id,   on_delete=models.SET(get_sentinel_language), verbose_name='robots.txt')
-    language      = models.ForeignKey(Language, default=get_sentinel_language_id, on_delete=models.SET(get_sentinel_language), verbose_name='default language')
+		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
+    robots        = models.ForeignKey(Robots,   default=get_default_robots,   on_delete=get_default_robots, verbose_name='robots.txt')
+    section       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
@@ -292,7 +301,7 @@ class Page(models.Model):
 
     published = models.BooleanField(default=True, verbose_name='published',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    language  = models.ForeignKey(Language, default=3, on_delete=models.PROTECT, )
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
     url       = models.CharField(max_length=200, default='', verbose_name='address')
 		# to rename
     category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
@@ -305,16 +314,16 @@ class Page(models.Model):
     title  = models.CharField(max_length=200, default='', blank=True)
 
     # accessibility
-    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='accessibility name')
+    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='link name')
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
-    suppress_modules = models.BooleanField(default=False, verbose_name='suppress default modules',)
-    suppress_scripts = models.BooleanField(default=False, verbose_name='suppress default scripts',)
+    incl_modules = models.BooleanField(default=True, verbose_name='default modules',)
+    incl_scripts = models.BooleanField(default=True, verbose_name='default scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
-    override = models.BooleanField(default=False, verbose_name='override default dimensions',)
+    default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
@@ -325,7 +334,7 @@ class Page(models.Model):
     def __str__(self):
         return self.url
     class Meta:
-        ordering = ['-published', 'url', 'language', 'screen', '-pub_date', ]
+        ordering = ['-published', 'url', 'section', 'screen', '-pub_date', ]
         verbose_name_plural = "2.2 · Pages"
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
@@ -358,7 +367,8 @@ class PageScript(models.Model):
         ordering = ["order"]
 
 class Illustrator(models.Model):
-    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+#   page = models.ForeignKey(Page, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
     filename = models.CharField(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     active = models.BooleanField(default=True, verbose_name='active',)

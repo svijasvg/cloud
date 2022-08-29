@@ -1,12 +1,12 @@
-//———————————————————————————————————————— template: languages.js
+//———————————————————————————————————————— template: sections.js
 //
 //   cookie would contain fr for example
 //   used by menus when one clicks on flag
 //
 //———————————————————————————————————————— redirect if 4 conditions are met
 
-// condition: visitor already chose language
-var cookie_code = getCookie('language_code');
+// condition: visitor already chose section
+var cookie_code = getCookie('section_code');
 
 var x = 'h'+document.referrer;
 var referring_host = x.split('/')[2];
@@ -19,7 +19,7 @@ var path_parts = location.href.split('/');
 var cond1 =       cookie_code != '';
 var cond2 =    referring_host != current_host;
 var cond3 = path_parts.length == 4;
-var cond4 =       cookie_code != language_code;
+var cond4 =       cookie_code != section_code;
 
 //———————————————————————————————————————— redirect if appropriate
 
@@ -29,7 +29,7 @@ if (cond1 && cond2 && cond3 && cond4){
 
 //———————————————————————————————————————— function
 
-function chooseLanguage(code){
-  setCookie('language_code', code, 7);
+function chooseSection(code){
+  setCookie('section_code', code, 7);
   location.href = '/' + code;
 }

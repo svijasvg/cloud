@@ -244,21 +244,21 @@ div.description a:active{
 /*———————————————————————————————————————— model list 1.x · global settings */
 
 tr.model-settings,
-tr.model-language,
+tr.model-section,
 tr.model-screen{
     background-color:var(--bg-med) !important;
        border-radius:5px;
 }
 
 tr.model-settings a:link, tr.model-settings a:visited,
-tr.model-language a:link, tr.model-language a:visited,
+tr.model-section a:link, tr.model-section a:visited,
 tr.model-screen   a:link, tr.model-screen   a:visited{
               color:var(--text-dark);
     text-decoration:none;
 }
 
 tr.model-settings a:hover, tr.model-settings a:active,
-tr.model-language a:hover, tr.model-language a:active,
+tr.model-section a:hover, tr.model-section a:active,
 tr.model-screen   a:hover, tr.model-screen   a:active{
               color:var(--text-dark);
     text-decoration:underline;
@@ -541,9 +541,27 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— drag & drop hints */
 
-div.fieldBox.field-filename input, /* module                    */
-td.field-filename input{           /* page                      */
-	border:solid 3px #F9991F;        /* matches red Delete button */
+div.fieldBox.field-filename input, /* module           */
+td.field-filename input{           /* page             */
+  border:3px solid #F9991F;        /* matches AI color */
+  background-color:#F9EEE0;
+}
+
+div.fieldBox.field-filename input:focus, /* module           */
+td.field-filename input:focus{           /* page             */
+  border:3px solid #F9991F;        /* matches AI color */
+  outline:3px solid #F9991F;
+}
+
+/*———————————————————————————————————————— date picker */
+
+.calendar td.selected a { /* selected */
+    background: var(--accent) !important;
+}
+
+.calendar td a:focus, .timelist a:focus, /* mouseover */
+.calendar td a:hover, .timelist a:hover {
+    background: var(--accent) !important;
 }
 
 

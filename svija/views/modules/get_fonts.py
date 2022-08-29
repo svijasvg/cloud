@@ -3,16 +3,20 @@
 # by default all fonts are included
 # svg_cleaner adds fonts only if they're not already in DB
 
+# if there's a global list of fonts in PageView
+# svg cleaner can add to it
+# and this function can use it IF it's after svg cleaner
+
 from svija.models import Font
 
 #ef get_fonts(core_content):
 def get_fonts():
-    font_objs = Font.objects.all()
-    css_str  = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
-    link_str = '\n  <link rel="stylesheet" href="{}" />'
-    font_css = ''
+    font_objs    = Font.objects.all()
+    css_str      = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
+    link_str     = '\n  <link rel="stylesheet" href="{}" />'
+    font_css     = ''
     google_fonts = []
-    font_link = ''
+    font_link    = ''
 
     for this_font in font_objs:
         if this_font.active:
