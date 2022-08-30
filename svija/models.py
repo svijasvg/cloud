@@ -286,7 +286,8 @@ class Settings(models.Model):
 
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
     robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
-    section       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
+    #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
+    section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
