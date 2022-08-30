@@ -80,7 +80,7 @@ class Font(models.Model):
 
 #———————————————————————————————————————— Section · no dependencies
 
-# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
+# Create or retrieve a placeholder
 def get_sentinel_language():
     return Section.objects.get_or_create(name="undefined", code="na")[0]
 
@@ -88,10 +88,21 @@ def get_sentinel_language():
 def get_sentinel_language_id():
     return get_sentinel_language().id
 
+# Create or retrieve a placeholder
+def get_sentinel_section():
+    return Section.objects.get_or_create(name="undefined", code="na")[0]
+
+# Create an additional method to return only the id - default expects an id and not a Model object
+def get_sentinel_section_id():
+    return get_sentinel_section().id
+
 # https://stackoverflow.com/questions/73069401/how-to-get-django-admin-pulldown-list-to-just-show-the-first-order-by-item-ins
 # so section pulldown will have first element selected
 def get_default_section():
   return Section.objects.first()
+
+def get_default_section_id():
+  return Section.objects.first().id
 
 class Section(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -165,6 +176,9 @@ def get_sentinel_robots_id():
 
 def get_default_robots():
   return Robots.objects.first()
+
+def get_default_robots_id():
+  return Robots.objects.first().id
 
 class Robots(models.Model):
     name = models.CharField(max_length=200, default='')
@@ -271,8 +285,9 @@ class ModuleScript(models.Model):
 class Settings(models.Model):
 
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
-    robots        = models.ForeignKey(Robots,   default=get_default_robots,   on_delete=get_default_robots, verbose_name='robots.txt')
-    section       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
+    robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
+    #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
+    section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
 
     active        = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
@@ -395,4 +410,3 @@ class AdditionalScript(models.Model):
 
 
 #———————————————————————————————————————— fin
-
