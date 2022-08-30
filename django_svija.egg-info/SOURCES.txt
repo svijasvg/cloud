@@ -9,6 +9,7 @@ django_svija.egg-info/top_level.txt
 svija/__init__.py
 svija/admin.py
 svija/apps.py
+svija/models-new.py
 svija/models.py
 svija/tests.py
 svija/urls.py
@@ -245,6 +246,8 @@ svija/migrations/0228_rename_language_settings_section.py
 svija/migrations/0229_auto_20220722_1711.py
 svija/migrations/0230_auto_20220722_1715.py
 svija/migrations/0231_alter_page_accessibility_name.py
+svija/migrations/0232_alter_settings_robots.py
+svija/migrations/0233_alter_settings_section.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
