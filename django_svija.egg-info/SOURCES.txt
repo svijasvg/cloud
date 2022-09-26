@@ -9,7 +9,6 @@ django_svija.egg-info/top_level.txt
 svija/__init__.py
 svija/admin.py
 svija/apps.py
-svija/models-new.py
 svija/models.py
 svija/tests.py
 svija/urls.py
@@ -248,6 +247,9 @@ svija/migrations/0230_auto_20220722_1715.py
 svija/migrations/0231_alter_page_accessibility_name.py
 svija/migrations/0232_alter_settings_robots.py
 svija/migrations/0233_alter_settings_section.py
+svija/migrations/0234_alter_section_default_page.py
+svija/migrations/0235_alter_settings_mail_port.py
+svija/migrations/0236_auto_20220926_1515.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
@@ -285,6 +287,7 @@ svija/static/svija/images/ff0000.jpg
 svija/static/svija/images/ff0000.png
 svija/static/svija/scripts/TweenMax-2.0.2.js
 svija/static/svija/scripts/gsap.min.js
+svija/static/svija/scripts/gsap.min.js.bk
 svija/templates/admin/.base_site.html.un~
 svija/templates/admin/base_site.html
 svija/templates/admin/submit_line.html
