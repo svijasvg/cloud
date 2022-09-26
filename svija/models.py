@@ -107,7 +107,7 @@ def get_default_section_id():
 class Section(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
-    default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
+    default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=True,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
@@ -407,6 +407,7 @@ class AdditionalScript(models.Model):
         verbose_name = "additional script"
         verbose_name_plural = "additional scripts"
         ordering = ["order"]
+
 
 
 #———————————————————————————————————————— fin
