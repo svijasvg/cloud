@@ -107,7 +107,7 @@ def get_default_section_id():
 class Section(models.Model):
     name = models.CharField(max_length=100, default='')
     code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
-    default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=True,)
+    default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=True,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
@@ -201,7 +201,7 @@ class Script(models.Model):
     always       = models.BooleanField(default=False, verbose_name='always include',)
 		# to rename
     category     = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     def __unicode__(self):
@@ -248,7 +248,7 @@ class Module(models.Model):
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
-    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='position')
@@ -301,7 +301,7 @@ class Settings(models.Model):
     mail_id       = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
     mail_pass     = models.CharField(max_length=200, default='', verbose_name='password for sending email',blank=True,)
     mail_srv      = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
-    mail_port     = models.IntegerField(default=0, verbose_name='email server port')
+    mail_port     = models.IntegerField(default=0, verbose_name='email server port', blank=True,)
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
     def __str__(self):
@@ -407,6 +407,7 @@ class AdditionalScript(models.Model):
         verbose_name = "additional script"
         verbose_name_plural = "additional scripts"
         ordering = ["order"]
+
 
 
 #———————————————————————————————————————— fin
