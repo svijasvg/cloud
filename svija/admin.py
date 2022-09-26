@@ -61,7 +61,7 @@ admin.site.register(Font, FontAdmin)
 
 #———————————————————————————————————————— Section · no dependencies
 
-descSection  = " Website sections · see also <a href='/admin/svija/responsive/'>screen sizes</a>."
+descSection  = " Website sections · see also <a href='/admin/svija/screen/'>screen sizes</a>."
 
 from .models import Section
 class SectionAdmin(admin.ModelAdmin):
