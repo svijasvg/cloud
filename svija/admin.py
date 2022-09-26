@@ -146,8 +146,8 @@ class ScriptAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-     ('NAME & FILENAME', {'fields': [('name', 'active',),('category', 'always',), ], 'description':descScript0, }),
-     ('INSTRUCTIONS'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
+     ('name & filename', {'fields': [('name', 'active',),('category', 'always',), ], 'description':descScript0, }),
+     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
   ]   
 
   inlines = [ScriptScriptsInline]
@@ -185,9 +185,9 @@ class ModuleAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-     ('Name & Filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
-     ('Instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-     ('Placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
+     ('name & filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
+     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
+     ('placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
   ]   
 
   inlines = [ModuleScriptInline]
@@ -288,7 +288,7 @@ class PageAdmin(admin.ModelAdmin):
                      ('url', 'screen'),
                      ('title', 'section'),
                     ],'description':descPages, }),
-    ('More Settings',  {'fields': [
+    ('more settings',  {'fields': [
                  ('category','incl_modules','incl_scripts',),
                  ('width', 'offsetx', 'default_dims',),
                  ('visible', 'offsety',),
