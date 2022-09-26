@@ -201,7 +201,7 @@ class Script(models.Model):
     always       = models.BooleanField(default=False, verbose_name='always include',)
 		# to rename
     category     = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     def __unicode__(self):
@@ -248,7 +248,7 @@ class Module(models.Model):
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
-    url          = models.CharField(max_length=60, default='',blank=True,  verbose_name='link',)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='position')
