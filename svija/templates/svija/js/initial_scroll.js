@@ -57,3 +57,7 @@ var pinched = zoom_levels.indexOf(current_zoom) < 0 && firefox;
 //———————————————————————————————————————— set the rem unit
 
 document.documentElement.style.fontSize = illustrator_pixel + 'px';
+
+// makes centered over-width pages appear centered on load instead of centering late
+var pix_width = page_width * illustrator_pixel;
+initial_scroll_div.style.width = pix_width+'px';
