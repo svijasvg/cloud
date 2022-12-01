@@ -33,6 +33,7 @@ svg{
 
 * {
   box-sizing: border-box; /* width & height include padding & borders */
+  text-rendering: geometricPrecision;
 }
 
 pre#noscript, pre#nocookie, pre#explorer{
