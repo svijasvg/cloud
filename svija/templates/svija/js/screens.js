@@ -32,11 +32,13 @@ for (var x=0; x<all_screens.length; x++){
 
 //———————————————————————————————————————— set cookie & redirect
 
-var cvalue = getCookie('screen_code');
-setCookie('screen_code', correct_screen_code, 7);
-
-if (screen_code != correct_screen_code){
-  history.scrollRestoration = 'manual';
-  console.log('redirecting to '+correct_screen_code);
-  window.location.replace(document.URL);
+if (cookiesEnabled){
+  var cvalue = getCookie('screen_code');
+  setCookie('screen_code', correct_screen_code, 7);
+  
+  if (screen_code != correct_screen_code){
+    history.scrollRestoration = 'manual';
+    console.log('redirecting to '+correct_screen_code);
+    window.location.replace(document.URL);
+  }
 }

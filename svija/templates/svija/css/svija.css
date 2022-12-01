@@ -34,3 +34,7 @@ svg{
 * {
   box-sizing: border-box; /* width & height include padding & borders */
 }
+
+pre#noscript, pre#nocookie, pre#explorer{
+  display:none;
+}

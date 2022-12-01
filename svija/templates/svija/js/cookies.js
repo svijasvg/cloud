@@ -1,4 +1,4 @@
-//———————————————————————————————————————— template: cookies.js
+//———————————————————————————————————————— main programs
 
 // same code in static/admin/js/same-page.js
 //              templates/svija/js/cookies.js
@@ -39,4 +39,18 @@ function deleteParentCookieIfNecessary(cname, domain){
     var domain = parts.slice(-2).join('.');
     document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
   }
+}
+
+
+// https://stackoverflow.com/questions/63471777/testing-function-which-checks-if-cookies-are-enabled-with-qunit
+
+function cookiesEnabled() {
+
+  if (navigator.cookieEnabled) {
+      document.cookie = "test_cookie";
+      if (document.cookie.indexOf("test_cookie") != -1)
+        return true;
+  }
+
+  return false;
 }

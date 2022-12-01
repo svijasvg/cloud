@@ -1,6 +1,14 @@
 <noscript>
   <link rel="stylesheet" href="/static/svija/css/unsupported.css">
-  <pre>
+</noscript>
+<script>
+
+if (!cookiesEnabled()){
+   document.head.innerHTML += '<link rel="stylesheet" href="/static/svija/css/nocookie.css">';
+}
+
+</script>
+<pre id=noscript>
 
 
 
@@ -9,11 +17,24 @@
         Please enable javascript then reload,
         or visit with a different browser.
 
-  </pre>
-</noscript>
+</pre>
+<pre id=nocookie>
 
-<script>
 
-/* test for no cookies or IE */
 
-</script>
+        This website requires the use of cookies.
+
+        Please enable cookies then reload,
+        or visit with a different browser.
+
+</pre>
+<pre id=explorer>
+
+
+
+        This website does not support Internet Explorer.
+
+        Please enable javascript then reload,
+        or visit with a different browser.
+
+</pre>

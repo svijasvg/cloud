@@ -1,0 +1,18 @@
+html, body{
+  background-color:white;
+}
+
+body{
+  overflow:hidden;
+}
+
+#accessibility, svg, form, div, p{
+  display:none;
+}
+
+pre#nocookie, pre#noscript{
+  display:none;
+
+pre#noexplorer{
+  display:block;
+}

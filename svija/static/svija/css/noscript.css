@@ -9,3 +9,10 @@ body{
 #accessibility, svg, form, div, p{
   display:none;
 }
+
+pre#noexplorer, pre#nocookie{
+  display:none;
+
+pre#noscript{
+  display:block;
+}
