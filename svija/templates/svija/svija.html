@@ -14,27 +14,20 @@
 {{ meta_fonts }}
   <meta name="apple-mobile-web-app-title" content="{{ touch }}">
   <meta property="og:image" content="/images/capture.jpg">
-  <script>
+<script>
 
 page_loaded = false;
 
-{{ system_js }}
-{% include "svija/js/cookies.js" %}
-{% include "svija/js/screens.js" %}
-{% include "svija/js/rem.js" %}
-{% include "svija/js/sections.js" %}
-{% include "svija/js/on_resize.js" %}
+{{ system_js                           }}
+{% include "svija/js/cookies.js"       %}
+{% include "svija/js/screens.js"       %}
+{% include "svija/js/rem.js"           %}
+{% include "svija/js/sections.js"      %}
+{% include "svija/js/on_resize.js"     %}
 {% include "svija/js/tap_highlight.js" %}
-{{ js }}
+{{ js                                  }}
 
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
-  <script>
-
-{% include "svija/js/analytics.js" %}
-
-  </script>
-  <script src="{% static 'svija/scripts/gsap.min.js' %}"></script>
+</script>
 
 <style>
 
@@ -42,7 +35,23 @@ page_loaded = false;
 {{ font_css }}
 {{ css }}
 
-</style></head><body><script>
+</style>
+
+<!-- Google's script with IF added -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
+<script>
+
+	if (tracking_on || getCookie('acceptsCookies')==1){ // added to script from Google
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ analytics_id }}');
+	} // added to script from Google
+
+</script>
+<script src="{% static 'svija/scripts/gsap.min.js' %}"></script>
+</head><body><script>
 
 {% include "svija/js/initial_scroll.js" %}
 
