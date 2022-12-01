@@ -32,7 +32,7 @@ for (var x=0; x<all_screens.length; x++){
 
 //———————————————————————————————————————— set cookie & redirect
 
-if (cookiesEnabled){
+if (cookiesEnabled()){
   var cvalue = getCookie('screen_code');
   setCookie('screen_code', correct_screen_code, 7);
   

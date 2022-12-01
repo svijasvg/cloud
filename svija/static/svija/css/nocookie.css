@@ -1,5 +1,5 @@
 html, body{
-  background-color:blue;
+  background-color:white;
 }
 
 body{
@@ -12,7 +12,9 @@ body{
 
 pre#noexplorer, pre#noscript{
   display:none;
+}
 
 pre#nocookie{
+  font-size:16px;
   display:block;
 }

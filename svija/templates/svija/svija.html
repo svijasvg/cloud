@@ -50,23 +50,20 @@ page_loaded = false;
 	} // added to script from Google
 
 </script>
-<script src="{% static 'svija/js/gsap.min.js'    %}"></script>
+<script src="{% static 'svija/js/gsap.min.js' %}"></script>
 </head><body>
 {% include "svija/html/unsupported.html" %}
-<script>
-
-{% include "svija/js/initial_scroll.js" %}
-
-</script><div id=accessibility>{{ accessible }}</div>
-
+<script>{% include "svija/js/initial_scroll.js" %}</script>
+<div id=accessibility>{{ accessible }}</div>
 {% block token%}{% endblock %}
+
 {{ body }}
 
 <script>
 
   {% include "svija/js/page_background.js" %}
 
-  document.getElementById("initial_scroll_div").outerHTML = "";
+  document.getElementById('initial_scroll_div').outerHTML = '';
   page_loaded = true;
 
 </script></body></html>{% endautoescape %}

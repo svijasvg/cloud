@@ -12,7 +12,9 @@ body{
 
 pre#noexplorer, pre#nocookie{
   display:none;
+}
 
 pre#noscript{
+  font-size:16px;
   display:block;
 }
