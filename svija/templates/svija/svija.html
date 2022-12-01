@@ -51,7 +51,7 @@ page_loaded = false;
 
 </script>
 <script src="{% static 'svija/js/gsap.min.js'    %}"></script>
-<script src="{% static 'svija/js/unsupported.js' %}"></script>
+{% include "svija/html/unsupported.html" %}
 </head><body><script>
 
 {% include "svija/js/initial_scroll.js" %}

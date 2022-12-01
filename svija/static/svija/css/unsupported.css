@@ -1,11 +1,11 @@
-#unsupported{
- background-color:red;
- }
+html, body{
+  background-color:white;
+}
 
- svg{
- display:none;
- }
+body{
+  overflow:hidden;
+}
 
- #accessibility{
- display:none;
- }
+#accessibility, svg, form, div, p{
+  display:none;
+}
