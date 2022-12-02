@@ -113,9 +113,9 @@ def calculate_css(this_svg):
 #———————————————————————————————————————— dic_position(pos):
 
 def dic_position(pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
+    if pos != 'attached' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     return {
-        'absolute': 'position: absolute;\n',
+        'attached': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
         'none'        : '',
     }[pos]
@@ -123,7 +123,7 @@ def dic_position(pos):
 #———————————————————————————————————————— dic_corners(cor, pos):
 
 def dic_corners(cor, pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
+    if pos != 'attached' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     if pos ==  'none': return ''
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
@@ -144,11 +144,11 @@ def purify(inp):
 #———————————————————————————————————————— fin
 
 # extra info
-#   positions = ('absolute', 'floating', 'none',)
+#   positions = ('attached', 'floating', 'none',)
 #   corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 #   css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
-#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='placement')
 #   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
 #   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)
