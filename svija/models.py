@@ -47,7 +47,7 @@ class Control(models.Model):
 #———————————————————————————————————————— Redirect · no dependencies
 
 class Redirect(models.Model): 
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
     to_url = models.CharField(max_length=200, default='', verbose_name='new URL')
 
@@ -66,7 +66,7 @@ class Font(models.Model):
     woff     = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
     google   = models.BooleanField(default=True, verbose_name='Google font',)
-    active   = models.BooleanField(default=True, verbose_name='active',)
+    enabled  = models.BooleanField(default=True, verbose_name='enabled',)
 
 		# to rename
     category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
@@ -76,7 +76,7 @@ class Font(models.Model):
     class Meta:
         verbose_name = "font"
         verbose_name_plural = "2.3 · Fonts"
-        ordering = ['-active', 'category', 'family', 'style']
+        ordering = ['-enabled', 'category', 'family', 'style']
 
 #———————————————————————————————————————— Section · no dependencies
 
@@ -152,7 +152,7 @@ class Screen(models.Model):
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',)
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Artboard pixel width',)
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width',)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
@@ -197,7 +197,7 @@ class Robots(models.Model):
 class Script(models.Model):
 
     name         = models.CharField(max_length=200, default='')
-    active       = models.BooleanField(default=True, verbose_name='active',)
+    enabled      = models.BooleanField(default=True, verbose_name='enabled',)
     always       = models.BooleanField(default=False, verbose_name='always include',)
 		# to rename
     category     = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
@@ -209,18 +209,18 @@ class Script(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'category', 'name', ]
+        ordering = ['-enabled', 'category', 'name', ]
         verbose_name_plural = "3.1 · Script Sets"
 
 #———————————————————————————————————————— script scripts · script
 
 class ScriptScripts(models.Model):
-    script = models.ForeignKey(Script, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
+    script  = models.ForeignKey(Script, on_delete=models.CASCADE)
+    type    = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
+    name    = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    order   = models.IntegerField(default=0, verbose_name='load order')
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.name
     class Meta:
@@ -236,7 +236,7 @@ corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 class Module(models.Model):
 
     name      = models.CharField(max_length=200, default='')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
 
     always    = models.BooleanField(default=False, verbose_name='always include',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
@@ -261,7 +261,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-active', 'category', 'order', 'name', 'screen',]
+        ordering = ['-enabled', 'category', 'order', 'name', 'screen',]
         verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
@@ -272,7 +272,7 @@ class ModuleScript(models.Model):
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
     order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.name
     class Meta:
@@ -289,7 +289,7 @@ class Settings(models.Model):
     #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
     section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
 
-    active        = models.BooleanField(default=True, verbose_name='online',)
+    enabled       = models.BooleanField(default=True, verbose_name='online',)
     url           = models.CharField(max_length=200, default='', verbose_name='site address',)
     p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
 
@@ -339,7 +339,7 @@ class Page(models.Model):
     script = models.ManyToManyField(Script, through='PageScript')
 
     default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
-    width    = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator width')
+    width    = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
     offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
@@ -360,7 +360,7 @@ class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     zindex = models.IntegerField(default=0, verbose_name='z index')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.module.name
     class Meta:
@@ -373,7 +373,7 @@ class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     script = models.ForeignKey(Script, on_delete=models.CASCADE)
     order  = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.script.name
     class Meta:
@@ -386,7 +386,7 @@ class Illustrator(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
     filename = models.CharField(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.filename
     class Meta:
@@ -400,7 +400,7 @@ class AdditionalScript(models.Model):
     name = models.CharField(max_length=200, default='')
     content = models.TextField(max_length=50000, default='', verbose_name='content',)
     order = models.IntegerField(default=0, verbose_name='load order')
-    active = models.BooleanField(default=True, verbose_name='active',)
+    enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.name
     class Meta:
