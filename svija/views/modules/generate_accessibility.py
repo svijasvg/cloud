@@ -1,4 +1,6 @@
 #———————————————————————————————————————— generate_accessibility.py
+
+#———————————————————————————————————————— notes
 #
 #    see also SitemapView.py
 #
@@ -18,7 +20,6 @@ from svija.models import Settings
 def generate_accessibility(url, pages, page):
 
   links = prev  = ''
-  debug = 'debug\n'
 
 #———————————————————————————————————————— get default section w/code
 
@@ -34,35 +35,24 @@ def generate_accessibility(url, pages, page):
 
     # if we don't need to include section in url
     if page_section_code == default_code:
-      tag = '<a href=http://{0}/{2}>{3}</a> · '
+      tag = '<a href=http://{0}/{2}>{3}</a> · '       # exclude section
 
     # if we DO need to include section in url
     else:
-      tag = '<a href="http://{0}/{1}{2}">{3}</a> · '
+      tag = '<a href="http://{0}/{1}{2}">{3}</a> · ' # include section
+
+    name = this_page.accessibility_name
+    if name == '': name = 'link'
 
 #———————————————————————————————————————— add any pages that aren't dupes (cp/mb) or "missing"
 
     if this_page.url != 'missing' and this_page.url != prev:
 
-        # if page_section_code = active_section, ADD it
+        if this_page.url == this_page.section.default_page:
+          links += tag.format(url,page_section_code,'',name)
 
-        # else
-
-        # if page = section(page_section_code).default add it
-
-
-        if page_section_code == active_section:
-          links += tag.format(url,page_section_code,'/'+this_page.url,this_page.accessibility_name)
-
-        elif this_page.url == this_page.section.default_page:
-          links += 'xxx' + tag.format(url,page_section_code,'',this_page.accessibility_name)
-
-
-
-
-
-
-#       links += tag.format(url,page_section_code,this_page.url,this_page.accessibility_name)
+        elif page_section_code == active_section:
+          links += tag.format(url,page_section_code+'/',this_page.url,name)
 
 #———————————————————————————————————————— keep url to exclude from next cycle
 
@@ -75,6 +65,7 @@ def generate_accessibility(url, pages, page):
   tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
   results = tag.format(text,links,url,capture)
 
-  return '\n\n'+debug+'\n\n'+results
+  return results
+
 
 #———————————————————————————————————————— fin
