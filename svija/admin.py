@@ -96,7 +96,7 @@ class ScreenAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     ('details',{'fields': [('name', 'pixels',),('code',  'order'),],'description':descScreens,}),
-    ('dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
+    ('pixel dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
 #     ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
   ]   
 

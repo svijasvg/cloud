@@ -153,9 +153,9 @@ class Screen(models.Model):
 
     pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width',)
-    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
-    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
-    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
+    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
+    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
+    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     def __str__(self):
         return self.name
