@@ -301,7 +301,7 @@ class Settings(models.Model):
     mail_id       = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
     mail_pass     = models.CharField(max_length=200, default='', verbose_name='password for sending email',blank=True,)
     mail_srv      = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
-    mail_port     = models.IntegerField(default=0, verbose_name='email server port', blank=True,)
+    mail_port     = models.IntegerField(default=0, verbose_name='email server port', null=True, blank=True,)
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
 
     def __str__(self):
