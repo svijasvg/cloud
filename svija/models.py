@@ -230,7 +230,7 @@ class ScriptScripts(models.Model):
 
 #———————————————————————————————————————— Module · no dependencies
 
-positions = ('absolute', 'floating', 'none',)
+positions = ('attached', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 class Module(models.Model):
@@ -251,7 +251,7 @@ class Module(models.Model):
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
-    position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='position')
+    position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='position')
     corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
     offsetx  = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
     offsety  = models.FloatField(default=0, verbose_name='vertical offset (px)',)
