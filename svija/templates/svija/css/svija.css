@@ -12,9 +12,8 @@ svg{
     overflow:hidden;   /* necessary for IE */
 }
 
- svg:first-of-type{
-     width: 100%;   /* avoids flash when SVG is resized */
-}
+/* avoids flash when SVG is resized */
+svg:first-of-type{ width: 100%; }
 
 #accessibility{ /* positioning */
   position:absolute;
@@ -31,11 +30,12 @@ svg{
   color: #999;
 }
 
-* {
-  box-sizing: border-box; /* width & height include padding & borders */
-  text-rendering: geometricPrecision;
+/* width & height include padding & borders */
+* { box-sizing: border-box; }
+
+/* smooth font scaling in Safari */
+@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+  * { text-rendering: geometricPrecision; }
 }
 
-pre#noscript, pre#nocookie, pre#explorer{
-  display:none;
-}
+pre#noscript, pre#nocookie, pre#explorer{ display:none; }
