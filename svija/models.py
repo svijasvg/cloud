@@ -148,11 +148,11 @@ class Section(models.Model):
 
 class Screen(models.Model):
     name    = models.CharField(max_length=200, default='')
-    code    = models.CharField(max_length=2, default='', blank=True, verbose_name='two-letter code',)
+    code    = models.CharField(max_length=2, default='', verbose_name='two-letter code',)
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',blank=True,)
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Illustrator pixel width',blank=True,)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',)
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name='Artboard pixel width',)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width in pixels')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x in pixels')
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y in pixels')
