@@ -19,7 +19,7 @@ def get_fonts():
     font_link    = ''
 
     for this_font in font_objs:
-        if this_font.active:
+        if this_font.enabled:
             svg_ref = this_font.svg_ref
             font_src  = this_font.woff
 

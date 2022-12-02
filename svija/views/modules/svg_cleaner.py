@@ -34,8 +34,8 @@ def clean(file_path, svg_filename, use_p3):
   #                                     used fonts will be added to
   #                                     fonts_to_add
 
-  goog_fonts  = Font.objects.filter(Q(active=True) & Q(google=True ))
-  file_fonts  = Font.objects.filter(Q(active=True) & Q(google=False))
+  goog_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=True ))
+  file_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=False))
   fonts_to_add  = []
 
   #———————————————————————————————————————— read SVG file
@@ -151,7 +151,7 @@ def clean(file_path, svg_filename, use_p3):
 
   for css_ref in fonts_to_add:
     new_font = create_new_font(css_ref, Font())
-    p = Font.objects.create(svg_ref = new_font.svg_ref, family = new_font.family, style=new_font.style, woff=new_font.woff, google=False, active=True)
+    p = Font.objects.create(svg_ref = new_font.svg_ref, family = new_font.family, style=new_font.style, woff=new_font.woff, google=False, enabled=True)
     p.save
 
   #———————————————————————————————————————— add new ID if necessary

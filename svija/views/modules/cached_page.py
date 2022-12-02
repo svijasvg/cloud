@@ -50,7 +50,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
-  settings    = Settings.objects.filter(active=True).first()
+  settings    = Settings.objects.filter(enabled=True).first()
   section    = Section.objects.filter(code=section_code).first()
 
   # now called screen
@@ -86,7 +86,7 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
 
-  page_scripts_raw = page.pagescript_set.filter(active=True).order_by('order')
+  page_scripts_raw = page.pagescript_set.filter(enabled=True).order_by('order')
   page_scripts = get_page_scripts('page-specified scripts', page_scripts_raw)
   content_blocks.extend(page_scripts)
 
@@ -95,7 +95,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
-  page_modules_raw = page.pagemodule_set.filter(active=True).order_by('zindex')
+  page_modules_raw = page.pagemodule_set.filter(enabled=True).order_by('zindex')
 
   page_modules = get_page_modules('page modules', page_modules_raw, section_code, screen_code, page, page_width, use_p3)
 
@@ -104,14 +104,14 @@ def cached_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— "always include" modules
 
   if page.incl_modules:
-    screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
+    screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
     module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
     content_blocks.extend(module_content)
 
    #———————————————————————————————————————— "always include" scripts
 
   if page.incl_scripts:
-    screen_scripts = Script.objects.filter(Q(active=True) & Q(always=True))
+    screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
     script_content = get_scripts('always-include scripts', screen_scripts)
     content_blocks.extend(script_content)
 

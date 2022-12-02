@@ -280,7 +280,7 @@ class PageAdmin(admin.ModelAdmin):
     return qs.prefetch_related('illustrator_fk')
 
   def illustrator_file(self,obj):
-    return obj.illustrator_fk.filter(eanbled=True).first()
+    return obj.illustrator_fk.filter(enabled=True).first()
 
   fieldsets = [ 
     ('setup',      {'fields': [

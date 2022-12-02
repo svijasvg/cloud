@@ -17,23 +17,23 @@ def scripts_to_page_obj(label, script_list, svg_passthrough, css_dimensions):
     css += css_dimensions
 
     for this_script in script_list:
-        if this_script.type == 'head JS' and this_script.active == True:
+        if this_script.type == 'head JS' and this_script.enabled == True:
             comm_head_js = '\n\n//' + label + '\n\n'
             head_js += get_script('js', this_script.name, this_script.content)
 
-        if this_script.type == 'CSS' and this_script.active == True:
+        if this_script.type == 'CSS' and this_script.enabled == True:
             comm_css = '\n\n/*' + label + ' */\n\n'
             css += get_script('css', this_script.name, this_script.content)
 
-        if this_script.type == 'body JS' and this_script.active == True:
+        if this_script.type == 'body JS' and this_script.enabled == True:
             comm_body_js = '\n\n//' + label + '\n\n'
             body_js += get_script('js', this_script.name, this_script.content)
 
-        if this_script.type == 'HTML' and this_script.active == True:
+        if this_script.type == 'HTML' and this_script.enabled == True:
             comm_html = '\n\n<!-- ' + label + ' -->\n\n'
             html += get_script('html', this_script.name, this_script.content)
 
-        if this_script.type == 'form' and this_script.active == True:
+        if this_script.type == 'form' and this_script.enabled == True:
             comm_form = '\n\n<!-- ' + label + ' -->\n\n'
             form += get_script('html', this_script.name, this_script.content)
 

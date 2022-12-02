@@ -26,7 +26,7 @@ from modules import send_mail
 
 def MailView(request):
 
-  settings  = Settings.objects.filter(active=True).first()
+  settings  = Settings.objects.filter(enabled=True).first()
   section   = settings.section
   blacklist = ".*[\\|\^|\$|\||\*|\+|\[|\{|<|>]+.*"
 

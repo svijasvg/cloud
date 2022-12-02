@@ -7,7 +7,7 @@
 #                   get_page_scripts.py
 #                   get_scripts.py
 #
-#   accepts a list of modules, some inactive
+#   accepts a list of modules, some disabled
 #   a module has exactly 1 svg filename, and it can be empty
 #
 #
@@ -24,7 +24,7 @@ from PageView import page_obj
 
 #———————————————————————————————————————— def get_page_modules(label, page_modules, section_code, screen_code, page, page_width, use_p3):
 
-# page.pagemodule_set.filter(active=True).order_by('zindex')
+# page.pagemodule_set.filter(enabled=True).order_by('zindex')
 
 def get_page_modules(label, page_modules, section_code, screen_code, page, page_width, use_p3):
 
@@ -50,12 +50,12 @@ def get_page_modules(label, page_modules, section_code, screen_code, page, page_
 
 #———————————————————————————————————————— deactivate from page?
 
-      if this_group.active:
+      if this_group.enabled:
 
 #———————————————————————————————————————— iterate through scripts
 
         for this_script in this_group.modulescript_set.all():
-          if this_script.active:
+          if this_script.enabled:
     
             if this_script.type == 'head JS':
               hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'

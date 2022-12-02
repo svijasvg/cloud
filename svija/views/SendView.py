@@ -27,7 +27,7 @@ def SendView(request):
     response.status_code = 404
     return response
 
-  settings = get_object_or_404(Settings, active=True)
+  settings = get_object_or_404(Settings, enabled=True)
 
   subject  = "⚠️ test email from " + settings.url
   to     = request.GET.get('to', '')

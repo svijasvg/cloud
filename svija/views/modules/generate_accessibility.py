@@ -14,7 +14,7 @@ from svija.models import Settings
 #———————————————————————————————————————— program
 
 def generate_accessibility(domain, pages, page):
-  settings = get_object_or_404(Settings,active=True)
+  settings = get_object_or_404(Settings,enabled=True)
   default_code = settings.section.code
 
   links = prev  = ''
