@@ -50,9 +50,8 @@ def MailView(request):
   settings  = Settings.objects.filter(enabled=True).first()
   section   = settings.section
   blacklist = ".*[\\|\^|\$|\||\*|\+|\[|\{|<|>]+.*"
-#                  \  ^  $  |  *  +  [  { < > 
 
-#———————————————————————————————————————— must be POST, not empty & not on blacklist
+#———————————————————————————————————————— check for validity
 
   if request.method != 'POST':
     response = HttpResponse(0)
@@ -82,6 +81,7 @@ def MailView(request):
 #———————————————————————————————————————— section-dependent parameters
 
   to       = [section.email]
+  cc       = []
   bcc      = [section.bcc]
   subject  = section.subject
 
@@ -98,33 +98,51 @@ def MailView(request):
     if realDomain == thisDomain:
       authorized = True
 
+  debug = ''
+
   if authorized:
     allLines = message.split('\n');
     lastLine = allLines[-1]
 
     while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:':
  
-      match lastLine[:3]:
-#      case 'to:' :  to.append(lastLine[4:])
-       case 'to:' :  message += 'TO:"'+lastLine[3:]+'"'
-#      case 'cc:' :  cc.append(lastLine[4:])
-       case 'cc:' :  message += 'CC:"'+lastLine[3:]+'"'
-       case _:
-#        bcc.append(lastLine[5:])
-         message += 'BCC:"'+lastLine[4:]+'"'
+      try:
+        if lastLine[:3] == 'to:':
+          to.append(stripReturns(lastLine[3:]))
+          debug += '  to:' + (stripReturns(lastLine[3:]))
 
-      message += '\n FOUND IT'
+        elif lastLine[:3] == 'cc:':
+          cc.append(stripReturns(lastLine[3:]))
+          debug += '  cc:' + (stripReturns(lastLine[3:]))
+
+        else:
+          bcc.append(stripReturns(lastLine[4:]))
+          debug += '  bcc:' + (stripReturns(lastLine[4:]))
+
+      except:
+        versten = e 
+
+#     match lastLine[:3]: # NEED TO UPDATE VENV to python 3.10
+#       case 'to:' :  to.append(lastLine[4:])
+#       case 'cc:' :  cc.append(lastLine[4:])
+#       case _:
+#         bcc.append(lastLine[5:])
+
+#     debug += '\nto: ' + ':::'.join(to)
+#     debug += '\ncc: ' + ':::'.join(cc)
+#     debug += '\nbcc: ' + ':::'.join(bcc)
+
       del allLines[-1]
       lastLine = allLines[-1]
 
-    message = '\n'.join(allLines)
+    message = '\n'.join(allLines) + debug
+#   message = '\n'.join(allLines)
 
 #———————————————————————————————————————— send message
 
-  message = stripQuotes(message)
-  #esponse = send_mail.send(settings, subject, to, bcc, message)
-  response = send(settings, subject, message, [to], [], [bcc],)
-  return HttpResponse(response)
+    message = stripQuotes(message)
+    response = send(settings, subject, message, to, cc, bcc,)
+    return HttpResponse(response)
 
 
 #:::::::::::::::::::::::::::::::::::::::: functions
@@ -143,6 +161,7 @@ def stripQuotes(str):
 # abstract to a module when done
 
 def send(settings, subject, body, to, cc, bcc):
+# frm = settings.url + '<'+to+'>'
 
   email = EmailMessage(subject, body, from_email=settings.mail_id, to=to, cc=cc, bcc=bcc)
 
@@ -165,6 +184,13 @@ def send(settings, subject, body, to, cc, bcc):
     response = e
 
   return response
+
+#———————————————————————————————————————— stripReturns(str)
+
+def stripReturns(str):
+  str = re.sub('\n', '' , str)
+  str = re.sub('\r', '' , str)
+  return str
 
 
 #———————————————————————————————————————— fin
