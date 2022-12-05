@@ -50,8 +50,9 @@ def MailView(request):
   settings  = Settings.objects.filter(enabled=True).first()
   section   = settings.section
   blacklist = ".*[\\|\^|\$|\||\*|\+|\[|\{|<|>]+.*"
+#                  \  ^  $  |  *  +  [  { < > 
 
-#———————————————————————————————————————— check for validity
+#———————————————————————————————————————— must be POST, not empty & not on blacklist
 
   if request.method != 'POST':
     response = HttpResponse(0)
@@ -80,8 +81,8 @@ def MailView(request):
 
 #———————————————————————————————————————— section-dependent parameters
 
-  to       = section.email
-  bcc      = section.bcc
+  to       = [section.email]
+  bcc      = [section.bcc]
   subject  = section.subject
 
 #———————————————————————————————————————— multiple recipients uniquely for our own domains
@@ -102,19 +103,21 @@ def MailView(request):
     lastLine = allLines[-1]
 
     while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:':
+ 
+      match lastLine[:3]:
+#      case 'to:' :  to.append(lastLine[4:])
+       case 'to:' :  message += 'TO:"'+lastLine[3:]+'"'
+#      case 'cc:' :  cc.append(lastLine[4:])
+       case 'cc:' :  message += 'CC:"'+lastLine[3:]+'"'
+       case _:
+#        bcc.append(lastLine[5:])
+         message += 'BCC:"'+lastLine[4:]+'"'
+
       message += '\n FOUND IT'
       del allLines[-1]
       lastLine = allLines[-1]
 
     message = '\n'.join(allLines)
-
-#   while lastLine[0,3] == 'to:' || lastLine[0,3] == 'cc:' || lastLine[0,4] == 'bcc:':
-#     which = lastLine[0,3]
-#     switch which:
-#       case 'to:'; to += lastLine[4]; break
-#       case 'cc:': cc += lastLine[4]; break
-#       case 'bcc': bcc += lastLine[5]; break
-
 
 #———————————————————————————————————————— send message
 
