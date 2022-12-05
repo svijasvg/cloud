@@ -26,9 +26,30 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponse, HttpRequest
 from django.conf import settings
 
+#new
+from django.core.mail import get_connection
+import socket
+
 def MailView(request):
-  email = EmailMessage('Hello', 'World', to=['svijalove@hotmail.com'])
+
+  email = EmailMessage('Updated', 'World', to=['svijalove@hotmail.com'])
+
+  ht  ='smtp.gmail.com' 
+  # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+  ht  = socket.gethostbyname(ht)
+  pt  = 587 
+  un  = 'hello@svija.cloud' 
+  pw  = 'gefzscohnshmlmmi' 
+  tls = True
+
+  # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+
+  connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
+
+  connection.open()
+  email.connection = connection
   email.send()
+  connection.close()
 
   return HttpResponse('worked')
 
