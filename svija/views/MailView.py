@@ -120,7 +120,7 @@ def MailView(request):
 
   message = stripQuotes(message)
   #esponse = send_mail.send(settings, subject, to, bcc, message)
-  response = send(settings, subject, to, [], bcc, message)
+  response = send(settings, subject, message, [to], [], [bcc],)
   return HttpResponse(response)
 
 
@@ -134,14 +134,14 @@ def stripQuotes(str):
   str = re.sub("`", "’" , str)
   return str
 
-#———————————————————————————————————————— send(settings, subject, to, bcc, body)
+#———————————————————————————————————————— send(settings, subject, body, to, bcc)
 
 # accepts subject, body, [to1, to2], [cc1, cc2], [bcc1, bcc2]
 # abstract to a module when done
 
-def send(settings, subject, to, cc, bcc, body):
-# frm = settings.url + '<'+to+'>'
-  email = EmailMessage('line120', 'World', to=['svijalove@hotmail.com','andy@svija.com'],bcc=['camrias@free.fr'])
+def send(settings, subject, body, to, cc, bcc):
+
+  email = EmailMessage(subject, body, from_email=settings.mail_id, to=to, cc=cc, bcc=bcc)
 
   ht  = settings.mail_srv
   ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
