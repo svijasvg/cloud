@@ -122,7 +122,7 @@ def MailView(request):
 #———————————————————————————————————————— send message
 
     message = stripQuotes('\n'.join(allLines))
-    response = send(settings, subject, message, frm, to, cc, bcc,)
+    response = send_mail.send(settings, subject, message, frm, to, cc, bcc,)
     return HttpResponse(response)
 
 
@@ -141,8 +141,7 @@ def stripQuotes(str):
 # accepts subject, body, [to1, to2], [cc1, cc2], [bcc1, bcc2]
 # abstract to a module when done
 
-def send(settings, subject, body, frm, to, cc, bcc):
-# frm = settings.url + '<'+to+'>'
+def sendx(settings, subject, body, frm, to, cc, bcc):
 
   if frm == '': frm = settings.mail_id
 
