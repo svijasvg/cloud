@@ -80,6 +80,7 @@ def MailView(request):
 
 #———————————————————————————————————————— section-dependent parameters
 
+  frm      = ''
   to       = [section.email]
   cc       = []
   bcc      = [section.bcc]
@@ -98,50 +99,30 @@ def MailView(request):
     if realDomain == thisDomain:
       authorized = True
 
-  debug = ''
 
   if authorized:
     allLines = message.split('\n');
     lastLine = allLines[-1]
 
-    while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:':
+    while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:' or lastLine[:5]=='from:' or lastLine[:8]=='subject:':
  
       try:
-        if lastLine[:3] == 'to:':
-          to.append(stripReturns(lastLine[3:]))
-          debug += '  to:' + (stripReturns(lastLine[3:]))
-
-        elif lastLine[:3] == 'cc:':
-          cc.append(stripReturns(lastLine[3:]))
-          debug += '  cc:' + (stripReturns(lastLine[3:]))
-
-        else:
-          bcc.append(stripReturns(lastLine[4:]))
-          debug += '  bcc:' + (stripReturns(lastLine[4:]))
+        if   lastLine[:3] == 'to:': to      = [stripReturns(lastLine[3:])]
+        elif lastLine[:3] == 'fro': frm     = stripReturns(lastLine[5:])
+        elif lastLine[:3] == 'sub': subject = stripReturns(lastLine[8:])
+        elif lastLine[:3] == 'cc:': cc.append(stripReturns(lastLine[3:]))
+        elif lastLine[:3] == 'bcc': bcc.append(stripReturns(lastLine[4:]))
 
       except:
-        versten = e 
-
-#     match lastLine[:3]: # NEED TO UPDATE VENV to python 3.10
-#       case 'to:' :  to.append(lastLine[4:])
-#       case 'cc:' :  cc.append(lastLine[4:])
-#       case _:
-#         bcc.append(lastLine[5:])
-
-#     debug += '\nto: ' + ':::'.join(to)
-#     debug += '\ncc: ' + ':::'.join(cc)
-#     debug += '\nbcc: ' + ':::'.join(bcc)
+        nothing = 0 
 
       del allLines[-1]
       lastLine = allLines[-1]
 
-    message = '\n'.join(allLines) + debug
-#   message = '\n'.join(allLines)
-
 #———————————————————————————————————————— send message
 
-    message = stripQuotes(message)
-    response = send(settings, subject, message, to, cc, bcc,)
+    message = stripQuotes('\n'.join(allLines))
+    response = send(settings, subject, message, frm, to, cc, bcc,)
     return HttpResponse(response)
 
 
@@ -155,15 +136,17 @@ def stripQuotes(str):
   str = re.sub("`", "’" , str)
   return str
 
-#———————————————————————————————————————— send(settings, subject, body, to, bcc)
+#———————————————————————————————————————— send(settings, subject, body, frm, to, cc, bcc)
 
 # accepts subject, body, [to1, to2], [cc1, cc2], [bcc1, bcc2]
 # abstract to a module when done
 
-def send(settings, subject, body, to, cc, bcc):
+def send(settings, subject, body, frm, to, cc, bcc):
 # frm = settings.url + '<'+to+'>'
 
-  email = EmailMessage(subject, body, from_email=settings.mail_id, to=to, cc=cc, bcc=bcc)
+  if frm == '': frm = settings.mail_id
+
+  email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
 
   ht  = settings.mail_srv
   ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
