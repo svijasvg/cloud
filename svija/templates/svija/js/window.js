@@ -20,11 +20,10 @@
 
 //———————————————————————————————————————— variables
 
-var sensitivity  = 10;                     // higher is more sensitive to resizing
-var savedRatio   = winRatio(sensitivity); // width/height
-var savedWidth   = window.visualViewport.width;
+var zoomX        = 8;                      // percent difference needed to count as a zoom
+var sensitivity  = 50;                     // higher is more sensitive to resizing
 
-//———————————————————————————————————————— save screen width for firefox
+//———————————————————————————————————————— save state
 
 var savedScreen = getCookie('savedScreen');
 
@@ -32,6 +31,11 @@ if (savedScreen == ''){
   savedScreen = globalThis.screen.availWidth;
   setCookie('savedScreen', savedScreen, 7);
 }
+
+var savedWidth   = document.documentElement.clientWidth;
+var savedZoom    = zoomPct();
+
+// alert(zoomPct()); wrong on load
 
 //———————————————————————————————————————— set the rem unit
 
@@ -49,17 +53,23 @@ if (typeof resizeListener == 'undefined')
 function redraw(){
 
   if (!page_loaded) return false;
-  if (isZoomed())   return false;
 
-  var newWidth = window.visualViewport.width;
+  var newWidth = document.documentElement.clientWidth;
   if (newWidth == savedWidth) return false;
   
-  // resize to fit
+  var newZoom = zoomPct();
+  var thisDiff = zoomDiff(newZoom, savedZoom);
+
+  if (thisDiff > zoomX){
+    // it's a zoom event
+    return true;
+  }
+
+  // it's a resize event
 
   var illustrator_pixel = window.visualViewport.width / visible_width + 'px';
   document.documentElement.style.fontSize = illustrator_pixel;
 
-  savedRatio = winRatio(sensitivity); // width/height
   savedWidth = window.visualViewport.width;
 };
 
@@ -77,42 +87,33 @@ function redraw(){
 function zoomPct(){
 
   if (savedScreen != globalThis.screen.availWidth){
-    var r = savedScreen;
-    var z = globalThis.screen.availWidth;
+    var real   = savedScreen;
+    var zoomed = globalThis.screen.availWidth;
   }
 
   else{
-    var r = window.outerWidth;
-    var z = document.documentElement.clientWidth;
+    if (document.documentElement.clientWidth != 'undefined'){
+      var real   = document.documentElement.scrollWidth;
+      var zoomed = document.documentElement.clientWidth;
+    }
+    else{
+      var real   = globalThis.screen.availWidth;
+      var zoomed = globalThis.screen.availWidth;
+    }
   }
 
-  pct = Math.round(r/z*100) / 100;
-
-  if (pct > 0.95 && pct < 1.09) return 1; // necessary because scrollbars
-  else return pct;                        // look like zooming
+  pct = real/zoomed;
+  return pct;
 }
 
-//———————————————————————————————————————— isZoomed()
+//———————————————————————————————————————— zoomDiff(newZoom, savedZoom);
 
-function isZoomed(){
+function zoomDiff(newZoom, savedZoom){
+  var cgmt = newZoom - savedZoom;
+  if (cgmt < 0) cgmt = 0 - cgmt;
+  cgmt = cgmt * 100;
 
-  var r = winRatio(sensitivity);
-  if (r != savedRatio) return false;
-
-  return true;
-}
-
-/*———————————————————————————————————————— winRatio(precision)
-
-    when a window is resized on windows, the ratio changes because
-    the scrollbars don't zoom with the page */
-
-function winRatio(precision){
-  var w = window.visualViewport.width;
-  var h = window.visualViewport.height;
-  var r = Math.round(w/h * precision)/precision;
-
-  return r;
+  return cgmt;
 }
 
 
