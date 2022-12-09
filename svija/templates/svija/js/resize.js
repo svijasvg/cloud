@@ -42,6 +42,7 @@ function resizeWindow(){
 function isZoomed(){
   var r = get_ratio(ratioRange);
   if (r != prevRatio) return false;
+
   return true;
 }
 
