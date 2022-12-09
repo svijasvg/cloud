@@ -13,10 +13,10 @@ Scripts are loaded in the following order:
 1. system JS · sets variables for sitewide settings and this particular page
 2. cookies.js · setCookie(), getCookie() and cookiesEnabled()
 3. screens.js · redirect if a different screen code would fit the screen better
-4. rem.js · sets rem size based on window size, taking into account if page has been reloaded while zoomed
+4. window.js · sets rem size based on window size, taking into account if page has been reloaded while zoomed    
+includes previous resize.js · adapts content to window when it's resized, but not when it's zoomed
 5. sections.js · was meant for use with languages — if visitor was in a certain language, would send them back there if they come back to the site
-6. resize.js · adapts content to window when it's resized, but not when it's zoomed
-7. tap_hightlight.js · one line that prevents touch highlights on mobile
+6. tap_hightlight.js · one line that prevents touch highlights on mobile
 
 These scripts are followed by:
 
