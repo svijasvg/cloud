@@ -14,14 +14,13 @@
     we don't have to handle pinch because Safari handles
     it automatically when page is reloaded */
 
-//———————————————————————————————————————— predefined variables
+//———————————————————————————————————————— predefined variable
 
 // visible_width is supplied by server
 
 //———————————————————————————————————————— variables
 
-var zoomX        = 8;                      // percent difference needed to count as a zoom
-var sensitivity  = 50;                     // higher is more sensitive to resizing
+var minZoom = 5;   // percent difference needed to count as a zoom
 
 //———————————————————————————————————————— save state
 
@@ -33,15 +32,21 @@ if (savedScreen == ''){
 }
 
 var savedWidth   = document.documentElement.clientWidth;
+
+console.log('36 calling zoomPct');
 var savedZoom    = zoomPct();
 
+console.log('39 savedScreen='+savedScreen+', savedWidth='+savedWidth+', savedZoom='+savedZoom);
 // alert(zoomPct()); wrong on load
 
 //———————————————————————————————————————— set the rem unit
 
-var insideWidth = document.documentElement.clientWidth;
-var illustrator_pixel     = insideWidth / visible_width;
-var zoomAtLoad  = zoomPct();
+var insideWidth       = document.documentElement.clientWidth;
+var illustrator_pixel = insideWidth / visible_width;
+
+console.log('47 calling zoomPct');
+var zoomAtLoad        = zoomPct();
+console.log('49 insideWidth='+insideWidth+', illustrator_pixel='+illustrator_pixel+', zoomAtLoad='+zoomAtLoad);
 
 document.documentElement.style.fontSize = illustrator_pixel*zoomAtLoad + 'px';
 
@@ -57,10 +62,11 @@ function redraw(){
   var newWidth = document.documentElement.clientWidth;
   if (newWidth == savedWidth) return false;
   
+  console.log('65 calling zoomPct');
   var newZoom = zoomPct();
   var thisDiff = zoomDiff(newZoom, savedZoom);
 
-  if (thisDiff > zoomX){
+  if (thisDiff > minZoom){
     // it's a zoom event
     return true;
   }
@@ -85,24 +91,31 @@ function redraw(){
     so we compare to stored value */
 
 function zoomPct(){
+  console.group('zoomPct()');
 
   if (savedScreen != globalThis.screen.availWidth){
     var real   = savedScreen;
     var zoomed = globalThis.screen.availWidth;
+    console.log('99 —› real='+real+', zoomed='+zoomed);
   }
 
   else{
     if (document.documentElement.clientWidth != 'undefined'){
-      var real   = document.documentElement.scrollWidth;
+      var real   = document.documentElement.scrollWidth; // THIS DOES NOT WORK IT CHANGES WITH THE ZOOM, IS SUPPOSED TO NEVER CHANGE
       var zoomed = document.documentElement.clientWidth;
+      console.log('106 —› real='+real+', zoomed='+zoomed);
     }
     else{
       var real   = globalThis.screen.availWidth;
       var zoomed = globalThis.screen.availWidth;
+      console.log('111 —› real='+real+', zoomed='+zoomed);
     }
   }
 
   pct = real/zoomed;
+  console.log('116 —› pct='+pct);
+  console.groupEnd();
+
   return pct;
 }
 
