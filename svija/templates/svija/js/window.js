@@ -20,7 +20,7 @@
 
 //———————————————————————————————————————— variables
 
-var sensitivity  = 10;                     // higher is more sensitive to resizing
+var sensitivity  = 50;                     // higher is more sensitive to resizing · lowering it makes resizing jerky
 var savedRatio   = get_ratio(sensitivity); // width/height
 var savedWidth   = window.visualViewport.width;
 
@@ -36,10 +36,10 @@ if (savedScreen == ''){
 //———————————————————————————————————————— set the rem unit
 
 var insideWidth = document.documentElement.clientWidth;
-var aiPixel     = insideWidth / visible_width;
+var illustrator_pixel     = insideWidth / visible_width;
 var zoomAtLoad  = zoomPct();
 
-document.documentElement.style.fontSize = aiPixel*zoomAtLoad + 'px';
+document.documentElement.style.fontSize = illustrator_pixel*zoomAtLoad + 'px';
 
 //———————————————————————————————————————— resize listener function
 
@@ -56,8 +56,8 @@ function redraw(){
   
   // resize to fit
 
-  var aiPixel = window.visualViewport.width / visible_width + 'px';
-  document.documentElement.style.fontSize = aiPixel;
+  var illustrator_pixel = window.visualViewport.width / visible_width + 'px';
+  document.documentElement.style.fontSize = illustrator_pixel;
 
   savedRatio = get_ratio(sensitivity); // width/height
   savedWidth = window.visualViewport.width;
