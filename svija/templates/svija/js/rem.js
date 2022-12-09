@@ -1,6 +1,16 @@
-//———————————————————————————————————————— template: rem.js
+/*———————————————————————————————————————— template: rem.js
+
+    included once in header to get rough overall size
+    then once after initial scroll div to correct
+    for scrollbars — window width changes with the
+    addition of scrollbars, which are only added
+    when the content is loaded */
+
+//———————————————————————————————————————— predefined variables
 
 // visible_width is supplied by server
+
+//———————————————————————————————————————— template: rem.js
 
 if (typeof document.documentElement.clientWidth != 'undefined')
   var win_width = document.documentElement.clientWidth;
