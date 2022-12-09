@@ -1,4 +1,4 @@
-/*———————————————————————————————————————— template: rem.js
+/*———————————————————————————————————————— template: window.js
 
 /*———————————————————————————————————————— notes
 
@@ -18,47 +18,72 @@
 
 // visible_width is supplied by server
 
-//———————————————————————————————————————— save screen width
+//———————————————————————————————————————— variables
 
-var firefoxScreen = getCookie('firefoxScreen');
+var sensitivity  = 10;                     // higher is more sensitive to resizing
+var savedRatio   = get_ratio(sensitivity); // width/height
+var savedWidth   = window.visualViewport.width;
 
-if (firefoxScreen == ''){
-  firefoxScreen = globalThis.screen.availWidth;
-  setCookie('firefoxScreen', firefoxScreen, 7);
+//———————————————————————————————————————— save screen width for firefox
+
+var savedScreen = getCookie('savedScreen');
+
+if (savedScreen == ''){
+  savedScreen = globalThis.screen.availWidth;
+  setCookie('savedScreen', savedScreen, 7);
 }
-
-//———————————————————————————————————————— get window width
-
-if (typeof document.documentElement.clientWidth != 'undefined')
-  var win_width = document.documentElement.clientWidth;
-else
-  var win_width = window.innerWidth;
 
 //———————————————————————————————————————— set the rem unit
 
-var illustrator_pixel = win_width / visible_width;
-var zoomAtLoad              = zoomPct(win_width);
+var insideWidth = document.documentElement.clientWidth;
+var aiPixel     = insideWidth / visible_width;
+var zoomAtLoad  = zoomPct();
 
-document.documentElement.style.fontSize = illustrator_pixel*zoomAtLoad + 'px';
+document.documentElement.style.fontSize = aiPixel*zoomAtLoad + 'px';
+
+//———————————————————————————————————————— resize listener function
+
+if (typeof resizeListener == 'undefined')
+  var resizeListener = window.addEventListener('resize', redraw);
+
+function redraw(){
+
+  if (!page_loaded) return false;
+  if (isZoomed())   return false;
+
+  var newWidth = window.visualViewport.width;
+  if (newWidth == savedWidth) return false;
+  
+  // resize to fit
+
+  var aiPixel = window.visualViewport.width / visible_width + 'px';
+  document.documentElement.style.fontSize = aiPixel;
+
+  savedRatio = get_ratio(sensitivity); // width/height
+  savedWidth = window.visualViewport.width;
+};
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
 /*———————————————————————————————————————— function zoomPct()
 
+    accepts w=inside width of current window
+
     ratio of content size to window size
     on zoom, firefox lies about screen size
     so we compare to stored value */
 
-function zoomPct(w){
+function zoomPct(){
 
-  if (firefoxScreen != globalThis.screen.availWidth){
-    var r = firefoxScreen;
+  if (savedScreen != globalThis.screen.availWidth){
+    var r = savedScreen;
     var z = globalThis.screen.availWidth;
   }
+
   else{
-    var r = realWidth();
-    var z = zoomedWidth();
+    var r = window.outerWidth;
+    var z = document.documentElement.clientWidth;
   }
 
   pct = Math.round(r/z*100) / 100;
@@ -67,65 +92,12 @@ function zoomPct(w){
   else return pct;                        // look like zooming
 }
 
-//———————————————————————————————————————— realWidth()
-
-function realWidth(){ // doesn't work in FF
-  return window.outerWidth;
-}
-
-//———————————————————————————————————————— zoomedWidth()
-
-function zoomedWidth(){
-  return window.innerWidth;
-}
-
-
-//———————————————————————————————————————— fin
-/*———————————————————————————————————————— on_resize.js
-
-   templates/svija/javascript/on_resize.js
-
-   adapts content to window on resize but not zoom */
-
-//———————————————————————————————————————— predefined values
-
-// var illustrator_pixel set in rem.js
-
-//———————————————————————————————————————— variables
-
-var sensitivity = 10;                    // higher is more sensitive to resizing
-var prevRatio   = get_ratio(sensitivity); // width/height
-var prevWidth   = window.visualViewport.width;
-
-//———————————————————————————————————————— listener function
-
-window.addEventListener("resize", resizeWindow);
-
-function resizeWindow(){
-
-  if (!page_loaded) return false;
-  if (isZoomed())   return false;
-
-  var newWidth = window.visualViewport.width;
-  if (newWidth == prevWidth) return false;
-  
-  // resize to fit
-
-  var illustrator_pixel = window.visualViewport.width / visible_width;
-  document.documentElement.style.fontSize = illustrator_pixel + 'px';
-  prevRatio = get_ratio(sensitivity); // width/height
-  var prevWidth = window.visualViewport.width;
-};
-
-
-//:::::::::::::::::::::::::::::::::::::::: functions
-
 //———————————————————————————————————————— isZoomed()
 
 function isZoomed(){
 
   var r = get_ratio(sensitivity);
-  if (r != prevRatio) return false;
+  if (r != savedRatio) return false;
 
   return true;
 }
