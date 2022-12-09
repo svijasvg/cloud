@@ -46,7 +46,7 @@ def get_page_modules(label, page_modules, section_code, screen_code, page, page_
     and this_group.screen.code   == screen_code):
       svc = '\n\n<!--———————————————————————————————————————— ' + label + ' -->\n\n'
   
-      sv, hc = get_single_svg(this_group, screen_code, page_width, use_p3)
+      sv, hc, rien = get_single_svg(this_group, screen_code, page_width, use_p3)
 
 #———————————————————————————————————————— deactivate from page?
 

@@ -53,6 +53,7 @@ page_loaded = false;
 <script src="{% static 'svija/js/gsap.min.js' %}"></script>
 </head><body>
 {% include "svija/html/unsupported.html" %}
+<div id="initial_scroll_div"></div>
 <script>{% include "svija/js/initial_scroll.js" %}</script>
 <div id=accessibility>{{ accessible }}</div>
 {% block token%}{% endblock %}

@@ -11,7 +11,7 @@ from modules.svg_cleaner import *
 
 def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
-    css = svg = ''
+    div = css = svg = ''
 
     # can be empty if module without SVG
     if not hasattr(target_obj, 'filename'): return svg, css
@@ -81,11 +81,15 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
             css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            div = '#initial_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             css += '\n\n' + css_dims
 
         svg += '\n' + svg_content
  
-    return svg, css
+    return svg, css, div
+
+
+#:::::::::::::::::::::::::::::::::::::::: methods
 
 #———————————————————————————————————————— calculate_css(this_svg):
 
