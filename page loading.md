@@ -43,3 +43,8 @@ Then, in the body:
 The first project is redo screens.js.
 
 For this to work, I need an accurate number for the width of the screen.
+
+---
+### OnResize
+
+for on_resize — check screen size to know if zoomed or not
