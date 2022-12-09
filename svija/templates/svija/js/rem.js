@@ -61,7 +61,10 @@ function zoomPct(w){
     var z = zoomedWidth();
   }
 
-  return Math.round(r/z*100) / 100;
+  pct = Math.round(r/z*100) / 100;
+
+  if (pct > 0.95 && pct < 1.09) return 1; // necessary because scrollbars
+  else return pct;                        // look like zooming
 }
 
 //———————————————————————————————————————— realWidth()

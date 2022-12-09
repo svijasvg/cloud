@@ -10,9 +10,9 @@
 
 //———————————————————————————————————————— variables
 
-var ratioRange = 50;                    // higher is more sensitive to redrawing
-var prevRatio  = get_ratio(ratioRange); // width/height
-var prevWidth  = window.visualViewport.width;
+var sensitivity = 10;                    // higher is more sensitive to resizing
+var prevRatio   = get_ratio(sensitivity); // width/height
+var prevWidth   = window.visualViewport.width;
 
 //———————————————————————————————————————— listener function
 
@@ -30,7 +30,7 @@ function resizeWindow(){
 
   var illustrator_pixel = window.visualViewport.width / visible_width;
   document.documentElement.style.fontSize = illustrator_pixel + 'px';
-  prevRatio = get_ratio(ratioRange); // width/height
+  prevRatio = get_ratio(sensitivity); // width/height
   var prevWidth = window.visualViewport.width;
 };
 
@@ -40,18 +40,23 @@ function resizeWindow(){
 //———————————————————————————————————————— isZoomed()
 
 function isZoomed(){
-  var r = get_ratio(ratioRange);
+
+  var r = get_ratio(sensitivity);
   if (r != prevRatio) return false;
 
   return true;
 }
 
-//———————————————————————————————————————— get_ratio(precision)
+/*———————————————————————————————————————— get_ratio(precision)
+
+    when a window is resized on windows, the ratio changes because
+    the scrollbars don't zoom with the page */
 
 function get_ratio(precision){
   var w = window.visualViewport.width;
   var h = window.visualViewport.height;
-  var r = Math.round(w/h * precision);
+  var r = Math.round(w/h * precision)/precision;
+
   return r;
 }
 
