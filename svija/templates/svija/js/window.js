@@ -20,8 +20,8 @@
 
 //———————————————————————————————————————— variables
 
-var sensitivity  = 50;                     // higher is more sensitive to resizing · lowering it makes resizing jerky
-var savedRatio   = get_ratio(sensitivity); // width/height
+var sensitivity  = 10;                     // higher is more sensitive to resizing
+var savedRatio   = winRatio(sensitivity); // width/height
 var savedWidth   = window.visualViewport.width;
 
 //———————————————————————————————————————— save screen width for firefox
@@ -59,7 +59,7 @@ function redraw(){
   var illustrator_pixel = window.visualViewport.width / visible_width + 'px';
   document.documentElement.style.fontSize = illustrator_pixel;
 
-  savedRatio = get_ratio(sensitivity); // width/height
+  savedRatio = winRatio(sensitivity); // width/height
   savedWidth = window.visualViewport.width;
 };
 
@@ -96,18 +96,18 @@ function zoomPct(){
 
 function isZoomed(){
 
-  var r = get_ratio(sensitivity);
+  var r = winRatio(sensitivity);
   if (r != savedRatio) return false;
 
   return true;
 }
 
-/*———————————————————————————————————————— get_ratio(precision)
+/*———————————————————————————————————————— winRatio(precision)
 
     when a window is resized on windows, the ratio changes because
     the scrollbars don't zoom with the page */
 
-function get_ratio(precision){
+function winRatio(precision){
   var w = window.visualViewport.width;
   var h = window.visualViewport.height;
   var r = Math.round(w/h * precision)/precision;
