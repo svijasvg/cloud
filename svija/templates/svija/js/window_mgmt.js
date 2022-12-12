@@ -17,12 +17,18 @@
 //———————————————————————————————————————— variables
 
 // visible_width   // supplied by server
-var minZoom = 5;   // percent difference needed to count as a zoom
+var globalMinZoom = 3;   // percent difference needed to count as a zoom
+
+console.group('window mgmt');
 
 //———————————————————————————————————————— running from <head>?
 
-if (typeof inHead == 'undefined') inHead = true;
-                             else inHead = false;
+console.log('typeof inHead='+typeof inHead);
+
+if (typeof inHead == 'undefined') var inHead = true;
+                             else var inHead = false;
+
+console.log('inHead='+inHead);
 
 /*———————————————————————————————————————— get real screen width for FF zoom calc.
 
@@ -30,95 +36,108 @@ if (typeof inHead == 'undefined') inHead = true;
     a visitor coming back and seeing an "initially zoomed" page that
     we can't detect. */
 
-  var realScreenWidth = getCookie('screenWidth');
+if (getCookie('screenWidth') != ''){
+  var globalRealScreenWidth = getCookie('screenWidth');
+}
 
-  if (realScreenWidth == ''){
-    realScreenWidth = globalThis.screen.availWidth;
-    setCookie('screenWidth', realScreenWidth, 7);
-  }
+else{
+  var globalRealScreenWidth = globalThis.screen.availWidth;
+  setCookie('screenWidth', globalRealScreenWidth, 7);
+}
+
+console.log('globalRealScreenWidth='+globalRealScreenWidth);
 
 //———————————————————————————————————————— save state
 
 if (inHead){
-  var savedWidth   = globalThis.outerWidth;
-  var savedZoom    = zoomPct(realScreenWidth);
+  var globalSavedWidth   = globalThis.innerWidth;    // used in setScale();
+  var globalSavedZoom    = zoom();                   // used in body & setScale();
+
+  console.log('gsw='+globalSavedWidth+', gsz='+globalSavedZoom);
 }
 
 //———————————————————————————————————————— set the rem unit
 
 var aiPixel = globalThis.innerWidth / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
 
-document.documentElement.style.fontSize = aiPixel * savedZoom + 'px';
+document.documentElement.style.fontSize = aiPixel * globalSavedZoom + 'px';
 
-//———————————————————————————————————————— resize listener function MOVE TO FIRSTLOAD
+console.log('aiPixel='+aiPixel); 
+
+//———————————————————————————————————————— resize listener
 
 if (inHead)
   var resizeListener = window.addEventListener('resize', setScale);
 
+console.log('—————\n\n\n');
+console.groupEnd();
+
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
-//———————————————————————————————————————— function zoomPct()
+/*———————————————————————————————————————— function zoom(w)
 
-function zoomPct(rsw){
+    returns current zoom level
+    requires globalRealScreenWidth, which is
+    necessary for firefox
 
-  if (rsw == globalThis.screen.availWidth)
-    return globalThis.outerWidth/globalThis.innerWidth;
+    close values mean scrollbars, so we return 1 */
+
+function zoom(){
+
+  var w = globalRealScreenWidth;
+
+  if (w == globalThis.screen.availWidth)
+    var r = globalThis.outerWidth/globalThis.innerWidth;
 
   // firefox
-  else return rsw/globalThis.screen.availWidth;
+  else var r =  w/globalThis.screen.availWidth;
 
-//  NEED TO RETURN 1 IF IT'S LESS THAN 1.01 OR MORE THAN .99
+  return Math.round(r * 20) /20;
 }
 
-//———————————————————————————————————————— zoomDiff(newZoom, savedZoom);
+//———————————————————————————————————————— pctDifferent(a, b);
 
-function zoomDiff(newZoom, savedZoom){
-  var cgmt = newZoom - savedZoom;
-  if (cgmt < 0) cgmt = 0 - cgmt;
-  cgmt = cgmt * 100;
+//    returns % difference between two numbers like 1.1, 1
 
-  return cgmt;
+function pctDifferent(a, b){
+  return Math.round(Math.abs( a-b ) * 100);
 }
 
 /*———————————————————————————————————————— setScale()
 
     called when a resize event is triggered
 
-    - if page is not loaded, return true
+    - if page is not fully loaded, return true
     - if page is made longer but not wider, return true
     - if page is zoomed more than 2%, return true
-
-
-
-
 
 */
 
 function setScale(){
 
-  if (!pageLoaded) return false;
+  if (!pageLoaded) return true;
 
-
-  var newWidth = document.documentElement.clientWidth;
-  if (newWidth == savedWidth) return false;
+  // page was just made longer
+  var newWidth = globalThis.innerWidth;
+  if (newWidth == globalSavedWidth) return true;
   
-  console.log('65 calling zoomPct');
-  var newZoom = zoomPct();
-  var thisDiff = zoomDiff(newZoom, savedZoom);
-
-  if (thisDiff > minZoom){
-    // it's a zoom event
-    return true;
-  }
+  // page was zoomed
+  var d = pctDifferent(zoom(), globalSavedZoom);
+  if (d > globalMinZoom) return true;
 
   // it's a resize event
-
-  var aiPixel = window.visualViewport.width / visible_width + 'px';
+  aiPixel = newWidth / visible_width + 'px';
   document.documentElement.style.fontSize = aiPixel;
+  globalSavedWidth = globalThis.innerWidth;
+  return true;
 
-  savedWidth = window.visualViewport.width;
 };
 
 
 //———————————————————————————————————————— fin
+
+// HORZ SCROLLBARS ON PC
+
+// gsw is not going down from head to body
+// ai pixel is not prcise enough: only 2 decimals
