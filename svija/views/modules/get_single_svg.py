@@ -81,7 +81,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
             css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-            div = '#initial_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            div = '#set_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             css += '\n\n' + css_dims
 
         svg += '\n' + svg_content

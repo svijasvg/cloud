@@ -52,12 +52,15 @@ pageLoaded = false;
 </head><body>
 
 {% include "svija/html/unsupported.html" %}
-<div id="initial_scroll_div"></div>
+
+<div id="set_scroll_div"></div>
+
 <script>
-{% include "svija/js/initial_scroll.js" %}
-{% include "svija/js/window_mgmt.js"    %}
+{% include "svija/js/window_mgmt.js"     %}
 </script>
+
 <div id=accessibility>{{ accessible }}</div>
+
 {% block token%}{% endblock %}
 
 {{ body }}
@@ -66,7 +69,7 @@ pageLoaded = false;
 
   {% include "svija/js/page_background.js" %}
 
-  document.getElementById('initial_scroll_div').outerHTML = '';
+  document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;
 
 </script></body></html>{% endautoescape %}

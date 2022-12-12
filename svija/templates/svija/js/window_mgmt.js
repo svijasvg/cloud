@@ -23,8 +23,8 @@ console.group('window mgmt');
 
 //———————————————————————————————————————— running from <head>?
 
-if (typeof inHead == 'undefined') var inHead = true;
-                             else var inHead = false;
+if (typeof envInHead == 'undefined') var envInHead = true;
+                             else var envInHead = false;
 
 /*———————————————————————————————————————— get real screen width for FF zoom calc.
 
@@ -32,7 +32,7 @@ if (typeof inHead == 'undefined') var inHead = true;
     a visitor coming back and seeing an "initially zoomed" page that
     we can't detect. */
 
-if (inHead){
+if (envInHead){
 
   if (getCookie('screenWidth') == ''){
     var envRealScreenWidth = globalThis.screen.availWidth;
@@ -46,11 +46,9 @@ if (inHead){
 
 //———————————————————————————————————————— set the rem unit
 
-//———————————————————————————————————————— set the rem unit
-
-var envPrevWidth = currentWidth();                 // used in resize();
-var aiPixel            = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
-var envCurrentZoom  = zoom();                    // used in body & resize();
+var envPrevWidth   = currentWidth();                 // used in resize();
+var aiPixel        = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
+var envCurrentZoom = zoom();                         // used in body & resize();
 
 if (pctDifferent(envCurrentZoom, 1) > envMinZoom){
   aiPixel = aiPixel*envCurrentZoom;
@@ -66,11 +64,32 @@ console.log('envCurrentZoom='+envCurrentZoom);
 
 //———————————————————————————————————————— resize listener
 
-if (inHead)
+if (envInHead)
   var resizeListener = window.addEventListener('resize', resize);
 
 console.log('—————\n\n\n');
 console.groupEnd();
+
+//———————————————————————————————————————— template: initial_scroll.js
+
+// makes centered over-width pages appear centered on load instead of centering late
+// page_offsets set in admin // aiPixel set in rem.js
+
+//————— initial scroll
+
+var left_margin_px = page_offsetx * aiPixel;
+var top_margin_px  = page_offsety * aiPixel;
+
+var xInit = Math.round(left_margin_px);
+var yInit = Math.round(top_margin_px);
+
+
+function testScroll(){
+  console.log('scrolling to '+xInit+', '+yInit);
+  window.scrollTo(xInit, yInit);
+}
+
+testScroll(); setTimeout(testScroll, 1);
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
@@ -104,7 +123,7 @@ function pctDifferent(a, b){
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
-//return globalThis.innerWidth;
+  if (envInHead) return globalThis.innerWidth;
   return document.documentElement.clientWidth;
 }
 

@@ -8,12 +8,15 @@
 var left_margin_px = page_offsetx * aiPixel;
 var top_margin_px  = page_offsety * aiPixel;
 
-x = Math.round(left_margin_px);
-y = Math.round(top_margin_px);
+var xInit = Math.round(left_margin_px);
+var yInit = Math.round(top_margin_px);
 
-function testScroll(){ window.scrollTo(x, y); }
 
-testScroll();
-setTimeout(testScroll, 1);
+function testScroll(){
+  console.log('scrolling to '+xInit+', '+yInit);
+  window.scrollTo(xInit, yInit);
+}
+
+testScroll(); setTimeout(testScroll, 1);
 
 //———————————————————————————————————————— fin
