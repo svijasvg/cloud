@@ -46,12 +46,14 @@ if (envInHead){
 
 //———————————————————————————————————————— set the rem unit
 
-var envPrevWidth   = currentWidth();                 // used in resize();
-var aiPixel        = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
-var envCurrentZoom = zoom();                         // used in body & resize();
+var envPrevWidth    = currentWidth();                 // used in resize();
+var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
+var envCurrentZoom  = zoom();                         // used in body & resize();
+var envLoadedZoomed = false;
 
 if (pctDifferent(envCurrentZoom, 1) > envMinZoom){
   aiPixel = aiPixel*envCurrentZoom;
+  envLoadedZoomed = true;
   console.log('page zoomed on load: '+pctDifferent(envCurrentZoom, 1));
 }
 
@@ -61,7 +63,6 @@ console.log('envPrevWidth='+envPrevWidth);
 console.log('aiPixel='+aiPixel); 
 console.log('envCurrentZoom='+envCurrentZoom);
 
-
 //———————————————————————————————————————— resize listener
 
 if (envInHead)
@@ -70,12 +71,10 @@ if (envInHead)
 console.log('—————\n\n\n');
 console.groupEnd();
 
-//———————————————————————————————————————— template: initial_scroll.js
+//———————————————————————————————————————— set scroll position
 
 // makes centered over-width pages appear centered on load instead of centering late
 // page_offsets set in admin // aiPixel set in rem.js
-
-//————— initial scroll
 
 var left_margin_px = page_offsetx * aiPixel;
 var top_margin_px  = page_offsety * aiPixel;
@@ -83,13 +82,7 @@ var top_margin_px  = page_offsety * aiPixel;
 var xInit = Math.round(left_margin_px);
 var yInit = Math.round(top_margin_px);
 
-
-function testScroll(){
-  console.log('scrolling to '+xInit+', '+yInit);
-  window.scrollTo(xInit, yInit);
-}
-
-testScroll(); setTimeout(testScroll, 1);
+setScroll(); setTimeout(setScroll, 1);
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
@@ -157,6 +150,15 @@ function resize(){
   return true;
 
 };
+
+//———————————————————————————————————————— setScroll()
+
+function setScroll(){
+  if (envLoadedZoomed) return true;
+
+  console.log('scrolling to '+xInit+', '+yInit);
+  window.scrollTo(xInit, yInit);
+}
 
 
 //———————————————————————————————————————— fin
