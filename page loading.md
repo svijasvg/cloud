@@ -92,6 +92,7 @@ firefox and not firefox
 
 for firefox, we compare current screen size to the first measured size
 for others, we...
+```
 
 //                                                              |——————————— MAC —————————————|  |——————— PC ——————|
 //                                                              s100 s125  f100 f120  c100 c125  f100 f150 c100 c125
@@ -108,6 +109,7 @@ console.log('ai'+screen.width);                              // 256O 2560  2560 
 console.log('am'+window.screen.availWidth);                  // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
 console.log('an'+window.screen.width);                       // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
 
+```
 
 I don't even need to know the exact zoom amount, I just need to know if it was a zoom or resize
 
