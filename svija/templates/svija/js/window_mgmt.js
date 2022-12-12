@@ -42,13 +42,13 @@ console.log('39 savedScreen='+savedScreen+', savedWidth='+savedWidth+', savedZoo
 //———————————————————————————————————————— set the rem unit
 
 var insideWidth       = document.documentElement.clientWidth;
-var illustrator_pixel = insideWidth / visible_width;
+var aiPixel = insideWidth / visible_width;
 
 console.log('47 calling zoomPct');
 var zoomAtLoad        = zoomPct();
-console.log('49 insideWidth='+insideWidth+', illustrator_pixel='+illustrator_pixel+', zoomAtLoad='+zoomAtLoad);
+console.log('49 insideWidth='+insideWidth+', aiPixel='+aiPixel+', zoomAtLoad='+zoomAtLoad);
 
-document.documentElement.style.fontSize = illustrator_pixel*zoomAtLoad + 'px';
+document.documentElement.style.fontSize = aiPixel*zoomAtLoad + 'px';
 
 //———————————————————————————————————————— resize listener function
 
@@ -57,7 +57,7 @@ if (typeof resizeListener == 'undefined')
 
 function redraw(){
 
-  if (!page_loaded) return false;
+  if (!pageLoaded) return false;
 
   var newWidth = document.documentElement.clientWidth;
   if (newWidth == savedWidth) return false;
@@ -73,8 +73,8 @@ function redraw(){
 
   // it's a resize event
 
-  var illustrator_pixel = window.visualViewport.width / visible_width + 'px';
-  document.documentElement.style.fontSize = illustrator_pixel;
+  var aiPixel = window.visualViewport.width / visible_width + 'px';
+  document.documentElement.style.fontSize = aiPixel;
 
   savedWidth = window.visualViewport.width;
 };

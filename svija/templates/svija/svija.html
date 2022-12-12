@@ -18,12 +18,12 @@
   <meta property="og:image" content="/images/capture.jpg">
 <script>
 
-page_loaded = false;
+pageLoaded = false;
 
 {{ system_js                           }}
 {% include "svija/js/cookies.js"       %}
 {% include "svija/js/screens.js"       %}
-{% include "svija/js/window.js"        %}
+{% include "svija/js/window_mgmt.js"   %}
 {% include "svija/js/sections.js"      %}
 {% include "svija/js/tap_highlight.js" %}
 {{ js                                  }}
@@ -56,7 +56,7 @@ page_loaded = false;
 {% include "svija/html/unsupported.html" %}
 <div id="initial_scroll_div"></div>
 <script>
-{% include "svija/js/window.js"            %}
+{% include "svija/js/window_mgmt.js"    %}
 {% include "svija/js/initial_scroll.js" %}
 </script>
 <div id=accessibility>{{ accessible }}</div>
@@ -69,6 +69,6 @@ page_loaded = false;
   {% include "svija/js/page_background.js" %}
 
   document.getElementById('initial_scroll_div').outerHTML = '';
-  page_loaded = true;
+  pageLoaded = true;
 
 </script></body></html>{% endautoescape %}
