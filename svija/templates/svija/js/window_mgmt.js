@@ -35,7 +35,7 @@ if (typeof inHead == 'undefined') var inHead = true;
 if (inHead){
 
   if (getCookie('screenWidth') == ''){
-    var envRealScreenWidth = envThis.screen.availWidth;
+    var envRealScreenWidth = globalThis.screen.availWidth;
     setCookie('screenWidth', envRealScreenWidth, 7);
   }
   else
@@ -86,11 +86,11 @@ console.groupEnd();
 function zoom(){
 
   var w = envRealScreenWidth;
-  if (w == envThis.screen.availWidth)
-    return envThis.outerWidth/currentWidth();
+  if (w == globalThis.screen.availWidth)
+    return globalThis.outerWidth/currentWidth();
 
   // firefox
-  else return  w/envThis.screen.availWidth;
+  else return  w/globalThis.screen.availWidth;
 }
 
 //———————————————————————————————————————— pctDifferent(a, b);
@@ -104,7 +104,7 @@ function pctDifferent(a, b){
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
-//return envThis.innerWidth;
+//return globalThis.innerWidth;
   return document.documentElement.clientWidth;
 }
 
