@@ -16,7 +16,7 @@ svg{
 svg:first-of-type{ width: 100%; }
 
 #accessibility{ /* positioning */
-  position:absolute;
+        position: absolute;
   pointer-events: none;
            width: 80%;     margin-left: auto; margin-right: auto;
           height: 20rem;   margin-top :-22rem;
@@ -39,3 +39,9 @@ svg:first-of-type{ width: 100%; }
 }
 
 pre#noscript, pre#nocookie, pre#explorer{ display:none; }
+
+#initial_scroll_div{
+  position:absolute;
+  top:0;
+  left:0;
+}

@@ -16,10 +16,9 @@
 {{ meta_fonts }}
   <meta name="apple-mobile-web-app-title" content="{{ touch }}">
   <meta property="og:image" content="/images/capture.jpg">
+
 <script>
-
 pageLoaded = false;
-
 {{ system_js                           }}
 {% include "svija/js/cookies.js"       %}
 {% include "svija/js/screens.js"       %}
@@ -27,15 +26,12 @@ pageLoaded = false;
 {% include "svija/js/sections.js"      %}
 {% include "svija/js/tap_highlight.js" %}
 {{ js                                  }}
-
 </script>
 
 <style>
-
 {% include "svija/css/svija.css" %}
 {{ font_css }}
 {{ css }}
-
 </style>
 
 <!-- Google's script with IF added -->
@@ -52,7 +48,9 @@ pageLoaded = false;
 
 </script>
 <script src="{% static 'svija/js/gsap.min.js' %}"></script>
+
 </head><body>
+
 {% include "svija/html/unsupported.html" %}
 <div id="initial_scroll_div"></div>
 <script>

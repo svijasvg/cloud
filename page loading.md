@@ -97,8 +97,9 @@ for others, we...
 //                                                              s100 s125  f100 f120  c100 c125  f100 f150 c100 c125
 console.log('ad'+document.documentElement.scrollWidth);      // 1758 1407  1771 1476  1920 1536   914  731 1148  918
 console.log('ae'+globalThis.innerWidth);                     // 1758 1406  1771 1476  1920 1536   914  731 1148  918
-console.log('af'+globalThis.outerWidth);                     // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
 console.log('ak'+window.innerWidth);                         // 1758 1406  1771 1476  1920 1536   914  731 1148  918
+
+console.log('af'+globalThis.outerWidth);                     // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
 console.log('al'+window.outerWidth);                         // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
 
 console.log('ag'+globalThis.screen.availWidth );             // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
