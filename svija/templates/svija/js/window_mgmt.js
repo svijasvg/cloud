@@ -1,4 +1,4 @@
-/*———————————————————————————————————————— template: window.js
+/*———————————————————————————————————————— template: window_mgmt.js
 
 /*———————————————————————————————————————— notes
 
@@ -14,50 +14,91 @@
     we don't have to handle pinch because Safari handles
     it automatically when page is reloaded */
 
-//———————————————————————————————————————— predefined variable
-
-// visible_width is supplied by server
-
 //———————————————————————————————————————— variables
 
+// visible_width   // supplied by server
 var minZoom = 5;   // percent difference needed to count as a zoom
+
+//———————————————————————————————————————— running from <head>?
+
+if (typeof inHead == 'undefined') inHead = true;
+                             else inHead = false;
+
+/*———————————————————————————————————————— get real screen width for FF zoom calc.
+
+    This has the potential problem of firefox retaining the zoom level, then
+    a visitor coming back and seeing an "initially zoomed" page that
+    we can't detect. */
+
+  var realScreenWidth = getCookie('screenWidth');
+
+  if (realScreenWidth == ''){
+    realScreenWidth = globalThis.screen.availWidth;
+    setCookie('screenWidth', realScreenWidth, 7);
+  }
 
 //———————————————————————————————————————— save state
 
-var savedScreen = getCookie('savedScreen');
-
-if (savedScreen == ''){
-  savedScreen = globalThis.screen.availWidth;
-  setCookie('savedScreen', savedScreen, 7);
+if (inHead){
+  var savedWidth   = globalThis.outerWidth;
+  var savedZoom    = zoomPct(realScreenWidth);
 }
-
-var savedWidth   = document.documentElement.clientWidth;
-
-console.log('36 calling zoomPct');
-var savedZoom    = zoomPct();
-
-console.log('39 savedScreen='+savedScreen+', savedWidth='+savedWidth+', savedZoom='+savedZoom);
-// alert(zoomPct()); wrong on load
 
 //———————————————————————————————————————— set the rem unit
 
-var insideWidth       = document.documentElement.clientWidth;
-var aiPixel = insideWidth / visible_width;
+var aiPixel = globalThis.innerWidth / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
 
-console.log('47 calling zoomPct');
-var zoomAtLoad        = zoomPct();
-console.log('49 insideWidth='+insideWidth+', aiPixel='+aiPixel+', zoomAtLoad='+zoomAtLoad);
+document.documentElement.style.fontSize = aiPixel * savedZoom + 'px';
 
-document.documentElement.style.fontSize = aiPixel*zoomAtLoad + 'px';
+//———————————————————————————————————————— resize listener function MOVE TO FIRSTLOAD
 
-//———————————————————————————————————————— resize listener function
+if (inHead)
+  var resizeListener = window.addEventListener('resize', setScale);
 
-if (typeof resizeListener == 'undefined')
-  var resizeListener = window.addEventListener('resize', redraw);
 
-function redraw(){
+//:::::::::::::::::::::::::::::::::::::::: methods
+
+//———————————————————————————————————————— function zoomPct()
+
+function zoomPct(rsw){
+
+  if (rsw == globalThis.screen.availWidth)
+    return globalThis.outerWidth/globalThis.innerWidth;
+
+  // firefox
+  else return rsw/globalThis.screen.availWidth;
+
+//  NEED TO RETURN 1 IF IT'S LESS THAN 1.01 OR MORE THAN .99
+}
+
+//———————————————————————————————————————— zoomDiff(newZoom, savedZoom);
+
+function zoomDiff(newZoom, savedZoom){
+  var cgmt = newZoom - savedZoom;
+  if (cgmt < 0) cgmt = 0 - cgmt;
+  cgmt = cgmt * 100;
+
+  return cgmt;
+}
+
+/*———————————————————————————————————————— setScale()
+
+    called when a resize event is triggered
+
+    - if page is not loaded, return true
+    - if page is made longer but not wider, return true
+    - if page is zoomed more than 2%, return true
+
+
+
+
+
+*/
+
+function setScale(){
 
   if (!pageLoaded) return false;
+
 
   var newWidth = document.documentElement.clientWidth;
   if (newWidth == savedWidth) return false;
@@ -78,56 +119,6 @@ function redraw(){
 
   savedWidth = window.visualViewport.width;
 };
-
-
-//:::::::::::::::::::::::::::::::::::::::: methods
-
-/*———————————————————————————————————————— function zoomPct()
-
-    accepts w=inside width of current window
-
-    ratio of content size to window size
-    on zoom, firefox lies about screen size
-    so we compare to stored value */
-
-function zoomPct(){
-  console.group('zoomPct()');
-
-  if (savedScreen != globalThis.screen.availWidth){
-    var real   = savedScreen;
-    var zoomed = globalThis.screen.availWidth;
-    console.log('99 —› real='+real+', zoomed='+zoomed);
-  }
-
-  else{
-    if (document.documentElement.clientWidth != 'undefined'){
-      var real   = document.documentElement.scrollWidth; // THIS DOES NOT WORK IT CHANGES WITH THE ZOOM, IS SUPPOSED TO NEVER CHANGE
-      var zoomed = document.documentElement.clientWidth;
-      console.log('106 —› real='+real+', zoomed='+zoomed);
-    }
-    else{
-      var real   = globalThis.screen.availWidth;
-      var zoomed = globalThis.screen.availWidth;
-      console.log('111 —› real='+real+', zoomed='+zoomed);
-    }
-  }
-
-  pct = real/zoomed;
-  console.log('116 —› pct='+pct);
-  console.groupEnd();
-
-  return pct;
-}
-
-//———————————————————————————————————————— zoomDiff(newZoom, savedZoom);
-
-function zoomDiff(newZoom, savedZoom){
-  var cgmt = newZoom - savedZoom;
-  if (cgmt < 0) cgmt = 0 - cgmt;
-  cgmt = cgmt * 100;
-
-  return cgmt;
-}
 
 
 //———————————————————————————————————————— fin
