@@ -24,7 +24,7 @@ var envMinDiff = 5;   // percent difference needed to count as a zoom
 if (typeof envInHead == 'undefined') var envInHead = true;
                                 else var envInHead = false;
 
-/*———————————————————————————————————————— get real screen width for FF zoom calc.
+/*———————————————————————————————————————— get real screen size for FF & iPhone
 
     This has the potential problem of firefox retaining the zoom level, then
     a visitor coming back and seeing an "initially zoomed" page that
@@ -166,32 +166,32 @@ function pctDifferent(a, b){
 */
 
 function resize(){
-//                                                          // to land  port
-// console.log('aa'+document.documentElement.clientWidth);      // 844  390
-// console.log('ab'+document.documentElement.scrollWidth);      // 844  390
-// console.log('ac'+globalThis.innerWidth);                     // 844  390
-// console.log('ad'+window.innerWidth);                         // 844  390
-// 
-// console.log('ba'+globalThis.outerWidth);                     // 390  844
-// console.log('ba'+window.outerWidth);                         // 390  844
-// 
-// console.log('ca'+globalThis.screen.availWidth );             // 390  390
-// console.log('cb'+screen.availWidth);                         // 390  390
-// console.log('cc'+screen.width);                              // 390  390
-// console.log('cd'+window.screen.availWidth);                  // 390  390
-// console.log('ce'+window.screen.width);                       // 390  390
+console.log('aa'+document.documentElement.clientHeight);      //  664
+console.log('ab'+document.documentElement.scrollHeight);      // 6836
+console.log('ac'+globalThis.innerHeight);                     //  664
+console.log('ad'+window.innerHeight);                         //  664
+
+console.log('ba'+globalThis.outerHeight);                     //  390
+console.log('ba'+window.outerHeight);                         //  390 
+
+console.log('ca'+globalThis.screen.availHeight );             //  844
+console.log('cb'+screen.availHeight);                         //  844
+console.log('cc'+screen.height);                              //  844
+console.log('cd'+window.screen.availHeight);                  //  844
+console.log('ce'+window.screen.height);                       //  844
 
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
-  // iPhone rotate? just need to remove zoom() from the next line
-  console.log('If these are the same, iPhone turned to landscape: '+globalThis.innerWidth+'='+envRealScreenHeight);
-  console.log('If these are the same, iPhone turned to portrait: '+globalThis.innerWidth+'='+envRealScreenHeight);
+  // iPhone rotated to landscape
+  if (globalThis.innerWidth == envRealScreenHeight)
+    aiPixel = currentWidth() / visible_width + 'px';
+  else
+    aiPixel = currentWidth() / visible_width * zoom() + 'px';
 
   // it's a resize or zoom event
-  aiPixel = currentWidth() / visible_width * zoom() + 'px';
   document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
 
@@ -215,17 +215,3 @@ and in function, if new inner width = real screen height env
 then we know outerwidth is wrong, so we return correct value
 
 */
-
-console.log('aa'+document.documentElement.clientWidth);      //  664
-console.log('ab'+document.documentElement.scrollWidth);      // 2769
-console.log('ac'+globalThis.innerWidth);                     //  664
-console.log('ad'+window.innerWidth);                         //  664
-
-console.log('ba'+globalThis.outerWidth);                     //  844
-console.log('ba'+window.outerWidth);                         //  844
-
-console.log('ca'+globalThis.screen.availWidth );             //  844
-console.log('cb'+screen.availWidth);                         //  844
-console.log('cc'+screen.width);                              //  844
-console.log('cd'+window.screen.availWidth);                  //  844
-console.log('ce'+window.screen.width);                       // 

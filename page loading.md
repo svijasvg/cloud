@@ -134,6 +134,8 @@ console.log('cc'+screen.width);                              //  390
 console.log('cd'+window.screen.availWidth);                  //  390
 console.log('ce'+window.screen.width);                       // 
 
+
+
 console.log('aa'+document.documentElement.clientHeight);      //  664
 console.log('ab'+document.documentElement.scrollHeight);      // 2769
 console.log('ac'+globalThis.innerHeight);                     //  664
@@ -164,4 +166,20 @@ console.log('cb'+screen.availWidth);                         // 390  390
 console.log('cc'+screen.width);                              // 390  390
 console.log('cd'+window.screen.availWidth);                  // 390  390
 console.log('ce'+window.screen.width);                       // 390  390
+
+
+
+console.log('aa'+document.documentElement.clientHeight);      //  664
+console.log('ab'+document.documentElement.scrollHeight);      // 6836
+console.log('ac'+globalThis.innerHeight);                     //  664
+console.log('ad'+window.innerHeight);                         //  664
+
+console.log('ba'+globalThis.outerHeight);                     //  390
+console.log('ba'+window.outerHeight);                         //  390 
+
+console.log('ca'+globalThis.screen.availHeight );             //  844
+console.log('cb'+screen.availHeight);                         //  844
+console.log('cc'+screen.height);                              //  844
+console.log('cd'+window.screen.availHeight);                  //  844
+console.log('ce'+window.screen.height);                       //  844
 ```
