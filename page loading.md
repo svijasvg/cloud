@@ -65,11 +65,11 @@ It also contains listener code to adapt the REM size when the window is resized.
 ---
 ### Main Window Management
 
-1. store real screen height & width
+1. **store real screen height & width**
 
 These are used later to check if Firefox has been zoomed and if the iPhone has been rotated.
 
-2. initialize environmental variables
+2. **initialize environmental variables**
 
 We need to know at any given time:
 - last measured width
@@ -78,15 +78,15 @@ We need to know at any given time:
 
 **NOTE:** if the zoom level at load is near 1 but not 1, it is because of the presence of scrollbars on PC. Therefore, we use **areDifferent()** to see if the zoom is different *enough* to count as a real zoom.
 
-3. set the REM value
+3. **set the REM value**
 
 The rem value is contained in **aiPixel**, which is assigned a value based on the relative width of the window and the zoom level of the page.
 
-4. add window resize listener
+4. **add window resize listener**
 
 The function **resize()** will be called whenever a resize event is triggered (see below).
 
-5. set scroll position
+5. **set scroll position**
 
 This is necessary to make centered over-width pages appear centered on load instead of being initially scrolled to the left.
 
