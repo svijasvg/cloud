@@ -30,6 +30,7 @@ if (typeof envInHead == 'undefined') var envInHead = true;
     a visitor coming back and seeing an "initially zoomed" page that
     we can't detect. */
 
+// real screen width, for firefox
 if (envInHead){
   if (getCookie('screenWidth') == ''){
     var envRealScreenWidth = globalThis.screen.availWidth;
@@ -37,6 +38,16 @@ if (envInHead){
   }
   else
     var envRealScreenWidth = getCookie('screenWidth');
+}
+
+// real screen height, for iPhone
+if (envInHead){
+  if (getCookie('screenHeight') == ''){
+    var envRealScreenHeight = globalThis.screen.availHeight;
+    setCookie('screenHeight', envRealScreenHeight, 7);
+  }
+  else
+    var envRealScreenHeight = getCookie('screenHeight');
 }
 
 
@@ -155,6 +166,20 @@ function pctDifferent(a, b){
 */
 
 function resize(){
+                                                         // to land  port
+console.log('aa'+document.documentElement.clientWidth);      // 844  390
+console.log('ab'+document.documentElement.scrollWidth);      // 844  390
+console.log('ac'+globalThis.innerWidth);                     // 844  390
+console.log('ad'+window.innerWidth);                         // 844  390
+
+console.log('ba'+globalThis.outerWidth);                     // 390  844
+console.log('ba'+window.outerWidth);                         // 390  844
+
+console.log('ca'+globalThis.screen.availWidth );             // 390  390
+console.log('cb'+screen.availWidth);                         // 390  390
+console.log('cc'+screen.width);                              // 390  390
+console.log('cd'+window.screen.availWidth);                  // 390  390
+console.log('ce'+window.screen.width);                       // 390  390
 
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
@@ -189,17 +214,3 @@ then we know outerwidth is wrong, so we return correct value
 
 */
 
-// iPhone, on load
-console.log('aa'+document.documentElement.clientHeight);      //  664
-console.log('ab'+document.documentElement.scrollHeight);      // 2769
-console.log('ac'+globalThis.innerHeight);                     //  664
-console.log('ad'+window.innerHeight);                         //  664
-
-console.log('ba'+globalThis.outerHeight);                     //  844
-console.log('ba'+window.outerHeight);                         //  844
-
-console.log('ca'+globalThis.screen.availHeight );             //  844
-console.log('cb'+screen.availHeight);                         //  844
-console.log('cc'+screen.height);                              //  844
-console.log('cd'+window.screen.availHeight);                  //  844
-console.log('ce'+window.screen.height);                       // 

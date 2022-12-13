@@ -133,4 +133,20 @@ console.log('cb'+screen.availHeight);                         //  844
 console.log('cc'+screen.height);                              //  844
 console.log('cd'+window.screen.availHeight);                  //  844
 console.log('ce'+window.screen.height);                       // 
+
+
+                                                         // to land  port
+console.log('aa'+document.documentElement.clientWidth);      // 844  390
+console.log('ab'+document.documentElement.scrollWidth);      // 844  390
+console.log('ac'+globalThis.innerWidth);                     // 844  390
+console.log('ad'+window.innerWidth);                         // 844  390
+
+console.log('ba'+globalThis.outerWidth);                     // 390  844
+console.log('ba'+window.outerWidth);                         // 390  844
+
+console.log('ca'+globalThis.screen.availWidth );             // 390  390
+console.log('cb'+screen.availWidth);                         // 390  390
+console.log('cc'+screen.width);                              // 390  390
+console.log('cd'+window.screen.availWidth);                  // 390  390
+console.log('ce'+window.screen.width);                       // 390  390
 ```
