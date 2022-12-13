@@ -65,7 +65,7 @@ It also contains listener code to adapt the REM size when the window is resized.
 ---
 ### Main Window Management
 
-**1. **store real screen height & width**
+**1. store real screen height & width**
 
 These are used later to check if Firefox has been zoomed and if the iPhone has been rotated.
 
