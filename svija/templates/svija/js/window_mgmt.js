@@ -17,9 +17,7 @@
 //———————————————————————————————————————— variables
 
 // visible_width         // supplied by server
-var envMinZoom = 5;   // percent difference needed to count as a zoom
-
-console.group('window mgmt');
+var envMinDiff = 5;   // percent difference needed to count as a zoom
 
 //———————————————————————————————————————— running from <head>?
 
@@ -41,7 +39,6 @@ if (envInHead){
   else
     var envRealScreenWidth = getCookie('screenWidth');
   
-  console.log('envRealScreenWidth='+envRealScreenWidth);
 }
 
 //———————————————————————————————————————— set the rem unit
@@ -51,25 +48,26 @@ var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER
 var envCurrentZoom  = zoom();                         // used in body & resize();
 var envLoadedZoomed = false;
 
-if (pctDifferent(envCurrentZoom, 1) > envMinZoom){
-  envLoadedZoomed = true;
-  console.log('page zoomed on load: '+envCurrentZoom);
-}
+if (areDifferent(envCurrentZoom, 1)) envLoadedZoomed = true;
 
 aiPixel = aiPixel*envCurrentZoom;
+
 document.documentElement.style.fontSize = aiPixel + 'px';
 
+//———————————————————————————————————————— log initial values
+
+console.group('window mgmt on load');
+console.log('envRealScreenWidth='+envRealScreenWidth);
+console.log('page zoom on load: '+envCurrentZoom);
 console.log('envPrevWidth='+envPrevWidth);
 console.log('aiPixel='+aiPixel); 
 console.log('envCurrentZoom='+envCurrentZoom);
+console.groupEnd();
 
 //———————————————————————————————————————— resize listener
 
 if (envInHead)
   var resizeListener = window.addEventListener('resize', resize);
-
-console.log('—————\n\n\n');
-console.groupEnd();
 
 //———————————————————————————————————————— set scroll position
 
@@ -100,22 +98,15 @@ function zoom(){
   var w = envRealScreenWidth;
   if (w == globalThis.screen.availWidth){
     var z = globalThis.outerWidth/currentWidth();
-    console.log('zoom()='+z+', globalThis.outerWidth='+globalThis.outerWidth+', currentWidth()='+currentWidth());
   }
 
   // firefox
   else var z = w/globalThis.screen.availWidth;
   
+  if (z>0.91 && z<1.09) z = 1;
+
+//console.log('zoom(): z='+z+', globalThis.outerWidth='+globalThis.outerWidth+', currentWidth()='+currentWidth());
   return z;
-}
-
-//———————————————————————————————————————— pctDifferent(a, b);
-
-//    returns % difference between two numbers like 1.1, 1
-
-function pctDifferent(a, b){
-  console.log('pctDifferent(): '+a+', '+b);
-  return Math.round(Math.abs( a-b ) * 100);
 }
 
 //———————————————————————————————————————— currentWidth()
@@ -123,6 +114,26 @@ function pctDifferent(a, b){
 function currentWidth(){
   if (envInHead) return globalThis.innerWidth;
   return document.documentElement.clientWidth;
+}
+
+//———————————————————————————————————————— setScroll()
+
+function setScroll(){
+  if (envLoadedZoomed) return true;
+
+  console.log('scrolling to '+xInit+', '+yInit);
+  window.scrollTo(xInit, yInit);
+}
+
+//———————————————————————————————————————— areDifferent(a, b);
+
+//    returns % difference between two numbers like 1.1, 1
+/*  used to compensate for minor differences in zoom() caused by the presence of scrollbars in PC browsers */
+
+function areDifferent(a, b){
+  var d = Math.round(Math.abs( a-b ) * 100);
+  if (d > envMinDiff) return  true;
+                 else return false;
 }
 
 /*———————————————————————————————————————— resize()
@@ -136,7 +147,6 @@ function currentWidth(){
 */
 
 function resize(){
-  console.group('resize()');
 
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
@@ -144,13 +154,9 @@ function resize(){
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
   // page was zoomed
-  var d = pctDifferent(zoom(), envCurrentZoom);
-  console.log('d='+d+', zoom()='+zoom()+', envCurrentZoom='+envCurrentZoom);
-  if (d > envMinZoom) {
+  if (areDifferent(zoom(), envCurrentZoom)) {
+    console.log('page zoomed: '+zoom()+', envCurrentZoom='+envCurrentZoom);
     envCurrentZoom = zoom();
-    console.log('page zoomed');
-    console.groupEnd();
-    return true;
   }
 
   // it's a resize event
@@ -159,19 +165,9 @@ function resize(){
   envPrevWidth = currentWidth();
 
   console.log('page resized');
-  console.groupEnd();
   return true;
 
 };
-
-//———————————————————————————————————————— setScroll()
-
-function setScroll(){
-  if (envLoadedZoomed) return true;
-
-  console.log('scrolling to '+xInit+', '+yInit);
-  window.scrollTo(xInit, yInit);
-}
 
 
 //———————————————————————————————————————— fin
