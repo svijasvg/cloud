@@ -45,12 +45,11 @@ if (envInHead){
 
 var envPrevWidth    = currentWidth();                 // used in resize();
 var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
-var envCurrentZoom  = zoom();                         // used in body & resize();
 var envLoadedZoomed = false;
 
-if (areDifferent(envCurrentZoom, 1)) envLoadedZoomed = true;
+if (areDifferent(zoom(), 1)) envLoadedZoomed = true;
 
-aiPixel = aiPixel*envCurrentZoom;
+aiPixel = aiPixel*zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
 
@@ -58,10 +57,9 @@ document.documentElement.style.fontSize = aiPixel + 'px';
 
 console.group('window mgmt on load');
 console.log('envRealScreenWidth='+envRealScreenWidth);
-console.log('page zoom on load: '+envCurrentZoom);
+console.log('page zoom on load: '+zoom());
 console.log('envPrevWidth='+envPrevWidth);
 console.log('aiPixel='+aiPixel); 
-console.log('envCurrentZoom='+envCurrentZoom);
 console.groupEnd();
 
 //———————————————————————————————————————— resize listener
@@ -153,13 +151,7 @@ function resize(){
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
-  // page was zoomed
-  if (areDifferent(zoom(), envCurrentZoom)) {
-    console.log('page zoomed: '+zoom()+', envCurrentZoom='+envCurrentZoom);
-    envCurrentZoom = zoom();
-  }
-
-  // it's a resize event
+  // it's a resize or zoom event
   aiPixel = currentWidth() / visible_width * zoom() + 'px';
   document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
