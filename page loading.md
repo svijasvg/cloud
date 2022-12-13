@@ -183,3 +183,7 @@ console.log('cc'+screen.height);                              //  844
 console.log('cd'+window.screen.availHeight);                  //  844
 console.log('ce'+window.screen.height);                       //  844
 ```
+
+There are two issues affecting mobile screens, when turned into landscape mode:
+- Android changes the listed screen size (which we were storing for comparison, so needs to be updated)
+- iPhone DOESN'T change the listed screen, so the new page is superficially much wider than the screen

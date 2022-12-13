@@ -99,9 +99,17 @@ setScroll(); setTimeout(setScroll, 1);
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
-  console.log('currentWidth() returns '+document.documentElement.clientWidth);
-  if (envInHead) return globalThis.innerWidth;
-  return document.documentElement.clientWidth;
+
+//if (window.navigator.userAgent.indexOf('Android')>0) alert(x);
+  var r;
+
+  if (envInHead) r = globalThis.innerWidth;
+  else r = document.documentElement.clientWidth;
+
+//  if (window.navigator.userAgent.indexOf('Android')>0) alert(r); // correct on android
+
+  console.log('currentWidth() returns '+r);
+  return r;
 }
 
 //———————————————————————————————————————— setScroll()
@@ -138,10 +146,19 @@ function zoom(){
 //console.log('globalThis.outerWidth: '+globalThis.outerWidth); // 390 THIS IS WRONG
 //console.log('currentWidth(): '+currentWidth());               // 844
 
+  // android screen was rotated
+  if (globalThis.screen.availWidth == envRealScreenHeight){
+    envRealScreenHeight = globalThis.screen.availHeight;
+    envRealScreenWidth  = globalThis.screen.availWidth;
+  }
+
   var w = envRealScreenWidth;               // this is just to make
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
     console.log('zoom not firefox');
     var z = globalThisOuterWidth()/currentWidth();
+//  alert('not firefox: '+globalThisOuterWidth()+':'+currentWidth());
+    // NOT CALLED WHEN ROTATED TO LANDSCAPE
+
   }
 
   // firefox
@@ -152,6 +169,8 @@ function zoom(){
 
   if (!areDifferent(z, 1)) z = 1;
 
+  
+//if (window.navigator.userAgent.indexOf('Android')>0) alert(z); // 0.46 on android
   console.log('zoom() returning '+z);
   return z;
 }
@@ -177,6 +196,39 @@ function pctDifferent(a, b){
 function resize(){
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
+ var x='';
+
+x+='\n'+('aa'+document.documentElement.clientWidth);      //  853   412 all
+x+='\n'+('ab'+document.documentElement.scrollWidth);      //  853
+x+='\n'+('ac'+globalThis.innerWidth);                     //  853
+x+='\n'+('ad'+window.innerWidth);                         //  853
+x+='\n'+('ba'+globalThis.outerWidth);                     //  853 
+x+='\n'+('ba'+window.outerWidth);                         //  853 
+
+x+='\n'+('ca'+globalThis.screen.availWidth );             //  892
+x+='\n'+('cb'+screen.availWidth);                         //  892
+x+='\n'+('cc'+screen.width);                              //  892
+x+='\n'+('cd'+window.screen.availWidth);                  //  892
+x+='\n'+('ce'+window.screen.width);                       //  892
+
+
+
+x+='\n'+('aa'+document.documentElement.clientHeight);      //  308  771
+x+='\n'+('ab'+document.documentElement.scrollHeight);      // 3337 3191
+x+='\n'+('ac'+globalThis.innerHeight);                     //  308  771
+x+='\n'+('ad'+window.innerHeight);                         //  308  771
+
+x+='\n'+('ba'+globalThis.outerHeight);                     //  308  771
+x+='\n'+('ba'+window.outerHeight);                         //  308  771
+
+x+='\n'+('ca'+globalThis.screen.availHeight );             //  412  892
+x+='\n'+('cb'+screen.availHeight);                         //  412  892
+x+='\n'+('cc'+screen.height);                              //  412  892
+x+='\n'+('cd'+window.screen.availHeight);                  //  412  892
+x+='\n'+('ce'+window.screen.height);                       //  412  892
+
+//alert(x);
+
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
@@ -191,6 +243,9 @@ function resize(){
 //}
   else
     aiPixel = currentWidth() / visible_width * zoom() + 'px';
+
+//alert(currentWidth()+':'+visible_width+':'+zoom()); 853:300:0.46 to landscape
+//alert(currentWidth()+':'+visible_width+':'+zoom()); 412:300:1.00 to portrati
 
   // rt(currentWidth()+' : '+visible_width+' : '+zoom());
   // to landscape: 853, 300, 1
