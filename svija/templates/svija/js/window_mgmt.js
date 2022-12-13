@@ -166,32 +166,27 @@ function pctDifferent(a, b){
 */
 
 function resize(){
-console.log('aa'+document.documentElement.clientHeight);      //  664
-console.log('ab'+document.documentElement.scrollHeight);      // 6836
-console.log('ac'+globalThis.innerHeight);                     //  664
-console.log('ad'+window.innerHeight);                         //  664
-
-console.log('ba'+globalThis.outerHeight);                     //  390
-console.log('ba'+window.outerHeight);                         //  390 
-
-console.log('ca'+globalThis.screen.availHeight );             //  844
-console.log('cb'+screen.availHeight);                         //  844
-console.log('cc'+screen.height);                              //  844
-console.log('cd'+window.screen.availHeight);                  //  844
-console.log('ce'+window.screen.height);                       //  844
-
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
   // iPhone rotated to landscape
-  if (globalThis.innerWidth == envRealScreenHeight)
+  if (globalThis.innerWidth == envRealScreenHeight){
+    console.log('iPhone rotated to landscape');
     aiPixel = currentWidth() / visible_width + 'px';
+  }
+  else if (globalThis.outerWidth == envRealScreenHeight){
+    console.log('iPhone rotated to portrait');
+    aiPixel = currentWidth() / visible_width + 'px';
+  }
   else
     aiPixel = currentWidth() / visible_width * zoom() + 'px';
 
-  // it's a resize or zoom event
+  // rt(currentWidth()+' : '+visible_width+' : '+zoom());
+  // to landscape: 853, 300, 1
+  // to portrait : 412 : 300 : 0.46
+
   document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
 
