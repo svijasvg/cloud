@@ -97,7 +97,36 @@ The scroll function is called immediately then again after one second
 ---
 ### Resize Listener
 
-this is a fucking mess to understand
+This is by far the most complex part of the window-management code.
+
+It's necessary that when a window is zoomed or resized, the contents behaves as expected.
+
+However, since the content is scaled to fit the window, the calculation changes every time the window is modified:
+
+- zoomed
+- made wider or taller or both
+- phone is rotated
+
+In addition, zoom should behave as expected — the Svija code shouldn't override the zoom.
+
+Finally, if the user zooms then reloads the page, the zoom should be persistant.
+
+All of this is handled by function **resize()**.
+
+#### function resize()
+
+**1. exit if we don't need to do anything**
+
+- if page is not fully loaded, do nothing
+- if page is made longer but not wider, do nothing
+
+**2. if it's not an iPhone rotation to landscape
+
+If it's not an iPhone rotating to landscape, we use the zoom to calculate the new value.
+
+To correct for this, we check if the new innerWidth is the same as the screen height we measured at load. If it is, we know that we have an iPhone that was rotated to landscape.
+
+**3. update the aiPixel value & environmental width variables 
 
 ---
 <details><summary>ways to measure width</summary>

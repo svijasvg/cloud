@@ -172,78 +172,31 @@ function pctDifferent(a, b){
 
 /*———————————————————————————————————————— resize()
 
-    called when a resize event is triggered
-
-    - if page is not fully loaded, return true
-    - if page is made longer but not wider, return true
-    - if page is zoomed more than 2%, return true
-
-*/
+    called when a resize event is triggered */
 
 function resize(){
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
- var x='';
-
-x+='\n'+('aa'+document.documentElement.clientWidth);      //  853   412 all
-x+='\n'+('ab'+document.documentElement.scrollWidth);      //  853
-x+='\n'+('ac'+globalThis.innerWidth);                     //  853
-x+='\n'+('ad'+window.innerWidth);                         //  853
-x+='\n'+('ba'+globalThis.outerWidth);                     //  853 
-x+='\n'+('ba'+window.outerWidth);                         //  853 
-
-x+='\n'+('ca'+globalThis.screen.availWidth );             //  892
-x+='\n'+('cb'+screen.availWidth);                         //  892
-x+='\n'+('cc'+screen.width);                              //  892
-x+='\n'+('cd'+window.screen.availWidth);                  //  892
-x+='\n'+('ce'+window.screen.width);                       //  892
-
-
-
-x+='\n'+('aa'+document.documentElement.clientHeight);      //  308  771
-x+='\n'+('ab'+document.documentElement.scrollHeight);      // 3337 3191
-x+='\n'+('ac'+globalThis.innerHeight);                     //  308  771
-x+='\n'+('ad'+window.innerHeight);                         //  308  771
-
-x+='\n'+('ba'+globalThis.outerHeight);                     //  308  771
-x+='\n'+('ba'+window.outerHeight);                         //  308  771
-
-x+='\n'+('ca'+globalThis.screen.availHeight );             //  412  892
-x+='\n'+('cb'+screen.availHeight);                         //  412  892
-x+='\n'+('cc'+screen.height);                              //  412  892
-x+='\n'+('cd'+window.screen.availHeight);                  //  412  892
-x+='\n'+('ce'+window.screen.height);                       //  412  892
-
-//alert(x);
+ var zoomFactor = 1;
 
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
-  // iPhone rotated to landscape
-  if (globalThis.innerWidth == envRealScreenHeight){
-    console.log('iPhone rotated to landscape');
-    aiPixel = currentWidth() / visible_width + 'px';
-  }
-//else if (globalThis.outerWidth == envRealScreenHeight){
-//  console.log('iPhone rotated to portrait');
-//  aiPixel = currentWidth() / visible_width + 'px';
-//}
+  if (globalThis.innerWidth != envRealScreenHeight)
+    zoomFactor = zoom();
+
   else
-    aiPixel = currentWidth() / visible_width * zoom() + 'px';
+    // iPhone rotated to landscape
+    console.log('iPhone rotated to landscape');
 
-//alert(currentWidth()+':'+visible_width+':'+zoom()); 853:300:0.46 to landscape
-//alert(currentWidth()+':'+visible_width+':'+zoom()); 412:300:1.00 to portrati
+  aiPixel = currentWidth() / visible_width * zoomFactor;
 
-  // rt(currentWidth()+' : '+visible_width+' : '+zoom());
-  // to landscape: 853, 300, 1
-  // to portrait : 412 : 300 : 0.46
+  document.documentElement.style.fontSize = aiPixel + 'px';
 
-  document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
-
   console.log('page resized: width='+currentWidth()+', zoom='+zoom());
-  return true;
 
+  return true;
 };
 
 /*———————————————————————————————————————— globalThisOuterWidth()
