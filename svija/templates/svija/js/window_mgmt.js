@@ -22,7 +22,7 @@ var envMinDiff = 5;   // percent difference needed to count as a zoom
 //———————————————————————————————————————— running from <head>?
 
 if (typeof envInHead == 'undefined') var envInHead = true;
-                             else var envInHead = false;
+                                else var envInHead = false;
 
 /*———————————————————————————————————————— get real screen width for FF zoom calc.
 
@@ -31,23 +31,25 @@ if (typeof envInHead == 'undefined') var envInHead = true;
     we can't detect. */
 
 if (envInHead){
-
   if (getCookie('screenWidth') == ''){
     var envRealScreenWidth = globalThis.screen.availWidth;
     setCookie('screenWidth', envRealScreenWidth, 7);
   }
   else
     var envRealScreenWidth = getCookie('screenWidth');
-  
 }
 
-//———————————————————————————————————————— set the rem unit
+
+//———————————————————————————————————————— environmental variables
 
 var envPrevWidth    = currentWidth();                 // used in resize();
+var envPrevZoom     = zoom();                         // used in resize();
 var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
 var envLoadedZoomed = false;
 
 if (areDifferent(zoom(), 1)) envLoadedZoomed = true;
+
+//———————————————————————————————————————— set the rem unit
 
 aiPixel = aiPixel*zoom();
 
@@ -83,30 +85,6 @@ setScroll(); setTimeout(setScroll, 1);
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
-/*———————————————————————————————————————— zoom(w)
-
-    returns current zoom level
-    requires envRealScreenWidth, which is
-    necessary for firefox
-
-    close values mean scrollbars, so we return 1 */
-
-function zoom(){
-
-  var w = envRealScreenWidth;
-  if (w == globalThis.screen.availWidth){
-    var z = globalThis.outerWidth/currentWidth();
-  }
-
-  // firefox
-  else var z = w/globalThis.screen.availWidth;
-  
-  if (z>0.91 && z<1.09) z = 1;
-
-//console.log('zoom(): z='+z+', globalThis.outerWidth='+globalThis.outerWidth+', currentWidth()='+currentWidth());
-  return z;
-}
-
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
@@ -134,6 +112,38 @@ function areDifferent(a, b){
                  else return false;
 }
 
+/*———————————————————————————————————————— zoom(w)
+
+    returns current zoom level
+    requires envRealScreenWidth, which is
+    necessary for firefox
+
+    close values mean scrollbars, so we return 1 */
+
+function zoom(){
+
+  var w = envRealScreenWidth;
+  if (w == globalThis.screen.availWidth){
+    var z = globalThis.outerWidth/currentWidth();
+  }
+
+  // firefox
+  else{
+    var z = w/globalThis.screen.availWidth; 
+  }
+
+  if (!areDifferent(z, 1)) z = 1;
+  return z;
+}
+
+//———————————————————————————————————————— pctDifferent(a, b);
+
+//    returns % difference between two numbers like 1.1, 1
+
+function pctDifferent(a, b){
+  return Math.round(Math.abs( a-b ) * 100);
+}
+
 /*———————————————————————————————————————— resize()
 
     called when a resize event is triggered
@@ -151,15 +161,30 @@ function resize(){
   // page was just made longer
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
+  // iPhone rotate? just need to remove zoom() from the next line
+
   // it's a resize or zoom event
   aiPixel = currentWidth() / visible_width * zoom() + 'px';
   document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
 
-  console.log('page resized');
+  console.log('page resized: width='+currentWidth()+', zoom='+zoom());
   return true;
 
 };
 
 
 //———————————————————————————————————————— fin
+
+// if zoom is more than 40% different from previous zoom, it's a telephone
+// if new height = previous width, it's a telephone
+
+/*
+
+# if current width = envRealScreenHeight
+
+have a function that replaces variable that gives wrong variable
+and in function, if new inner width = real screen height env
+then we know outerwidth is wrong, so we return correct value
+
+*/

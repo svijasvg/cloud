@@ -92,24 +92,23 @@ firefox and not firefox
 
 for firefox, we compare current screen size to the first measured size
 for others, we...
-```
 
 //                                                              |——————————— MAC —————————————|  |——————— PC ——————|
 //                                                              s100 s125  f100 f120  c100 c125  f100 f150 c100 c125
-console.log('ad'+document.documentElement.scrollWidth);      // 1758 1407  1771 1476  1920 1536   914  731 1148  918
-console.log('ae'+globalThis.innerWidth);                     // 1758 1406  1771 1476  1920 1536   914  731 1148  918
-console.log('ak'+window.innerWidth);                         // 1758 1406  1771 1476  1920 1536   914  731 1148  918
+console.log('aa'+document.documentElement.clientWidth);      // 
+console.log('ab'+document.documentElement.scrollWidth);      // 1758 1407  1771 1476  1920 1536   914  731 1148  918
+console.log('ac'+globalThis.innerWidth);                     // 1758 1406  1771 1476  1920 1536   914  731 1148  918
+console.log('ad'+window.innerWidth);                         // 1758 1406  1771 1476  1920 1536   914  731 1148  918
 
-console.log('af'+globalThis.outerWidth);                     // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
-console.log('al'+window.outerWidth);                         // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
+console.log('ba'+globalThis.outerWidth);                     // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
+console.log('ba'+window.outerWidth);                         // 1758 1758  1771 1476  1920 1920   923  739 1161 1161
 
-console.log('ag'+globalThis.screen.availWidth );             // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
-console.log('ah'+screen.availWidth);                         // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
-console.log('ai'+screen.width);                              // 256O 2560  2560 2133  2560 2560  1200  960 1440 1440
-console.log('am'+window.screen.availWidth);                  // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
-console.log('an'+window.screen.width);                       // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
+console.log('ca'+globalThis.screen.availWidth );             // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
+console.log('cb'+screen.availWidth);                         // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
+console.log('cc'+screen.width);                              // 256O 2560  2560 2133  2560 2560  1200  960 1440 1440
+console.log('cd'+window.screen.availWidth);                  // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
+console.log('ce'+window.screen.width);                       // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
 
-```
 
 I don't even need to know the exact zoom amount, I just need to know if it was a zoom or resize
 
