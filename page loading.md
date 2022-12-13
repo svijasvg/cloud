@@ -93,6 +93,7 @@ firefox and not firefox
 for firefox, we compare current screen size to the first measured size
 for others, we...
 
+```
 //                                                              |——————————— MAC —————————————|  |——————— PC ——————|
 //                                                              s100 s125  f100 f120  c100 c125  f100 f150 c100 c125
 console.log('aa'+document.documentElement.clientWidth);      // 
@@ -115,3 +116,4 @@ I don't even need to know the exact zoom amount, I just need to know if it was a
 if it's a zoom of less than 10%, it was a resize
 
 ALL OF THIS IS THE RESIZE HANDLER
+```
