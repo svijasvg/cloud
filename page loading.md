@@ -120,13 +120,40 @@ All of this is handled by function **resize()**.
 - if page is not fully loaded, do nothing
 - if page is made longer but not wider, do nothing
 
-**2. if it's not an iPhone rotation to landscape
+**2. if it's not an iPhone rotation to landscape**
 
 If it's not an iPhone rotating to landscape, we use the zoom to calculate the new value.
 
-To correct for this, we check if the new innerWidth is the same as the screen height we measured at load. If it is, we know that we have an iPhone that was rotated to landscape.
+To check for this, we see if the new screen width is the same as the real screen height we measured at load. If it is, we know that we have an iPhone that was rotated to landscape.
 
 **3. update the aiPixel value & environmental width variables 
+
+---
+### Functions used by the Resize Listener
+
+There are two functions called by resize() that were difficult to implement:
+
+**1. currentWidth()**
+
+This returns the current page width **as seen by the page**. It is necessary because the document object can't be meaured by a script running the the `<head>`.
+
+**NOTE:** browsers handle zoom by fooling the page to think that it is in fact smaller — for example a window that starts out at 1200px wide will only have 1000px when it is zoomed 20%.
+
+**2. zoom()**
+
+First we detect if an Android phone was rotated. If the new screen height and width are reversed from what we measured, this is the case and we correct the environmental variables
+
+Then we get a zoom number for all browsers except Firefox by comparing the zoomed (currentWidth()) value with the real unzoomed value.
+
+For Firefox, we compare the new (false) screen size with the real screen size that we measured at load and stored in a cookie.
+
+Finally, if the zoom level approaches 1, we return 1 because it's PC scrollbars that are throwing if off. If we took into account the slight difference, the page would be ever-so-slightly too wide.
+
+**3. globalThisOuterWidth()**
+
+This function replaces the globalThis.outerWidth value.
+
+We do this because iPhones lie about this value, and this function corrects the value.
 
 ---
 <details><summary>ways to measure width</summary>

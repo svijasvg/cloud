@@ -83,6 +83,8 @@ if(!envInHead){
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
+// NEED TO NOW IF THE FOLLOWING FUNCTION IS ABSOLUTE OR ZOOMED
+
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
@@ -121,17 +123,9 @@ function areDifferent(a, b){
 
 /*———————————————————————————————————————— zoom(w)
 
-    returns current zoom level
-    requires envRealScreenWidth, which is
-    necessary for firefox
-
     close values mean scrollbars, so we return 1 */
 
 function zoom(){
-
-  console.log('zoom() entering');
-//console.log('globalThis.outerWidth: '+globalThis.outerWidth); // 390 THIS IS WRONG
-//console.log('currentWidth(): '+currentWidth());               // 844
 
   // android screen was rotated
   if (globalThis.screen.availWidth == envRealScreenHeight){
@@ -143,9 +137,6 @@ function zoom(){
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
     console.log('zoom not firefox');
     var z = globalThisOuterWidth()/currentWidth();
-//  alert('not firefox: '+globalThisOuterWidth()+':'+currentWidth());
-    // NOT CALLED WHEN ROTATED TO LANDSCAPE
-
   }
 
   // firefox
@@ -156,8 +147,6 @@ function zoom(){
 
   if (!areDifferent(z, 1)) z = 1;
 
-  
-//if (window.navigator.userAgent.indexOf('Android')>0) alert(z); // 0.46 on android
   console.log('zoom() returning '+z);
   return z;
 }
