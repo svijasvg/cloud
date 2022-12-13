@@ -47,19 +47,21 @@ if (areDifferent(zoom(), 1)) envLoadedZoomed = true;
 
 //———————————————————————————————————————— set the rem unit
 
-var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
-aiPixel = aiPixel*zoom();
+var aiPixel = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
+    aiPixel = aiPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
 
 //———————————————————————————————————————— log initial values
 
-console.group('window mgmt on load');
-console.log('envRealScreenWidth='+envRealScreenWidth);
-console.log('page zoom on load: '+zoom());
-console.log('envPrevWidth='+envPrevWidth);
-console.log('aiPixel='+aiPixel); 
-console.groupEnd();
+if (!envInHead){
+  console.group('window mgmt on load');
+  console.log('envRealScreenWidth='+envRealScreenWidth);
+  console.log('page zoom on load: '+zoom());
+  console.log('envPrevWidth='+envPrevWidth);
+  console.log('aiPixel='+aiPixel); 
+  console.groupEnd();
+}
 
 //———————————————————————————————————————— resize listener
 
@@ -68,16 +70,15 @@ if (envInHead)
 
 //———————————————————————————————————————— set scroll position
 
-// makes centered over-width pages appear centered on load instead of centering late
-// page_offsets set in admin // aiPixel set in rem.js
-
-var left_margin_px = page_offsetx * aiPixel;
-var top_margin_px  = page_offsety * aiPixel;
-
-var xInit = Math.round(left_margin_px);
-var yInit = Math.round(top_margin_px);
-
-setScroll(); setTimeout(setScroll, 1);
+if(!envInHead){
+  var left_margin_px = page_offsetx * aiPixel;
+  var top_margin_px  = page_offsety * aiPixel;
+  
+  var xInit = Math.round(left_margin_px);
+  var yInit = Math.round(top_margin_px);
+  
+  setScroll(); setTimeout(setScroll, 1);
+}
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods

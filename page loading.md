@@ -63,7 +63,7 @@ It also contains listener code to adapt the REM size when the window is resized.
 **savedWidth** · width
 
 ---
-### flowchart
+### Main Window Management
 
 1. store real screen height & width
 
@@ -80,8 +80,26 @@ We need to know at any given time:
 
 3. set the REM value
 
+The rem value is contained in **aiPixel**, which is assigned a value based on the relative width of the window and the zoom level of the page.
 
+4. add window resize listener
 
+The function **resize()** will be called whenever a resize event is triggered (see below).
+
+5. set scroll position
+
+This is necessary to make centered over-width pages appear centered on load instead of being initially scrolled to the left.
+
+Page offsets are set in admin in **Screen** settings.
+
+The scroll function is called immediately then again after one second
+
+---
+### Resize Listener
+
+this is a fucking mess to understand
+
+---
 <details><summary>ways to measure width</summary>
 
 ```
