@@ -133,9 +133,13 @@ function areDifferent(a, b){
 
 function zoom(){
 
-  var w = envRealScreenWidth;
-  if (w == globalThis.screen.availWidth){
-    var z = globalThis.outerWidth/currentWidth();
+  console.log('zoom() entering');
+//console.log('globalThis.outerWidth: '+globalThis.outerWidth); // 390 THIS IS WRONG
+//console.log('currentWidth(): '+currentWidth());               // 844
+
+  var w = envRealScreenWidth;               // this is just to make
+  if (w == globalThis.screen.availWidth){   // sure it's not firefox
+    var z = globalThisOuterWidth/currentWidth();
   }
 
   // firefox
@@ -144,6 +148,8 @@ function zoom(){
   }
 
   if (!areDifferent(z, 1)) z = 1;
+
+  console.log('zoom() returning '+z);
   return z;
 }
 
@@ -195,6 +201,17 @@ function resize(){
 
 };
 
+/*———————————————————————————————————————— globalThisOuterWidth()
+
+    called by zoom()
+
+    because telephones return wrong values for landscape mode */
+
+function globalThisOuterWidth(){
+  if (globalThis.outerWidth == envRealScreenHeight) return "booby";
+  else return globalThis.outerWidth;
+}
+
 
 //———————————————————————————————————————— fin
 
@@ -209,4 +226,10 @@ have a function that replaces variable that gives wrong variable
 and in function, if new inner width = real screen height env
 then we know outerwidth is wrong, so we return correct value
 
+the problem is that when you rotate the phone, there's a zoom change from 1 to 0.46
+
+I need to cancel the zoom effect (do a negative zoom)
+
+
+problem is zoom: zoom returns 0.46 because why?
 */
