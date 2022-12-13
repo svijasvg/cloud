@@ -1,22 +1,8 @@
-/*———————————————————————————————————————— template: window_mgmt.js
-
-/*———————————————————————————————————————— notes
-
-    causes flash because we don't have correct zoomed width
-    when executed in header
-
-    included once in header to get rough overall size
-    then once after initial scroll div to correct
-    for scrollbars — window width changes with the
-    addition of scrollbars, which are only added
-    when the content is loaded
-
-    we don't have to handle pinch because Safari handles
-    it automatically when page is reloaded */
+//———————————————————————————————————————— template: window_mgmt.js
 
 //———————————————————————————————————————— variables
 
-// visible_width         // supplied by server
+// visible_width      // supplied by server
 var envMinDiff = 5;   // percent difference needed to count as a zoom
 
 //———————————————————————————————————————— running from <head>?
@@ -55,13 +41,13 @@ if (envInHead){
 
 var envPrevWidth    = currentWidth();                 // used in resize();
 var envPrevZoom     = zoom();                         // used in resize();
-var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
 var envLoadedZoomed = false;
 
 if (areDifferent(zoom(), 1)) envLoadedZoomed = true;
 
 //———————————————————————————————————————— set the rem unit
 
+var aiPixel         = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
 aiPixel = aiPixel*zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';

@@ -39,15 +39,22 @@ Then, in the body:
 - final JS · delete initial_scroll div & set page_loaded to true
 
 ---
-### window_mgmt.js
+### window_mgmt.js notes
+
+causes flash because we don't have correct zoomed width when executed in header
+
+included once in header to get rough overall size then once after initial scroll div to correct for scrollbars — window width changes with the addition of scrollbars, which are only added when the content is loaded.
+
+we don't handle pinch-to-zoom because Safari handles it automatically when page is reloaded.
+
+---
+### window_mgmt.js functioning
 
 This script is called twice:
 1. in the head, to set the REM size
 2. again in the body, to correct the REM size if scrollbars have been added
 
-It also contains code to correct the REM size when the page is zoomed or when the window is resized.
-
-The only complicated part is calculating the zoom level at a given moment.
+It also contains listener code to adapt the REM size when the window is resized.
 
 #### Saved Variables
 
@@ -56,6 +63,25 @@ The only complicated part is calculating the zoom level at a given moment.
 **savedWidth** · width
 
 ---
+### flowchart
+
+1. store real screen height & width
+
+These are used later to check if Firefox has been zoomed and if the iPhone has been rotated.
+
+2. initialize environmental variables
+
+We need to know at any given time:
+- last measured width
+- last measured zoom
+- whether the page was already zoomed when it was loaded
+
+**NOTE:** if the zoom level at load is near 1 but not 1, it is because of the presence of scrollbars on PC. Therefore, we use **areDifferent()** to see if the zoom is different *enough* to count as a real zoom.
+
+3. set the REM value
+
+
+
 <details><summary>ways to measure width</summary>
 
 ```
