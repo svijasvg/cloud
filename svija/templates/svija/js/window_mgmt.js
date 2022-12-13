@@ -52,11 +52,11 @@ var envCurrentZoom  = zoom();                         // used in body & resize()
 var envLoadedZoomed = false;
 
 if (pctDifferent(envCurrentZoom, 1) > envMinZoom){
-  aiPixel = aiPixel*envCurrentZoom;
   envLoadedZoomed = true;
-  console.log('page zoomed on load: '+pctDifferent(envCurrentZoom, 1));
+  console.log('page zoomed on load: '+envCurrentZoom);
 }
 
+aiPixel = aiPixel*envCurrentZoom;
 document.documentElement.style.fontSize = aiPixel + 'px';
 
 console.log('envPrevWidth='+envPrevWidth);
@@ -98,11 +98,15 @@ setScroll(); setTimeout(setScroll, 1);
 function zoom(){
 
   var w = envRealScreenWidth;
-  if (w == globalThis.screen.availWidth)
-    return globalThis.outerWidth/currentWidth();
+  if (w == globalThis.screen.availWidth){
+    var z = globalThis.outerWidth/currentWidth();
+    console.log('zoom()='+z+', globalThis.outerWidth='+globalThis.outerWidth+', currentWidth()='+currentWidth());
+  }
 
   // firefox
-  else return  w/globalThis.screen.availWidth;
+  else var z = w/globalThis.screen.availWidth;
+  
+  return z;
 }
 
 //———————————————————————————————————————— pctDifferent(a, b);
@@ -110,6 +114,7 @@ function zoom(){
 //    returns % difference between two numbers like 1.1, 1
 
 function pctDifferent(a, b){
+  console.log('pctDifferent(): '+a+', '+b);
   return Math.round(Math.abs( a-b ) * 100);
 }
 
@@ -131,6 +136,7 @@ function currentWidth(){
 */
 
 function resize(){
+  console.group('resize()');
 
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
@@ -139,14 +145,21 @@ function resize(){
   
   // page was zoomed
   var d = pctDifferent(zoom(), envCurrentZoom);
-  if (d > envMinZoom) {console.log('page zoomed'); return true;}
+  console.log('d='+d+', zoom()='+zoom()+', envCurrentZoom='+envCurrentZoom);
+  if (d > envMinZoom) {
+    envCurrentZoom = zoom();
+    console.log('page zoomed');
+    console.groupEnd();
+    return true;
+  }
 
   // it's a resize event
-  aiPixel = newWidth / visible_width + 'px';
+  aiPixel = currentWidth() / visible_width * zoom() + 'px';
   document.documentElement.style.fontSize = aiPixel;
   envPrevWidth = currentWidth();
 
   console.log('page resized');
+  console.groupEnd();
   return true;
 
 };
