@@ -99,6 +99,7 @@ setScroll(); setTimeout(setScroll, 1);
 //———————————————————————————————————————— currentWidth()
 
 function currentWidth(){
+  console.log('currentWidth() returns '+document.documentElement.clientWidth);
   if (envInHead) return globalThis.innerWidth;
   return document.documentElement.clientWidth;
 }
@@ -139,11 +140,13 @@ function zoom(){
 
   var w = envRealScreenWidth;               // this is just to make
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
-    var z = globalThisOuterWidth/currentWidth();
+    console.log('zoom not firefox');
+    var z = globalThisOuterWidth()/currentWidth();
   }
 
   // firefox
   else{
+    console.log('zoom firefox');
     var z = w/globalThis.screen.availWidth; 
   }
 
@@ -182,10 +185,10 @@ function resize(){
     console.log('iPhone rotated to landscape');
     aiPixel = currentWidth() / visible_width + 'px';
   }
-  else if (globalThis.outerWidth == envRealScreenHeight){
-    console.log('iPhone rotated to portrait');
-    aiPixel = currentWidth() / visible_width + 'px';
-  }
+//else if (globalThis.outerWidth == envRealScreenHeight){
+//  console.log('iPhone rotated to portrait');
+//  aiPixel = currentWidth() / visible_width + 'px';
+//}
   else
     aiPixel = currentWidth() / visible_width * zoom() + 'px';
 
@@ -205,31 +208,28 @@ function resize(){
 
     called by zoom()
 
-    because telephones return wrong values for landscape mode */
+    because iPhone returns wrong value in landscape mode */
 
 function globalThisOuterWidth(){
-  if (globalThis.outerWidth == envRealScreenHeight) return "booby";
-  else return globalThis.outerWidth;
+  var r;
+
+  // iPhone rotated to landscape WORKS
+  if (window.innerWidth == envRealScreenHeight){
+    console.log('iPhone turned to landscape');
+    r = window.innerWidth;
+  }
+
+  // iPhone rotated to portrait
+  else if (globalThis.outerWidth == envRealScreenHeight){
+    console.log('iPhone turned to portrait');
+    r = window.innerWidth;
+  }
+
+  else r= globalThis.outerWidth;
+
+  console.log('globalThisOuterWidth() returns '+r);
+  return r;
 }
 
 
 //———————————————————————————————————————— fin
-
-// if zoom is more than 40% different from previous zoom, it's a telephone
-// if new height = previous width, it's a telephone
-
-/*
-
-# if current width = envRealScreenHeight
-
-have a function that replaces variable that gives wrong variable
-and in function, if new inner width = real screen height env
-then we know outerwidth is wrong, so we return correct value
-
-the problem is that when you rotate the phone, there's a zoom change from 1 to 0.46
-
-I need to cancel the zoom effect (do a negative zoom)
-
-
-problem is zoom: zoom returns 0.46 because why?
-*/
