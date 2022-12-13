@@ -133,7 +133,7 @@ To check for this, we see if the new screen width is the same as the real screen
 
 There are two functions called by resize() that were difficult to implement:
 
-**1. currentWidth()**
+**1. zoomedWidth()**
 
 This returns the current page width **as seen by the page**. It is necessary because the document object can't be meaured by a script running the the `<head>`.
 
@@ -143,7 +143,7 @@ This returns the current page width **as seen by the page**. It is necessary bec
 
 First we detect if an Android phone was rotated. If the new screen height and width are reversed from what we measured, this is the case and we correct the environmental variables
 
-Then we get a zoom number for all browsers except Firefox by comparing the zoomed (currentWidth()) value with the real unzoomed value.
+Then we get a zoom number for all browsers except Firefox by comparing the zoomed (zoomedWidth()) value with the real unzoomed value.
 
 For Firefox, we compare the new (false) screen size with the real screen size that we measured at load and stored in a cookie.
 

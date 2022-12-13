@@ -39,7 +39,7 @@ if (envInHead){
 
 //———————————————————————————————————————— environmental variables
 
-var envPrevWidth    = currentWidth();                 // used in resize();
+var envPrevWidth    = zoomedWidth();                 // used in resize();
 var envPrevZoom     = zoom();                         // used in resize();
 var envLoadedZoomed = false;
 
@@ -47,7 +47,7 @@ if (areDifferent(zoom(), 1)) envLoadedZoomed = true;
 
 //———————————————————————————————————————— set the rem unit
 
-var aiPixel = currentWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
+var aiPixel = zoomedWidth() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
     aiPixel = aiPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
@@ -83,11 +83,9 @@ if(!envInHead){
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
-// NEED TO NOW IF THE FOLLOWING FUNCTION IS ABSOLUTE OR ZOOMED
+//———————————————————————————————————————— zoomedWidth()
 
-//———————————————————————————————————————— currentWidth()
-
-function currentWidth(){
+function zoomedWidth(){
 
 //if (window.navigator.userAgent.indexOf('Android')>0) alert(x);
   var r;
@@ -97,7 +95,7 @@ function currentWidth(){
 
 //  if (window.navigator.userAgent.indexOf('Android')>0) alert(r); // correct on android
 
-  console.log('currentWidth() returns '+r);
+  console.log('zoomedWidth() returns '+r);
   return r;
 }
 
@@ -136,7 +134,7 @@ function zoom(){
   var w = envRealScreenWidth;               // this is just to make
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
     console.log('zoom not firefox');
-    var z = globalThisOuterWidth()/currentWidth();
+    var z = globalThisOuterWidth()/zoomedWidth();
   }
 
   // firefox
@@ -169,7 +167,7 @@ function resize(){
  var zoomFactor = 1;
 
   // page was just made longer
-  if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
+  if (zoomedWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
   if (globalThis.innerWidth != envRealScreenHeight)
     zoomFactor = zoom();
@@ -178,12 +176,12 @@ function resize(){
     // iPhone rotated to landscape
     console.log('iPhone rotated to landscape');
 
-  aiPixel = currentWidth() / visible_width * zoomFactor;
+  aiPixel = zoomedWidth() / visible_width * zoomFactor;
 
   document.documentElement.style.fontSize = aiPixel + 'px';
 
-  envPrevWidth = currentWidth();
-  console.log('page resized: width='+currentWidth()+', zoom='+zoom());
+  envPrevWidth = zoomedWidth();
+  console.log('page resized: width='+zoomedWidth()+', zoom='+zoom());
 
   return true;
 };
@@ -197,7 +195,7 @@ function resize(){
 function globalThisOuterWidth(){
   var r;
 
-  // iPhone rotated to landscape WORKS
+  // iPhone rotated to landscape
   if (window.innerWidth == envRealScreenHeight){
     console.log('iPhone turned to landscape');
     r = window.innerWidth;
