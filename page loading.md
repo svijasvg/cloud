@@ -109,6 +109,7 @@ console.log('cb'+screen.availWidth);                         // 2560 2560  2560 
 console.log('cc'+screen.width);                              // 256O 2560  2560 2133  2560 2560  1200  960 1440 1440
 console.log('cd'+window.screen.availWidth);                  // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
 console.log('ce'+window.screen.width);                       // 2560 2560  2560 2133  2560 2560  1200  960 1440 1440
+```
 
 
 I don't even need to know the exact zoom amount, I just need to know if it was a zoom or resize
@@ -116,4 +117,20 @@ I don't even need to know the exact zoom amount, I just need to know if it was a
 if it's a zoom of less than 10%, it was a resize
 
 ALL OF THIS IS THE RESIZE HANDLER
+
+```
+// iPhone, on load
+console.log('aa'+document.documentElement.clientHeight);      //  664
+console.log('ab'+document.documentElement.scrollHeight);      // 2769
+console.log('ac'+globalThis.innerHeight);                     //  664
+console.log('ad'+window.innerHeight);                         //  664
+
+console.log('ba'+globalThis.outerHeight);                     //  844
+console.log('ba'+window.outerHeight);                         //  844
+
+console.log('ca'+globalThis.screen.availHeight );             //  844
+console.log('cb'+screen.availHeight);                         //  844
+console.log('cc'+screen.height);                              //  844
+console.log('cd'+window.screen.availHeight);                  //  844
+console.log('ce'+window.screen.height);                       // 
 ```

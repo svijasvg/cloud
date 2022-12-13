@@ -188,3 +188,18 @@ and in function, if new inner width = real screen height env
 then we know outerwidth is wrong, so we return correct value
 
 */
+
+// iPhone, on load
+console.log('aa'+document.documentElement.clientHeight);      //  664
+console.log('ab'+document.documentElement.scrollHeight);      // 2769
+console.log('ac'+globalThis.innerHeight);                     //  664
+console.log('ad'+window.innerHeight);                         //  664
+
+console.log('ba'+globalThis.outerHeight);                     //  844
+console.log('ba'+window.outerHeight);                         //  844
+
+console.log('ca'+globalThis.screen.availHeight );             //  844
+console.log('cb'+screen.availHeight);                         //  844
+console.log('cc'+screen.height);                              //  844
+console.log('cd'+window.screen.availHeight);                  //  844
+console.log('ce'+window.screen.height);                       // 
