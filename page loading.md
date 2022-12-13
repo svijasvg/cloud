@@ -119,7 +119,21 @@ if it's a zoom of less than 10%, it was a resize
 ALL OF THIS IS THE RESIZE HANDLER
 
 ```
-// iPhone, on load
+// iPhone, ON LOAD
+console.log('aa'+document.documentElement.clientWidth);      //  390
+console.log('ab'+document.documentElement.scrollWidth);      //  390
+console.log('ac'+globalThis.innerWidth);                     //  390
+console.log('ad'+window.innerWidth);                         //  390
+
+console.log('ba'+globalThis.outerWidth);                     //  390
+console.log('ba'+window.outerWidth);                         //  390
+
+console.log('ca'+globalThis.screen.availWidth );             //  390
+console.log('cb'+screen.availWidth);                         //  390
+console.log('cc'+screen.width);                              //  390
+console.log('cd'+window.screen.availWidth);                  //  390
+console.log('ce'+window.screen.width);                       // 
+
 console.log('aa'+document.documentElement.clientHeight);      //  664
 console.log('ab'+document.documentElement.scrollHeight);      // 2769
 console.log('ac'+globalThis.innerHeight);                     //  664
@@ -135,6 +149,7 @@ console.log('cd'+window.screen.availHeight);                  //  844
 console.log('ce'+window.screen.height);                       // 
 
 
+ON ROTATE
                                                          // to land  port
 console.log('aa'+document.documentElement.clientWidth);      // 844  390
 console.log('ab'+document.documentElement.scrollWidth);      // 844  390

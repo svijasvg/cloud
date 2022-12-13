@@ -166,20 +166,20 @@ function pctDifferent(a, b){
 */
 
 function resize(){
-                                                         // to land  port
-console.log('aa'+document.documentElement.clientWidth);      // 844  390
-console.log('ab'+document.documentElement.scrollWidth);      // 844  390
-console.log('ac'+globalThis.innerWidth);                     // 844  390
-console.log('ad'+window.innerWidth);                         // 844  390
-
-console.log('ba'+globalThis.outerWidth);                     // 390  844
-console.log('ba'+window.outerWidth);                         // 390  844
-
-console.log('ca'+globalThis.screen.availWidth );             // 390  390
-console.log('cb'+screen.availWidth);                         // 390  390
-console.log('cc'+screen.width);                              // 390  390
-console.log('cd'+window.screen.availWidth);                  // 390  390
-console.log('ce'+window.screen.width);                       // 390  390
+//                                                          // to land  port
+// console.log('aa'+document.documentElement.clientWidth);      // 844  390
+// console.log('ab'+document.documentElement.scrollWidth);      // 844  390
+// console.log('ac'+globalThis.innerWidth);                     // 844  390
+// console.log('ad'+window.innerWidth);                         // 844  390
+// 
+// console.log('ba'+globalThis.outerWidth);                     // 390  844
+// console.log('ba'+window.outerWidth);                         // 390  844
+// 
+// console.log('ca'+globalThis.screen.availWidth );             // 390  390
+// console.log('cb'+screen.availWidth);                         // 390  390
+// console.log('cc'+screen.width);                              // 390  390
+// console.log('cd'+window.screen.availWidth);                  // 390  390
+// console.log('ce'+window.screen.width);                       // 390  390
 
   if (!pageLoaded) {console.log('page not loaded'); return true;}
 
@@ -187,6 +187,8 @@ console.log('ce'+window.screen.width);                       // 390  390
   if (currentWidth() == envPrevWidth) {console.log('page made longer'); return true;}
   
   // iPhone rotate? just need to remove zoom() from the next line
+  console.log('If these are the same, iPhone turned to landscape: '+globalThis.innerWidth+'='+envRealScreenHeight);
+  console.log('If these are the same, iPhone turned to portrait: '+globalThis.innerWidth+'='+envRealScreenHeight);
 
   // it's a resize or zoom event
   aiPixel = currentWidth() / visible_width * zoom() + 'px';
@@ -214,3 +216,16 @@ then we know outerwidth is wrong, so we return correct value
 
 */
 
+console.log('aa'+document.documentElement.clientWidth);      //  664
+console.log('ab'+document.documentElement.scrollWidth);      // 2769
+console.log('ac'+globalThis.innerWidth);                     //  664
+console.log('ad'+window.innerWidth);                         //  664
+
+console.log('ba'+globalThis.outerWidth);                     //  844
+console.log('ba'+window.outerWidth);                         //  844
+
+console.log('ca'+globalThis.screen.availWidth );             //  844
+console.log('cb'+screen.availWidth);                         //  844
+console.log('cc'+screen.width);                              //  844
+console.log('cd'+window.screen.availWidth);                  //  844
+console.log('ce'+window.screen.width);                       // 
