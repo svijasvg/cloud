@@ -13,6 +13,32 @@ So, I will add an Adobe font to the home page at svija.dev.
 3. activate Acier BAT / text gris (click on cloud)
 4. cloud w/ double arrow means "activating"
 
+Activation takes a long time — possibly because iPad is downloading iOS 16.1 ?
+
+Oops, I had deactivated the CC app on startup :-(
+
+CC says installed, I try to reinstall and it takes a looooong time.
+
+I quit AI and restart *au cas où*.
+
+Looking at https://helpx.adobe.com/fonts/kb/troubleshoot-font-activation.html
+
+restarting computer & router fixed everything
+
+font is installed, and on the home page.
+
+---
+### Svija Admin
+
+In the Fonts admin, I see:
+
+    AcierBATText-Gris
+
+navigate to:
+
+    https://fonts.adobe.com/fonts/acier-bat
+
+
 
 
 
