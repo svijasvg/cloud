@@ -48,9 +48,13 @@ Click on:
 
 - \</> Add to Web Project
 
-(must be signed in)
+Adobe provides instructions [here](https://helpx.adobe.com/fonts/using/add-fonts-website.html):
 
-https://helpx.adobe.com/fonts/using/add-fonts-website.html
+You must create a new project or choose an existing project.
+
+**where are projects managed?**
+
+
 
 
 
