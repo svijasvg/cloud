@@ -34,9 +34,23 @@ In the Fonts admin, I see:
 
     AcierBATText-Gris
 
-navigate to:
+---
+
+You must be signed in at **fonts.adobe.com** to continue.
+
+In Adobe CC app, navigate to font, then click external link icon (boxed arrow)
+
+This will navigate to:
 
     https://fonts.adobe.com/fonts/acier-bat
+
+Click on:
+
+- \</> Add to Web Project
+
+(must be signed in)
+
+https://helpx.adobe.com/fonts/using/add-fonts-website.html
 
 
 
