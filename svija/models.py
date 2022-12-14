@@ -67,7 +67,7 @@ class Font(models.Model):
 
     google   = models.BooleanField(default=True, verbose_name='Google font',)
     enabled  = models.BooleanField(default=True, verbose_name='enabled',)
-#   adobe    = models.TextField(max_length=5000, default='', verbose_name='Adobe CSS', blank=True,)
+    adobe    = models.TextField(max_length=5000, default='', verbose_name='Adobe CSS', blank=True,)
 
 		# to rename
     category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
