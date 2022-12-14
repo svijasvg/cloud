@@ -35,6 +35,7 @@ In the Fonts admin, I see:
     AcierBATText-Gris
 
 ---
+### Adobe Fonts in Web Projects
 
 You must be signed in at **fonts.adobe.com** to continue.
 
@@ -59,6 +60,7 @@ Click **Create** to get the following information:
     <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
 Fonts added:
+
 ```
 font-family: acier-bat-gris,sans-serif;
 font-weight: 400;
@@ -70,12 +72,15 @@ BOTH fields have little copy-box icons. Clicking works but provides no feedback.
 ADDITIONALLY, there is a note **If you'd like to use fonts in HTML email, use the @import link.**.
 
 Clicking the **@import** link displays the following code:
+
 ```
 <style>
   @import url("https://use.typekit.net/jpl1zaz.css");
 </style>
 ```
+
 Finally, the aforementioned **jpl1zaz.css** contains:
+
 ```
 /*
  * The Typekit service used to deliver this font or fonts for use on websites
@@ -120,6 +125,26 @@ When done, add all Google fonts to google_link string.
 
 Returns a **google stylesheet link** and list of **@font-face's** for CSS 
 
+---
+### What can I copy and Paste
 
+The goal is to make it as easy as possible for the user.
 
+The fewest possible clicks.
 
+If I can read the css file, I can get its contents, and modify the "font-family" attribute
+to the correct name.
+
+Planned process:
+
+1. the user clicks the copy icon to copy the following:
+```
+<link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+```
+2. the user pastes that line into a new Adobe source field (1488 bytes)
+
+3. on first request, the field is modified:  
+• remove @import url("…")  
+• remove the class statement at the end  
+• simplify the src:url statement to contain only the woff version  
+• replace the first line with /* 221214\n \*\n
