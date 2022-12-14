@@ -13,10 +13,9 @@ from svija.models import Font
 def get_fonts():
     font_objs    = Font.objects.all()
     css_str      = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
-    link_str     = '\n  <link rel="stylesheet" href="{}" />'
     font_css     = ''
     google_fonts = []
-    font_link    = ''
+    google_link    = ''
 
     for this_font in font_objs:
         if this_font.enabled:
@@ -56,6 +55,6 @@ def get_fonts():
 
     if len(google_fonts) > 0:
         link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
-        font_link = link_str.format(('|').join(google_fonts))
+        google_link = link_str.format(('|').join(google_fonts))
 
-    return font_link, font_css
+    return google_link, font_css

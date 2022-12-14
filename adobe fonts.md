@@ -109,10 +109,16 @@ The program is found at `views/modules/get_fonts.py`:
 For each enabled font object:
 1. if the font source contains slashes, just keep the end
 2. if it's a google font  
-make style lowercase and remove spaces  
-replace spaces in family name with +
-3. lkjmlkj
+• make style lowercase and remove spaces  
+• replace spaces in family name with +
+• do *not* add source to CSS
+3. if source contains 'woff2', add source to CSS
+4. if source contains 'woff', add source to CSS
+5. if source contains a ',' add local font source to CSS
 
+When done, add all Google fonts to google_link string.
+
+Returns a **google stylesheet link** and list of **@font-face's** for CSS 
 
 
 
