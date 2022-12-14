@@ -30,15 +30,17 @@ def SendView(request):
   settings = get_object_or_404(Settings, enabled=True)
 
   subject  = "⚠️ test email from " + settings.url
-  to     = request.GET.get('to', '')
-  bcc    = request.GET.get('bcc', '')
   body   = 'If you have received this message, your email is working' 
+  frm    = ''
+  to     = request.GET.get('to', '')
+  cc     = ''
+  bcc    = request.GET.get('bcc', '')
 
   if to == '':
     response =  "<pre>\n\n    Please include an email address:\n\n      " + settings.url + "/send?to=somebody@example.com&bcc=somebodyelse@website.com\n\n    bcc is optional"
     return HttpResponse(response)
 
-  response = send_mail.send(settings, subject, to, bcc, body)
+  response = send_mail.send(settings, subject, body, frm, [to], [cc], [bcc],)
 
   if response == '': response = 'mail sent successfully'
   response = '<html><body><pre>\n\n    ' + str(response)

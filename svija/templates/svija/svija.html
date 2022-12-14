@@ -8,33 +8,30 @@
 --><!DOCTYPE html><html><head><meta charset="utf-8" />
   <title> {{ title }} </title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/><!-- minimum scale is for mobile Chrome horz scrolling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, viewport-fit=cover"/><!-- minimum scale is for mobile Chrome horz scrolling -->
+  <!-- meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" --> 
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta name="google" content="notranslate">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
 {{ meta_fonts }}
   <meta name="apple-mobile-web-app-title" content="{{ touch }}">
   <meta property="og:image" content="/images/capture.jpg">
+
 <script>
-
-page_loaded = false;
-
+pageLoaded = false;
 {{ system_js                           }}
 {% include "svija/js/cookies.js"       %}
 {% include "svija/js/screens.js"       %}
-{% include "svija/js/rem.js"           %}
+{% include "svija/js/window_mgmt.js"   %}
 {% include "svija/js/sections.js"      %}
-{% include "svija/js/on_resize.js"     %}
 {% include "svija/js/tap_highlight.js" %}
 {{ js                                  }}
-
 </script>
 
 <style>
-
 {% include "svija/css/svija.css" %}
 {{ font_css }}
 {{ css }}
-
 </style>
 
 <!-- Google's script with IF added -->
@@ -51,10 +48,19 @@ page_loaded = false;
 
 </script>
 <script src="{% static 'svija/js/gsap.min.js' %}"></script>
+
 </head><body>
+
 {% include "svija/html/unsupported.html" %}
-<script>{% include "svija/js/initial_scroll.js" %}</script>
+
+<div id="set_scroll_div"></div>
+
+<script>
+{% include "svija/js/window_mgmt.js"     %}
+</script>
+
 <div id=accessibility>{{ accessible }}</div>
+
 {% block token%}{% endblock %}
 
 {{ body }}
@@ -63,7 +69,7 @@ page_loaded = false;
 
   {% include "svija/js/page_background.js" %}
 
-  document.getElementById('initial_scroll_div').outerHTML = '';
-  page_loaded = true;
+  document.getElementById('set_scroll_div').outerHTML = '';
+  pageLoaded = true;
 
 </script></body></html>{% endautoescape %}

@@ -43,7 +43,7 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 #———————————————————————————————————————— get SVG's
 
     # returns svg and css
-    sv, hc = get_single_svg(this_group, screen_code, page_width, use_p3)
+    sv, hc, rien = get_single_svg(this_group, screen_code, page_width, use_p3)
 
 
 

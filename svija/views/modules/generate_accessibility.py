@@ -35,11 +35,11 @@ def generate_accessibility(url, pages, page):
 
     # if we don't need to include section in url
     if page_section_code == default_code:
-      tag = '<a href=http://{0}/{2}>{3}</a> · '       # exclude section
+      tag = '<a alt="{4}" href=http://{0}/{2}>{3}</a> · '       # exclude section
 
     # if we DO need to include section in url
     else:
-      tag = '<a href="http://{0}/{1}{2}">{3}</a> · ' # include section
+      tag = '<a alt="{4}" href="http://{0}/{1}{2}">{3}</a> · ' # include section
 
     name = this_page.accessibility_name
     if name == '': name = 'link'
@@ -49,10 +49,10 @@ def generate_accessibility(url, pages, page):
     if this_page.url != 'missing' and this_page.url != prev:
 
         if this_page.url == this_page.section.default_page:
-          links += tag.format(url,page_section_code,'',name)
+          links += tag.format(url, page_section_code, '', name, this_page.title)
 
         elif page_section_code == active_section:
-          links += tag.format(url,page_section_code+'/',this_page.url,name)
+          links += tag.format(url, page_section_code+'/', this_page.url, name, this_page.title)
 
 #———————————————————————————————————————— keep url to exclude from next cycle
 

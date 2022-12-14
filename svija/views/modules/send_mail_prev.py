@@ -5,14 +5,11 @@
 
 # https://www.sitepoint.com/django-send-email/
 
-# this is hard to debug — put it at end of MailView.py then
-# copy back to this module when done
-
 #———————————————————————————————————————— notes
 #
 #   see also:
 #
-#   go to /send to check if mail is being sent
+#   got to /send to check if mail is being sent
 #   correctly (views/SendView.py)
 #
 #   prints out message on fail, 1 on success
@@ -36,37 +33,41 @@
 
 import socket
 from smtplib import SMTPException
-from django.core.mail import get_connection, EmailMessage
-
+from django.core.mail import get_connection, send_mail
 
 #———————————————————————————————————————— program
 
-#ef send(settings, subject, to, bcc, body):
-def send(settings, subject, body, frm, to, cc, bcc):
+def send(settings, subject, to, bcc, body):
 
-  if frm == '': frm = settings.mail_id
+    response = ''
 
-  email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
+    #—————————— site settings
 
-  ht  = settings.mail_srv
-  ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
-  pt  = settings.mail_port
-  un  = settings.mail_id
-  pw  = settings.mail_pass
-  tls = settings.mail_tls
+    ht  = settings.mail_srv
+    pt  = settings.mail_port
+    un  = settings.mail_id
+    pw  = settings.mail_pass
+    tls = settings.mail_tls
+    frm = settings.url + '<'+to+'>'
 
-  connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
-  response   = ''
+    # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+    ht = socket.gethostbyname(ht)
 
-  try:
-    connection.open()
-    email.connection = connection
-    email.send()
-    connection.close()
-  except SMTPException as e:
-    response = e
+    connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
 
-  return response
+    try:
+        send_mail(
+            subject,
+            body,
+            frm,
+            [to, bcc,],
+            fail_silently=True,
+            connection=connection,
+        )
+    except SMTPException as e:
+        response = e
+
+    return response
 
 
 #———————————————————————————————————————— fin

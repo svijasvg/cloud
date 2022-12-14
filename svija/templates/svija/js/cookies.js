@@ -16,9 +16,12 @@ function setCookie(name, value, expires) {
   var expy = '; expires=' + d.toUTCString();
   var path = '; path=/';
   var domn = '; domain='  + window.location.hostname;
-  var secu = '; samesite=lax; secure;';
+  var secu = '; SameSite=Lax; Secure;';
 
-  var complete = value + expy + path + domn + secu;
+// secu deprecated: developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+// var complete = value + expy + path + domn + secu;
+
+  var complete = value + expy + path + domn;
   document.cookie = name + '=' + complete;
 }
 
