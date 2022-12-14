@@ -53,7 +53,7 @@ Adobe provides instructions [here](https://helpx.adobe.com/fonts/using/add-fonts
 
 You must create a new project or choose an existing project.
 
-**where are projects managed?**
+Projects are managed at [My Fonts › Web Projects](https://fonts.adobe.com/my_fonts#web_projects-section).
 
 Click **Create** to get the following information:
 
@@ -141,10 +141,13 @@ Planned process:
 ```
 <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 ```
-2. the user pastes that line into a new Adobe source field (1488 bytes)
+2. the user pastes that line into a new Adobe CSS field (1488 bytes)
 
 3. on first request, the field is modified:  
+• the stylesheet is fetched  
 • remove @import url("…")  
 • remove the class statement at the end  
 • simplify the src:url statement to contain only the woff version  
 • replace the first line with /* 221214\n \*\n
+
+This all depends on being able to read the contents of the stylesheet
