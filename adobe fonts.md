@@ -64,6 +64,7 @@ font-family: acier-bat-gris,sans-serif;
 font-weight: 400;
 font-style: normal;
 ```
+
 BOTH fields have little copy-box icons. Clicking works but provides no feedback.
 
 ADDITIONALLY, there is a note **If you'd like to use fonts in HTML email, use the @import link.**.
@@ -100,10 +101,19 @@ font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
 .tk-acier-bat-gris { font-family: "acier-bat-gris",sans-serif; }
 ```
 
+---
+### Current Font Implementation
+
+The program is found at `views/modules/get_fonts.py`:
+
+For each enabled font object:
+1. if the font source contains slashes, just keep the end
+2. if it's a google font  
+make style lowercase and remove spaces  
+replace spaces in family name with +
+3. lkjmlkj
 
 
 
 
 
-
-https://fonts.adobe.com/fonts/futura-pt
