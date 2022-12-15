@@ -1,17 +1,22 @@
 #———————————————————————————————————————— get_fonts.py
+
+#———————————————————————————————————————— notes
+#
 # should be first in CSS
 # by default all fonts are included
 # svg_cleaner adds fonts only if they're not already in DB
-
+#
 # if there's a global list of fonts in PageView
 # svg cleaner can add to it
 # and this function can use it IF it's after svg cleaner
+#
+#———————————————————————————————————————— imports
 
 from svija.models import Font
 import requests
 
-#ef get_fonts(core_content):
 def get_fonts():
+
   font_objs  = Font.objects.all()
   css_str    = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
   font_css   = ''
@@ -31,16 +36,19 @@ def get_fonts():
         this_font.woff = font_src
         this_font.save()
 
+      # adobe fonts
       if this_font.adobe != '':
         if this_font.adobe[0] == '<':
-          this_font.adobe, this_font.adobe_url = get_adobe_css(this_font.adobe)
+          this_font.adobe, this_font.adobe_url = get_adobe_css(this_font)
           this_font.save()
         
+      # google fonts
       elif this_font.google:
         req = this_font.style.lower().replace(' ','')
         req = this_font.family.replace(' ','+') + ':' + req 
         google_fonts.append(req)
 
+      # woff2 and woff fonts
       elif font_src.find('woff2') > 0:
         font_format = " format('woff2')"
         font_src = "url('/fonts/" + font_src
@@ -51,6 +59,7 @@ def get_fonts():
         font_src = "url('/fonts/" + font_src
         font_css += '\n'+ css_str.format(svg_ref, font_src, font_format)
 
+      # local fonts
       elif font_src.find(',') > 0: # local fonts
         # src: local('Arial'), local('Arial MT'), local('Arial Regular'); }
         font_format = ''
@@ -65,30 +74,8 @@ def get_fonts():
 
   return google_link, font_css
 
-#———————————————————————————————————————— adobe font handler
 
-def get_adobe_css(this_font):
-
-  if this_font[0] != '<':
-    return this_font
-
-
-#———————————————————————————————————————— get Adobe CSS source
-
-  bits = this_font.split('"')
-  url = bits[3]
-  response = requests.get(url)
-  css_source = response.text
-
-#———————————————————————————————————————— error handling
-
-  if css_source[0:2] != '/*':
-    return 'URL returned error: '+url+'\n\n'+this_font, ''
-
-#———————————————————————————————————————— get fonts found in this css
-
-  all_fonts = get_names_woffs(css_source)
-  return css_source, 'worked'
+#:::::::::::::::::::::::::::::::::::::::: methods
 
 #———————————————————————————————————————— get_names_woffs(this_font)
 #
@@ -115,7 +102,7 @@ def get_names_woffs(css_contents):
   
     this_adobe  = {}
   
-    name_first = css_contents.find('font-family') + 13
+    name_first = css_contents.find('font-family', start_index) + 13
     name_last  = css_contents.find('"', name_first)
   
     this_adobe['name1'] = name_first
@@ -136,6 +123,96 @@ def get_names_woffs(css_contents):
 
   return font_list
 
+#———————————————————————————————————————— name_splitter(txt)
+#
+#   splits a name into an array
+#   - if this char is space, replace with -
+#   - if this char is lower & next is upper, add - between them
+#   - if this car is upper & prev is upper & next is lower, add - after this char
+#
+#   split at each -
+
+def name_splitter(txt):
+  
+  dashes = ''
+
+  for x in range(len(txt) - 1):
+
+
+    if txt[x] == ' ':  # space
+      dashes += '-'
+      continue
+
+    if txt[x].islower() and txt[x+1].isupper(): # transition lower › upper
+      dashes += txt[x] + '-'
+      continue
+
+    if x > 0:
+      if txt[x-1].isupper() and txt[x].isupper() and txt[x+1].islower(): # transition upper > lower
+        dashes = dashes[0:len(dashes)-1] + txt[x-1] + '-' + txt[x]
+        continue
+
+    dashes += txt[x]
+
+  dashes += txt[x+1]
+  dashes = dashes.lower()
+
+  return dashes.split('-')
+
+#———————————————————————————————————————— adobe font handler
+
+# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+
+def get_adobe_css(this_font):
+
+  if this_font.adobe[0] != '<': return this_font.adobe
+
+  zopy = this_font.adobe
+  zname = this_font.family
+  zstyle = this_font.style
+
+  #—————————————————————————————————————— get Adobe CSS source
+  
+  # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+
+  bits = zopy.split('"')
+  url = bits[3]
+  response = requests.get(url)
+  css_source = response.text
+
+  #—————————————————————————————————————— error handling
+
+  if css_source[0:2] != '/*':
+    return 'URL returned error: '+url+'\n\n'+zopy, ''
+
+  #—————————————————————————————————————— get fonts found in this css
+
+  all_fonts = get_names_woffs(css_source)
+
+  #—————————————————————————————————————— if there's only one, return it
+
+  if len(all_fonts) == 1:
+    return css_source, all_fonts[0]['woff']
+
+  #—————————————————————————————————————— find match for font
+
+  compare_to = name_splitter(this_font.family) # convert svg name into bits
+
+# loop through each all_fonts, and split names at -
+# compare against compare_to and give score:
+# use the best score to declare a winner
+
+# acier  bat  text gris
+
+# acier bat gris
+
+# matches/total fields
+
+
+  return css_source, all_fonts[0]['woff']
+
+
+#———————————————————————————————————————— correct family name, create css
 
 #———————————————————————————————————————— fin
 
