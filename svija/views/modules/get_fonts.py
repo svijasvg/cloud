@@ -67,12 +67,11 @@ def get_fonts():
 
 #———————————————————————————————————————— adobe font handler
 
-# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
-
 def get_adobe_css(this_font):
 
   if this_font[0] != '<':
     return this_font
+
 
 #———————————————————————————————————————— get Adobe CSS source
 
@@ -81,12 +80,66 @@ def get_adobe_css(this_font):
   response = requests.get(url)
   css_source = response.text
 
-#———————————————————————————————————————— 
+#———————————————————————————————————————— error handling
 
-  this_url = 'working'
-  return css_source, this_url
+  if css_source[0:2] != '/*':
+    return 'URL returned error: '+url+'\n\n'+this_font, ''
+
+#———————————————————————————————————————— get fonts found in this css
+
+  all_fonts = get_names_woffs(css_source)
+  return css_source, 'worked'
+
+#———————————————————————————————————————— get_names_woffs(this_font)
+#
+#   returns list f fonts found in css
+#
+#   each font contains:
+#   - name: family name
+#   - woff: source
+#   - name1, name2: start & end indexes
+#   - woff1, woff2: url start & end indexes
+
+def get_names_woffs(css_contents):
+
+#———————————————————————————————————————— initialise
+
+  font_list = []
+  start_index = 0
+
+  how_many = int(css_contents.count('font-family') / 2) # because each font is listed once with source, then once with class
+
+  for x in range(how_many):
+
+    #———————————————————————————————————— get family indexes
+  
+    this_adobe  = {}
+  
+    name_first = css_contents.find('font-family') + 13
+    name_last  = css_contents.find('"', name_first)
+  
+    this_adobe['name1'] = name_first
+    this_adobe['name2'] = name_last
+    this_adobe['name']  = css_contents[name_first:name_last]
+  
+    #———————————————————————————————————— get woff indexes
+  
+    woff_first = css_contents.find('url("', name_last) + 5
+    woff_last  = css_contents.find('")', woff_first)
+  
+    this_adobe['woff1'] = woff_first
+    this_adobe['woff2'] = woff_last
+    this_adobe['woff']  = css_contents[woff_first:woff_last]
+  
+    font_list.append(this_adobe)
+    start_index = woff_last
+
+  return font_list
+
 
 #———————————————————————————————————————— fin
+
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
 #   SVG name: AcierBATText-Gris
 
