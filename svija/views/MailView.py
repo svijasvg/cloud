@@ -92,7 +92,7 @@ def MailView(request):
   # referrer = https://svija.dev/access
   protocol, slash, realDomain, trash  = referrer.split('/',3)
 
-  domains = ['svija.love', 'svija.dev',]
+  domains = ['svija.love', 'svija.dev', 'new.svija.dev',]
   authorized = False
   
   for thisDomain in domains:

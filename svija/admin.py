@@ -53,7 +53,7 @@ class FontAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('font information',  {'fields': [('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), 'enabled',], 'description':descFonts,}),
+    ('font information',  {'fields': ['enabled', ('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), 'adobe', 'adobe_url', ], 'description':descFonts,}),
 
   ]   
 
