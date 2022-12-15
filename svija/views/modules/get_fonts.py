@@ -94,7 +94,7 @@ def get_names_woffs(css_contents):
   font_list = []
   start_index = 0
 
-  how_many = int(css_contents.count('font-family') / 2) # because each font is listed once with source, then once with class
+  how_many = int(css_contents.count('font-face')) # because each font is listed once with source, then once with class
 
   for x in range(how_many):
 
@@ -187,32 +187,65 @@ def get_adobe_css(this_font):
 
   #—————————————————————————————————————— get fonts found in this css
 
-  all_fonts = get_names_woffs(css_source)
+  listed_in_css = get_names_woffs(css_source)
 
   #—————————————————————————————————————— if there's only one, return it
 
-  if len(all_fonts) == 1:
-    return css_source, all_fonts[0]['woff']
+  if len(listed_in_css) == 1:
+    return css_source, listed_in_css[0]['woff']
 
   #—————————————————————————————————————— find match for font
 
-  compare_to = name_splitter(this_font.family) # convert svg name into bits
+  compare_to = name_splitter(this_font.svg_ref) # convert svg name into bits
+  # returns acier · bat · text · gris
 
-# loop through each all_fonts, and split names at -
-# compare against compare_to and give score:
-# use the best score to declare a winner
+  indx        = 0
+  best_value  = 0
+  best_choice = 0
 
-# acier  bat  text gris
+  debug = ''
 
-# acier bat gris
+  for adobe_font in listed_in_css:
+    to_compare = adobe_font['name'].split('-')
 
-# matches/total fields
+    v = match_count(compare_to, to_compare)
+    debug += ':'+str(v)+':'+adobe_font['name']
+    if v > best_value:
+      best_choice = indx
+      best_value  = v
 
+    indx += 1
 
-  return css_source, all_fonts[0]['woff']
+  chosen_font = '/* found in Adobe CSS: "'+listed_in_css[best_choice]['name']+'" font */\n\n'
+  return chosen_font+css_source, 'listed length: '+str(len(listed_in_css))
 
+  return chosen_font+css_source, listed_in_css[best_choice]['woff']
 
-#———————————————————————————————————————— correct family name, create css
+#———————————————————————————————————————— match_count(arr1, arr2)
+
+def match_count(arr1, arr2):
+
+  len_1 = len(arr1)
+  len_2 = len(arr2)
+
+  if len_1 > len_2:
+    cent   = len_1
+    first  = arr1
+    second = arr2
+  else:
+    cent   = len_2
+    first  = arr2
+    second = arr1
+
+  matches = 0
+
+  for element1 in first:
+    for element2 in second:
+      if element1 == element2:
+        matches += 1
+  
+  return matches
+
 
 #———————————————————————————————————————— fin
 
