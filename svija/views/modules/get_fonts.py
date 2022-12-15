@@ -39,7 +39,12 @@ def get_fonts():
       # adobe fonts
       if this_font.adobe != '':
         if this_font.adobe[0] == '<':
-          this_font.adobe, this_font.adobe_url = get_adobe_css(this_font)
+          adb_css, adb_url, adb_style, adb_weight = get_adobe_css(this_font)
+
+          this_font.adobe = adb_css
+          this_font.adobe_url = adb_url
+          this_font.style = adb_weight +' '+adb_style
+
           this_font.save()
         
       # google fonts
@@ -79,13 +84,18 @@ def get_fonts():
 
 #———————————————————————————————————————— get_names_woffs(this_font)
 #
-#   returns list f fonts found in css
+#   returns list of fonts found in css
 #
 #   each font contains:
 #   - name: family name
 #   - woff: source
-#   - name1, name2: start & end indexes
-#   - woff1, woff2: url start & end indexes
+#   - style
+#   - weight
+#
+#   - name1, name2:     start & end indexes
+#   - woff1, woff2:     start & end indexes
+#   - style1, style2:   start & end indexes
+#   - weight1, weight2: start & end indexes
 
 def get_names_woffs(css_contents):
 
@@ -118,8 +128,29 @@ def get_names_woffs(css_contents):
     this_adobe['woff2'] = woff_last
     this_adobe['woff']  = css_contents[woff_first:woff_last]
   
+    #———————————————————————————————————— get style indexes
+  
+    style_first = css_contents.find('font-style:', name_last) + 11
+    style_last  = css_contents.find(';', style_first)
+  
+    this_adobe['style1'] = style_first
+    this_adobe['style2'] = style_last
+    this_adobe['style']  = css_contents[style_first:style_last]
+  
+    #———————————————————————————————————— get weight indexes
+  
+    weight_first = css_contents.find('font-weight:', name_last) + 12
+    weight_last  = css_contents.find(';', weight_first)
+  
+    this_adobe['weight1'] = weight_first
+    this_adobe['weight2'] = weight_last
+    this_adobe['weight']  = css_contents[weight_first:weight_last]
+  
+
+    #———————————————————————————————————— add font to list
+
     font_list.append(this_adobe)
-    start_index = woff_last
+    start_index = style_last
 
   return font_list
 
@@ -217,9 +248,8 @@ def get_adobe_css(this_font):
     indx += 1
 
   chosen_font = '/* found in Adobe CSS: "'+listed_in_css[best_choice]['name']+'" font */\n\n'
-  return chosen_font+css_source, 'listed length: '+str(len(listed_in_css))
 
-  return chosen_font+css_source, listed_in_css[best_choice]['woff']
+  return chosen_font+css_source, listed_in_css[best_choice]['woff'], listed_in_css[best_choice]['style'], listed_in_css[best_choice]['weight']
 
 #———————————————————————————————————————— match_count(arr1, arr2)
 
