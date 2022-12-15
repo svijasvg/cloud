@@ -247,7 +247,7 @@ def get_adobe_css(this_font):
 
     indx += 1
 
-  chosen_font = '/* Found below: "'+listed_in_css[best_choice]['name']+' */\n\n'
+  chosen_font = '/* Found below: '+listed_in_css[best_choice]['name']+' */\n\n'
 
   return chosen_font+css_source, listed_in_css[best_choice]['woff'], listed_in_css[best_choice]['style'], listed_in_css[best_choice]['weight']
 
