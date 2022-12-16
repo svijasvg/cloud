@@ -82,7 +82,7 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
-#———————————————————————————————————————— get_indexes(this_font)
+#———————————————————————————————————————— extract_fonts(this_font)
 #
 #   returns list of fonts found in css
 #
@@ -97,14 +97,14 @@ def get_fonts():
 #   - style1, style2:   start & end indexes
 #   - weight1, weight2: start & end indexes
 
-def get_indexes(css_contents):
+def extract_fonts(css_src):
 
 #———————————————————————————————————————— initialise
 
   font_list = []
   start_index = 0
 
-  how_many = int(css_contents.count('font-face')) # because each font is listed once with source, then once with class
+  how_many = int(css_src.count('font-face')) # because each font is listed once with source, then once with class
 
   for x in range(how_many):
 
@@ -112,39 +112,34 @@ def get_indexes(css_contents):
   
     this_adobe  = {}
   
-    name_first = css_contents.find('font-family', start_index) + 13
-    name_last  = css_contents.find('"', name_first)
+    name_first = css_src.find('font-family', start_index) + 13
+    name_last  = css_src.find('"', name_first)
   
     this_adobe['name1'] = name_first
     this_adobe['name2'] = name_last
-    this_adobe['name']  = css_contents[name_first:name_last]
+    this_adobe['name']  = css_src[name_first:name_last]
   
     #———————————————————————————————————— get woff indexes
   
-    woff_first = css_contents.find('url("', name_last) + 5
-    woff_last  = css_contents.find('")', woff_first)
+    woff2      = css_src.find('url("', name_last) + 5
+    woff_first = css_src.find('url("', woff2) + 5
+    woff_last  = css_src.find('")', woff_first)
   
-    this_adobe['woff1'] = woff_first
-    this_adobe['woff2'] = woff_last
-    this_adobe['woff']  = css_contents[woff_first:woff_last]
+    this_adobe['woff']  = css_src[woff_first:woff_last]
   
     #———————————————————————————————————— get style indexes
   
-    style_first = css_contents.find('font-style:', name_last) + 11
-    style_last  = css_contents.find(';', style_first)
+    style_first = css_src.find('font-style:', name_last) + 11
+    style_last  = css_src.find(';', style_first)
   
-    this_adobe['style1'] = style_first
-    this_adobe['style2'] = style_last
-    this_adobe['style']  = css_contents[style_first:style_last]
+    this_adobe['style']  = css_src[style_first:style_last]
   
     #———————————————————————————————————— get weight indexes
   
-    weight_first = css_contents.find('font-weight:', name_last) + 12
-    weight_last  = css_contents.find(';', weight_first)
+    weight_first = css_src.find('font-weight:', name_last) + 12
+    weight_last  = css_src.find(';', weight_first)
   
-    this_adobe['weight1'] = weight_first
-    this_adobe['weight2'] = weight_last
-    this_adobe['weight']  = css_contents[weight_first:weight_last]
+    this_adobe['weight']  = css_src[weight_first:weight_last]
   
 
     #———————————————————————————————————— add font to list
@@ -154,16 +149,16 @@ def get_indexes(css_contents):
 
   return font_list
 
-#———————————————————————————————————————— name_splitter(txt)
+#———————————————————————————————————————— add_dashes(txt)
 #
-#   splits a name into an array
+#   splits a name into parts separated by -
 #   - if this char is space, replace with -
 #   - if this char is lower & next is upper, add - between them
 #   - if this car is upper & prev is upper & next is lower, add - after this char
 #
 #   split at each -
 
-def name_splitter(txt):
+def add_dashes(txt):
   
   dashes = ''
 
@@ -188,7 +183,7 @@ def name_splitter(txt):
   dashes += txt[x+1]
   dashes = dashes.lower()
 
-  return dashes.split('-')
+  return dashes
 
 #———————————————————————————————————————— adobe font handler
 
@@ -221,22 +216,19 @@ def get_adobe_css(this_font):
 
   #—————————————————————————————————————— get fonts found in this css
 
-  listed_in_css = get_indexes(css_source)
+  possible_fonts = extract_fonts(css_source)
 
   #—————————————————————————————————————— find match for font
-
-  compare_to = name_splitter(this_font.svg_ref) # convert svg name into bits
-  # returns acier · bat · text · gris
 
   indx        = 0
   best_value  = 0
   best_choice = 0
 
+  compare_to = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
 
-  for adobe_font in listed_in_css:
+  for adobe_font in possible_fonts:
 
-    compare_name = adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight']
-    to_compare = compare_name.split('-')
+    to_compare = adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight'].tolower()
 
     v = match_count(compare_to, to_compare)
     if v > best_value:
@@ -245,13 +237,16 @@ def get_adobe_css(this_font):
 
     indx += 1
 
-  chosen_font = '/* Found below: ' + listed_in_css[best_choice]['name'] + ' ' + listed_in_css[best_choice]['weight'] + ' ' + listed_in_css[best_choice]['style'] + ' */\n\n'
+  chosen_font = '/* Found below: ' + possible_fonts[best_choice]['name'] + ' ' + possible_fonts[best_choice]['weight'] + ' ' + possible_fonts[best_choice]['style'] + ' */\n\n'
 
-  return chosen_font+css_source, listed_in_css[best_choice]['woff'], listed_in_css[best_choice]['style'], listed_in_css[best_choice]['weight']
+  return chosen_font+css_source, possible_fonts[best_choice]['woff'], possible_fonts[best_choice]['style'], possible_fonts[best_choice]['weight']
 
 #———————————————————————————————————————— match_count(arr1, arr2)
 
-def match_count(arr1, arr2):
+def match_count(str1, str2):
+
+  arr1 = str1.tolower().split('-')
+  arr2 = str2.tolower().split('-')
 
   len_1 = len(arr1)
   len_2 = len(arr2)

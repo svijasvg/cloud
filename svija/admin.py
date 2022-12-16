@@ -41,7 +41,7 @@ admin.site.register(Redirect, RedirectAdmin)
 
 #———————————————————————————————————————— Font · no dependencies
 
-descFonts    = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
+descFonts    = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/how/fonts\">more info</a>)."
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
