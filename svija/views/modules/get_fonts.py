@@ -15,11 +15,13 @@
 from svija.models import Font
 import requests
 
-def get_fonts():
+#———————————————————————————————————————— get_fonts()
 
+def get_fonts():
   font_objs  = Font.objects.all()
   css_str    = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
   font_css   = ''
+  adobe_fonts = []
   google_fonts = []
   google_link  = ''
 
@@ -41,11 +43,13 @@ def get_fonts():
         if this_font.adobe[0] == '<':
           adb_css, adb_url, adb_style, adb_weight = get_adobe_css(this_font)
 
-          this_font.adobe = adb_css
+          this_font.adobe     = adb_css
           this_font.adobe_url = adb_url
-          this_font.style = adb_weight +' '+adb_style
+          this_font.style     = adb_weight +' '+adb_style
 
           this_font.save()
+
+        adobe_fonts.append(this_font)
         
       # google fonts
       elif this_font.google:
@@ -72,12 +76,23 @@ def get_fonts():
         font_src = "local('"+"'), local('".join(locals)
         font_css += '\n'+ css_str.format(svg_ref, font_src, font_format)
 
+  # adobe fonts css if necessary
 
+  if len(adobe_fonts) > 0:
+
+    # get comments from first font in list
+    adobe_css = get_comments(adobe_fonts[0].adobe)
+
+    for f in adobe_fonts:
+      adobe_css += "\n@font-face { font-family:'"+f.svg_ref + "'; src:url("+f.adobe_url+") format('woff'); }"
+
+  # google fonts link if necessary
   if len(google_fonts) > 0:
     link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     google_link = link_str.format(('|').join(google_fonts))
 
-  return google_link, font_css
+
+  return google_link, adobe_css+font_css
 
 
 #:::::::::::::::::::::::::::::::::::::::: methods
@@ -306,6 +321,13 @@ def italics_present(targ, cand):
        return -1
 
   return 0
+
+#———————————————————————————————————————— get_comments(css)
+
+def get_comments(css):
+  start = css.find('/*\n')
+  end   = css.find('"}*/\n') + 4
+  return css[start:end] + '\n'
 
 
 #———————————————————————————————————————— fin
