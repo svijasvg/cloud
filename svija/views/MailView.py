@@ -63,8 +63,8 @@ def MailView(request):
   if message=='':
     return HttpResponse('E1')
 
-  if re.match(blacklist, message):
-    return HttpResponse('E2')
+# if re.match(blacklist, message): # special characters needed for passwords
+#   return HttpResponse('E2')
 
 #———————————————————————————————————————— get section from referrer
 
@@ -119,11 +119,13 @@ def MailView(request):
       del allLines[-1]
       lastLine = allLines[-1]
 
+    message = '\n'.join(allLines)
+
 #———————————————————————————————————————— send message
 
-    message = stripQuotes('\n'.join(allLines))
-    response = send_mail.send(settings, subject, message, frm, to, cc, bcc,)
-    return HttpResponse(response)
+# message = stripQuotes(message) REMOVED TO ALLOW " in passwords
+  response = send_mail.send(settings, subject, message, frm, to, cc, bcc,)
+  return HttpResponse(response)
 
 
 #:::::::::::::::::::::::::::::::::::::::: functions
