@@ -82,7 +82,7 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
-#———————————————————————————————————————— get_names_woffs(this_font)
+#———————————————————————————————————————— get_indexes(this_font)
 #
 #   returns list of fonts found in css
 #
@@ -97,7 +97,7 @@ def get_fonts():
 #   - style1, style2:   start & end indexes
 #   - weight1, weight2: start & end indexes
 
-def get_names_woffs(css_contents):
+def get_indexes(css_contents):
 
 #———————————————————————————————————————— initialise
 
@@ -192,38 +192,36 @@ def name_splitter(txt):
 
 #———————————————————————————————————————— adobe font handler
 
+# user pastes a string like
+#
 # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
 def get_adobe_css(this_font):
 
   if this_font.adobe[0] != '<': return this_font.adobe
 
-  zopy = this_font.adobe
-  zname = this_font.family
-  zstyle = this_font.style
+  #—————————————————————————————————————— assign variables
 
-  #—————————————————————————————————————— get Adobe CSS source
-  
-  # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
-  bits = zopy.split('"')
+  css_link = this_font.adobe
+
+  #—————————————————————————————————————— get url then CSS source
+
+  bits = css_link.split('"')
   url = bits[3]
+
   response = requests.get(url)
   css_source = response.text
 
   #—————————————————————————————————————— error handling
 
   if css_source[0:2] != '/*':
-    return 'URL returned error: '+url+'\n\n'+zopy, ''
+    return 'URL returned error: '+url+'\n\n'+css_link, ''
 
   #—————————————————————————————————————— get fonts found in this css
 
-  listed_in_css = get_names_woffs(css_source)
-
-  #—————————————————————————————————————— if there's only one, return it
-
-  if len(listed_in_css) == 1:
-    return css_source, listed_in_css[0]['woff']
+  listed_in_css = get_indexes(css_source)
 
   #—————————————————————————————————————— find match for font
 
@@ -234,20 +232,20 @@ def get_adobe_css(this_font):
   best_value  = 0
   best_choice = 0
 
-  debug = ''
 
   for adobe_font in listed_in_css:
-    to_compare = adobe_font['name'].split('-')
+
+    compare_name = adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight']
+    to_compare = compare_name.split('-')
 
     v = match_count(compare_to, to_compare)
-    debug += ':'+str(v)+':'+adobe_font['name']
     if v > best_value:
       best_choice = indx
       best_value  = v
 
     indx += 1
 
-  chosen_font = '/* Found below: '+listed_in_css[best_choice]['name']+' */\n\n'
+  chosen_font = '/* Found below: ' + listed_in_css[best_choice]['name'] + ' ' + listed_in_css[best_choice]['weight'] + ' ' + listed_in_css[best_choice]['style'] + ' */\n\n'
 
   return chosen_font+css_source, listed_in_css[best_choice]['woff'], listed_in_css[best_choice]['style'], listed_in_css[best_choice]['weight']
 
