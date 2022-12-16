@@ -28,7 +28,7 @@ def LinksView(request, request_prefix, img_file):
 
   if not exists(img_path):
     ext      = img_file.split('.')[-1].lower()
-    img_path = os.getcwd() + '/static/svija/images/ff0000.'+ ext
+    img_path = os.getcwd() + '/static/svija/img/ff0000.'+ ext
     img      = open(img_path, 'rb')
 
     response = FileResponse(img)

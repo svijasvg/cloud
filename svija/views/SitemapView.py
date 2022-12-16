@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 from svija.models import Page, Settings
 
 def SitemapView(request):
-  settings = get_object_or_404(Settings,active=True)
+  settings = get_object_or_404(Settings,enabled=True)
   domain = settings.url
 
   default_code = settings.section.code

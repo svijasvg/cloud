@@ -29,31 +29,31 @@ from .models import Redirect
 class RedirectAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('from_url', 'to_url', 'active', )
+  list_display = ('from_url', 'to_url', 'enabled', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('redirect settings',  {'fields': ['from_url', 'to_url','active',], 'description':descRedirect,}),
+    ('redirect settings',  {'fields': ['from_url', 'to_url','enabled',], 'description':descRedirect,}),
   ]   
 
 admin.site.register(Redirect, RedirectAdmin)
 
 #———————————————————————————————————————— Font · no dependencies
 
-descFonts    = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/next-steps/fonts/google-fonts\">more info</a>)."
+descFonts    = "Fonts will be added automatically <b>the first time the page is loaded</b>. You must <i>either</i> provide a <b>WOFF filename</b> or check <b>Google font</b> (<a href=\"https://tech.svija.love/how/fonts\">more info</a>)."
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('svg_ref', 'family', 'style', 'woff', 'google', 'active', 'category',)
-  list_filter = ('category', 'google', 'active', )
+  list_display = ('svg_ref', 'family', 'style', 'woff', 'google', 'enabled', 'category',)
+  list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('font information',  {'fields': [('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), 'active',], 'description':descFonts,}),
+    ('font information',  {'fields': ['enabled', ('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), 'adobe', 'adobe_url', ], 'description':descFonts,}),
 
   ]   
 
@@ -96,7 +96,7 @@ class ScreenAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     ('details',{'fields': [('name', 'pixels',),('code',  'order'),],'description':descScreens,}),
-    ('dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
+    ('pixel dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
 #     ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
   ]   
 
@@ -132,7 +132,7 @@ from .models import ScriptScripts
 class ScriptScriptsInline(admin.TabularInline):
   model = ScriptScripts
   extra = 0 
-  fields = ('active', 'name', 'type', 'order', 'content',)
+  fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = "script"
   verbose_name_plural = "scripts"
 
@@ -140,13 +140,13 @@ from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
 
   # display on parent script
-  list_display = ('name', 'category', 'active','always',)
+  list_display = ('name', 'category', 'enabled','always',)
   list_filter = ('category', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-     ('name & filename', {'fields': [('name', 'active',),('category', 'always',), ], 'description':descScript0, }),
+     ('name & filename', {'fields': [('name', 'enabled',),('category', 'always',), ], 'description':descScript0, }),
      ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
   ]   
 
@@ -162,7 +162,7 @@ from .models import ModuleScript
 class ModuleScriptInline(admin.TabularInline):
   model = ModuleScript
   extra = 0 
-  fields = ('active', 'name', 'type', 'order', 'content',)
+  fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = "script"
   verbose_name_plural = "scripts"
   classes = ['collapse', 'ifempty',]
@@ -179,13 +179,13 @@ class ModuleAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent module
-  list_display = ('name', 'section', 'screen', 'filename', 'always', 'order', 'active', 'category',)
-  list_filter = ('section', 'screen', 'active', 'always', 'category', )
+  list_display = ('name', 'section', 'screen', 'filename', 'always', 'order', 'enabled', 'category',)
+  list_filter = ('section', 'screen', 'enabled', 'always', 'category', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-     ('name & filename', {'fields': [('name', 'active','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
+     ('name & filename', {'fields': [('name', 'enabled','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
      ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
      ('placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
   ]   
@@ -205,12 +205,12 @@ from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('url', 'active', 'section', 'robots',)
+  list_display = ('url', 'enabled', 'section', 'robots',)
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('main settings',   {'fields': [('url', 'active', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
+    ('main settings',   {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
     ('mail settings', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   
@@ -228,7 +228,7 @@ from .models import AdditionalScript
 class ModuleInlinePage(admin.TabularInline):
   model = Page.module.through
   extra = 0 
-  fields = ('active', 'module', 'zindex', )
+  fields = ('enabled', 'module', 'zindex', )
   verbose_name = "module"
   verbose_name_plural = "modules"
   classes = ['collapse', 'ifempty',]
@@ -236,7 +236,7 @@ class ModuleInlinePage(admin.TabularInline):
 class ScriptInlinePage(admin.TabularInline):
   model = Page.script.through
   extra = 0 
-  fields = ('active', 'script', 'order', )
+  fields = ('enabled', 'script', 'order', )
   verbose_name = "script set"
   verbose_name_plural = "script sets"
   classes = ['collapse', 'ifempty',]
@@ -245,13 +245,13 @@ class IllustratorInlinePage(admin.TabularInline):
   model = Illustrator
   extra = 0 
   #fields = ('zindex', 'filename',)
-  fields = ('active','filename','zindex',)
+  fields = ('enabled','filename','zindex',)
   verbose_name_plural = 'Illustrator files'
 
 class AdditionalScriptInline(admin.TabularInline):
   model = AdditionalScript
   extra = 0 
-  fields = ('active', 'name', 'type', 'order', 'content',)
+  fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = "script"
   verbose_name_plural = "additional scripts"
 #   classes = ['collapse']
@@ -280,7 +280,7 @@ class PageAdmin(admin.ModelAdmin):
     return qs.prefetch_related('illustrator_fk')
 
   def illustrator_file(self,obj):
-    return obj.illustrator_fk.filter(active=True).first()
+    return obj.illustrator_fk.filter(enabled=True).first()
 
   fieldsets = [ 
     ('setup',      {'fields': [

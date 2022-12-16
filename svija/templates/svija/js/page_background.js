@@ -5,6 +5,8 @@ try {
   var classID = '.st' + firstSVG.id + 0;
   var bgcolor = document.querySelector(classID);
   var bgfill = getComputedStyle(bgcolor).fill;
-  document.body.parentElement.style.backgroundColor = bgfill; // change html style
-  document.body.style.backgroundColor = bgfill;
+  if (cookiesEnabled()){
+    document.body.parentElement.style.backgroundColor = bgfill; // change html style
+    document.body.style.backgroundColor = bgfill;
+  }
 } catch (error) { var rien = 0;}

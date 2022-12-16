@@ -4,7 +4,7 @@ from svija.models import Settings
 
 def get_settings():
     try: 
-        settings = Settings.objects.get(active=True)
+        settings = Settings.objects.get(enabled=True)
         return True, settings
     except:
         return False, '''<html><body style="width:100%;text-align:center;">

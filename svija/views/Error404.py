@@ -65,7 +65,7 @@ def Error404(request, *args, **kwargs):
 
   if re.search(pf, request.path):
     ext      = img_file.split('.')[-1].lower()
-    img_path = os.getcwd() + '/static/svija/images/ff0000.'+ ext
+    img_path = os.getcwd() + '/static/svija/img/ff0000.'+ ext
     img      = open(img_path, 'rb')
 
     response = FileResponse(img)
@@ -75,7 +75,7 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— 3. is it a redirect?
 
   try:
-    redirect_obj = Redirect.objects.get(from_url=request.path, active=True)
+    redirect_obj = Redirect.objects.get(from_url=request.path, enabled=True)
     return HttpResponsePermanentRedirect(redirect_obj.to_url)
   except ObjectDoesNotExist: pass
 
@@ -96,7 +96,7 @@ def Error404(request, *args, **kwargs):
 
   if section_code == '':
     try:
-      section_code = Settings.objects.get(active=True).section.code
+      section_code = Settings.objects.get(enabled=True).section.code
     except:
       response             = HttpResponse(msg_broken)
       response.status_code = 404

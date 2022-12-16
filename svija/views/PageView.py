@@ -35,8 +35,8 @@ def PageView(request, request_page='', request_lang=''):
   if request_lang == '':
 
     # check if page corresponds to section
-    # settings = Settings.objects.get(active=True)
-    # Font.objects.filter(Q(active=True) & Q(google=True ))
+    # settings = Settings.objects.get(enabled=True)
+    # Font.objects.filter(Q(enabled=True) & Q(google=True ))
 
     sections = Section.objects.filter(Q(code=request_page))
     if len(sections) > 0:
@@ -47,7 +47,7 @@ def PageView(request, request_page='', request_lang=''):
     else:
       # return HttpResponse("not a section")
 
-      section = get_object_or_404(Settings, active=True).section
+      section = get_object_or_404(Settings, enabled=True).section
       request_lang = section.code
 
 #———————————————————————————————————————— page is missing

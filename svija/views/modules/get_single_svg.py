@@ -11,7 +11,7 @@ from modules.svg_cleaner import *
 
 def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
-    css = svg = ''
+    div = css = svg = ''
 
     # can be empty if module without SVG
     if not hasattr(target_obj, 'filename'): return svg, css
@@ -81,11 +81,15 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
             css += '\n\n' + css_dims + '\n' + y + '\n' + '}'
         else:
             css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+            div = '#set_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
             css += '\n\n' + css_dims
 
         svg += '\n' + svg_content
  
-    return svg, css
+    return svg, css, div
+
+
+#:::::::::::::::::::::::::::::::::::::::: methods
 
 #———————————————————————————————————————— calculate_css(this_svg):
 
@@ -113,9 +117,9 @@ def calculate_css(this_svg):
 #———————————————————————————————————————— dic_position(pos):
 
 def dic_position(pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
+    if pos != 'attached' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     return {
-        'absolute': 'position: absolute;\n',
+        'attached': 'position: absolute;\n',
         'floating': 'position: fixed;\n',
         'none'        : '',
     }[pos]
@@ -123,7 +127,7 @@ def dic_position(pos):
 #———————————————————————————————————————— dic_corners(cor, pos):
 
 def dic_corners(cor, pos):
-    if pos != 'absolute' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
+    if pos != 'attached' and pos != 'floating' and pos != 'none': return '/* invalid svg position ' + pos + ' */'
     if pos ==  'none': return ''
     return {
         'top left'    : 'left: xrem; right: ; top: yrem; bottom: ;\n',
@@ -144,11 +148,11 @@ def purify(inp):
 #———————————————————————————————————————— fin
 
 # extra info
-#   positions = ('absolute', 'floating', 'none',)
+#   positions = ('attached', 'floating', 'none',)
 #   corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 #   css_id = models.CharField(max_length=200, default='', verbose_name='object ID',)
-#   position = models.CharField(max_length=255, default='absolute', choices=Choices(*positions), verbose_name='placement')
+#   position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='placement')
 #   corner = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='reference corner')
 #   offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='horizontal offset (px)',)
 #   offsety = models.PositiveSmallIntegerField(default=0, verbose_name='vertical offset (px)',)

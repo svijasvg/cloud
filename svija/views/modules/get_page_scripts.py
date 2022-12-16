@@ -7,7 +7,7 @@
 #                   get_page_scripts.py
 #                   get_scripts.py
 #
-#   accepts a list of scripts , some inactive
+#   accepts a list of scripts , some disabled
 #
 #   returns a list of page objects
 #   a page object contains css, headjs, bodyjs, svg, html, form etc.
@@ -24,7 +24,7 @@ from PageObject import page_obj
 
 #———————————————————————————————————————— def get_page_scripts(label, page_scripts):
 
-# page.pagescript_set.filter(active=True).order_by('order')
+# page.pagescript_set.filter(enabled=True).order_by('order')
 
 def get_page_scripts(label, page_scripts):
 
@@ -51,12 +51,12 @@ def get_page_scripts(label, page_scripts):
 
 #———————————————————————————————————————— deactivate from page?
 
-    if this_group.active:
+    if this_group.enabled:
 
 #———————————————————————————————————————— iterate through scripts
 
       for this_script in this_group.scriptscripts_set.all():
-        if this_script.active:
+        if this_script.enabled:
     
           if this_script.type == 'head JS':
             hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'

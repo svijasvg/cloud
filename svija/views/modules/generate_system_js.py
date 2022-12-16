@@ -35,9 +35,11 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
     # responsive information
     system_js += 'var screen_code = "' + this_screen.code +'";\n'
 
+    # responsive information
+    system_js += 'var page_pk = ' + str(page.id) +';\n'
+
     # milliseconds
     system_js += 'var milliseconds = "' + str(time.time_ns()) +'";\n'
-
 
 #———————————————————————————————————————— screens
 
@@ -84,5 +86,6 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
     system_js += dim_js
 
     return system_js
+
 
 #———————————————————————————————————————— fin

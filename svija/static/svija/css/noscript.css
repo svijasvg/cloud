@@ -1,0 +1,20 @@
+html, body{
+  background-color:white;
+}
+
+body{
+  overflow:hidden;
+}
+
+#accessibility, svg, form, div, p{
+  display:none;
+}
+
+pre#noexplorer, pre#nocookie{
+  display:none;
+}
+
+pre#noscript{
+  font-size:16px;
+  display:block;
+}

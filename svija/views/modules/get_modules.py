@@ -7,7 +7,7 @@
 #                   get_page_scripts.py
 #                   get_scripts.py
 #
-#   accepts a list of modules, all active
+#   accepts a list of modules, all enabled
 #   a module has exactly 1 svg filename, and it can be empty
 #
 #
@@ -24,7 +24,7 @@ from PageObject import page_obj
 
 #———————————————————————————————————————— def get_modules(label, all_modules, page_width, use_p3):
 
-# Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(active=True) & Q(always=True)).order_by('order')
+# Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
 
 def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 
@@ -43,7 +43,7 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 #———————————————————————————————————————— get SVG's
 
     # returns svg and css
-    sv, hc = get_single_svg(this_group, screen_code, page_width, use_p3)
+    sv, hc, rien = get_single_svg(this_group, screen_code, page_width, use_p3)
 
 
 
@@ -55,7 +55,7 @@ def get_modules(label, all_modules, screen_code, page, page_width, use_p3):
 #———————————————————————————————————————— iterate through scripts
 
     for this_script in this_group.modulescript_set.all():
-      if this_script.active:
+      if this_script.enabled:
   
         if this_script.type == 'head JS':
           hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'

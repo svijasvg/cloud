@@ -8,7 +8,7 @@
 #                   get_scripts.py
 #
 #
-#   accepts a list of scripts, all active & "always include"
+#   accepts a list of scripts, all enabled & "always include"
 #
 #
 #
@@ -24,7 +24,7 @@ from PageObject import page_obj
 
 #———————————————————————————————————————— def get_scripts(label, all_scripts, page_width, use_p3):
 
-# Script.objects.filter(Q(active=True) & Q(always=True))
+# Script.objects.filter(Q(enabled=True) & Q(always=True))
 
 def get_scripts(label, all_scripts):
 
@@ -56,7 +56,7 @@ def get_scripts(label, all_scripts):
 #———————————————————————————————————————— iterate through scripts
 
     for this_script in this_group.scriptscripts_set.all():
-      if this_script.active:
+      if this_script.enabled:
   
         if this_script.type == 'head JS':
           hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'

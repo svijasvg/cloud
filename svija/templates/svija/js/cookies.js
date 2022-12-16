@@ -1,4 +1,4 @@
-//———————————————————————————————————————— template: cookies.js
+//———————————————————————————————————————— main programs
 
 // same code in static/admin/js/same-page.js
 //              templates/svija/js/cookies.js
@@ -16,9 +16,12 @@ function setCookie(name, value, expires) {
   var expy = '; expires=' + d.toUTCString();
   var path = '; path=/';
   var domn = '; domain='  + window.location.hostname;
-  var secu = '; samesite=lax; secure;';
+  var secu = '; SameSite=Lax; Secure;';
 
-  var complete = value + expy + path + domn + secu;
+// secu deprecated: developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+// var complete = value + expy + path + domn + secu;
+
+  var complete = value + expy + path + domn;
   document.cookie = name + '=' + complete;
 }
 
@@ -39,4 +42,18 @@ function deleteParentCookieIfNecessary(cname, domain){
     var domain = parts.slice(-2).join('.');
     document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
   }
+}
+
+
+// https://stackoverflow.com/questions/63471777/testing-function-which-checks-if-cookies-are-enabled-with-qunit
+
+function cookiesEnabled() {
+
+  if (navigator.cookieEnabled) {
+      document.cookie = "test_cookie";
+      if (document.cookie.indexOf("test_cookie") != -1)
+        return true;
+  }
+
+  return false;
 }

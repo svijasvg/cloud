@@ -9,7 +9,9 @@
 
 // console.log('line 10 of same-page.js');
 
-const cname  = 'adminPage';
+var host = location.hostname.replace('.', 'x');
+
+const cname  = host+'Admin';
 const exdays = 1;
 
 const ref = document.referrer.substr(-7);
