@@ -21,6 +21,7 @@ def get_fonts():
   font_objs  = Font.objects.all()
   css_str    = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
   font_css   = ''
+  adobe_css   = ''
   adobe_fonts = []
   google_fonts = []
   google_link  = ''
