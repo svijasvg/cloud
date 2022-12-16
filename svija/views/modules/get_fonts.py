@@ -224,13 +224,16 @@ def get_adobe_css(this_font):
   best_value  = 0
   best_choice = 0
 
-  compare_to = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
+  target_font = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
+  target_font += equivalents(target_font)
 
   for adobe_font in possible_fonts:
 
-    to_compare = adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight'].tolower()
+    candidate  = (adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight']).lower()
+    v = match_count(target_font, candidate)
 
-    v = match_count(compare_to, to_compare)
+    v += italics_present(target_font, candidate) # remove a point if only candidate has italic
+
     if v > best_value:
       best_choice = indx
       best_value  = v
@@ -245,8 +248,8 @@ def get_adobe_css(this_font):
 
 def match_count(str1, str2):
 
-  arr1 = str1.tolower().split('-')
-  arr2 = str2.tolower().split('-')
+  arr1 = str1.lower().split('-')
+  arr2 = str2.lower().split('-')
 
   len_1 = len(arr1)
   len_2 = len(arr2)
@@ -268,6 +271,41 @@ def match_count(str1, str2):
         matches += 1
   
   return matches
+
+#———————————————————————————————————————— equivalents(txt)
+
+style_equivalents = {
+  'obl'         : 'italic',
+  'oblique'     : 'italic',
+  'thin'        : '100',
+  'extra-light' : '200',
+  'light'       : '300',
+  'regular'     : '400',
+  'medium'      : '500',
+  'semi-bold'   : '600',
+  'bold'        : '700',
+  'extra-bold'  : '800',
+  'black'       : '900',
+}
+
+def equivalents(txt):
+  results = ''
+
+  for key in style_equivalents:
+    if txt.find(key) > 0:
+      results += '-' + style_equivalents[key]
+
+  return results
+
+#———————————————————————————————————————— italics_present(txt1, txt2)
+
+def italics_present(targ, cand):
+
+  if cand.find('italic') > 0:
+     if targ.find('italic') < 1:
+       return -1
+
+  return 0
 
 
 #———————————————————————————————————————— fin
