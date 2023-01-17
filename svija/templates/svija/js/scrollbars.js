@@ -1,17 +1,23 @@
-//———————————————————————————————————————— template: window_mgmt_body.js
+//———————————————————————————————————————— template: scrollbars.js
 
-/*
+/*———————————————————————————————————————— notes
+
+    This just resets the aiPixel value after scrollbars
+    have been drawn. Otherwise, PC pages have horizontal
+    scrollbars because the page is always slightly too wide */
+
 //———————————————————————————————————————— environmental variables
 
-var envPrevWidth = zoomedWidthBody();  // used in resize();
-var envPrevZoom  = zoom();             // used in resize();
+envPrevWidth = zoomedWidthBody();  // used in resize();
+envPrevZoom  = zoom();             // used in resize();
 
 //———————————————————————————————————————— set the rem unit
 
-var aiPixel = zoomedWidthBody() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
-    aiPixel = aiPixel * zoom();
+var rawPixel = zoomedWidthBody() / visible_width; // ⚠️  NEEDED IN OTHER SCRIPTS
+     aiPixel = rawPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
+
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
@@ -21,5 +27,5 @@ function zoomedWidthBody(){
   return document.documentElement.clientWidth;
 }
 
+
 //———————————————————————————————————————— fin
-*/
