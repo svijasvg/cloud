@@ -2,12 +2,17 @@
 
 //———————————————————————————————————————— start logging
 
-console.group('window mgmt on load');
+//console.group('window mgmt on load');
 
 //———————————————————————————————————————— variables
 
 // var visible_width = 1200;   // supplied by server
 var envMinDiff = 5;            // percent difference needed to count as a zoom
+
+//———————————————————————————————————————— is it Firefox?
+
+var envIsFirefox = navigator.userAgent.indexOf('Firefox')>0;
+//console.log('envIsFirefox='+envIsFirefox);
 
 /*———————————————————————————————————————— get real screen size for FF & iPhone
 
@@ -15,16 +20,16 @@ var envMinDiff = 5;            // percent difference needed to count as a zoom
     a visitor coming back and seeing an "initially zoomed" page that
     we can't detect. */
 
-console.log('cookie screenWidth='+getCookie('screenWidth'));
-console.log('cookie screenHeight='+getCookie('screenHeight'));
+//console.log('cookie screenWidth=' +getCookie('screenWidth' ));
+//console.log('cookie screenHeight='+getCookie('screenHeight'));
 
 // real screen width, for firefox
-if (getCookie('screenWidth') == ''){
+if (envIsFirefox && getCookie('screenWidth') != '')
+  var envRealScreenWidth = getCookie('screenWidth');
+else{
   var envRealScreenWidth = globalThis.screen.availWidth;
   setCookie('screenWidth', envRealScreenWidth, 7);
 }
-else
-  var envRealScreenWidth = getCookie('screenWidth');
 
 // real screen height, for iPhone
 if (getCookie('screenHeight') == ''){
@@ -34,8 +39,8 @@ if (getCookie('screenHeight') == ''){
 else
   var envRealScreenHeight = getCookie('screenHeight');
 
-console.log('envRealScreenWidth='+envRealScreenWidth);
-console.log('envRealScreenHeight='+envRealScreenHeight);
+//console.log('envRealScreenWidth='+envRealScreenWidth);
+//console.log('envRealScreenHeight='+envRealScreenHeight);
 
 //———————————————————————————————————————— environmental variables
 
@@ -45,10 +50,10 @@ var envPrevZoom     = zoom();          // used in resize();
 if (areDifferent(zoom(), 1)) var envLoadedZoomed = true;
                         else var envLoadedZoomed = false;
 
-console.log('envPrevWidth='   +envPrevWidth   );
-console.log('envPrevZoom='    +envPrevZoom    );
-console.log('zoom(): '        +zoom());
-console.log('envLoadedZoomed='+envLoadedZoomed);
+//console.log('envPrevWidth='   +envPrevWidth   );
+//console.log('envPrevZoom='    +envPrevZoom    );
+//console.log('zoom(): '        +zoom());
+//console.log('envLoadedZoomed='+envLoadedZoomed);
 
 //———————————————————————————————————————— set the rem unit
 
@@ -57,8 +62,8 @@ var  aiPixel = rawPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
 
-console.log('rawPixel='+rawPixel);
-console.log('aiPixel='+aiPixel);
+//console.log('rawPixel='+rawPixel);
+//console.log('aiPixel='+aiPixel);
 
 //———————————————————————————————————————— resize listener
 
@@ -76,8 +81,8 @@ setScroll(); setTimeout(setScroll, 1);
 
 //———————————————————————————————————————— end logging
 
-console.groupEnd();
-console.log('next thing');
+//console.groupEnd();
+//console.log('next thing');
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
@@ -122,11 +127,13 @@ function zoom(){
   var w = envRealScreenWidth;               // this is just to make
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
     var z = globalThisOuterWidth()/zoomedWidth();
+//  console.log('130: not firefox');
   }
 
   // firefox
   else{
     var z = w/globalThis.screen.availWidth; 
+//  console.log('136: firefox');
   }
 
   if (!areDifferent(z, 1)) z = 1;
