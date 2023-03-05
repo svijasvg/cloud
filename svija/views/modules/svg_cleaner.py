@@ -273,13 +273,16 @@ def remove_duplicates(font_array):
 
 # input: <tspan x="0" y="0" class="st2 st3">ARTISTS</tspan>
 
+# error caused by
+# <text transform="matrix(1 0 0 1 39.5131 71.2745)"><tspan x="0" y="0" class="st0 st1 st2">artboard </tspan><tspan x="96.059" y="0" class="st3 st4 st2">cp</tspan><tspan x="124.066" y="0" class="st0 st1 st2"> · computer 1200px</tspan></text>
+
 def get_xy_content(str):
   values = str.split("\"",4)
-  x = values[1]
-  y = values[3]
-  rest  = values[4]
+  x      = values[1]
+  y      = values[3]
+  rest   = values[4]
 
-  rest_parts_1 = rest.split(">",1)      # split at first >
+  rest_parts_1 = rest.split(">",1)  # split at first >
   half_two = rest_parts_1[1]        # keep second part
   rest_parts_2 = half_two.split("</tspan")  # split at end of tspan
   content = rest_parts_2[0]
@@ -292,6 +295,7 @@ def get_xy_content(str):
 # delete coords for <tspan x="400.88" y="147">some text</tspan>
 
 def clean_tspans(line):
+  return line
 
   tspans = line.split('<tspan ')
   first_bit = tspans.pop(0)
