@@ -135,7 +135,7 @@ def extract_fonts(css_src):
     this_adobe['name2'] = name_last
     this_adobe['name']  = css_src[name_first:name_last]
   
-    #———————————————————————————————————— get woff indexes
+    #———————————————————————————————————— get woff indexes CAN SIMPLIFY; SEE LATEST ISSUE
   
     woff2      = css_src.find('url("', name_last) + 5
     woff_first = css_src.find('url("', woff2) + 5
@@ -234,7 +234,7 @@ def get_adobe_css(this_font):
 
   possible_fonts = extract_fonts(css_source)
 
-  #—————————————————————————————————————— find match for font
+  #—————————————————————————————————————— find match for font NEED CONVERSION 400 › BOOK FOR EXAMPLE
 
   indx        = 0
   best_value  = 0
@@ -260,7 +260,7 @@ def get_adobe_css(this_font):
 
   return chosen_font+css_source, possible_fonts[best_choice]['woff'], possible_fonts[best_choice]['style'], possible_fonts[best_choice]['weight']
 
-#———————————————————————————————————————— match_count(arr1, arr2)
+#———————————————————————————————————————— match_count(arr1, arr2) FIX THIS TOO: FOR 400/BOOK
 
 def match_count(str1, str2):
 
