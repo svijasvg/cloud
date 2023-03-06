@@ -42,8 +42,9 @@ def get_fonts():
       # adobe fonts
       if this_font.adobe != '':
         if this_font.adobe[0] == '<':
-          adb_css, adb_url, adb_style, adb_weight = get_adobe_css(this_font)
+          adb_css, adb_name, adb_url, adb_style, adb_weight = get_adobe_css(this_font)
 
+          this_font.family    = adb_name
           this_font.adobe     = adb_css
           this_font.adobe_url = adb_url
           this_font.style     = adb_weight +' '+adb_style
@@ -82,7 +83,7 @@ def get_fonts():
   if len(adobe_fonts) > 0:
 
     # get comments from first font in list
-    adobe_css = get_comments(adobe_fonts[0].adobe)
+    adobe_css = get_adobe_comments(adobe_fonts[0].adobe)
 
     for f in adobe_fonts:
       adobe_css += "\n@font-face { font-family:'"+f.svg_ref + "'; src:url("+f.adobe_url+") format('woff'); }"
@@ -96,24 +97,110 @@ def get_fonts():
   return google_link, adobe_css+font_css
 
 
-#:::::::::::::::::::::::::::::::::::::::: methods
+#:::::::::::::::::::::::::::::::::::::::: adobe font methods
 
-#———————————————————————————————————————— extract_fonts(this_font)
+#———————————————————————————————————————— get_adobe_css(this_font)
+
+# user pastes a string like
+#
+# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+# function returns url of woff file
+
+def get_adobe_css(this_font):
+
+  debug = 'working'
+
+  if this_font.adobe[0] != '<': return this_font.adobe
+
+  #—————————————————————————————————————— get url then CSS file
+
+  bits = this_font.adobe.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+  url = bits[3]
+
+  response = requests.get(url)
+  css_file = response.text
+
+  if css_file[0:2] != '/*':
+    return 'URL returned error: '+url+'\n\n'+this_font.adobe, ''
+
+  #—————————————————————————————————————— find match for font
+
+  css_fonts = font_list_from_css(css_file)
+
+  indx        = 0
+  best_value  = 0
+  best_choice = 0
+
+  target_font = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
+
+# debug = target_font # futura-pt-extra-bold
+
+# target_font += weights_to_numbers(target_font)
+  target_font = weights_to_numbers(target_font)
+  target_font = clean_styles(target_font)
+
+  debug = target_font # futura-pt-extra-bold
+
+  for font in css_fonts:
+
+    candidate  = (font['name'] + '-' + font['style'] + '-' + font['weight']).lower()
+
+    v  = match_count(target_font, candidate)
+    v += italics_present(target_font, candidate) # remove a point if only candidate has italic
+
+    if v > best_value:
+      best_choice = indx
+      best_value  = v
+
+    indx += 1
+
+  chosen_font = '/* Found below: ' + css_fonts[best_choice]['name'] + ' • ' + css_fonts[best_choice]['weight'] + ' • ' + css_fonts[best_choice]['style'] + ' */\n\n'
+
+  return chosen_font+css_file, css_fonts[best_choice]['name'], css_fonts[best_choice]['woff'], css_fonts[best_choice]['style'], css_fonts[best_choice]['weight']
+
+#———————————————————————————————————————— font_list_from_css(this_font)
 #
 #   returns list of fonts found in css
 #
-#   each font contains:
+#   returned fonts are arrays:
 #   - name: family name
-#   - woff: source
+#   - woff: woff source URL
 #   - style
-#   - weight
+#   - weight (converted to number)
 #
-#   - name1, name2:     start & end indexes
-#   - woff1, woff2:     start & end indexes
-#   - style1, style2:   start & end indexes
-#   - weight1, weight2: start & end indexes
+#   /* ADOBE CSS FILE CONTENTS
+#    * The Typekit service used to deliver this font or fonts for use on websites
+#    * is provided by Adobe and is subject to these Terms of Use
+#    * http://www.adobe.com/products/eulas/tou_typekit. For font license
+#    * information, see the list below.
+#    *
+#    * abigail:
+#    *   - http://typekit.com/eulas/0000000000000000773596e9
+#    * acier-bat-gris:
+#    *   - http://typekit.com/eulas/00000000000000007735dfaf
+#    *
+#    * © 2009-2022 Adobe Systems Incorporated. All Rights Reserved.
+#    */
+#   /*{"last_published":"2022-12-15 08:13:52 UTC"}*/
+#   
+#   @import url("https://p.typekit.net/p.css?s=1&k=jpl1zaz&ht=tk&f=534.27707&a=24326271&app=typekit&e=css");
+#   
+#   @font-face {
+#   font-family:"abigail";
+#   src:url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"acier-bat-gris";
+#   src:url("https://use.typekit.net/af/b2b981/00000000000000007735dfaf/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/b2b981/00000000000000007735dfaf/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/b2b981/00000000000000007735dfaf/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   .tk-abigail { font-family: "abigail",sans-serif; }
+#   .tk-acier-bat-gris { font-family: "acier-bat-gris",sans-serif; }
 
-def extract_fonts(css_src):
+def font_list_from_css(css_src):
 
 #———————————————————————————————————————— initialise
 
@@ -123,6 +210,11 @@ def extract_fonts(css_src):
   how_many = int(css_src.count('font-face')) # because each font is listed once with source, then once with class
 
   for x in range(how_many):
+
+#   - name1, name2:     start & end indexes
+#   - woff1, woff2:     start & end indexes
+#   - style1, style2:   start & end indexes
+#   - weight1, weight2: start & end indexes
 
     #———————————————————————————————————— get family indexes
   
@@ -135,7 +227,14 @@ def extract_fonts(css_src):
     this_adobe['name2'] = name_last
     this_adobe['name']  = css_src[name_first:name_last]
   
-    #———————————————————————————————————— get woff indexes CAN SIMPLIFY; SEE LATEST ISSUE
+    #———————————————————————————————————— get woff indexes CAN SIMPLIFY — SEE BELOW
+
+#   NOTE: the three links are all the same except for the character before the ?:
+#   
+#   L = woff2
+#   d = woff
+#   a = opentype
+#   I can use this fact to simplify the code.
   
     woff2      = css_src.find('url("', name_last) + 5
     woff_first = css_src.find('url("', woff2) + 5
@@ -157,11 +256,11 @@ def extract_fonts(css_src):
   
     this_adobe['weight']  = css_src[weight_first:weight_last]
   
-
     #———————————————————————————————————— add font to list
 
     font_list.append(this_adobe)
     start_index = style_last
+
 
   return font_list
 
@@ -201,66 +300,62 @@ def add_dashes(txt):
 
   return dashes
 
-#———————————————————————————————————————— adobe font handler
+#———————————————————————————————————————— weights_to_numbers(txt)
 
-# user pastes a string like
-#
-# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+#   accepts a string like FuturaPT-Bold-Obl, and replaces
+#   obl by italic, thin by 100 etc.
 
-def get_adobe_css(this_font):
+weight_equivalents = {
+  'thin'        : '100',
+  'extra-light' : '200',
+  'extralight'  : '200',
+  'book'        : '400',
+  'regular'     : '400',
+  'medium'      : '500',
+  'demi'        : '600',
+  'semi-bold'   : '600',
+  'semibold'    : '600',
+  'heavy'       : '700',
+  'extra-bold'  : '800',
+  'extrabold'   : '800',
+  'black'       : '900',
 
-  if this_font.adobe[0] != '<': return this_font.adobe
+  'light'       : '300',
+  'bold'        : '700',
+}
 
-  #—————————————————————————————————————— assign variables
+# receives futura-pt-condensed-extra-bold-italic
 
-# <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+def weights_to_numbers(txt):
 
-  css_link = this_font.adobe
+  results = ''
+  for key in weight_equivalents:
+    if txt.find(key) > 0:
+      txt = txt.replace(key, weight_equivalents[key])
 
-  #—————————————————————————————————————— get url then CSS source
+  return txt
 
-  bits = css_link.split('"')
-  url = bits[3]
+#———————————————————————————————————————— clean_styles(txt)
 
-  response = requests.get(url)
-  css_source = response.text
+#   accepts a string like FuturaPT-Bold-Obl, and replaces
+#   obl by italic, thin by 100 etc.
 
-  #—————————————————————————————————————— error handling
+style_equivalents = {
+  'cond-'       : 'condensed-',
+  'oblique'     : 'italic',
+  'obl'         : 'italic',
+}
 
-  if css_source[0:2] != '/*':
-    return 'URL returned error: '+url+'\n\n'+css_link, ''
+def clean_styles(txt):
 
-  #—————————————————————————————————————— get fonts found in this css
+  results = ''
+  for key in style_equivalents:
+    if txt.find(key) > 0:
+      txt = txt.replace(key, style_equivalents[key])
 
-  possible_fonts = extract_fonts(css_source)
+  return txt
 
-  #—————————————————————————————————————— find match for font NEED CONVERSION 400 › BOOK FOR EXAMPLE
-
-  indx        = 0
-  best_value  = 0
-  best_choice = 0
-
-  target_font = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
-  target_font += equivalents(target_font)
-
-  for adobe_font in possible_fonts:
-
-    candidate  = (adobe_font['name'] + '-' + adobe_font['style'] + '-' + adobe_font['weight']).lower()
-    v = match_count(target_font, candidate)
-
-    v += italics_present(target_font, candidate) # remove a point if only candidate has italic
-
-    if v > best_value:
-      best_choice = indx
-      best_value  = v
-
-    indx += 1
-
-  chosen_font = '/* Found below: ' + possible_fonts[best_choice]['name'] + ' ' + possible_fonts[best_choice]['weight'] + ' ' + possible_fonts[best_choice]['style'] + ' */\n\n'
-
-  return chosen_font+css_source, possible_fonts[best_choice]['woff'], possible_fonts[best_choice]['style'], possible_fonts[best_choice]['weight']
-
-#———————————————————————————————————————— match_count(arr1, arr2) FIX THIS TOO: FOR 400/BOOK
+#———————————————————————————————————————— match_count(arr1, arr2)
 
 def match_count(str1, str2):
 
@@ -288,31 +383,6 @@ def match_count(str1, str2):
   
   return matches
 
-#———————————————————————————————————————— equivalents(txt)
-
-style_equivalents = {
-  'obl'         : 'italic',
-  'oblique'     : 'italic',
-  'thin'        : '100',
-  'extra-light' : '200',
-  'light'       : '300',
-  'regular'     : '400',
-  'medium'      : '500',
-  'semi-bold'   : '600',
-  'bold'        : '700',
-  'extra-bold'  : '800',
-  'black'       : '900',
-}
-
-def equivalents(txt):
-  results = ''
-
-  for key in style_equivalents:
-    if txt.find(key) > 0:
-      results += '-' + style_equivalents[key]
-
-  return results
-
 #———————————————————————————————————————— italics_present(txt1, txt2)
 
 def italics_present(targ, cand):
@@ -323,9 +393,9 @@ def italics_present(targ, cand):
 
   return 0
 
-#———————————————————————————————————————— get_comments(css)
+#———————————————————————————————————————— get_adobe_comments(css)
 
-def get_comments(css):
+def get_adobe_comments(css):
   start = css.find('/*\n')
   end   = css.find('"}*/\n') + 4
   return css[start:end] + '\n'
@@ -333,9 +403,7 @@ def get_comments(css):
 
 #———————————————————————————————————————— fin
 
-#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
-
-#   SVG name: AcierBATText-Gris
+#   /* Found below: futura-pt 700 normal */
 
 #   /*
 #    * The Typekit service used to deliver this font or fonts for use on websites
@@ -347,17 +415,159 @@ def get_comments(css):
 #    *   - http://typekit.com/eulas/0000000000000000773596e9
 #    * acier-bat-gris:
 #    *   - http://typekit.com/eulas/00000000000000007735dfaf
+#    * futura-pt:
+#    *   - http://typekit.com/eulas/00000000000000000001008f
+#    *   - http://typekit.com/eulas/000000000000000000010090
+#    *   - http://typekit.com/eulas/000000000000000000010091
+#    *   - http://typekit.com/eulas/000000000000000000010092
+#    *   - http://typekit.com/eulas/000000000000000000010093
+#    *   - http://typekit.com/eulas/000000000000000000013365
+#    *   - http://typekit.com/eulas/000000000000000000010095
+#    *   - http://typekit.com/eulas/000000000000000000010096
+#    *   - http://typekit.com/eulas/000000000000000000010097
+#    *   - http://typekit.com/eulas/000000000000000000010098
+#    *   - http://typekit.com/eulas/000000000000000000012192
+#    *   - http://typekit.com/eulas/000000000000000000012193
+#    * futura-pt-condensed:
+#    *   - http://typekit.com/eulas/000000000000000000012039
+#    *   - http://typekit.com/eulas/00000000000000000001203a
+#    *   - http://typekit.com/eulas/00000000000000000001203b
+#    *   - http://typekit.com/eulas/00000000000000000001203c
+#    *   - http://typekit.com/eulas/00000000000000000001203d
+#    *   - http://typekit.com/eulas/00000000000000000001203e
+#    *   - http://typekit.com/eulas/00000000000000000001203f
+#    *   - http://typekit.com/eulas/000000000000000000012040
 #    *
 #    * © 2009-2022 Adobe Systems Incorporated. All Rights Reserved.
 #    */
-#   /*{"last_published":"2022-12-15 08:13:52 UTC"}*/
+#   /*{"last_published":"2023-03-06 08:59:08 UTC"}*/
 #   
-#   @import url("https://p.typekit.net/p.css?s=1&k=jpl1zaz&ht=tk&f=534.27707&a=24326271&app=typekit&e=css");
+#   @import url("https://p.typekit.net/p.css?s=1&k=jpl1zaz&ht=tk&f=534.10879.10880.10881.10882.10883.10884.10885.10886.10887.10888.15586.15587.15357.15358.15359.15360.15361.15362.15363.15364.27707&a=24326271&app=typekit&e=css");
 #   
 #   @font-face {
 #   font-family:"abigail";
 #   src:url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/502479/0000000000000000773596e9/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
 #   font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3") format("woff2"),url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3") format("woff"),url("https://use.typekit.net/af/2cd6bf/00000000000000000001008f/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n5&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:500;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/1eb35a/000000000000000000010090/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3") format("woff2"),url("https://use.typekit.net/af/1eb35a/000000000000000000010090/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3") format("woff"),url("https://use.typekit.net/af/1eb35a/000000000000000000010090/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i5&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:500;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/309dfe/000000000000000000010091/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/309dfe/000000000000000000010091/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/309dfe/000000000000000000010091/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n7&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:700;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/eb729a/000000000000000000010092/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3") format("woff2"),url("https://use.typekit.net/af/eb729a/000000000000000000010092/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3") format("woff"),url("https://use.typekit.net/af/eb729a/000000000000000000010092/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i7&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:700;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/849347/000000000000000000010093/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i3&v=3") format("woff2"),url("https://use.typekit.net/af/849347/000000000000000000010093/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i3&v=3") format("woff"),url("https://use.typekit.net/af/849347/000000000000000000010093/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i3&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:300;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/9b05f3/000000000000000000013365/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/cf3e4e/000000000000000000010095/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i4&v=3") format("woff2"),url("https://use.typekit.net/af/cf3e4e/000000000000000000010095/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i4&v=3") format("woff"),url("https://use.typekit.net/af/cf3e4e/000000000000000000010095/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i4&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/ae4f6c/000000000000000000010096/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff2"),url("https://use.typekit.net/af/ae4f6c/000000000000000000010096/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("woff"),url("https://use.typekit.net/af/ae4f6c/000000000000000000010096/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n3&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:300;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/0c71d1/000000000000000000010097/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3") format("woff2"),url("https://use.typekit.net/af/0c71d1/000000000000000000010097/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3") format("woff"),url("https://use.typekit.net/af/0c71d1/000000000000000000010097/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n8&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:800;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/648f69/000000000000000000010098/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i8&v=3") format("woff2"),url("https://use.typekit.net/af/648f69/000000000000000000010098/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i8&v=3") format("woff"),url("https://use.typekit.net/af/648f69/000000000000000000010098/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i8&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:800;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/c4c302/000000000000000000012192/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3") format("woff2"),url("https://use.typekit.net/af/c4c302/000000000000000000012192/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3") format("woff"),url("https://use.typekit.net/af/c4c302/000000000000000000012192/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n6&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:600;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt";
+#   src:url("https://use.typekit.net/af/1b297b/000000000000000000012193/27/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3") format("woff2"),url("https://use.typekit.net/af/1b297b/000000000000000000012193/27/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3") format("woff"),url("https://use.typekit.net/af/1b297b/000000000000000000012193/27/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=i6&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:600;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/6f8764/000000000000000000012039/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/6f8764/000000000000000000012039/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/6f8764/000000000000000000012039/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/082b7c/00000000000000000001203a/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3") format("woff2"),url("https://use.typekit.net/af/082b7c/00000000000000000001203a/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3") format("woff"),url("https://use.typekit.net/af/082b7c/00000000000000000001203a/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:400;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/accb3b/00000000000000000001203b/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("woff2"),url("https://use.typekit.net/af/accb3b/00000000000000000001203b/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("woff"),url("https://use.typekit.net/af/accb3b/00000000000000000001203b/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:500;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/c9ec0c/00000000000000000001203c/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i5&v=3") format("woff2"),url("https://use.typekit.net/af/c9ec0c/00000000000000000001203c/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i5&v=3") format("woff"),url("https://use.typekit.net/af/c9ec0c/00000000000000000001203c/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i5&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:500;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/64e0cf/00000000000000000001203d/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/64e0cf/00000000000000000001203d/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/64e0cf/00000000000000000001203d/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:700;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/e6a9c1/00000000000000000001203e/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3") format("woff2"),url("https://use.typekit.net/af/e6a9c1/00000000000000000001203e/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3") format("woff"),url("https://use.typekit.net/af/e6a9c1/00000000000000000001203e/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i7&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:700;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/3b8138/00000000000000000001203f/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("woff2"),url("https://use.typekit.net/af/3b8138/00000000000000000001203f/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("woff"),url("https://use.typekit.net/af/3b8138/00000000000000000001203f/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3") format("opentype");
+#   font-display:auto;font-style:normal;font-weight:800;font-stretch:normal;
+#   }
+#   
+#   @font-face {
+#   font-family:"futura-pt-condensed";
+#   src:url("https://use.typekit.net/af/6b4d7c/000000000000000000012040/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("woff2"),url("https://use.typekit.net/af/6b4d7c/000000000000000000012040/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("woff"),url("https://use.typekit.net/af/6b4d7c/000000000000000000012040/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i8&v=3") format("opentype");
+#   font-display:auto;font-style:italic;font-weight:800;font-stretch:normal;
 #   }
 #   
 #   @font-face {
@@ -367,5 +577,7 @@ def get_comments(css):
 #   }
 #   
 #   .tk-abigail { font-family: "abigail",sans-serif; }
+#   .tk-futura-pt { font-family: "futura-pt",sans-serif; }
+#   .tk-futura-pt-condensed { font-family: "futura-pt-condensed",sans-serif; }
 #   .tk-acier-bat-gris { font-family: "acier-bat-gris",sans-serif; }
-
+#   
