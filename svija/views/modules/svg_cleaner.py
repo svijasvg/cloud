@@ -1,4 +1,5 @@
-#———————————————————————————————————————— svg_cleaner.py
+
+#:::::::::::::::::::::::::::::::::::::::: svg_cleaner.py
 
 #———————————————————————————————————————— notes
 #
@@ -101,15 +102,15 @@ def clean(file_path, svg_filename, use_p3):
     if line.find('SVGID_') > 0:
       line = re.sub(r'SVGID_', r'SVGID_'+svg_ID+'_', line)
 
-    #———————————————————————————————————————— fix mixed text weight problem
+    #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
     #                                         search for <tspan x="400.88" where x != 0
 
-    exp = r'tspan x=\"[1-9]'
-    regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
-    if (re.search(exp, line)):
-      line = clean_tspans(line)
+#   exp = r'tspan x=\"[1-9]'
+#   regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
+#   if (re.search(exp, line)):
+#     line = clean_tspans(line)
   
-    #———————————————————————————————————————— get id if layer like "id example" exists
+    #———————————————————————————————————————— get id if layer like "id example" exists COMMENTED OUT
     #                                         note that this means the ID could change at the end,
     #                                         so .st[id]8 won't correspond
 
@@ -169,7 +170,7 @@ def clean(file_path, svg_filename, use_p3):
   return svg_ID, px_width, px_height, first_line+final_svg
 
 
-#———————————————————————————————————————— functions 
+#:::::::::::::::::::::::::::::::::::::::: functions 
 
 #———————————————————————————————————————— add new font
 
@@ -289,13 +290,12 @@ def get_xy_content(str):
 
   return x, y, rest, content
 
-#———————————————————————————————————————— remove x & y coords from tspan
+#———————————————————————————————————————— remove x & y coords from tspan COMMENTED OUT AT CALL
 
 # fixes problem where Safari cause text tspans to bump into each other
 # delete coords for <tspan x="400.88" y="147">some text</tspan>
 
 def clean_tspans(line):
-  return line
 
   tspans = line.split('<tspan ')
   first_bit = tspans.pop(0)
@@ -345,11 +345,10 @@ def add_p3(orig_line):
 #———————————————————————————————————————— replace color of a given property
 
 def color_replace(orig_line, property):
-# return orig_line
   blocks = orig_line.split(property + '#') # 'fill:#' for example
 
   new_line = blocks[0]
-  for x in range(0,len(blocks)-1,2):
+  for x in range(0, len(blocks)-1):
 
     hex_color = '#' + blocks[x+1][0:6]
     rest      = blocks[x+1][6:]
@@ -379,4 +378,4 @@ def hex_to_int(raw_hex):
   return str(p3)
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin
