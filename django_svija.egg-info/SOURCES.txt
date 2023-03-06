@@ -264,6 +264,8 @@ svija/migrations/0245_remove_font_adobe.py
 svija/migrations/0246_font_adobe.py
 svija/migrations/0247_font_adobe_url.py
 svija/migrations/0248_alter_font_adobe_url.py
+svija/migrations/0249_alter_font_adobe.py
+svija/migrations/0250_alter_font_adobe.py
 svija/migrations/__init__.py
 svija/static/admin/css/admin-extra.css
 svija/static/admin/fonts/OpenSans-Bold.woff
@@ -294,9 +296,11 @@ svija/static/svija/img/ff0000.png
 svija/static/svija/js/TweenMax-2.0.2.js
 svija/static/svija/js/gsap.min.js
 svija/static/svija/js/gsap.min.js.bk
+svija/templates/admin/.base_site.html.un~
 svija/templates/admin/base_site.html
 svija/templates/admin/submit_line.html
 svija/templates/registration/logged_out.html
+svija/templates/svija/.svija.html.un~
 svija/templates/svija/debug.html
 svija/templates/svija/debug_token.html
 svija/templates/svija/detail.html
@@ -307,9 +311,13 @@ svija/templates/svija/svija.html
 svija/templates/svija/svija_token.html
 svija/templates/svija/css/svija.css
 svija/templates/svija/html/unsupported.html
+svija/templates/svija/js/.scrollbars.js.un~
+svija/templates/svija/js/.window_mgmt.js.un~
+svija/templates/svija/js/.window_mgmt_body.js.un~
 svija/templates/svija/js/cookies.js
 svija/templates/svija/js/page_background.js
 svija/templates/svija/js/screens.js
+svija/templates/svija/js/scrollbars.js
 svija/templates/svija/js/sections.js
 svija/templates/svija/js/tap_highlight.js
 svija/templates/svija/js/window_mgmt.js
