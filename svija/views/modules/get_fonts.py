@@ -1,4 +1,4 @@
-#———————————————————————————————————————— get_fonts.py
+#:::::::::::::::::::::::::::::::::::::::: get_fonts.py
 
 #———————————————————————————————————————— notes
 #
@@ -108,8 +108,6 @@ def get_fonts():
 
 def get_adobe_css(this_font):
 
-  debug = 'working'
-
   if this_font.adobe[0] != '<': return this_font.adobe
 
   #—————————————————————————————————————— get url then CSS file
@@ -133,13 +131,8 @@ def get_adobe_css(this_font):
 
   target_font = add_dashes(this_font.svg_ref) # returns acier-bat-text-gris
 
-# debug = target_font # futura-pt-extra-bold
-
-# target_font += weights_to_numbers(target_font)
   target_font = weights_to_numbers(target_font)
   target_font = clean_styles(target_font)
-
-  debug = target_font # futura-pt-extra-bold
 
   for font in css_fonts:
 
@@ -154,9 +147,9 @@ def get_adobe_css(this_font):
 
     indx += 1
 
-  chosen_font = '/* Found below: ' + css_fonts[best_choice]['name'] + ' • ' + css_fonts[best_choice]['weight'] + ' • ' + css_fonts[best_choice]['style'] + ' */\n\n'
+  orig_ref    = '/*    '+this_font.adobe + '    */\n'
 
-  return chosen_font+css_file, css_fonts[best_choice]['name'], css_fonts[best_choice]['woff'], css_fonts[best_choice]['style'], css_fonts[best_choice]['weight']
+  return orig_ref+css_file, css_fonts[best_choice]['name'], css_fonts[best_choice]['woff'], css_fonts[best_choice]['style'], css_fonts[best_choice]['weight']
 
 #———————————————————————————————————————— font_list_from_css(this_font)
 #
@@ -401,7 +394,7 @@ def get_adobe_comments(css):
   return css[start:end] + '\n'
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin
 
 #   /* Found below: futura-pt 700 normal */
 
