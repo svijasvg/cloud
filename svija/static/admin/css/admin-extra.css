@@ -1,4 +1,4 @@
-/*———————————————————————————————————————— static/admin/css/admin-extra.css */
+/*:::::::::::::::::::::::::::::::::::::::: static/admin/css/admin-extra.css */
 
 /*———————————————————————————————————————— notes
     Development takes place in:
@@ -96,6 +96,12 @@
     font-family: Open Sans;
     src: url('../fonts/OpenSans-BoldItalic.woff');
     font-weight: 700; font-style: italic;
+}
+ 
+@font-face {
+    font-family: IBM Plex Mono;
+    src: url('../fonts/IBMPlexMono-Regular.woff');
+    font-weight: 400; font-style: normal;
 }
 
 /* redefined defaults */
@@ -369,7 +375,7 @@ input[type=submit].default:focus,
 td.original p{ display:none; }
 
 
-/* :::::::::::::::::::: bars & collapsed fields :::::::::::::::::::: */
+/*:::::::::::::::::::::::::::::::::::::::: bars & collapsed fields */
 
 /*———————————————————————————————————————— black bars in middle of page */
 
@@ -570,5 +576,13 @@ td.field-filename input:focus{           /* page             */
     font-weight:bold;
 }
 
+/*———————————————————————————————————————— script boxes */
 
-/*———————————————————————————————————————— fin */
+textarea.vLargeTextField {
+    font-family: "IBM Plex Mono", Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 0.8125rem;
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: fin */
