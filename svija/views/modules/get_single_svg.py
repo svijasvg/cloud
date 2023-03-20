@@ -18,7 +18,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     ai_name = target_obj.filename
     if ai_name == '':
-      return svg, css
+      return svg, css, ''
 
 
     # remove everything in beginning of path if necessary
