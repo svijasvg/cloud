@@ -6,6 +6,8 @@
 
 # Svija: web sites with SVG instead of HTML
 
+moved repo to **cloud**
+
 Version 2.2.24
 
 A set of tools for building web sites using Adobe Illustrator.
