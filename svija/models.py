@@ -60,15 +60,16 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
-    svg_ref = models.CharField(max_length=100, default='', verbose_name='SVG name')
-    family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    woff     = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
+    svg_ref    = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    family     = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
+    style      = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    woff       = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
-    google   = models.BooleanField(default=True, verbose_name='Google font',)
-    enabled  = models.BooleanField(default=True, verbose_name='enabled',)
-    adobe    = models.TextField(max_length=99000, default='', verbose_name='Adobe CSS', blank=True,)
-    adobe_url = models.CharField(max_length=300, default='', verbose_name='Adobe WOFF URL', blank=True)
+    google     = models.BooleanField(default=True, verbose_name='Google font',)
+    enabled    = models.BooleanField(default=True, verbose_name='enabled',)
+    adobe      = models.TextField(max_length=99000, default='', verbose_name='Adobe CSS', blank=True,)
+    adobe_url  = models.CharField(max_length=300, default='', verbose_name='Adobe Font URL', blank=True)
+    adobe_link = models.CharField(max_length=300, default='', verbose_name='Pasted Adobe link', blank=True)
 
 		# to rename
     category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
