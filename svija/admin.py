@@ -179,8 +179,8 @@ class ModuleAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent module
-  list_display = ('name', 'section', 'screen', 'filename', 'always', 'order', 'enabled', 'category',)
-  list_filter = ('section', 'screen', 'enabled', 'always', 'category', )
+  list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'order', 'category',)
+  list_filter = ('section', 'screen', 'enabled', 'category', )
   save_on_top = True
   save_as = True
 
@@ -268,7 +268,7 @@ class PageAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent page
-  list_display = ('url', 'section', 'screen', 'title', 'illustrator_file', 'published', 'incl_modules', 'category',)
+  list_display = ('url', 'title', 'published', 'section', 'screen', 'illustrator_file', 'incl_modules', 'category',)
   list_filter = ('section', 'screen', 'published', 'category', )
   save_on_top = True
   save_as = True

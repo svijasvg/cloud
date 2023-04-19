@@ -264,7 +264,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-enabled', 'category', 'order', 'name', 'screen',]
+        ordering = ['-enabled', 'name', 'section', 'screen', ]
         verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
