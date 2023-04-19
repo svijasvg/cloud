@@ -374,6 +374,31 @@ input[type=submit].default:focus,
 
 td.original p{ display:none; }
 
+/*———————————————————————————————————————— date & time pickers */
+
+.calendar td.selected a { /* selected */
+    background: var(--accent) !important;
+}
+
+.calendar td a:focus, .timelist a:focus, /* mouseover */
+.calendar td a:hover, .timelist a:hover {
+    background: var(--accent) !important;
+}
+
+.clockbox h2{
+    background: var(--accent) !important;
+    color: rgb(51, 51, 51);
+    font-weight:bold;
+}
+
+/*———————————————————————————————————————— script boxes */
+
+textarea.vLargeTextField {
+    font-family: "IBM Plex Mono", Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 0.8125rem;
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: bars & collapsed fields */
 
@@ -533,11 +558,14 @@ div#changelist-filter h2{
   color:var(--main);
 }
 
+
+/*:::::::::::::::::::::::::::::::::::::::: specific */
+
 /*———————————————————————————————————————— log-in logo */
 
 h1#site-name{ margin:0; }
 
-/*———————————————————————————————————————— notes field */
+/*———————————————————————————————————————— notes field COMMENTED OUT */
 
 /*  caused unwanted scrollbars: */
 
@@ -545,43 +573,26 @@ h1#site-name{ margin:0; }
         width: 821px !important;
     } */
 
-/*———————————————————————————————————————— drag & drop hints */
+/*———————————————————————————————————————— illustrator files */
 
 div.fieldBox.field-filename input, /* module           */
 td.field-filename input{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
-  background-color:#F9EEE0;
 }
 
 div.fieldBox.field-filename input:focus, /* module           */
 td.field-filename input:focus{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
-  outline:3px solid #F9991F;
 }
 
-/*———————————————————————————————————————— date & time pickers */
+/*———————————————————————————————————————— adobe font fields
 
-.calendar td.selected a { /* selected */
-    background: var(--accent) !important;
-}
+    they shouldn't be changed by user,
+    so are grayed-out */
 
-.calendar td a:focus, .timelist a:focus, /* mouseover */
-.calendar td a:hover, .timelist a:hover {
-    background: var(--accent) !important;
-}
-
-.clockbox h2{
-    background: var(--accent) !important;
-    color: rgb(51, 51, 51);
-    font-weight:bold;
-}
-
-/*———————————————————————————————————————— script boxes */
-
-textarea.vLargeTextField {
-    font-family: "IBM Plex Mono", Verdana, Arial, sans-serif;
-    font-weight: normal;
-    font-size: 0.8125rem;
+div.fieldBox.field-adobe_url input#id_adobe_url,
+div.form-row.field-adobe textarea#id_adobe{
+  opacity:0.5;
 }
 
 
