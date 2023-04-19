@@ -588,11 +588,18 @@ td.field-filename input:focus{           /* page             */
 /*———————————————————————————————————————— adobe font fields
 
     they shouldn't be changed by user,
-    so are grayed-out */
+    so are grayed-out & turn red on mouseover */
 
 div.fieldBox.field-adobe_url input#id_adobe_url,
 div.form-row.field-adobe textarea#id_adobe{
   opacity:0.5;
+}
+
+div.form-row.field-adobe textarea#id_adobe:hover,
+div.fieldBox.field-adobe_url input#id_adobe_url:hover{
+  opacity:1.0;
+  border-color:red;
+  color:red;
 }
 
 
