@@ -222,7 +222,7 @@ div.description{
            font-size:12px;
 }
 
-div.description::before{ content: '★ '; }
+/* div.description::before{ content: '★ '; } */
 
 div.description a:link,
 div.description a:visited{
