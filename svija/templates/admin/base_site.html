@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load i18n static %}
 
-{% block title %}{{ title }} | Svija Cloud{% endblock %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block extrastyle %}
   {{ block.super }}
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block branding %}
-  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img id="svija-admin-logo" src="/customization/svija-admin.png" %} width=225 height=60></a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img title="{{ site_header|default:_('Django administration') }}" id="svija-admin-logo" src="/customization/svija-admin.png" %} width=225 height=60></a></h1>
 {% endblock %}
 
 
@@ -61,3 +61,10 @@
 
 {% block nav-global %}{% endblock %}
 <!-- /opt/venv/djangoEnv/lib/python3.8/site-packages/django/contrib/admin/templates/admin -->
+
+{% block content_title %}{% if title %}<h1 id='adminTitle'>{{ title }}</h1><script>
+
+if (adminTitle.innerHTML == 'Svija administration') adminTitle.innerHTML = 'Svija Cloud Settings'
+document.title = document.title.replace('Svija administration', 'Settings List')
+
+</script>{% endif %}{% endblock %}

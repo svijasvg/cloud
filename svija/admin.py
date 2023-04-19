@@ -5,6 +5,10 @@
 from django.contrib import admin
 from urllib.parse import quote
 
+admin.site.site_header = 'Main Settings List'   # was H1 in black bar, now title attribute of logo image
+admin.site.site_title  = 'Svija Cloud'          # end of each admin page’s <title> (a string). By default, this is “Django site admin”.
+admin.site.index_title = 'Svija Cloud Settings' # top of the admin index page (a string). By default, this is “Site administration”.
+
 #———————————————————————————————————————— Control · no dependencies
 
 from .models import Control
