@@ -72,7 +72,7 @@ class Font(models.Model):
     adobe      = models.TextField(max_length=99000, default='', verbose_name='link contents', blank=True,)
 
 		# to rename
-    category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
+    category = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
 
     def __str__(self):
         return self.svg_ref
@@ -245,7 +245,7 @@ class Module(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
-    category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
+    category = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
@@ -322,7 +322,7 @@ class Page(models.Model):
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
     url       = models.CharField(max_length=200, default='', verbose_name='address')
 		# to rename
-    category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
+    category  = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
 
     # meta
     notes     = models.TextField(max_length=2000, default='', blank=True)
