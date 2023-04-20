@@ -1,4 +1,4 @@
-/*———————————————————————————————————————— static/admin/css/admin-extra.css */
+/*:::::::::::::::::::::::::::::::::::::::: static/admin/css/admin-extra.css */
 
 /*———————————————————————————————————————— notes
     Development takes place in:
@@ -96,6 +96,12 @@
     font-family: Open Sans;
     src: url('../fonts/OpenSans-BoldItalic.woff');
     font-weight: 700; font-style: italic;
+}
+ 
+@font-face {
+    font-family: IBM Plex Mono;
+    src: url('../fonts/IBMPlexMono-Regular.woff');
+    font-weight: 400; font-style: normal;
 }
 
 /* redefined defaults */
@@ -216,7 +222,7 @@ div.description{
            font-size:12px;
 }
 
-div.description::before{ content: '★ '; }
+/* div.description::before{ content: '★ '; } */
 
 div.description a:link,
 div.description a:visited{
@@ -368,8 +374,33 @@ input[type=submit].default:focus,
 
 td.original p{ display:none; }
 
+/*———————————————————————————————————————— date & time pickers */
 
-/* :::::::::::::::::::: bars & collapsed fields :::::::::::::::::::: */
+.calendar td.selected a { /* selected */
+    background: var(--accent) !important;
+}
+
+.calendar td a:focus, .timelist a:focus, /* mouseover */
+.calendar td a:hover, .timelist a:hover {
+    background: var(--accent) !important;
+}
+
+.clockbox h2{
+    background: var(--accent) !important;
+    color: rgb(51, 51, 51);
+    font-weight:bold;
+}
+
+/*———————————————————————————————————————— script boxes */
+
+textarea.vLargeTextField {
+    font-family: "IBM Plex Mono", Verdana, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 0.8125rem;
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: bars & collapsed fields */
 
 /*———————————————————————————————————————— black bars in middle of page */
 
@@ -527,11 +558,14 @@ div#changelist-filter h2{
   color:var(--main);
 }
 
+
+/*:::::::::::::::::::::::::::::::::::::::: specific */
+
 /*———————————————————————————————————————— log-in logo */
 
 h1#site-name{ margin:0; }
 
-/*———————————————————————————————————————— notes field */
+/*———————————————————————————————————————— notes field COMMENTED OUT */
 
 /*  caused unwanted scrollbars: */
 
@@ -539,36 +573,34 @@ h1#site-name{ margin:0; }
         width: 821px !important;
     } */
 
-/*———————————————————————————————————————— drag & drop hints */
+/*———————————————————————————————————————— illustrator files */
 
 div.fieldBox.field-filename input, /* module           */
 td.field-filename input{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
-  background-color:#F9EEE0;
 }
 
 div.fieldBox.field-filename input:focus, /* module           */
 td.field-filename input:focus{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
-  outline:3px solid #F9991F;
 }
 
-/*———————————————————————————————————————— date & time pickers */
+/*———————————————————————————————————————— adobe font fields
 
-.calendar td.selected a { /* selected */
-    background: var(--accent) !important;
+    they shouldn't be changed by user,
+    so are grayed-out & turn red on mouseover */
+
+div.fieldBox.field-adobe_url input#id_adobe_url,
+div.form-row.field-adobe textarea#id_adobe{
+  opacity:0.5;
 }
 
-.calendar td a:focus, .timelist a:focus, /* mouseover */
-.calendar td a:hover, .timelist a:hover {
-    background: var(--accent) !important;
-}
-
-.clockbox h2{
-    background: var(--accent) !important;
-    color: rgb(51, 51, 51);
-    font-weight:bold;
+div.form-row.field-adobe textarea#id_adobe:hover,
+div.fieldBox.field-adobe_url input#id_adobe_url:hover{
+  opacity:1.0;
+  border-color:red;
+  color:red;
 }
 
 
-/*———————————————————————————————————————— fin */
+/*:::::::::::::::::::::::::::::::::::::::: fin */

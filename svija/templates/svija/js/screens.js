@@ -28,14 +28,22 @@ for (var x=0; x<all_screens.length; x++){
 
 if (cookiesEnabled()){
 
-  setCookie('screen_code', correct_screen_code, 7);
-  
-  if (screen_code != correct_screen_code){
-    history.scrollRestoration = 'manual';
-    window.location.replace(document.URL);
+  var isLoggedIn = false
+  if (typeof admin != 'undefined')
+    if (admin == true) isLoggedIn = true
+
+  var cloudName   = makeCookieName('cloudForce', svija_version)
+  var forceCookie = getCookie(cloudName)
+
+  if(forceCookie != 'true' || !isLoggedIn){
+
+    setCookie('screen_code', correct_screen_code, 7);
+    
+    if (screen_code != correct_screen_code){
+      history.scrollRestoration = 'manual';
+      window.location.replace(document.URL);
+    }
   }
-
 }
-
 
 //———————————————————————————————————————— fin

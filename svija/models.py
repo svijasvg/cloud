@@ -60,18 +60,19 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
-    svg_ref = models.CharField(max_length=100, default='', verbose_name='SVG name')
-    family   = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style    = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
-    woff     = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
+    svg_ref    = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    family     = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
+    style      = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    woff       = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
-    google   = models.BooleanField(default=True, verbose_name='Google font',)
-    enabled  = models.BooleanField(default=True, verbose_name='enabled',)
-    adobe    = models.TextField(max_length=99000, default='', verbose_name='Adobe CSS', blank=True,)
-    adobe_url = models.CharField(max_length=300, default='', verbose_name='Adobe WOFF URL', blank=True)
+    google     = models.BooleanField(default=True, verbose_name='Google font',)
+    enabled    = models.BooleanField(default=True, verbose_name='enabled',)
+    adobe_link = models.CharField(max_length=300, default='', verbose_name='pasted Adobe link', blank=True)
+    adobe_url  = models.CharField(max_length=300, default='', verbose_name='font file URL', blank=True)
+    adobe      = models.TextField(max_length=99000, default='', verbose_name='link contents', blank=True,)
 
 		# to rename
-    category = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
+    category = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
 
     def __str__(self):
         return self.svg_ref
@@ -214,13 +215,13 @@ class Script(models.Model):
         ordering = ['-enabled', 'category', 'name', ]
         verbose_name_plural = "3.1 · Script Sets"
 
-#———————————————————————————————————————— script scripts · script
+#———————————————————————————————————————— Script Set Scripts · script
 
 class ScriptScripts(models.Model):
     script  = models.ForeignKey(Script, on_delete=models.CASCADE)
     type    = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name    = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    content = models.TextField(max_length=200000, default='', verbose_name='content',)
     order   = models.IntegerField(default=0, verbose_name='load order')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
@@ -244,7 +245,7 @@ class Module(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
-    category = models.CharField(max_length=100, default='Main', verbose_name='tag (optional)', blank=True,)
+    category = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
@@ -263,7 +264,7 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        ordering = ['-enabled', 'category', 'order', 'name', 'screen',]
+        ordering = ['-enabled', 'name', 'section', 'screen', ]
         verbose_name_plural = "2.1 · Modules"
 
 #———————————————————————————————————————— module scripts · no dependencies
@@ -321,7 +322,7 @@ class Page(models.Model):
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
     url       = models.CharField(max_length=200, default='', verbose_name='address')
 		# to rename
-    category  = models.CharField(max_length=200, default='Main', verbose_name='tag (optional)', blank=True,)
+    category  = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
 
     # meta
     notes     = models.TextField(max_length=2000, default='', blank=True)

@@ -3,21 +3,21 @@
 // same code in static/admin/js/same-page.js
 //              templates/svija/js/cookies.js
 
-function setCookie(name, value, expires) {
+function setCookie(name, value, expDays) {
   value = escape(value);
 
 //deleteParentCookieIfNecessary(name, window.location.hostname);
 
-  if (expires > 7) expires = 7; // max in Safari
+  if (expDays > 7) expDays = 7; // max in Safari
 
   var d = new Date();
-  d.setTime(d.getTime() + (expires*24*60*60*1000));
+  d.setTime(d.getTime() + (expDays*24*60*60*1000));
 
   var expy = '; expires=' + d.toUTCString();
   var path = '; path=/';
   var domn = '; domain='  + window.location.hostname;
-  var secu = '; SameSite=Lax; Secure;';
 
+// var secu = '; SameSite=Lax; Secure;';
 // secu deprecated: developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 // var complete = value + expy + path + domn + secu;
 
@@ -57,3 +57,16 @@ function cookiesEnabled() {
 
   return false;
 }
+
+/*———————————————————————————————————————— makeCookieName(unique, version)
+
+    creates a name composed of unique + version, with periods removed
+
+    alert('makeCookeiName: ' + makeCookieName('svija', svija_version)) */
+
+function makeCookieName(unique, version){
+  version = version.replaceAll('.','')
+  var res = unique+version
+  return res
+}
+
