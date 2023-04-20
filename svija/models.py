@@ -215,13 +215,13 @@ class Script(models.Model):
         ordering = ['-enabled', 'category', 'name', ]
         verbose_name_plural = "3.1 · Script Sets"
 
-#———————————————————————————————————————— script scripts · script
+#———————————————————————————————————————— Script Set Scripts · script
 
 class ScriptScripts(models.Model):
     script  = models.ForeignKey(Script, on_delete=models.CASCADE)
     type    = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
     name    = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
+    content = models.TextField(max_length=200000, default='', verbose_name='content',)
     order   = models.IntegerField(default=0, verbose_name='load order')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
