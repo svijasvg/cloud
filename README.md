@@ -14,7 +14,7 @@ Includes a CMS for managing pages and menus.
 Detailed documentation is available at **[tech.svija.love][1]**
 
 ---
-### Updating/Creating a New Version
+### Updating to a New Version
 
 Please see the [cloud-update][2] repository.
 
