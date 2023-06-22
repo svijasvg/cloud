@@ -47,7 +47,7 @@
       {% if docsroot %}
       {% endif %}
     {% endif %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong> ∴
+    <strong><a href="/cloud/auth/user/">{% firstof user.get_short_name user.get_username %}</a></strong> ∴
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ∴
     {% endif %}
