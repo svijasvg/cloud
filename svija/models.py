@@ -154,7 +154,7 @@ class Screen(models.Model):
     code    = models.CharField(max_length=2, default='', verbose_name='two-letter code',)
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='maximum pixel width',)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='break point',)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width',)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
