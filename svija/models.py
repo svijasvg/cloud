@@ -151,7 +151,7 @@ class Section(models.Model):
 
 class Screen(models.Model):
     name    = models.CharField(max_length=200, default='')
-    code    = models.CharField(max_length=2, default='', verbose_name='two-letter code',)
+    code    = models.CharField(max_length=2, default='', verbose_name='artboard code',)
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='break point',)
