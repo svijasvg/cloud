@@ -37,7 +37,7 @@ def get_single_svg(target_obj, screen_code, page_width, use_p3):
 
     svg_name = raw_name + '_' + screen_code + '.svg'
 
-    svija_path = '/sync/Svija/SVG Files/'
+    svija_path = '/sync/SVIJA/SVG Files/'
     abs_path = os.path.abspath(os.path.dirname(__name__))
 
     #—————— check if svg exists

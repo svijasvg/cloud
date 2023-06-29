@@ -22,7 +22,7 @@ def get_accessibility(content):
         if content[0:1] == '/':
           content = content[1]
 
-        sub_path = '/sync/Svija/Accessibility/' + content
+        sub_path = '/sync/SVIJA/Accessibility/' + content
         source_path = os.path.abspath(os.path.dirname(__name__)) + sub_path 
         path = pathlib.Path(source_path)
         if not path.exists():

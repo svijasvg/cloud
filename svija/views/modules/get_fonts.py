@@ -56,7 +56,7 @@ def get_fonts():
 #———————————————————————————————————————— woff fonts (macOS)
 
     # remove everything in beginning of path if necessary
-    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/sync/Svija/Fonts/Woff Files/clarendon.woff
+    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/sync/SVIJA/Fonts/Woff Files/clarendon.woff
   
 
     if woff != '':
