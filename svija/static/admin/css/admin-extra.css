@@ -3,11 +3,11 @@
 /*———————————————————————————————————————— notes
     Development takes place in:
 
-      /home/svija210901/static/admin/css 
+      /home/dev/static/admin/css 
 
     when done copy back to:
 
-      /opt/Svija-Admin/svija/static/admin/css
+      /opt/cloud/svija/static/admin/css
 
 		don't forget to copy fonts as well!  */
 
@@ -112,6 +112,54 @@ body{
 strong, b,
 .required label, label.required {
 	font-weight: 600 !important;
+}
+
+
+var(--font-family-primary);
+:root { --bg-head:     hsl(0, 0%,  20%);
+        --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  90%);
+        --bg-bright:   hsl(0, 0%, 100%);
+        --text-dark:   hsl(0, 0%,  20%);
+        --text-med:    hsl(0, 0%,  70%);
+        --text-bright: hsl(0, 0%,  90%); }
+
+html[data-theme="light"],
+:root {
+
+    --font-family-primary:
+        Open Sans,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        system-ui,
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-family-monospace:
+        "IBM Plex Mono",
+        ui-monospace,
+        Menlo,
+        Monaco,
+        "Cascadia Mono",
+        "Segoe UI Mono",
+        "Roboto Mono",
+        "Oxygen Mono",
+        "Ubuntu Monospace",
+        "Source Code Pro",
+        "Fira Mono",
+        "Droid Sans Mono",
+        "Courier New",
+        monospace,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 /*———————————————————————————————————————— header bar */
@@ -602,5 +650,37 @@ div.fieldBox.field-adobe_url input#id_adobe_url:hover{
   color:red;
 }
 
+/*———————————————————————————————————————— fix broken submit row css */
+
+div.submit-row {
+    display:block;     /* flex */
+    text-align: right;
+}
+
+.submit-row input {
+    margin: 0 0 0 5px !important;
+	vertical-align:1px;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    float: right;
+}
+
+.submit-row p.deletelink-box {
+    float: left;
+  margin:0px; /* fix misalignment */
+}
+
+.submit-row a.closelink {
+/*    display: block; */
+   display: inline-block;
+   margin: 0px 0 0 5px; /* 1px is to fix misalignment */
+}
+
+.submit-row input.default {
+    margin: 0 0 0 8px !important;
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
+
