@@ -67,4 +67,13 @@
 if (adminTitle.innerHTML == 'Svija administration') adminTitle.innerHTML = 'Svija Cloud Settings'
 document.title = document.title.replace('Svija administration', 'Settings List')
 
+if (adminTitle.innerHTML == 'Select module to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/font/>fonts</a>'
+
+if (adminTitle.innerHTML == 'Select page to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/font/>fonts</a>'
+
+if (adminTitle.innerHTML == 'Select font to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/page/>pages</a>'
+
 </script>{% endif %}{% endblock %}
