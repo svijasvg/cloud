@@ -65,7 +65,7 @@ class Font(models.Model):
     style      = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
     woff       = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
-    google     = models.BooleanField(default=True, verbose_name='Google font',)
+    google     = models.BooleanField(default=False, verbose_name='Google font',)
     enabled    = models.BooleanField(default=True, verbose_name='enabled',)
     adobe_link = models.CharField(max_length=300, default='', verbose_name='pasted Adobe link', blank=True)
     adobe_url  = models.CharField(max_length=300, default='', verbose_name='font file URL', blank=True)

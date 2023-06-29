@@ -260,6 +260,8 @@ class AdditionalScriptInline(admin.TabularInline):
 descPages  = "Settings that are specific to a single page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
+#———————————————————————————————————————— Page
+
 # https://stackoverflow.com/questions/16014719/adding-a-jquery-script-to-the-django-admin-interface
 
 class PageAdmin(admin.ModelAdmin):
@@ -304,6 +306,7 @@ class PageAdmin(admin.ModelAdmin):
   inlines = [IllustratorInlinePage, AdditionalScriptInline, ModuleInlinePage, ScriptInlinePage, ]
 
 admin.site.register(Page, PageAdmin)
+
 
 
 #———————————————————————————————————————— fin
