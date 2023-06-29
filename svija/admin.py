@@ -45,7 +45,7 @@ admin.site.register(Redirect, RedirectAdmin)
 
 #———————————————————————————————————————— Font · no dependencies
 
-descFonts    = "Fonts are added here automatically the first time they are needed (page is reloaded) · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>"
+descFonts    = "Fonts are added here automatically the first time they are needed · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>"
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
