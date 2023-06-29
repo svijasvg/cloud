@@ -681,6 +681,24 @@ div.submit-row {
     margin: 0 0 0 8px !important;
 }
 
+/*———————————————————————————————————————— fix checkbox height */
+
+/* Published */
+div.checkbox-row label.vCheckboxLabel {
+    padding: 2px 0px 3px 10px;
+}
+
+/* page › more settings */
+div.fieldBox input[type=checkbox]{
+  margin-top:8px;
+}
+
+/* page › more settings */
+div.fieldBox label.vCheckboxLabel {
+    vertical-align: 3px;
+    padding: 8px 0 5px 10px;
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
 
