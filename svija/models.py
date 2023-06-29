@@ -109,12 +109,12 @@ def get_default_section_id():
 
 class Section(models.Model):
     name = models.CharField(max_length=100, default='')
-    code = models.CharField(max_length=20, default='', blank=True, verbose_name='code (visible to users)',)
-    default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=True,)
+    code = models.CharField(max_length=20, default='', blank=False, verbose_name='Illustrator artboard code',)
+    default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=False,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    title = models.CharField(max_length=100, default='', verbose_name='second part of page title',)
+    title = models.CharField(max_length=100, default='', blank=True, verbose_name='second part of page title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
