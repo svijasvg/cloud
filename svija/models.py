@@ -21,6 +21,9 @@ from model_utils import Choices
 from ckeditor.fields import RichTextField
 from datetime import datetime
 
+# for stripping chars from page › url
+import re                                                                         
+
 #———————————————————————————————————————— array: types of scripts
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
@@ -315,12 +318,25 @@ class Settings(models.Model):
 
 #———————————————————————————————————————— Page · uses template & prefix
 
+# https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase/49181581#49181581
+
+#   class UrlField(models.CharField):
+#       def get_prep_value(self, value):
+#               return str(value).lower()
+
+class UrlField(models.CharField):
+    def get_prep_value(self, value):
+        alphaNum = re.sub("[^A-Za-z0-9-_]","",value)
+        return alphaNum.lower()
+
 class Page(models.Model): 
 
     published = models.BooleanField(default=True, verbose_name='published',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
-    url       = models.CharField(max_length=200, default='', verbose_name='address')
+#   url       = models.CharField(max_length=200, default='', verbose_name='address')
+    url       = UrlField(max_length=200, default='', verbose_name='address') 
+
 		# to rename
     category  = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
 
