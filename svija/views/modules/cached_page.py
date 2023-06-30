@@ -81,16 +81,33 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— page SVG's and scripts
 
-#   return HttpResponse("debugging message: "+str(page_width)) # 1200
+  # once something is appended to content_blocks, the order is set
+  # so it has to be appended in the correct order
+
+  # return HttpResponse("debugging message: "+str(page_width)) # 1200
   svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
-  content_blocks.append( scripts_to_page_obj('page', page.additionalscript_set.all(), svgs, css_dimensions))
+  # page SVG's
+  content_blocks.append( scripts_to_page_obj('page', [], svgs, css_dimensions)) # append svg's w/dimensions
+
+  # page additional scripts
+  content_blocks.append( scripts_to_page_obj('page additional scripts', page.additionalscript_set.all(),'' , ''))
+
+  #———————————————————————————————————————— script sets included via page settings
 
   page_scripts_raw = page.pagescript_set.filter(enabled=True).order_by('order')
-  page_scripts = get_page_scripts('page-specified scripts', page_scripts_raw)
+  page_scripts = get_page_scripts('page-specified scripts', page_scripts_raw)   # includes Script Sets
+
   content_blocks.extend(page_scripts)
 
-  #———————————————————————————————————————— page modules
+  #———————————————————————————————————————— Script Set "always include"
+
+  if page.incl_scripts:
+    screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
+    script_content = get_scripts('always-include scripts', screen_scripts)
+    content_blocks.extend(script_content)
+
+  #———————————————————————————————————————— modules via page settings
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
@@ -101,19 +118,12 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   content_blocks.extend(page_modules)
 
-  #———————————————————————————————————————— "always include" modules
+  #———————————————————————————————————————— modules "always include"
 
   if page.incl_modules:
     screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
     module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
     content_blocks.extend(module_content)
-
-   #———————————————————————————————————————— "always include" scripts
-
-  if page.incl_scripts:
-    screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
-    script_content = get_scripts('always-include scripts', screen_scripts)
-    content_blocks.extend(script_content)
 
   #———————————————————————————————————————— combine content blocks
 
