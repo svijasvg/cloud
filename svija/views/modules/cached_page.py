@@ -122,24 +122,11 @@ def cached_page(request, section_code, request_slug, screen_code):
     default_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
     module_content = list(default_modules)
     all_modules.extend(module_content)
-    all_modules = modules_dedupe(all_modules)
-
-  return HttpResponse("debugging message: "+str(len(all_modules))) # 5 sans dedupe 4 avec dedupe
+    all_modules = modules_dedupe(all_modules) 
 
   page_modules = get_modules('page modules', all_modules, section_code, screen_code, page, page_width, use_p3)
+
   content_blocks.extend(page_modules)
-
-# return HttpResponse("debugging message: "+type(all_modules[0]).__name__) #
-
-
-# #———————————————————————————————————————— modules "always include"
-
-# if page.incl_modules:
-#   screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
-#   module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
-#   page_modules.extend(module_content)
-
-# content_blocks.extend(page_modules)
 
   #———————————————————————————————————————— combine content blocks
 
