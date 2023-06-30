@@ -26,12 +26,10 @@ from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_fonts import *
-from modules.get_modules import *
 from modules.get_page_modules import *
 from modules.get_script_sets import *
 from modules.get_page_svgs import *
 from modules.get_script import *
-from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
 from modules.convert_modules import *
@@ -105,7 +103,6 @@ def cached_page(request, section_code, request_slug, screen_code):
   # Script Set "always include"
   if page.incl_scripts:
     default_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True)).order_by('name')
-#   script_content = get_scripts(default_scripts)
     script_content = list(default_scripts)
     all_script_sets.extend(script_content)
     all_script_sets = script_sets_dedupe(all_script_sets)
