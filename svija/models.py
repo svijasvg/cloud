@@ -28,13 +28,19 @@ import re
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
-#———————————————————————————————————————— alphaLower converts to lowercase letters & numbers
+#———————————————————————————————————————— functions to correct input
 
 # https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase/49181581#49181581
 
 #   class alphaLower(models.CharField):
 #       def get_prep_value(self, value):
 #               return str(value).lower()
+
+class addAiToEnd(models.CharField):
+    def get_prep_value(self, value):
+        if value[-3:] != '.ai':                                                     
+            value += '.ai'                                                            
+        return value
 
 class alphaLower(models.CharField):
     def get_prep_value(self, value):
@@ -272,7 +278,10 @@ class Module(models.Model):
     order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+#   filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+    filename = addAiToEnd(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+
+#lass addAiToEnd(models.CharField):
 
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
@@ -412,7 +421,8 @@ class PageScript(models.Model):
 class Illustrator(models.Model):
 #   page = models.ForeignKey(Page, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
-    filename = models.CharField(max_length=200, default='')
+#   filename = models.CharField(max_length=200, default='')
+    filename = addAiToEnd(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
