@@ -97,16 +97,16 @@ def cached_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— script sets included via page settings
 
   script_sets_raw = page.pagescript_set.filter(enabled=True).order_by('order')
-  script_sets = get_script_sets('page-specified script sets', script_sets_raw)   # includes Script Sets
 
   #———————————————————————————————————————— Script Set "always include"
 
   if page.incl_scripts:
     screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
-    script_content = get_scripts('always-include script sets', screen_scripts)
-    script_sets.extend(script_content)
+    script_content = get_scripts(screen_scripts)
+    script_sets_raw.extend(script_content)
 
-  script_sets = script_sets_dedupe(script_sets)
+# script_sets_raw = script_sets_dedupe(script_sets_raw)
+  script_sets = get_script_sets('page-specified script sets', script_sets_raw)   # includes Script Sets
   content_blocks.extend(script_sets)
 
   #———————————————————————————————————————— modules via page settings
