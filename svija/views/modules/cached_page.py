@@ -26,7 +26,7 @@ from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_fonts import *
-from modules.get_page_modules import *
+from modules.get_modules import *
 from modules.get_script_sets import *
 from modules.get_page_svgs import *
 from modules.get_script import *
@@ -124,9 +124,12 @@ def cached_page(request, section_code, request_slug, screen_code):
     all_modules.extend(module_content)
     all_modules = modules_dedupe(all_modules)
 
-# return HttpResponse("debugging message: "+type(all_modules[0]).__name__) #
+  return HttpResponse("debugging message: "+str(len(all_modules))) # 5 sans dedupe 4 avec dedupe
 
-# page_modules = get_page_modules('page modules', page_modules_raw, section_code, screen_code, page, page_width, use_p3)
+  page_modules = get_modules('page modules', all_modules, section_code, screen_code, page, page_width, use_p3)
+  content_blocks.extend(page_modules)
+
+# return HttpResponse("debugging message: "+type(all_modules[0]).__name__) #
 
 
 # #———————————————————————————————————————— modules "always include"
