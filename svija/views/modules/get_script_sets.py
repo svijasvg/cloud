@@ -7,7 +7,7 @@
 #                   get_script_sets.py
 #                   get_scripts.py
 #
-#   accepts a list of scripts , some disabled
+#   accepts a list of "Script", all enabled
 #
 #   returns a list of page objects
 #   a page object contains css, headjs, bodyjs, svg, html, form etc.
@@ -22,11 +22,11 @@
 from modules.get_script import *
 from PageObject import page_obj
 
-#———————————————————————————————————————— def get_script_sets(label, all_scripts):
+#———————————————————————————————————————— def get_script_sets(label, all_script_sets):
 
 # page.pagescript_set.filter(enabled=True).order_by('order')
 
-def get_script_sets(label, all_scripts):
+def get_script_sets(label, all_script_sets):
 
   #comments
   hjc = hcc = bjc = svc = htc = fmc = ''
@@ -35,48 +35,36 @@ def get_script_sets(label, all_scripts):
 
 #———————————————————————————————————————— iterate through scripts-linked-in-page
 
-  for this_script_group in all_scripts:
-    this_group = this_script_group.script
+  for this_script_set in all_script_sets:
+    this_group = this_script_set.scriptscripts_set.all()
 
     hj = hc = bj = sv = ht = fm = ''
 
-#———————————————————————————————————————— get SVG's
-
-#   not used for scripts
-
-
-
-
-
-
-#———————————————————————————————————————— deactivate from page?
-
-    if this_group.enabled:
 
 #———————————————————————————————————————— iterate through scripts
 
-      for this_script in this_group.scriptscripts_set.all():
-        if this_script.enabled:
-    
-          if this_script.type == 'head JS':
-            hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
-            hj += get_script('js', this_script.name, this_script.content)
-    
-          if this_script.type == 'CSS':
-            hcc = '\n\n/*———————————————————————————————————————— ' + label + ' */\n\n'
-            hc += get_script('css', this_script.name, this_script.content)
-    
-          if this_script.type == 'body JS':
-            bjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
-            bj += get_script('js', this_script.name, this_script.content)
-    
-          if this_script.type == 'HTML':
-            htc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
-            ht += get_script('html', this_script.name, this_script.content)
-    
-          if this_script.type == 'form':
-            fmc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
-            fm += get_script('html', this_script.name, this_script.content)
+    for this_script in this_group:
+      if this_script.enabled:
+  
+        if this_script.type == 'head JS':
+          hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+          hj += get_script('js', this_script.name, this_script.content)
+  
+        if this_script.type == 'CSS':
+          hcc = '\n\n/*———————————————————————————————————————— ' + label + ' */\n\n'
+          hc += get_script('css', this_script.name, this_script.content)
+  
+        if this_script.type == 'body JS':
+          bjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'
+          bj += get_script('js', this_script.name, this_script.content)
+  
+        if this_script.type == 'HTML':
+          htc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
+          ht += get_script('html', this_script.name, this_script.content)
+  
+        if this_script.type == 'form':
+          fmc = '\n\n<!--—————————————————————————————————————— ' + label + ' -->\n\n'
+          fm += get_script('html', this_script.name, this_script.content)
   
 #———————————————————————————————————————— append iteration results
 

@@ -21,10 +21,7 @@ def get_scripts(all_scripts):
 #———————————————————————————————————————— iterate through scripts
 
   for this_group in all_scripts:
-
-    for this_script in this_group.scriptscripts_set.all():
-      if this_script.enabled:
-        final_list.append(this_script)
+    final_list.append(this_group)
 
   return final_list
 

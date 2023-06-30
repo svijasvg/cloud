@@ -34,6 +34,9 @@ from modules.get_script import *
 from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
+from modules.convert_modules import *
+from modules.convert_script_sets import *
+from modules.modules_dedupe import *
 from modules.script_sets_dedupe import *
 
 #———————————————————————————————————————— ▼ cached_page(request, section_code, request_slug, screen_code):
@@ -94,19 +97,20 @@ def cached_page(request, section_code, request_slug, screen_code):
   # page additional scripts
   content_blocks.append( scripts_to_page_obj('page additional scripts', page.additionalscript_set.all(),'' , ''))
 
-  #———————————————————————————————————————— script sets included via page settings
+  #———————————————————————————————————————— script sets
 
-  script_sets_raw = page.pagescript_set.filter(enabled=True).order_by('order')
+  page_script_sets = list(page.pagescript_set.filter(enabled=True))
+  all_script_sets = convert_script_sets(page_script_sets) # list of "Script" objects
 
-  #———————————————————————————————————————— Script Set "always include"
-
+  # Script Set "always include"
   if page.incl_scripts:
-    screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
-    script_content = get_scripts(screen_scripts)
-    script_sets_raw.extend(script_content)
+    default_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True)).order_by('name')
+#   script_content = get_scripts(default_scripts)
+    script_content = list(default_scripts)
+    all_script_sets.extend(script_content)
+    all_script_sets = script_sets_dedupe(all_script_sets)
 
-# script_sets_raw = script_sets_dedupe(script_sets_raw)
-  script_sets = get_script_sets('page-specified script sets', script_sets_raw)   # includes Script Sets
+  script_sets = get_script_sets('script sets', all_script_sets)
   content_blocks.extend(script_sets)
 
   #———————————————————————————————————————— modules via page settings
@@ -114,18 +118,28 @@ def cached_page(request, section_code, request_slug, screen_code):
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
-  page_modules_raw = page.pagemodule_set.filter(enabled=True).order_by('zindex')
-
-  page_modules = get_page_modules('page modules', page_modules_raw, section_code, screen_code, page, page_width, use_p3)
-
-  content_blocks.extend(page_modules)
-
-  #———————————————————————————————————————— modules "always include"
+  page_modules = list(page.pagemodule_set.filter(enabled=True))
+  all_modules = convert_modules(page_modules) # list of "Module" objects
 
   if page.incl_modules:
-    screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
-    module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
-    content_blocks.extend(module_content)
+    default_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
+    module_content = list(default_modules)
+    all_modules.extend(module_content)
+    all_modules = modules_dedupe(all_modules)
+
+# return HttpResponse("debugging message: "+type(all_modules[0]).__name__) #
+
+# page_modules = get_page_modules('page modules', page_modules_raw, section_code, screen_code, page, page_width, use_p3)
+
+
+# #———————————————————————————————————————— modules "always include"
+
+# if page.incl_modules:
+#   screen_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True)).order_by('order')
+#   module_content = get_modules('always-include modules', screen_modules, screen_code, page, page_width, use_p3)
+#   page_modules.extend(module_content)
+
+# content_blocks.extend(page_modules)
 
   #———————————————————————————————————————— combine content blocks
 
