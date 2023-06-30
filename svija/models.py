@@ -401,14 +401,13 @@ class PageModule(models.Model):
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     script = models.ForeignKey(Script, on_delete=models.CASCADE)
-    order  = models.IntegerField(default=0, verbose_name='load order')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.script.name
     class Meta:
         verbose_name = "link to script"
         verbose_name_plural = "links to script"
-        ordering = ["order"]
+        ordering = ["script"]
 
 class Illustrator(models.Model):
 #   page = models.ForeignKey(Page, on_delete=models.CASCADE)
@@ -436,7 +435,6 @@ class AdditionalScript(models.Model):
         verbose_name = "additional script"
         verbose_name_plural = "additional scripts"
         ordering = ["order"]
-
 
 
 #———————————————————————————————————————— fin

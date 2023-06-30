@@ -236,7 +236,7 @@ class ModuleInlinePage(admin.TabularInline):
 class ScriptInlinePage(admin.TabularInline):
   model = Page.script.through
   extra = 0 
-  fields = ('enabled', 'script', 'order', )
+  fields = ('enabled', 'script',)
   verbose_name = "script set"
   verbose_name_plural = "script sets"
   classes = ['collapse', 'ifempty',]
