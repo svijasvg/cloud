@@ -1,10 +1,10 @@
-#———————————————————————————————————————— views/modules/get_page_scripts.py
+#———————————————————————————————————————— views/modules/get_script_sets.py
 
 #———————————————————————————————————————— notes
 #
 #   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_page_scripts.py
+#                   get_script_sets.py
 #                   get_scripts.py
 #
 #   accepts a list of scripts , some disabled
@@ -22,11 +22,11 @@
 from modules.get_script import *
 from PageObject import page_obj
 
-#———————————————————————————————————————— def get_page_scripts(label, page_scripts):
+#———————————————————————————————————————— def get_script_sets(label, all_scripts):
 
 # page.pagescript_set.filter(enabled=True).order_by('order')
 
-def get_page_scripts(label, page_scripts):
+def get_script_sets(label, all_scripts):
 
   #comments
   hjc = hcc = bjc = svc = htc = fmc = ''
@@ -35,7 +35,7 @@ def get_page_scripts(label, page_scripts):
 
 #———————————————————————————————————————— iterate through scripts-linked-in-page
 
-  for this_script_group in page_scripts:
+  for this_script_group in all_scripts:
     this_group = this_script_group.script
 
     hj = hc = bj = sv = ht = fm = ''

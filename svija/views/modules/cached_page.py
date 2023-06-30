@@ -28,12 +28,13 @@ from modules.generate_system_js import *
 from modules.get_fonts import *
 from modules.get_modules import *
 from modules.get_page_modules import *
-from modules.get_page_scripts import *
+from modules.get_script_sets import *
 from modules.get_page_svgs import *
 from modules.get_script import *
 from modules.get_scripts import *
 from modules.redirect_if_possible import *
 from modules.scripts_to_page_obj import *
+from modules.script_sets_dedupe import *
 
 #———————————————————————————————————————— ▼ cached_page(request, section_code, request_slug, screen_code):
 #
@@ -95,17 +96,18 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— script sets included via page settings
 
-  page_scripts_raw = page.pagescript_set.filter(enabled=True).order_by('order')
-  page_scripts = get_page_scripts('page-specified scripts', page_scripts_raw)   # includes Script Sets
-
-  content_blocks.extend(page_scripts)
+  script_sets_raw = page.pagescript_set.filter(enabled=True).order_by('order')
+  script_sets = get_script_sets('page-specified script sets', script_sets_raw)   # includes Script Sets
 
   #———————————————————————————————————————— Script Set "always include"
 
   if page.incl_scripts:
     screen_scripts = Script.objects.filter(Q(enabled=True) & Q(always=True))
-    script_content = get_scripts('always-include scripts', screen_scripts)
-    content_blocks.extend(script_content)
+    script_content = get_scripts('always-include script sets', screen_scripts)
+    script_sets.extend(script_content)
+
+  script_sets = script_sets_dedupe(script_sets)
+  content_blocks.extend(script_sets)
 
   #———————————————————————————————————————— modules via page settings
 
