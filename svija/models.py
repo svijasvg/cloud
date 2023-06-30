@@ -28,6 +28,25 @@ import re
 
 script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
+#———————————————————————————————————————— alphaLower converts to lowercase letters & numbers
+
+# https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase/49181581#49181581
+
+#   class alphaLower(models.CharField):
+#       def get_prep_value(self, value):
+#               return str(value).lower()
+
+class alphaLower(models.CharField):
+    def get_prep_value(self, value):
+        alphaNum = re.sub("[^A-Za-z0-9-_]","",value)
+        return alphaNum.lower()
+
+class UrlField(models.CharField):
+    def get_prep_value(self, value):
+        alphaNum = re.sub("[^A-Za-z0-9-_]","",value)
+        return alphaNum.lower()
+
+
 #———————————————————————————————————————— Control · no dependencies
 
 # _h fields are not in admin, but are updated when password is correct by cache_per_user module
@@ -112,7 +131,8 @@ def get_default_section_id():
 
 class Section(models.Model):
     name = models.CharField(max_length=100, default='')
-    code = models.CharField(max_length=20, default='', blank=False, verbose_name='Illustrator artboard code',)
+#   code = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
+    code = alphaLower(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=False,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
@@ -318,16 +338,6 @@ class Settings(models.Model):
 
 #———————————————————————————————————————— Page · uses template & prefix
 
-# https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase/49181581#49181581
-
-#   class UrlField(models.CharField):
-#       def get_prep_value(self, value):
-#               return str(value).lower()
-
-class UrlField(models.CharField):
-    def get_prep_value(self, value):
-        alphaNum = re.sub("[^A-Za-z0-9-_]","",value)
-        return alphaNum.lower()
 
 class Page(models.Model): 
 
@@ -335,7 +345,7 @@ class Page(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
 #   url       = models.CharField(max_length=200, default='', verbose_name='address')
-    url       = UrlField(max_length=200, default='', verbose_name='address') 
+    url       = alphaLower(max_length=200, default='', verbose_name='address') 
 
 		# to rename
     category  = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
