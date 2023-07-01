@@ -105,13 +105,15 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— 6. is there a valid screen code in a cookie?
 
   screen_code = request.COOKIES.get('screen_code')
-  if screen_code == None: screen_code = ''
+
+  if screen_code == None:
+    screen_code = ''
  
   if screen_code != '':
     try:
       screen = Screen.objects.get(code=screen_code)
     except:
-      pass
+      screen_code = ''
 
 #———————————————————————————————————————— 7. get default if not
 
