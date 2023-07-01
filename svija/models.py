@@ -179,8 +179,8 @@ class Section(models.Model):
 #———————————————————————————————————————— Screen · no dependencies
 
 class Screen(models.Model):
-    name    = models.CharField(max_length=200, default='')
-    code    = models.CharField(max_length=2, default='', verbose_name='artboard code',)
+    code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
+    name    = models.CharField(max_length=200, default='', verbose_name='description')
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
     pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='break point',)
@@ -190,7 +190,7 @@ class Screen(models.Model):
     offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
 
     def __str__(self):
-        return self.name
+        return self.code
     class Meta:
         ordering = ['width']
         verbose_name = "screen size"

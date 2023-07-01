@@ -94,12 +94,12 @@ from .models import Screen
 class ScreenAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('name', 'code', 'width', 'order', )
+  list_display = ('code', 'name', 'width', 'order', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('details',{'fields': [('name', 'pixels',),('code',  'order'),],'description':descScreens,}),
+    ('details',{'fields': [('code', 'pixels',),('name',  'order'),],'description':descScreens,}),
     ('pixel dimensions',{'fields': [('width', 'offsetx',), ('visible', 'offsety',), ]}),
 #     ('image quality',{'fields': ['img_multiply', 'img_quality', ]}),
   ]   
