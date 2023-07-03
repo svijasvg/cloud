@@ -2,13 +2,17 @@
 
 #———————————————————————————————————————— notes
 #
-# should be first in CSS
-# by default all fonts are included
-# svg_cleaner adds fonts only if they're not already in DB
+#   fonts are added to DB in svg_cleaner.py
 #
-# if there's a global list of fonts in PageView
-# svg cleaner can add to it
-# and this function can use it IF it's after svg cleaner
+#   this manages them AFTER they've been added
+#
+#   should be first in CSS
+#   by default all fonts are included
+#   svg_cleaner adds fonts only if they're not already in DB
+#  
+#   if there's a global list of fonts in PageView
+#   svg cleaner can add to it
+#   and this function can use it IF it's after svg cleaner
 #
 #———————————————————————————————————————— imports
 
@@ -21,28 +25,29 @@ import requests
 # french roast: <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css"> weight:400
 
 adobeWeights = {
-  100: 'Thin',
-  200: 'ExtraLight',
-  300: 'Light',
-  400: 'Regular',
-  500: 'Medium',
-  600: 'Semibold',
-  700: 'Bold',
-  800: 'Black',
-  900: 'UltraBlack',
+  'extralight':'200',
+  'semibold'  :'600',
+  'ultrablack':'900',
+  'thin'      :'100',
+  'light'     :'300',
+  'regular'   :'400',
+  'medium'    :'500',
+  'bold'      :'700',
+  'black'     :'800',
 }
 
 googleWeights = {
-  100: 'Thin ',
-  200: 'ExtraLight',
-  300: 'Light',
-  400: 'Regular',
-  500: 'Medium',
-  600: 'SemiBold',
-  700: 'Bold',
-  800: 'ExtraBold',
-  900: 'Black',
+  'extralight':'200',
+  'semibold'  :'600',
+  'extrabold' :'800',
+  'thin'      :'100',
+  'light'     :'300',
+  'regular'   :'400',
+  'medium'    :'500',
+  'bold'      :'700',
+  'black'     :'900',
 }
+
 
 #:::::::::::::::::::::::::::::::::::::::: main method
 
@@ -67,7 +72,7 @@ def get_fonts():
     svg  = this_font.svg_ref
     woff = this_font.woff
 
-#———————————————————————————————————————— web fonts (Arial etc.)
+#———————————————————————————————————————— web fonts (Arial etc.) contains ,
 #
 #   need to have several variations (as in a typical CSS declaration)
 
@@ -151,11 +156,18 @@ def get_fonts():
         
 #———————————————————————————————————————— ▲ google fonts /end loop
 
+# for google fonts CSS, we need family=Open+Sans:300|Open+Sans:300italic|Open+Sans:600
+# no spaces between weight & style
+
     if this_font.google:
-#     req = req.translate(googleWeights)
-      req = this_font.style.lower().replace(' ','')
-      req = this_font.family.replace(' ','+') + ':' + req 
-      google_fonts.append(req)
+      style = this_font.style
+
+      for word, number in googleWeights.items():
+        style = style.lower().replace(word, number)
+
+      style = style.replace(' ','')
+      famly = this_font.family.replace(' ','+')
+      google_fonts.append(famly+':'+style)
 
 #———————————————————————————————————————— generate adobe css
 #

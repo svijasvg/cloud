@@ -97,8 +97,7 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— script sets
 
-# return HttpResponse("debugging message.")
-
+  #eturn HttpResponse("debugging message: "+str)
   page_script_sets = list(page.pagescript_set.filter(enabled=True))
   all_script_sets = convert_script_sets(page_script_sets) # list of "Script" objects
 

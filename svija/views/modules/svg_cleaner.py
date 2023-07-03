@@ -180,40 +180,48 @@ def create_new_font(css_ref, new_font):
   weight = style = width = ''
   source = ''
 
-  weights = ['100','200','300','400','500','600','700','800','900','Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black',]
-  styles = ['Normal','Italic','Oblique',]
-  widths = ['Condensed', 'Extended',]
+  weights = ['Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black','UltraBlack']
+  styles  = ['Normal','Italic','Oblique',]
+  widths  = ['Condensed', 'Extended',]
 
-  for this_one in weights:
+  for this_one in weights:                                   # is one of the weights listed?
     if css_ref.lower().find(this_one.lower()) > -1:
-      weight = this_one
+      weight = this_one                                      # we found the weight
       regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)
+      family = regx.sub('', family)                          # then delete it from family
       break
 
-  for this_one in styles:
+  for this_one in styles:                                    # is one of the styles listed?
     if css_ref.lower().find(this_one.lower()) > -1:
-      style = this_one
+      style = this_one                                       # we found the style
       regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)
+      family = regx.sub('', family)                          # delete it from family
       break
 
-  for this_one in widths:
+  for this_one in widths:                                    # is one of the widths listed?
     if css_ref.lower().find(this_one.lower()) > -1:
-      width = this_one
+      width = this_one                                       # we found the width
       regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)
+      family = regx.sub('', family)                          # remove it from family
       break
 
-  # change OpenSans to Open Sans
+  # change OpenSans to Open Sans                             # add space before lowerUpper
   regx = re.compile(r'([a-z])([A-Z])')
   family = regx.sub(r'\1 \2', family)
 
-  weight_style = weight + style + width
-  if weight_style == '':
+  # change IBMPlex to IBM Plex                               # add space between UPPERUPPERlower
+  regx = re.compile(r'([A-Z])([A-Z])([a-z])')
+  family = regx.sub(r'\1 \2\3', family)
+
+  weight_style = weight + ' ' + style + ' '+ width           # combine weight, style & width for style field in Svija Cloud
+
+  if weight_style == '  ':                                   # two spaces, from previous line
     weight_style = 'Regular'
 
-  new_font.svg_ref, new_font.family, new_font.style, new_font.woff = css, family, weight_style, source
+  new_font.svg_ref = css
+  new_font.family  = family
+  new_font.style   = weight_style
+  new_font.woff    = source
 
   return new_font
 
