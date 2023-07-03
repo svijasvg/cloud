@@ -94,7 +94,7 @@ class Redirect(models.Model):
 class Font(models.Model): 
     svg_ref    = models.CharField(max_length=100, default='', verbose_name='SVG name')
     family     = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style      = models.CharField(max_length=100, default='', verbose_name='weightStyle', blank=True)
+    style      = models.CharField(max_length=100, default='', verbose_name='style', blank=True)
     woff       = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
     google     = models.BooleanField(default=False, verbose_name='Google font',)
