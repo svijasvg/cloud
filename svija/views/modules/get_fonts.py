@@ -213,6 +213,9 @@ def get_adobe_font(font):
 
   bits = font.adobe_link.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
+  if len(bits) < 4:
+    return '', '', '⚠️ check pasted link', '', ''
+
   file_contents = file_from_url(bits[3])
 
   if file_contents[0:2] != '/*':
