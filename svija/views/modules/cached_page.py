@@ -1,4 +1,4 @@
-#———————————————————————————————————————— cached_page.py
+#:::::::::::::::::::::::::::::::::::::::: cached_page.py
 
 #———————————————————————————————————————— notes
 #
@@ -97,6 +97,8 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— script sets
 
+# return HttpResponse("debugging message.")
+
   page_script_sets = list(page.pagescript_set.filter(enabled=True))
   all_script_sets = convert_script_sets(page_script_sets) # list of "Script" objects
 
@@ -159,4 +161,4 @@ def cached_page(request, section_code, request_slug, screen_code):
   return render(request, template, context)
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin

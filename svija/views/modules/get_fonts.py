@@ -15,6 +15,34 @@
 from svija.models import Font
 import requests
 
+#———————————————————————————————————————— equivalences
+
+# how do display fonts that don't really have a weight work?
+# french roast: <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css"> weight:400
+
+adobeWeights = {
+  100: 'Thin',
+  200: 'ExtraLight',
+  300: 'Light',
+  400: 'Regular',
+  500: 'Medium',
+  600: 'Semibold',
+  700: 'Bold',
+  800: 'Black',
+  900: 'UltraBlack',
+}
+
+googleWeights = {
+  100: 'Thin ',
+  200: 'ExtraLight',
+  300: 'Light',
+  400: 'Regular',
+  500: 'Medium',
+  600: 'SemiBold',
+  700: 'Bold',
+  800: 'ExtraBold',
+  900: 'Black',
+}
 
 #:::::::::::::::::::::::::::::::::::::::: main method
 
@@ -124,6 +152,7 @@ def get_fonts():
 #———————————————————————————————————————— ▲ google fonts /end loop
 
     if this_font.google:
+#     req = req.translate(googleWeights)
       req = this_font.style.lower().replace(' ','')
       req = this_font.family.replace(' ','+') + ':' + req 
       google_fonts.append(req)

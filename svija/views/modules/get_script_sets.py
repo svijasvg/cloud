@@ -68,12 +68,12 @@ def get_script_sets(label, all_script_sets):
   
 #———————————————————————————————————————— append iteration results
 
-      final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
+    final_list.append(page_obj(hj, hc, bj, sv, ht, fm) )
 
 #———————————————————————————————————————— prepare return
 
   comments = page_obj(hjc, hcc, bjc, svc, htc, fmc)
-  final_list = [comments, *final_list]
+# final_list = [comments, *final_list]
 
   return final_list
 

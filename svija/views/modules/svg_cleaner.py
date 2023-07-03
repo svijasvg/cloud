@@ -260,6 +260,8 @@ def update_css(google_font, style_string):
 def cleanup(css_id):
   css_id = css_id.replace('.svg','')
 # per.iod in na,me.svg
+  # ord returns unicode code of character
+  # map executes function for each item in iterable
   translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
   css_id = css_id.translate(translation_table)
   return css_id
