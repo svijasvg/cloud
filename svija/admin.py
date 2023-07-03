@@ -45,13 +45,18 @@ admin.site.register(Redirect, RedirectAdmin)
 
 #———————————————————————————————————————— Font · no dependencies
 
+# https://stackoverflow.com/questions/15285740/make-django-admin-to-display-no-more-than-100-characters-in-list-results
+
 descFonts    = "Fonts are added here automatically the first time they are needed · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>"
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
+  def adobe_css(self, obj):
+    return obj.adobe_link[53:64]
+
   # display on parent page
-  list_display = ('svg_ref', 'family', 'style', 'woff', 'google', 'enabled', 'category',)
+  list_display = ('svg_ref', 'family', 'style', 'adobe_css', 'google', 'woff', 'enabled', 'category',)
   list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True
