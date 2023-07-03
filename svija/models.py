@@ -1,4 +1,4 @@
-#———————————————————————————————————————— models.py
+#:::::::::::::::::::::::::::::::::::::::: models.py
 
 # model names are SINGULAR
 # 252 section, permit unknown results — see link somewhere
@@ -52,7 +52,7 @@ class alphaAll(models.CharField):
         value = re.sub("[^A-Za-z0-9-_]","",value)
         return value
 
-class UrlField(models.CharField):
+class UrlField(models.CharField):                                              # deprecated, need to delete
     def get_prep_value(self, value):
         value = re.sub("[^A-Za-z0-9-_]","",value)
         return value.lower()
@@ -140,17 +140,17 @@ def get_default_section_id():
   return Section.objects.first().id
 
 class Section(models.Model):
-    name = models.CharField(max_length=100, default='')
+    code = alphaLower(max_length=20, default='', blank=False, verbose_name='address',)
+    name = models.CharField(max_length=100, default='', verbose_name='description',)
 #   code = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
-    code = alphaLower(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
-    default_page = models.CharField(max_length=200, default='', verbose_name='default page address',blank=False,)
+    default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=False,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
-    title = models.CharField(max_length=100, default='', blank=True, verbose_name='second part of page title',)
+    title = models.CharField(max_length=100, default='', blank=True, verbose_name='section title',)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
 
-    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination address',)
+    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination email',)
     bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
     subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
 
@@ -200,33 +200,6 @@ class Screen(models.Model):
         ordering = ['width']
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
-
-#———————————————————————————————————————— Robots · no dependencies
-
-# Create or retrieve a placeholder DELETE WHEN MIGRATIONS SQUASHED
-def get_sentinel_robots():
-    return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
-
-# Create an additional method to return only the id - default expects an id and not a Model object
-def get_sentinel_robots_id():
-    return get_sentinel_robots().id
-
-def get_default_robots():
-  return Robots.objects.first()
-
-def get_default_robots_id():
-  return Robots.objects.first().id
-
-class Robots(models.Model):
-    name = models.CharField(max_length=200, default='')
-    contents = models.TextField(max_length=5000, default='', verbose_name='file contents',blank=True,)
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['name']
-        verbose_name = "robots.txt"
-        verbose_name_plural = "3.3 · Robots.txt"
 
 #———————————————————————————————————————— Script Set · no dependencies
 
@@ -320,12 +293,37 @@ class ModuleScript(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
+#———————————————————————————————————————— Robots · no dependencies
+
+class Robots(models.Model):
+    name = models.CharField(max_length=200, default='')
+    contents = models.TextField(max_length=5000, default='', verbose_name='file contents',blank=True,)
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['name']
+        verbose_name = "robots.txt"
+        verbose_name_plural = "3.3 · Robots.txt"
+
 #———————————————————————————————————————— Settings · Section & Robots
+
+def get_sentinel_robots():                                                        # deprecated, need to delete
+    return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
+
+def get_sentinel_robots_id():                                                     # deprecated, need to delete
+    return get_sentinel_robots().id
+
+def get_default_robots():
+  return Robots.objects.first()
+
+def get_default_robots_id():               # this is the problem
+  return Robots.objects.first().id
 
 class Settings(models.Model):
 
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
-    robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
+    robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  blank=True, on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
     #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
     section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
 
@@ -452,4 +450,4 @@ class AdditionalScript(models.Model):
         ordering = ["order"]
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin

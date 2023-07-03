@@ -71,7 +71,7 @@ from .models import Section
 class SectionAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('name', 'code', 'order', 'default_page', 'title', 'email',)
+  list_display = ('code', 'name', 'default_page', 'title', 'email', 'order',)
   save_on_top = True
   save_as = True
 
@@ -94,7 +94,7 @@ from .models import Screen
 class ScreenAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('code', 'name', 'width', 'order', )
+  list_display = ('code', 'name', 'width', 'pixels', 'order', )
   save_on_top = True
   save_as = True
 
