@@ -180,9 +180,10 @@ def create_new_font(css_ref, new_font):
   weight = style = width = ''
   source = ''
 
-  weights = ['Thin','ExtraLight','Light','Regular','Medium','SemiBold','Bold','ExtraBold','Heavy','Black','UltraBlack']
+  weights = ['ExtraLight','SemiBold','ExtraBold','UltraBlack','Thin','Light','Regular','Medium','Bold','Heavy','Black',]
   styles  = ['Normal','Italic','Oblique',]
   widths  = ['Condensed', 'Extended',]
+
 
   for this_one in weights:                                   # is one of the weights listed?
     if css_ref.lower().find(this_one.lower()) > -1:
