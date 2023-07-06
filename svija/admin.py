@@ -52,11 +52,11 @@ descFonts    = "Fonts are added here automatically the first time they are neede
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
-  def adobe_css(self, obj):
-    return obj.adobe_link[53:64]
+  def adobe_id(self, obj):
+    return obj.adobe_link[53:60]
 
   # display on parent page
-  list_display = ('svg_ref', 'family', 'style', 'adobe_css', 'google', 'woff', 'enabled', 'category',)
+  list_display = ('svg_ref', 'family', 'style', 'adobe_id', 'google', 'woff', 'enabled', 'category',)
   list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True
