@@ -38,8 +38,9 @@ script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
 
 class addAiToEnd(models.CharField):
     def get_prep_value(self, value):
-        if value[-3:] != '.ai':                                                     
-            value += '.ai'                                                            
+        if value != '':
+          if value[-3:] != '.ai':                                                     
+              value += '.ai'                                                            
         return value
 
 class alphaLower(models.CharField):

@@ -170,7 +170,7 @@ def clean(file_path, svg_filename, use_p3):
   return svg_ID, px_width, px_height, first_line+final_svg
 
 
-#:::::::::::::::::::::::::::::::::::::::: functions 
+#:::::::::::::::::::::::::::::::::::::::: methods
 
 #———————————————————————————————————————— add new font
 
