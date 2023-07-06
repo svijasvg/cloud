@@ -1,6 +1,10 @@
 
 #:::::::::::::::::::::::::::::::::::::::: svg_cleaner.py
 
+#   changes 230705: this program no longer handles font css
+#   it only checks if there are fonts that aren't already in DB
+#   get_fonts.py handles the rest
+
 #———————————————————————————————————————— notes
 #
 #   remove 1st two lines of SVG (XML)
@@ -31,12 +35,11 @@ def clean(file_path, svg_filename, use_p3):
   final_svg      = ''
   debug          = 'working'
 
-  #———————————————————————————————————————— list of woff & google fonts in DB
-  #                                     used fonts will be added to
-  #                                     fonts_to_add
+  #———————————————————————————————————————— list of fonts in DB
 
-  goog_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=True ))
-  file_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=False))
+  all_fonts   = Font.objects.filter(Q(enabled=True)                 )
+# goog_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=True ))
+# file_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=False))
   fonts_to_add  = []
 
   #———————————————————————————————————————— read SVG file
@@ -128,17 +131,9 @@ def clean(file_path, svg_filename, use_p3):
         line_parts = line.split("'")
         css_ref = line_parts[1]
 
-        # if it is a google font already in DB
-        # replace Illustrator-style def with Google's
-        goog_font = [x for x in goog_fonts if x.svg_ref == css_ref]
-
-        if len(goog_font) > 0:
-          line_parts[1] = update_css(goog_font, line_parts[1])
-          line = ''.join(line_parts)
-        else:
-          file_font = [x for x in file_fonts if x.svg_ref == css_ref]
-          if len(file_font) <= 0:
-            fonts_to_add.append(css_ref)
+        font_exists = [x for x in all_fonts if x.svg_ref == css_ref]
+        if len(font_exists) == 0:
+          fonts_to_add.append(css_ref)
 
     #———————————————————————————————————————— ▲ close main loop
 
@@ -151,9 +146,8 @@ def clean(file_path, svg_filename, use_p3):
   fonts_to_add = remove_duplicates(fonts_to_add)
 
   for css_ref in fonts_to_add:
-    new_font = create_new_font(css_ref, Font())
-    p = Font.objects.create(svg_ref = new_font.svg_ref, family = new_font.family, style=new_font.style, woff=new_font.woff, google=False, enabled=True)
-    p.save
+    new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
+    new_font.save
 
   #———————————————————————————————————————— add new ID if necessary
   #                                     single-layer AI docs have ID with layer name
@@ -171,64 +165,6 @@ def clean(file_path, svg_filename, use_p3):
 
 
 #:::::::::::::::::::::::::::::::::::::::: methods
-
-#———————————————————————————————————————— add new font
-
-def create_new_font(css_ref, new_font):
-
-  css = family = css_ref
-  weight = style = width = ''
-  source = ''
-
-  weights = ['ExtraLight','SemiBold','ExtraBold','UltraBlack','Thin','Light','Regular','Medium','Bold','Heavy','Black',]
-  styles  = ['Normal','Italic','Oblique',]
-  widths  = ['Condensed', 'Extended',]
-
-
-  for this_one in weights:                                   # is one of the weights listed?
-    if css_ref.lower().find(this_one.lower()) > -1:
-      weight = this_one                                      # we found the weight
-      regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)                          # then delete it from family
-      break
-
-  for this_one in styles:                                    # is one of the styles listed?
-    if css_ref.lower().find(this_one.lower()) > -1:
-      style = this_one                                       # we found the style
-      regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)                          # delete it from family
-      break
-
-  for this_one in widths:                                    # is one of the widths listed?
-    if css_ref.lower().find(this_one.lower()) > -1:
-      width = this_one                                       # we found the width
-      regx = re.compile(r'[-]?'+this_one, re.IGNORECASE)
-      family = regx.sub('', family)                          # remove it from family
-      break
-
-  # change OpenSans to Open Sans                             # add space before lowerUpper
-  regx = re.compile(r'([a-z])([A-Z])')
-  family = regx.sub(r'\1 \2', family)
-
-  # change IBMPlex to IBM Plex                               # add space between UPPERUPPERlower
-  regx = re.compile(r'([A-Z])([A-Z])([a-z])')
-  family = regx.sub(r'\1 \2\3', family)
-
-  weight_style = weight + ' ' + style + ' '+ width           # combine weight, style & width for style field in Svija Cloud
-
-  if weight_style == '  ':                                   # two spaces, from previous line
-    weight_style = 'Regular'
-
-  new_font.svg_ref = css
-  new_font.family  = family
-  new_font.style   = weight_style
-  new_font.woff    = source
-
-  return new_font
-
-# http://dev.svija.com/en/print
-# not finding "'Signika-Regular';"
-#   .stLayer_12{font-family:'Signika-Regular';}
 
 #———————————————————————————————————————— google font function
 # line_parts[1] = update_css(google_font, line_parts[1])
