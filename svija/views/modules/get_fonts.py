@@ -73,18 +73,15 @@ style_equivalents = {
 #———————————————————————————————————————— ▼ def get_fonts()
 
 def get_fonts():
-  all_fonts    = Font.objects.filter(enabled=True)
+  enabled_fonts    = Font.objects.filter(enabled=True)
   woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
 
-  adobe_fonts      = Font.objects.filter(enabled=True).exclude(adobe_link='')
-  new_adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(family='')).exclude(adobe_link='')
+  adobe_fonts      = Font.objects.filter(enabled=True).exclude(adobe_pasted='')
+  new_adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe_sheet='')).exclude(adobe_pasted='')
 
   google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True))
   new_google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True) & Q(family=''))
 
-  empty_woff   = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
-
-  woff_css = adobe_css = google_css = ''
   adobe_fonts_array  = []
   google_fonts_array = []
   google_link  = ''
@@ -92,20 +89,71 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: add new fonts
 
+#———————————————————————————————————————— add new Woff fonts
+
+  for this_font in woff_fonts:
+
+    # remove everything in beginning of path if necessary
+    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/sync/SVIJA/Fonts/Woff Files/clarendon.woff
+
+    woff = this_font.woff
+    if woff.find('/') > -1:            # remove all but filename
+      woff = woff.rpartition("/")[2]
+      this_font.woff = woff
+      this_font.save()
+
 #———————————————————————————————————————— add new Adobe fonts
 
   for this_font in new_adobe_fonts:
 
-    [family, style] = adobe_split(this_font.svg_ref)
+    # convert svg ref to family, weight and style
+    [family, style] = interpret_adobe(this_font.svg_ref)
     this_font.family = add_spaces(family)
     this_font.style  = style
+
+    # add font url & file contents
+    if this_font.adobe_pasted[0] != '<':   # contents is not "<link rel..."
+      this_font.adobe_url = "⚠️ Error in pasted link"
+      this_font.adobe_sheet = ''
+      this_font.save()
+      continue
+
+
+
+
+
+
+
+
+
+
+
+
+#   # extract URL from retrieved CSS
+
+#   a_css, a_name, a_url, a_style, a_weight = get_adobe_font(this_font)
+
+#   this_font.family    = a_name
+#   this_font.adobe_sheet     = a_css
+#   this_font.adobe_url = a_url
+#   this_font.style     = a_weight +' '+a_style
+
+
+
+
     this_font.save()
+
+
+
+
+
+
 
 #———————————————————————————————————————— add new Google fonts
 
   for this_font in new_google_fonts:
 
-    [family, style] = google_split(this_font.svg_ref)
+    [family, style] = interpret_google(this_font.svg_ref)
     this_font.family = add_spaces(family)
     this_font.style  = style
     this_font.save()
@@ -113,66 +161,57 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: fonts are set up, now generate css
 
-#———————————————————————————————————————— ▼ loop through fonts
+#———————————————————————————————————————— loop through woff fonts
 
-  for this_font in all_fonts:
+  woff_css = ''
 
-#———————————————————————————————————————— 1: web font (Arial etc.) WOFF filename contains ","
-#
-#   need to have several variations (as in a typical CSS declaration)
+  empty_woff   = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
 
+  for this_font in woff_fonts:
     woff = this_font.woff
-    if woff != '':
+    svg_ref = this_font.svg_ref
 
-      if woff.find(',') > 0: # local fonts
-        # adds to css: src: local('Arial'), local('Arial MT'), local('Arial Regular'); }
-        font_format = ''
-        locals = woff.replace(', ',',').split(',')
-        woff = "local('"+"'), local('".join(locals)
-        woff_css += '\n'+ empty_woff.format(svg_ref, woff, font_format)
-        continue
+    if woff.find(',') > 0: # local fonts
+      font_format = ''
+      locals = woff.replace(', ',',').split(',')
+      woff = "local('" + ("'), local('".join(locals))
+      woff_css += '\n'+ empty_woff.format(svg_ref, woff, font_format)
+      continue
 
-#———————————————————————————————————————— 2: WOFF filename
+    elif woff.find('woff2') > 0: # woff2 format
+      font_format = " format('woff2')"
+      woff_url = "url('/fonts/" + woff
+      woff_css  += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
+      continue
 
-    # remove everything in beginning of path if necessary
-    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/sync/SVIJA/Fonts/Woff Files/clarendon.woff
-  
+    elif woff.find('woff') > 0: # woff format
+      font_format = " format('woff')"
+      woff_url = "url('/fonts/" + woff
+      woff_css += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
+      continue
 
-    woff = this_font.woff
-    if woff != '':
 
-      if woff.find('/') > -1:            # remove all but filename
-        woff = woff.rpartition("/")[2]
-        this_font.woff = woff
-        this_font.save()
-
-      if woff.find('woff2') > 0:
-        font_format = " format('woff2')"
-        woff_url = "url('/fonts/" + woff
-        woff_css  += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
-        continue
-
-      else:
-        font_format = " format('woff')"
-        woff_url = "url('/fonts/" + woff
-        woff_css += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
-        continue
+    else:
+      this_font.woff = ''
+      this_font.save()
 
 #———————————————————————————————————————— generate adobe css
 #
 #    separate from earlier loop because all adobe fonts are combined
 #    into a single CSS block, with only one copyright comment section
 
-  if len(adobe_fonts_array) > 0:
+  adobe_css = ''
 
-    # get comments from first font in list
-    adobe_css = comments_only(adobe_fonts_array[0].adobe)
+  # get comments from first font in list
+  if len(adobe_fonts) > 0:
+    adobe_css = comments_only(adobe_fonts[0].adobe_sheet)
   
-    for f in adobe_fonts_array:
+  for this_font in adobe_fonts:
       adobe_css += "\n@font-face { font-family:'"+f.svg_ref + "'; src:url("+f.adobe_url+") format('woff'); }"
 
 #———————————————————————————————————————— generate google fonts link
 
+  google_css = ''
   if len(google_fonts_array) > 0:
     link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
     google_link = link_str.format(('|').join(google_fonts_array))
@@ -184,7 +223,7 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: main methods
 
-#———————————————————————————————————————— adobe_split(svg_ref)
+#———————————————————————————————————————— interpret_adobe(svg_ref)
 #
 #   if it's adobe, we search for one of the weights and
 #   split on it, then use family + weight + rest (style),
@@ -196,7 +235,7 @@ def get_fonts():
 #   if txt.find(key) > 0:
 #     txt = txt.replace(key, adobe_weights[key])
 
-def adobe_split(svg_ref):
+def interpret_adobe(svg_ref):
   family = weight = style = ''
   svg_low = svg_ref.lower()
 
@@ -243,14 +282,15 @@ def adobe_split(svg_ref):
 
   return [family, weight + style]
 
-#———————————————————————————————————————— google_split(svg_ref)
+#———————————————————————————————————————— interpret_google(svg_ref)
 #
 #   if it's google, we search for one of the weights and
 #   split on it, then use family + weight + rest (style),
 #   with slashes changed to single spaces
 #   style is optional
 
-def google_split(svg_ref):
+def interpret_google(svg_ref):
+
   family = weight = style = ''
   svg_low = svg_ref.lower()
 
@@ -267,15 +307,8 @@ def google_split(svg_ref):
 
       break
 
-# return [family, weight+':'+style] # 8-
-
   if family == '':                      # nothing was found
     family = svg_ref
-
-  if family[-1:] == '-':                # remove trailing slashes
-    family = family[:-1]                # works
-
-# return [family, 'xxx'] # 8 
 
 # possibly convert family FuturaPT to Futura PT 
 
@@ -296,9 +329,13 @@ def google_split(svg_ref):
     weight = google_weights['default']
     parts = svg_ref.split('-')
     last = parts[len(parts) - 1].lower()
+
     if last in style_equivalents:
       style = style_equivalents[last]
-      family = svg_ref[:len(style) + 1]
+      family = svg_ref[:len(svg_ref) - len(style)]
+
+  if family[-1:] == '-':                # remove trailing dashes
+    family = family[:-1]                # works
 
   if family != '':                      # changes - to space for legibility
     family = family.replace('-', ' ')   # might cause problems
@@ -318,11 +355,11 @@ def google_split(svg_ref):
 
 def get_adobe_font(font):
 
-  if font.adobe_link[0] != '<': return font.adobe
+  if font.adobe_pasted[0] != '<': return font.adobe_sheet
 
   #—————————————————————————————————————— get url then CSS file
 
-  bits = font.adobe_link.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+  bits = font.adobe_pasted.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
   if len(bits) < 4:
     return '', '', '⚠️ check pasted link', '', ''
@@ -360,7 +397,7 @@ def get_adobe_font(font):
 
 #———————————————————————————————————————— return best match
 
-# file_contents    = '/*    '+font.adobe + '    */\n' + file_contents
+# file_contents    = '/*    '+font.adobe_sheet + '    */\n' + file_contents
   final_font = css_fonts[best_choice]
 
   return file_contents, final_font['name'], final_font['woff'], final_font['style'], final_font['weight']
@@ -508,7 +545,9 @@ def italics_present(targ, cand):
 #   split at each -
 
 def add_spaces(txt):
-  
+  if txt == '':
+    return ''
+
   result = ''
 
   for x in range(len(txt) - 1):

@@ -93,16 +93,16 @@ class Redirect(models.Model):
 #———————————————————————————————————————— Font · no dependencies
 
 class Font(models.Model): 
-    svg_ref    = models.CharField(max_length=100, default='', verbose_name='SVG name')
-    family     = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    style      = models.CharField(max_length=100, default='', verbose_name='style', blank=True)
-    woff       = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
+    svg_ref      = models.CharField(max_length=100, default='', verbose_name='SVG name')
+    family       = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
+    style        = models.CharField(max_length=100, default='', verbose_name='style', blank=True)
+    woff         = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
 
-    google     = models.BooleanField(default=False, verbose_name='Google font',)
-    enabled    = models.BooleanField(default=True, verbose_name='enabled',)
-    adobe_link = models.CharField(max_length=300, default='', verbose_name='pasted Adobe link', blank=True)
-    adobe_url  = models.CharField(max_length=300, default='', verbose_name='font file URL', blank=True)
-    adobe      = models.TextField(max_length=99000, default='', verbose_name='link contents', blank=True,)
+    google       = models.BooleanField(default=False, verbose_name='Google font',)
+    enabled      = models.BooleanField(default=True, verbose_name='enabled',)
+    adobe_pasted = models.CharField(max_length=300, default='', verbose_name='pasted Adobe link', blank=True)
+    adobe_url    = models.CharField(max_length=300, default='', verbose_name='font file URL', blank=True)
+    adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name='link contents', blank=True,)
 
 		# to rename
     category = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
@@ -112,7 +112,7 @@ class Font(models.Model):
     class Meta:
         verbose_name = "font"
         verbose_name_plural = "2.3 · Fonts"
-        ordering = ['-enabled', 'category', 'family', 'style']
+        ordering = ['-enabled', 'category', 'family', 'style', 'svg_ref',]
 
 #———————————————————————————————————————— Section · no dependencies
 
