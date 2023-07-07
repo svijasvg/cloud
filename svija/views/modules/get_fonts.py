@@ -309,56 +309,45 @@ adobe_styles = {
   'oblique'   : 'italic',
   'obl'       : 'italic',
   'italic'    : 'italic',
+  'default'   : 'normal',
 }
 
-
 def interpret_adobe(svg_ref):
+
+  # need to replace ExtraBlack with Extrablack, it will work out well
+  svg_ref = fix_caps_adobe(svg_ref)
+
+  raw_string = add_dashes(svg_ref).lower()
+
+  parts = raw_string.split('-')
+
+# start at end of string, and if it's either a weight or a style
+# we keep going
+
   family = weight = style = ''
-  svg_ref = add_dashes(svg_ref)
-  svg_low = svg_ref.lower()
 
-  for key in adobe_weights:
-    if svg_low.find(key) > 0:
-      parts = svg_low.split(key)
+  debug = ''
+  # range(start, stop, step)
+  for part in range(len(parts)-1, -1, -1):
+    this_part = parts[part]
 
-      family = svg_low[:len(parts[0])]
-      weight = adobe_weights[key]
+    debug += str(part)+':'+this_part
 
-      if parts[1] != '':
-        style = svg_low[0 - len(parts[1]):]
+    if this_part in adobe_weights:
+      weight = adobe_weights[this_part]
+      parts.pop() # remove last element
 
-      break
+    if this_part in adobe_styles:
+      style = adobe_styles[this_part]
+      parts.pop() # remove last element
 
-# return [family, 'xxx'] # 8-
-
-  if family == '':                      # nothing was found
-    family = svg_low
-
-  if family[-1:] == '-':                # remove trailing slashes
-    family = family[:-1]                # works
-
-# return [family, 'xxx'] # 8 
-
-# possibly convert family FuturaPT to Futura PT 
-
-  if style != '':
-    style_low = style.lower()
-  
-    if style_low in style_equivalents:
-      style = style_equivalents[style_low]
-    else:
-      # throw it all away, we don't know
-      family = svg_low
-      weight = ''
-      style  = ''
-
-  family = convert_number_to_word(family)
-
-  if weight == '':
-    weight = adobe_weights['default']
+  family = '-'.join(parts) 
 
   if style == '':
-    style = 'normal'
+    style = adobe_styles['normal']
+
+  if weight == '':
+    wdight = adobe_weights['default']
 
   return [family, weight, style]
 
@@ -505,7 +494,7 @@ def font_list_from_link(pasted_link):
 
   return font_list, stylesheet
 
-#———————————————————————————————————————— best_adobe_match(font_array, font_list)
+#———————————————————————————————————————— best_adobe_match(font_array, font_list) NOT FINISHED
 #
 #   accepts:
 #
@@ -532,7 +521,6 @@ def best_adobe_match(font_array, font_list):
   font_array.append('this is the url')
   return font_array 
   
-
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
 
@@ -678,6 +666,34 @@ def convert_number_to_word(family):
   if len(family) > 1: return family
 
   return word_equivalents[family]
+
+#———————————————————————————————————————— fix_caps_adobe(entry)
+#
+#   exists to convert FuturaPT-ExtraBoldObl to FuturaPT-ExtraboldObl
+#   later on in process the style will be found correctly
+#
+#   accepts a string and does a dict search/replace
+
+adobe_replacements = {
+  'ExtraLight' : 'Extralight',
+  'Extra-Light': 'Extralight',
+  'ExtraBold'  : 'Extrabold',
+  'Extra-Bold' : 'Extrabold',
+  'SemiBold'   : 'Semibold',
+  'Semi-Bold'  : 'Semibold',
+  'UltraBlack' : 'Ultrablack',
+  'Ultra-Black': 'Ultrablack',
+}
+
+def fix_caps_adobe(entry):
+  if entry == '': return entry
+
+  for key in adobe_replacements:
+    if entry.find(key) > 0:
+      entry = entry.replace(key, adobe_replacements[key])
+      break
+
+  return entry
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
