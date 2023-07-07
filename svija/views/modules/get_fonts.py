@@ -21,44 +21,10 @@ from svija.models import Font
 import requests
 from django.db.models import Q
 
-#———————————————————————————————————————— equivalences
+#———————————————————————————————————————— style equivalens
 
 # how do display fonts that don't really have a weight work?
 # french roast: <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css"> weight:400
-
-adobe_weights = {
-  'extralight' : '200',
-  'extra-light': '200',
-  'extrabold'  : '800',
-  'extra-bold' : '800',
-  'demi'       : '600',
-  'semibold'   : '600',
-  'semi-bold'  : '600',
-  'ultrablack' : '900',
-  'ultra-black': '900',
-  'thin'       : '100',
-  'light'      : '300',
-  'book'       : '400',
-  'regular'    : '400',
-  'heavy'      : '600',
-  'medium'     : '500',
-  'bold'       : '700',
-  'black'      : '800',
-  'default'    : '400',
-}
-
-google_weights = {
-  'extralight':'200',
-  'semibold'  :'600',
-  'extrabold' :'800',
-  'thin'      :'100',
-  'light'     :'300',
-  'regular'   :'400',
-  'medium'    :'500',
-  'bold'      :'700',
-  'black'     :'900',
-  'default'   :'400',
-}
 
 style_equivalents = {
   'cond'      : 'condensed',
@@ -89,7 +55,7 @@ def get_fonts():
 
 #:::::::::::::::::::::::::::::::::::::::: add new fonts
 
-#———————————————————————————————————————— add new Woff fonts
+#———————————————————————————————————————— add new WOFF fonts
 
   for this_font in woff_fonts:
 
@@ -104,57 +70,80 @@ def get_fonts():
 
 #———————————————————————————————————————— add new Adobe fonts
 
+#   right now, the Adobe stylesheet is parsed again for each new font
+#   but generally, there will only be one stylesheet for a site
+# 
+#   so I could keep the contents and reuse it for each font
+#   but I need a way to track which sheets were integrated
+#   so that if someone uses two different adobe sheets
+#   it will still work
+
+#   <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css">
+
+  debug = ''
+
   for this_font in new_adobe_fonts:
 
-    # convert svg ref to family, weight and style
-    [family, style] = interpret_adobe(this_font.svg_ref)
-    this_font.family = add_spaces(family)
-    this_font.style  = style
-
-    # add font url & file contents
+    # check for valid link
     if this_font.adobe_pasted[0] != '<':   # contents is not "<link rel..."
       this_font.adobe_url = "⚠️ Error in pasted link"
       this_font.adobe_sheet = ''
       this_font.save()
       continue
 
+    # get list of fonts in stylesheet
+    font_list, stylesheet = font_list_from_link(this_font.adobe_pasted)
 
+    if type(font_list) is str:
+      this_font.adobe_url = font_list
+      this_font.adobe_sheet = ''
+      this_font.save()
+      continue
 
+    # convert svg ref to [family, weight and style]
+    font_array = interpret_adobe(this_font.svg_ref)
 
+    # find match between font_array and font_list
+    font = best_adobe_match(font_array, font_list)
 
+    # if match failed
+    if type(font) is str:
+      this_font.adobe_url = font
+      this_font.adobe_sheet = stylesheet
+      this_font.save()
+      continue
 
+    # all is good so save info
 
-
-
-
-
-
-#   # extract URL from retrieved CSS
-
-#   a_css, a_name, a_url, a_style, a_weight = get_adobe_font(this_font)
-
-#   this_font.family    = a_name
-#   this_font.adobe_sheet     = a_css
-#   this_font.adobe_url = a_url
-#   this_font.style     = a_weight +' '+a_style
-
-
-
-
+    this_font.family      = font[0]
+    this_font.style       = font[1]+font[2]
+#   this_font.adobe_url   = font[3]
+    this_font.adobe_sheet = stylesheet
     this_font.save()
 
+  return '\n\n\n'+debug+'\n\n\n', 'test'
+
+#   this_font.family = add_dashes(family)
+#   this_font.style  = style
 
 
 
+    # extract URL from retrieved CSS
+#   a_css, a_name, a_url, a_style, a_weight = parse_adobe_sheet(this_font)
 
+#   this_font.family      = a_name
+#   this_font.adobe_url   = a_url
+#   this_font.adobe_sheet = a_css
+#   this_font.style       = a_weight +' '+a_style
 
+#   this_font.save()
 
 #———————————————————————————————————————— add new Google fonts
 
   for this_font in new_google_fonts:
 
     [family, style] = interpret_google(this_font.svg_ref)
-    this_font.family = add_spaces(family)
+    this_font.family = add_dashes(family)
     this_font.style  = style
     this_font.save()
 
@@ -204,10 +193,10 @@ def get_fonts():
 
   # get comments from first font in list
   if len(adobe_fonts) > 0:
-    adobe_css = comments_only(adobe_fonts[0].adobe_sheet)
+    adobe_css = first_comment(adobe_fonts[0].adobe_sheet)
   
   for this_font in adobe_fonts:
-      adobe_css += "\n@font-face { font-family:'"+f.svg_ref + "'; src:url("+f.adobe_url+") format('woff'); }"
+      adobe_css += "\n@font-face { font-family:'"+this_font.svg_ref + "'; src:url("+this_font.adobe_url+") format('woff'); }"
 
 #———————————————————————————————————————— generate google fonts link
 
@@ -221,66 +210,7 @@ def get_fonts():
   return google_link, woff_css + adobe_css
 
 
-#:::::::::::::::::::::::::::::::::::::::: main methods
-
-#———————————————————————————————————————— interpret_adobe(svg_ref)
-#
-#   if it's adobe, we search for one of the weights and
-#   split on it, then use family + weight + rest (style),
-#   with slashes changed to single spaces
-#   style is optional
-
-# results = ''
-# for key in adobe_weights:
-#   if txt.find(key) > 0:
-#     txt = txt.replace(key, adobe_weights[key])
-
-def interpret_adobe(svg_ref):
-  family = weight = style = ''
-  svg_low = svg_ref.lower()
-
-  for key in adobe_weights:
-    if svg_low.find(key) > 0:
-      parts = svg_low.split(key)
-
-      family = svg_ref[:len(parts[0])]
-      weight = adobe_weights[key]
-
-      if parts[1] != '':
-        style = svg_ref[0 - len(parts[1]):]
-
-      break
-
-# return [family, 'xxx'] # 8-
-
-  if family == '':                      # nothing was found
-    family = svg_ref
-
-  if family[-1:] == '-':                # remove trailing slashes
-    family = family[:-1]                # works
-
-# return [family, 'xxx'] # 8 
-
-# possibly convert family FuturaPT to Futura PT 
-
-  if style != '':
-    style_low = style.lower()
-  
-    if style_low in style_equivalents:
-      style = style_equivalents[style_low]
-    else:
-      # throw it all away, we don't know
-      family = svg_ref
-      weight = ''
-      style  = ''
-
-  if family != '':                      # changes - to space for legibility
-    family = family.replace('-', ' ')   # might cause problems
-
-  if weight == '':
-    weight = adobe_weights['default']
-
-  return [family, weight + style]
+#:::::::::::::::::::::::::::::::::::::::: google-related methods
 
 #———————————————————————————————————————— interpret_google(svg_ref)
 #
@@ -288,6 +218,19 @@ def interpret_adobe(svg_ref):
 #   split on it, then use family + weight + rest (style),
 #   with slashes changed to single spaces
 #   style is optional
+
+google_weights = {
+  'extralight':'200',
+  'semibold'  :'600',
+  'extrabold' :'800',
+  'thin'      :'100',
+  'light'     :'300',
+  'regular'   :'400',
+  'medium'    :'500',
+  'bold'      :'700',
+  'black'     :'900',
+  'default'   :'400',
+}
 
 def interpret_google(svg_ref):
 
@@ -343,42 +286,118 @@ def interpret_google(svg_ref):
   return [family, weight + style]
 
 
-#:::::::::::::::::::::::::::::::::::::::: adobe font methods
+#:::::::::::::::::::::::::::::::::::::::: adobe-related methods
 
-#———————————————————————————————————————— get_adobe_font(this_font)
+#———————————————————————————————————————— interpret_adobe(svg_ref)
 #
-#    user pastes a string like
-#   
-#    <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+#   in Adobe css, everything is lowercase with slash separators
 #
-#    returns css, name, woff url, style and weight
+#   if it's adobe, we search for one of the weights and
+#   split on it, then use family + weight + rest (style),
+#   with slashes changed to single spaces
+#   style is optional
 
-def get_adobe_font(font):
+# results = ''
+# for key in adobe_weights:
+#   if txt.find(key) > 0:
+#     txt = txt.replace(key, adobe_weights[key])
 
-  if font.adobe_pasted[0] != '<': return font.adobe_sheet
+adobe_weights = {
+  'extralight' : '200',
+  'extra-light': '200',
+  'extrabold'  : '800',
+  'extra-bold' : '800',
+  'demi'       : '600',
+  'semibold'   : '600',
+  'semi-bold'  : '600',
+  'ultrablack' : '900',
+  'ultra-black': '900',
+  'thin'       : '100',
+  'light'      : '300',
+  'book'       : '400',
+  'regular'    : '400',
+  'heavy'      : '600',
+  'medium'     : '500',
+  'bold'       : '700',
+  'black'      : '800',
+  'default'    : '400',
+}
+
+def interpret_adobe(svg_ref):
+  family = weight = style = ''
+  svg_low = svg_ref.lower()
+
+  for key in adobe_weights:
+    if svg_low.find(key) > 0:
+      parts = svg_low.split(key)
+
+      family = svg_low[:len(parts[0])]
+      weight = adobe_weights[key]
+
+      if parts[1] != '':
+        style = svg_low[0 - len(parts[1]):]
+
+      break
+
+# return [family, 'xxx'] # 8-
+
+  if family == '':                      # nothing was found
+    family = svg_low
+
+  if family[-1:] == '-':                # remove trailing slashes
+    family = family[:-1]                # works
+
+# return [family, 'xxx'] # 8 
+
+# possibly convert family FuturaPT to Futura PT 
+
+  if style != '':
+    style_low = style.lower()
+  
+    if style_low in style_equivalents:
+      style = style_equivalents[style_low]
+    else:
+      # throw it all away, we don't know
+      family = svg_low
+      weight = ''
+      style  = ''
+
+  family = convert_number_to_word(family)
+
+  if weight == '':
+    weight = adobe_weights['default']
+
+  if style == '':
+    style = 'normal'
+
+  return [family, weight, style]
+
+#———————————————————————————————————————— parse_adobe_sheet(font)
+
+def parse_adobe_sheet(font):
+
+  #—————————————————————————————————————— validate argument
+
+  if font.adobe_pasted[0] != '<': return font.adobe
 
   #—————————————————————————————————————— get url then CSS file
 
-  bits = font.adobe_pasted.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+  parts = font.adobe_pasted.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
-  if len(bits) < 4:
-    return '', '', '⚠️ check pasted link', '', ''
+  stylesheet = file_from_url(parts[3])
 
-  file_contents = file_from_url(bits[3])
-
-  if file_contents[0:2] != '/*':
-    return '', '', '⚠️ check pasted link', '', ''
+  if stylesheet[0:2] != '/*': return '', '', '⚠️ check pasted link', '', ''
 
   #—————————————————————————————————————— find match for font
 
-  css_fonts = font_list_from_css(file_contents)
+  css_fonts = font_list_from_link(stylesheet)
 
   best_value  = 0
   best_choice = 0
 
-  target_font = add_spaces(font.svg_ref) # returns acier-bat-text-gris
+  target_font = add_dashes(font.svg_ref) # returns acier-bat-text-gris
   target_font = weights_to_numbers_adobe(target_font)
-  target_font = clean_styles(target_font)
+  target_font = replace_styles(target_font)
 
   indx        = 0
 
@@ -395,23 +414,26 @@ def get_adobe_font(font):
 
     indx += 1
 
-#———————————————————————————————————————— return best match
+  #———————————————————————————————————————— return best match
 
 # file_contents    = '/*    '+font.adobe_sheet + '    */\n' + file_contents
   final_font = css_fonts[best_choice]
 
   return file_contents, final_font['name'], final_font['woff'], final_font['style'], final_font['weight']
 
-#———————————————————————————————————————— font_list_from_css(this_font)
+
+#———————————————————————————————————————— font_list_from_link(this_font)
 #
-#   returns list of fonts found in css
+#   accepts pasted adobe link
+#
+#   returns error string or list of fonts found in css + stylesheet
 #
 #   returned fonts are arrays:
-#   - name: family name
-#   - woff: woff source URL
-#   - style
-#   - weight (converted to number)
-#
+#   - family: family name
+#   - woff2 : woff source URL
+#   - style : style
+#   - weight: number
+
 #   /* ADOBE CSS FILE CONTENTS
 #    * The Typekit service used to deliver this font or fonts for use on websites
 #    * is provided by Adobe and is subject to these Terms of Use
@@ -444,76 +466,71 @@ def get_adobe_font(font):
 #   .tk-abigail { font-family: "abigail",sans-serif; }
 #   .tk-acier-bat-gris { font-family: "acier-bat-gris",sans-serif; }
 
-def font_list_from_css(css_src):
+def font_list_from_link(pasted_link):
 
-#———————————————————————————————————————— initialise
+  #———————————————————————————————————————— get file contents
+
+  parts = pasted_link.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+  stylesheet = file_from_url(parts[3])
+  if stylesheet[0:2] != '/*': return '⚠️ Error in pasted link'
+
+  #———————————————————————————————————————— initialise
 
   font_list = []
   start_index = 0
 
-  how_many = int(css_src.count('font-face')) # because each font is listed once with source, then once with class
+  how_many = int(stylesheet.count('font-face'))
 
   for x in range(how_many):
 
-#   - name1, name2:     start & end indexes
-#   - woff1, woff2:     start & end indexes
-#   - style1, style2:   start & end indexes
-#   - weight1, weight2: start & end indexes
+    #———————————————————————————————————— name
+  
+    name_begin = stylesheet.find('font-family', start_index) + 13
+    name_end   = stylesheet.find('"', name_begin)
+    name       = stylesheet[name_begin:name_end]
+  
+    #———————————————————————————————————— url
 
-    #———————————————————————————————————— get family indexes
-  
-    this_adobe  = {}
-  
-    name_first = css_src.find('font-family', start_index) + 13
-    name_last  = css_src.find('"', name_first)
-  
-    this_adobe['name1'] = name_first
-    this_adobe['name2'] = name_last
-    this_adobe['name']  = css_src[name_first:name_last]
-  
-    #———————————————————————————————————— get woff indexes CAN SIMPLIFY — SEE BELOW
-
-#   NOTE: the three links are all the same except for the character before the ?:
-#   
-#   L = woff2
-#   d = woff
-#   a = opentype
-#   I can use this fact to simplify the code.
-  
-    woff2      = css_src.find('url("', name_last) + 5
-    woff_first = css_src.find('url("', woff2) + 5
-    woff_last  = css_src.find('")', woff_first)
-  
-    this_adobe['woff']  = css_src[woff_first:woff_last]
+    url_begin = stylesheet.find('url("', name_end) + 5
+    url_end   = stylesheet.find('")', url_begin)
+    url       = stylesheet[url_begin:url_end]
   
     #———————————————————————————————————— get style indexes
   
-    style_first = css_src.find('font-style:', name_last) + 11
-    style_last  = css_src.find(';', style_first)
-  
-    this_adobe['style']  = css_src[style_first:style_last]
+    style_begin = stylesheet.find('font-style:', name_end) + 11
+    style_end   = stylesheet.find(';', style_begin)
+    style       = stylesheet[style_begin:style_end]
   
     #———————————————————————————————————— get weight indexes
   
-    weight_first = css_src.find('font-weight:', name_last) + 12
-    weight_last  = css_src.find(';', weight_first)
-  
-    this_adobe['weight']  = css_src[weight_first:weight_last]
+    weight_begin = stylesheet.find('font-weight:', name_end) + 12
+    weight_end   = stylesheet.find(';', weight_begin)
+    weight       = stylesheet[weight_begin:weight_end]
   
     #———————————————————————————————————— add font to list
 
-    font_list.append(this_adobe)
-    start_index = style_last
+    font = {'name': name,  'woff': url, 'style': style, 'weight': weight,}
+    font_list.append(font)
+    start_index = style_end
+
+  return font_list, stylesheet
+
+#———————————————————————————————————————— best_adobe_match(font_array, font_list)
+
+def best_adobe_match(font_array, font_list):
+# return '⚠️ Font not found in stylesheet'
+  return font_array
+  return font_array.append('this is the url')
 
 
-  return font_list
+#:::::::::::::::::::::::::::::::::::::::: utility methods
 
-#———————————————————————————————————————— clean_styles(txt)
+#———————————————————————————————————————— replace_styles(txt)
 
 #   accepts a string like FuturaPT-Bold-Obl, and replaces
 #   obl by italic, thin by 100 etc.
 
-def clean_styles(txt):
+def replace_styles(txt):
 
   results = ''
   for key in style_equivalents:
@@ -522,48 +539,33 @@ def clean_styles(txt):
 
   return txt
 
-#———————————————————————————————————————— italics_present(txt1, txt2)
-
-def italics_present(targ, cand):
-
-  if cand.find('italic') > 0:
-     if targ.find('italic') < 1:
-       return -1
-
-  return 0
-
-
-#:::::::::::::::::::::::::::::::::::::::: utility methods
-
-#———————————————————————————————————————— add_spaces(txt)
+#———————————————————————————————————————— add_dashes(txt)
 #
-#   splits a name into parts separated by -
-#   - if this char is dash, replace with space
-#   - if this char is lower & next is upper, add space between them
-#   - if this car is upper & prev is upper & next is lower, add space after this char
+#   requires original case (won't work on all lower case input)
+#
+#   splits a name into parts separated by -, one character at a time
+#   - ' ' —› '-' Open Sans —› Open-Sans
+#   - xX —› x-X     OpenSans —› Open-Sans
+#   - XXx —› X-Xx   IBMPlex —› IBM-Plex
 #
 #   split at each -
 
-def add_spaces(txt):
-  if txt == '':
-    return ''
+def add_dashes(txt):
+  if txt == '' or len(txt) == 1: return txt
 
   result = ''
 
   for x in range(len(txt) - 1):
 
     if txt[x] == ' ':  # space
-      result += ' '
-      continue
+      result += '-'; continue
 
     if txt[x].islower() and txt[x+1].isupper(): # transition lower › upper
-      result += txt[x] + ' '
-      continue
+      result += txt[x] + '-'; continue
 
     if x > 0:
       if txt[x-1].isupper() and txt[x].isupper() and txt[x+1].islower(): # transition upper > lower
-        result = result[0:len(result)-1] + txt[x-1] + ' ' + txt[x]
-        continue
+        result = result[0:len(result)-1] + txt[x-1] + '-' + txt[x]; continue
 
     result += txt[x]
 
@@ -598,9 +600,9 @@ def weights_to_numbers_adobe(txt):
 
   return txt
 
-#———————————————————————————————————————— comments_only(css)
+#———————————————————————————————————————— first_comment(css)
 
-def comments_only(css):
+def first_comment(css):
   start = css.find('/*\n')
   end   = css.find('"}*/\n') + 4
   return css[start:end] + '\n'
@@ -635,5 +637,73 @@ def match_count(str1, str2):
   
   return matches
 
+#———————————————————————————————————————— add_dashes(txt)
+#
+#   splits a name into parts separated by -
+#   - if this char is space, replace with -
+#   - if this char is lower & next is upper, add - between them
+#   - if this car is upper & prev is upper & next is lower, add - after this char
+#
+#   split at each -
+
+def add_dashes(txt):
+  
+  dashes = ''
+
+  for x in range(len(txt) - 1):
+
+
+    if txt[x] == ' ':  # space
+      dashes += '-'
+      continue
+
+    if txt[x].islower() and txt[x+1].isupper(): # transition lower › upper
+      dashes += txt[x] + '-'
+      continue
+
+    if x > 0:
+      if txt[x-1].isupper() and txt[x].isupper() and txt[x+1].islower(): # transition upper > lower
+        dashes = dashes[0:len(dashes)-1] + txt[x-1] + '-' + txt[x]
+        continue
+
+    dashes += txt[x]
+
+  dashes += txt[x+1]
+  dashes = dashes.lower()
+
+  return dashes
+
+#———————————————————————————————————————— italics_present(txt1, txt2)
+
+def italics_present(targ, cand):
+
+  if cand.find('italic') > 0:
+     if targ.find('italic') < 1:
+       return -1
+
+  return 0
+
+#———————————————————————————————————————— convert_number_to_word(family)
+
+word_equivalents = {
+  '1'      : 'one',
+  '2'      : 'two',
+  '3'      : 'three',
+  '4'      : 'four',
+  '5'      : 'five',
+  '6'      : 'six',
+  '7'      : 'seven',
+  '8'      : 'eight',
+  '9'      : 'nine',
+  '0'      : 'zero',
+}
+def convert_number_to_word(family):
+
+  if not family.isdecimal(): return family
+  if len(family) > 1: return family
+
+  return word_equivalents[family]
+
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+

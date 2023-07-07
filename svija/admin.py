@@ -56,13 +56,13 @@ class FontAdmin(admin.ModelAdmin):
     return obj.adobe_pasted[53:60]
 
   # display on parent page
-  list_display = ('svg_ref', 'family', 'style', 'adobe_id', 'google', 'woff', 'enabled', 'category',)
+  list_display = ('svg_ref', 'family', 'weight', 'style', 'adobe_id', 'google', 'woff', 'enabled', 'category',)
   list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    ('font information',  {'fields': ['enabled', ('svg_ref', 'category',), ('family', 'style',), ('woff', 'google',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
+    ('font information',  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
 
   ]   
 
