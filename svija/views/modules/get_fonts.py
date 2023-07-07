@@ -80,8 +80,6 @@ def get_fonts():
 
 #   <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css">
 
-  debug = ''
-
   for this_font in new_adobe_fonts:
 
     # check for valid link
@@ -114,29 +112,13 @@ def get_fonts():
       continue
 
     # all is good so save info
-
     this_font.family      = font[0]
-    this_font.style       = font[1]+font[2]
-#   this_font.adobe_url   = font[3]
+    this_font.weight      = font[1]
+    this_font.style       = font[2]
+    this_font.adobe_url   = font[3]
     this_font.adobe_sheet = stylesheet
     this_font.save()
 
-  return '\n\n\n'+debug+'\n\n\n', 'test'
-
-#   this_font.family = add_dashes(family)
-#   this_font.style  = style
-
-
-
-    # extract URL from retrieved CSS
-#   a_css, a_name, a_url, a_style, a_weight = parse_adobe_sheet(this_font)
-
-#   this_font.family      = a_name
-#   this_font.adobe_url   = a_url
-#   this_font.adobe_sheet = a_css
-#   this_font.style       = a_weight +' '+a_style
-
-#   this_font.save()
 
 #———————————————————————————————————————— add new Google fonts
 
@@ -322,9 +304,17 @@ adobe_weights = {
   'black'      : '800',
   'default'    : '400',
 }
+adobe_styles = {
+  'cond'      : 'condensed',
+  'oblique'   : 'italic',
+  'obl'       : 'italic',
+  'italic'    : 'italic',
+}
+
 
 def interpret_adobe(svg_ref):
   family = weight = style = ''
+  svg_ref = add_dashes(svg_ref)
   svg_low = svg_ref.lower()
 
   for key in adobe_weights:
@@ -509,18 +499,39 @@ def font_list_from_link(pasted_link):
   
     #———————————————————————————————————— add font to list
 
-    font = {'name': name,  'woff': url, 'style': style, 'weight': weight,}
+    font = {'family': name,  'url': url, 'style': style, 'weight': weight,}
     font_list.append(font)
     start_index = style_end
 
   return font_list, stylesheet
 
 #———————————————————————————————————————— best_adobe_match(font_array, font_list)
+#
+#   accepts:
+#
+#   font_array [family, weight, style]
+#   font_list  [{'family': family,  'url': url, 'style': style, 'weight': weight,} ... ]
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
+#   
 
 def best_adobe_match(font_array, font_list):
+
 # return '⚠️ Font not found in stylesheet'
-  return font_array
-  return font_array.append('this is the url')
+
+  font_array.append('this is the url')
+  return font_array 
+  
 
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
@@ -636,42 +647,6 @@ def match_count(str1, str2):
         matches += 1
   
   return matches
-
-#———————————————————————————————————————— add_dashes(txt)
-#
-#   splits a name into parts separated by -
-#   - if this char is space, replace with -
-#   - if this char is lower & next is upper, add - between them
-#   - if this car is upper & prev is upper & next is lower, add - after this char
-#
-#   split at each -
-
-def add_dashes(txt):
-  
-  dashes = ''
-
-  for x in range(len(txt) - 1):
-
-
-    if txt[x] == ' ':  # space
-      dashes += '-'
-      continue
-
-    if txt[x].islower() and txt[x+1].isupper(): # transition lower › upper
-      dashes += txt[x] + '-'
-      continue
-
-    if x > 0:
-      if txt[x-1].isupper() and txt[x].isupper() and txt[x+1].islower(): # transition upper > lower
-        dashes = dashes[0:len(dashes)-1] + txt[x-1] + '-' + txt[x]
-        continue
-
-    dashes += txt[x]
-
-  dashes += txt[x+1]
-  dashes = dashes.lower()
-
-  return dashes
 
 #———————————————————————————————————————— italics_present(txt1, txt2)
 
