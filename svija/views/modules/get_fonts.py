@@ -99,7 +99,7 @@ def get_fonts():
       continue
 
     # convert svg ref to [family, weight and style]
-    target_font = interpret_adobe(this_font.svg_ref)
+    target_font = interpret_adobe(this_font.svg_ref) # family:eight, weight:600, style:normal
 
     # find match between target_font and font_list
     font = best_adobe_match(target_font, font_list)
@@ -320,6 +320,7 @@ def interpret_adobe(svg_ref):
   raw_string = add_dashes(svg_ref).lower()
 
   parts = raw_string.split('-')
+  parts[0] = convert_number_to_word(parts[0]) # fix for a font called "8"
 
 # start at end of string, and if it's either a weight or a style
 # we keep going
@@ -498,7 +499,7 @@ def font_list_from_link(pasted_link):
 
   return font_list, stylesheet
 
-#———————————————————————————————————————— best_adobe_match(target_font, font_list) NOT FINISHED
+#———————————————————————————————————————— best_adobe_match(target_font, font_list)
 #
 #   accepts:
 #
@@ -512,121 +513,80 @@ def best_adobe_match(target_font, font_list):
 
   #————— get best family match (breaks for family futura-pt-bold)
 
-  counter   = 0
-  max       = 0
-  max_which = 0
+  best_match       = 0
 
   for font in font_list:
 
     # match at beginning of family name + match at end of family name
-    this_max = char_match(target_font['family'], font['family'])
-    if this_max > max:
-      max = this_max
-      max_which = counter
+    this_match = matching_chars(target_font['family'], font['family'])
+    if this_match > best_match:
+      best_match = this_match
+      family = font['family']
 
-    counter += 1
-
-  #————— family is established
-  
-  if max == 0:
-    return '⚠️ Font not found in stylesheet'
-
-  else:
-    family = font_list[max_which]['family']
+  if best_match == 0: return '⚠️ Font not found in stylesheet'
 
   #————— get best style match
 
-  counter   = 0
-  max       = 0
-  max_which = 0
+  best_match  = 0
 
   for font in font_list:
     if family != font['family']: continue
 
-    this_max = char_match(target_font['style'], font['style'])
-    if this_max > max:
-      max = this_max
-      max_which = counter
+    this_match = matching_chars(target_font['style'], font['style'])
+    if this_match > best_match:
+      best_match = this_match
+      style = font['style']
 
-    counter += 1
-
-  #————— style established
-  
-  if max == 0:
-    style = ''
-  else:
-    style = font_list[max_which]['style']
+  if best_match == 0:  style = ''
 
   #————— get best weight match
 
-  counter   = 0
-  max       = 0
-  max_which = 0
+  best_match  = 0
 
   for font in font_list:
     if family != font['family']: continue
+#   if style  != font['style' ]: continue
 
-    this_max = char_match(target_font['weight'], font['weight'])
-    if this_max > max:
-      max = this_max
-      max_which = counter
+    this_match = matching_chars(target_font['weight'], font['weight'])
 
-    counter += 1
+    if this_match > best_match:
+      best_match = this_match
+      weight = font['weight']
 
-  #————— weight established
-  
-  if max == 0:
-    weight = ''
-  else:
-    weight = font_list[max_which]['weight']
+  if best_match == 0: weight = ''
 
-  #————— get url
+  #————— style if not present find font with same family & weight, and steal style
 
-  probable_weight = ''
+  if style == '':
+    for font in font_list:
+      if family != font['family']: continue
+      if weight != font['weight']: continue
+      style = font['style']
+      break
+
+  #————— weight if not present find font with same family & style, and steal weight
+
+  if weight == '':
+    for font in font_list:
+      if family != font['family']: continue
+      if style != font['style']: continue
+      weight = font['weight']
+      break
+
+  #————— url
 
   for font in font_list:
-    if family == font['family']:
-       if style == font['style']:
-         if weight == font['weight']:
-           url = font['url']
-           break
-         else:
-           url = font['url']
-           probable_weight = font['weight']
+    if family != font['family']: continue
+    if weight!= font['weight']: continue
+    if style != font['style']: continue
+    url = font['url']
+    break
 
-  if weight == '': weight = probable_weight
+  #————— done!
 
-  chosen = {'family': family, 'style': style, 'weight': weight,  'url': url,}
-  
+  chosen = {'family': family, 'style': style, 'weight': weight,  'url': url,} # eight, 600, normal
   return chosen
-
-# target_font['url'] = 'this is the url'
   
-#———————————————————————————————————————— char_match(str1, str2)
-#
-#   number of matching chars at beginning of name
-#   + nmuber of matching chars at end of name
-
-def char_match(str1, str2):
-
-  len1 = len(str1)
-  len2 = len(str2)
-
-  counter = min(len1, len2)
-  matching = 0
-
-  for x in range(0, counter):
-    if str1[x:x+1] == str2[x:x+1]:
-      matching += 1
-    else: break
-
-  for x in range(0, counter):
-    if str1[len1-x-1:len1-x] == str2[len2-x-1:len2-x]:
-      matching += 1
-    else: break
-
-  return matching
-
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
 
@@ -766,6 +726,7 @@ word_equivalents = {
   '9'      : 'nine',
   '0'      : 'zero',
 }
+
 def convert_number_to_word(family):
 
   if not family.isdecimal(): return family
@@ -800,6 +761,36 @@ def fix_caps_adobe(entry):
       break
 
   return entry
+
+#———————————————————————————————————————— matching_chars(str1, str2)
+#
+#   number of matching chars at beginning of name
+#   + nmuber of matching chars at end of name
+
+def matching_chars(str1, str2):
+
+  len1 = len(str1)
+  len2 = len(str2)
+
+  counter = min(len1, len2)
+  matching = 0
+
+  for x in range(0, counter):
+    if str1[x:x+1] == str2[x:x+1]:
+      matching += 1
+    else: break
+
+  for x in range(0, counter):
+    if str1[len1-x-1:len1-x] == str2[len2-x-1:len2-x]:
+      matching += 1
+    else: break
+
+  return matching
+
+# test
+w1 = '300'
+w2 = '300'
+print( 'matching_chars: '+str(matching_chars(w1, w2)))
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
