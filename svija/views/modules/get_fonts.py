@@ -21,18 +21,6 @@ from svija.models import Font
 import requests
 from django.db.models import Q
 
-#———————————————————————————————————————— style equivalens
-
-# how do display fonts that don't really have a weight work?
-# french roast: <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css"> weight:400
-
-style_equivalents = {
-  'cond'      : 'condensed',
-  'oblique'   : 'Italic',
-  'obl'       : 'Italic',
-  'italic'    : 'Italic',
-}
-
 
 #:::::::::::::::::::::::::::::::::::::::: main method
 
@@ -122,11 +110,20 @@ def get_fonts():
 
 #———————————————————————————————————————— add new Google fonts
 
+# font-family: 'Open Sans';
+# font-style: normal;
+# font-weight: 300;
+# font-stretch: 100%;
+# font-display: swap;
+# src: url(https://fonts.gstatic.com/s/opensans/v35/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4taVQUwaEQbjB_mQ.woff) format('woff');
+# unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+
   for this_font in new_google_fonts:
 
-    [family, style] = interpret_google(this_font.svg_ref)
-    this_font.family = add_dashes(family)
-    this_font.style  = style
+    font = interpret_google(this_font.svg_ref)
+    this_font.family      = font['family']
+    this_font.weight      = font['weight']
+    this_font.style       = font['style']
     this_font.save()
 
 
@@ -213,12 +210,25 @@ google_weights = {
   'black'     :'900',
   'default'   :'400',
 }
+google_styles = {
+  'cond'      : 'condensed',
+  'oblique'   : 'Italic',
+  'obl'       : 'Italic',
+  'italic'    : 'Italic',
+}
+
+
+google_styles = {
+  'default'   :'normal',
+}
+
 
 def interpret_google(svg_ref):
 
   family = weight = style = ''
   svg_low = svg_ref.lower()
 
+  #————— split SVG ref at weight to get family & style
   for key in google_weights:
     if svg_low.find(key) > 0:
       parts = svg_low.split(key)
@@ -232,18 +242,21 @@ def interpret_google(svg_ref):
 
       break
 
-  if family == '':                      # nothing was found
+  #————— weight was not found in SVG reference
+  if family == '':
     family = svg_ref
 
 # possibly convert family FuturaPT to Futura PT 
 
   style = style.replace('-', '')
 
-  if style != '':
+  if style == '':
+    style = google_styles['default']
+  else:
     style_low = style.lower()
   
-    if style_low in style_equivalents:
-      style = style_equivalents[style_low]
+    if style_low in google_styles:
+      style = google_styles[style_low]
     else:
       # throw it all away, we don't know
       family = svg_ref
@@ -255,8 +268,8 @@ def interpret_google(svg_ref):
     parts = svg_ref.split('-')
     last = parts[len(parts) - 1].lower()
 
-    if last in style_equivalents:
-      style = style_equivalents[last]
+    if last in google_styles:
+      style = google_styles[last]
       family = svg_ref[:len(svg_ref) - len(style)]
 
   if family[-1:] == '-':                # remove trailing dashes
@@ -265,7 +278,9 @@ def interpret_google(svg_ref):
   if family != '':                      # changes - to space for legibility
     family = family.replace('-', ' ')   # might cause problems
 
-  return [family, weight + style]
+  family = add_spaces(family)
+
+  return {'family':family, 'weight':weight, 'style':style, }
 
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related methods
@@ -289,16 +304,16 @@ adobe_weights = {
   'extra-light': '200',
   'extrabold'  : '800',
   'extra-bold' : '800',
-  'demi'       : '600',
   'semibold'   : '600',
   'semi-bold'  : '600',
   'ultrablack' : '900',
   'ultra-black': '900',
+  'demi'       : '600',
   'thin'       : '100',
   'light'      : '300',
   'book'       : '400',
   'regular'    : '400',
-  'heavy'      : '600',
+  'heavy'      : '700',
   'medium'     : '500',
   'bold'       : '700',
   'black'      : '800',
@@ -381,7 +396,7 @@ def parse_adobe_sheet(font):
 
   target_font = add_dashes(font.svg_ref) # returns acier-bat-text-gris
   target_font = weights_to_numbers_adobe(target_font)
-  target_font = replace_styles(target_font)
+  target_font = replace_styles(target_font, adobe_styles)
 
   indx        = 0
 
@@ -595,14 +610,48 @@ def best_adobe_match(target_font, font_list):
 #   accepts a string like FuturaPT-Bold-Obl, and replaces
 #   obl by italic, thin by 100 etc.
 
-def replace_styles(txt):
+def replace_styles(txt, dico):
 
   results = ''
-  for key in style_equivalents:
+  for key in google_styles:
     if txt.find(key) > 0:
-      txt = txt.replace(key, style_equivalents[key])
+      txt = txt.replace(key, google_styles[key])
 
   return txt
+
+#———————————————————————————————————————— add_spaces(txt)
+#
+#   requires original case (won't work on all lower case input)
+#
+#   splits a name into parts separated by ' ', one character at a time
+#   - '-' —› ' '    OpenSans —› Open Sans
+#   - xX —› x X     OpenSans —› Open Sans
+#   - XXx —› X Xx   IBMPlex —› IBM Plex
+#
+#   split at each -
+
+def add_spaces(txt):
+  if txt == '' or len(txt) == 1: return txt
+
+  result = ''
+
+  for x in range(len(txt) - 1):
+
+    if txt[x] == '-':  # space
+      result += ' '; continue
+
+    if txt[x].islower() and txt[x+1].isupper(): # transition lower › upper
+      result += txt[x] + ' '; continue
+
+    if x > 0:
+      if txt[x-1].isupper() and txt[x].isupper() and txt[x+1].islower(): # transition upper > lower
+        result = result[0:len(result)-1] + txt[x-1] + ' ' + txt[x]; continue
+
+    result += txt[x]
+
+  result += txt[x+1]
+
+  return result
 
 #———————————————————————————————————————— add_dashes(txt)
 #
