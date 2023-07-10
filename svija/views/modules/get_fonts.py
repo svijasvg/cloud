@@ -309,7 +309,7 @@ adobe_styles = {
   'oblique'   : 'italic',
   'obl'       : 'italic',
   'italic'    : 'italic',
-  'default'   : 'normal',
+  'default'   : '',
 }
 
 def interpret_adobe(svg_ref):
@@ -336,18 +336,22 @@ def interpret_adobe(svg_ref):
     if this_part in adobe_weights:
       weight = adobe_weights[this_part]
       parts.pop() # remove last element
+      continue
 
     if this_part in adobe_styles:
       style = adobe_styles[this_part]
       parts.pop() # remove last element
+      continue
+
+    break
 
   family = '-'.join(parts) 
 
   if style == '':
-    style = adobe_styles['normal']
+    style = adobe_styles['default']
 
   if weight == '':
-    wdight = adobe_weights['default']
+    weight = adobe_weights['default']
 
   return [family, weight, style]
 
