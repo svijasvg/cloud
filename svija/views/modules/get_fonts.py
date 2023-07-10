@@ -22,7 +22,7 @@ import requests
 from django.db.models import Q
 
 
-#:::::::::::::::::::::::::::::::::::::::: main method
+#:::::::::::::::::::::::::::::::::::::::: main definition
 
 #———————————————————————————————————————— ▼ def get_fonts()
 
@@ -36,12 +36,10 @@ def get_fonts():
   google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True))
   new_google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True) & Q(family=''))
 
-  adobe_fonts_array  = []
-  google_fonts_array = []
   google_link  = ''
 
 
-#:::::::::::::::::::::::::::::::::::::::: add new fonts
+#———————————————————————————————————————— add new fonts
 
 #———————————————————————————————————————— add new WOFF fonts
 
@@ -110,14 +108,6 @@ def get_fonts():
 
 #———————————————————————————————————————— add new Google fonts
 
-# font-family: 'Open Sans';
-# font-style: normal;
-# font-weight: 300;
-# font-stretch: 100%;
-# font-display: swap;
-# src: url(https://fonts.gstatic.com/s/opensans/v35/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4taVQUwaEQbjB_mQ.woff) format('woff');
-# unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-
   for this_font in new_google_fonts:
 
     font = interpret_google(this_font.svg_ref)
@@ -127,7 +117,7 @@ def get_fonts():
     this_font.save()
 
 
-#:::::::::::::::::::::::::::::::::::::::: fonts are set up, now generate css
+#———————————————————————————————————————— fonts are set up, now generate css
 
 #———————————————————————————————————————— loop through woff fonts
 
@@ -177,54 +167,99 @@ def get_fonts():
   for this_font in adobe_fonts:
       adobe_css += "\n@font-face { font-family:'"+this_font.svg_ref + "'; src:url("+this_font.adobe_url+") format('woff'); }"
 
-#———————————————————————————————————————— generate google fonts link
+#———————————————————————————————————————— generate google font link & css
 
-  google_css = ''
-  if len(google_fonts_array) > 0:
-    link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
-    google_link = link_str.format(('|').join(google_fonts_array))
+  google_link = make_google_link(google_fonts)
+  google_css  = make_google_css(google_fonts)
 
 #———————————————————————————————————————— ▲ return link & css
 
-  return google_link, woff_css + adobe_css
+  return google_link, woff_css + adobe_css + google_css
 
 
 #:::::::::::::::::::::::::::::::::::::::: google-related methods
 
 #———————————————————————————————————————— interpret_google(svg_ref)
-#
+
 #   if it's google, we search for one of the weights and
 #   split on it, then use family + weight + rest (style),
 #   with slashes changed to single spaces
 #   style is optional
 
+#   font-family: 'Open Sans';
+#   font-style: normal;
+#   font-weight: 300;
+#   font-stretch: 100%;
+#   font-display: swap;
+#   src: url(https://fonts.gstatic.com/s/opensans/v35/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4taVQUwaEQbjB_mQ.woff) format('woff');
+#   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+
 google_weights = {
-  'extralight':'200',
-  'semibold'  :'600',
-  'extrabold' :'800',
-  'thin'      :'100',
-  'light'     :'300',
-  'regular'   :'400',
-  'medium'    :'500',
-  'bold'      :'700',
-  'black'     :'900',
-  'default'   :'400',
+  'Extralight' : '200',
+  'Extra-Light': '200',
+  'Semibold'   : '600',
+  'Semi-Bold'  : '600',
+  'Extrabold'  : '800',
+  'Extra-Bold' : '800',
+  'Thin'       : '100',
+  'Light'      : '300',
+  'Regular'    : '400',
+  'Medium'     : '500',
+  'Bold'       : '700',
+  'Black'      : '900',
+  'default'    : '400',
 }
 google_styles = {
-  'cond'      : 'condensed',
-  'oblique'   : 'Italic',
-  'obl'       : 'Italic',
-  'italic'    : 'Italic',
-}
-
-
-google_styles = {
-  'default'   :'normal',
+  'Cond'       : 'condensed',
+  'Oblique'    : 'italic',
+  'Obl'        : 'italic',
+  'Italic'     : 'italic',
+  'default'    : 'normal',
 }
 
 
 def interpret_google(svg_ref):
 
+  # need to replace ExtraBlack with Extrablack, it will work out well
+  svg_ref = fix_caps_adobe(svg_ref)
+
+  raw_string = add_dashes(svg_ref)
+
+  parts = raw_string.split('-')
+  parts[0] = convert_number_to_word(parts[0]) # fix for a font called "8"
+
+# start at end of string, and if it's either a weight or a style
+# we keep going
+
+  family = weight = style = ''
+
+  # range(start, stop, step)
+  for part in range(len(parts)-1, -1, -1):
+    this_part = parts[part]
+
+    if this_part in google_weights:
+      weight = google_weights[this_part]
+      parts.pop() # remove last element
+      continue
+
+    if this_part in google_styles:
+      style = google_styles[this_part]
+      parts.pop() # remove last element
+      continue
+
+    break
+
+  family = ' '.join(parts) 
+
+  if style == '':
+    style = google_styles['default']
+
+  if weight == '':
+    weight = google_weights['default']
+
+  return {'family':family, 'weight':weight, 'style':style, }
+
+# OLD CODE
   family = weight = style = ''
   svg_low = svg_ref.lower()
 
@@ -281,6 +316,32 @@ def interpret_google(svg_ref):
   family = add_spaces(family)
 
   return {'family':family, 'weight':weight, 'style':style, }
+
+#———————————————————————————————————————— make_google_link(google_fonts)
+
+#   https://developers.google.com/fonts/docs/getting_started
+#   https://fonts.googleapis.com/css?family=Cantarell:i|Droid+Serif:700
+#                                           fontName:400,500,500italic|fontName
+
+def make_google_link(google_fonts):
+  return '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=">\n'
+
+#———————————————————————————————————————— make_google_css(google_fonts)
+
+def make_google_css(google_fonts):
+  return '/* google font css */\n'
+
+#———————————————————————————————————————— notes
+
+
+
+# google_link = make_google_link(google_fonts)
+# google_css  = make_google_css(google_fonts)
+# if len(google_fonts) > 0:
+#   for font in google_fonts:
+#     google_linkkkk
+#   link_str = '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family={}">'
+#   google_link = link_str.format(('|').join(google_fonts))
 
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related methods
