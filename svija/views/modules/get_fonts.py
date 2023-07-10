@@ -99,10 +99,10 @@ def get_fonts():
       continue
 
     # convert svg ref to [family, weight and style]
-    font_array = interpret_adobe(this_font.svg_ref)
+    target_font = interpret_adobe(this_font.svg_ref)
 
-    # find match between font_array and font_list
-    font = best_adobe_match(font_array, font_list)
+    # find match between target_font and font_list
+    font = best_adobe_match(target_font, font_list)
 
     # if match failed
     if type(font) is str:
@@ -112,10 +112,10 @@ def get_fonts():
       continue
 
     # all is good so save info
-    this_font.family      = font[0]
-    this_font.weight      = font[1]
-    this_font.style       = font[2]
-    this_font.adobe_url   = font[3]
+    this_font.family      = font['family']
+    this_font.weight      = font['weight']
+    this_font.style       = font['style']
+    this_font.adobe_url   = font['url']
     this_font.adobe_sheet = stylesheet
     this_font.save()
 
@@ -302,14 +302,14 @@ adobe_weights = {
   'medium'     : '500',
   'bold'       : '700',
   'black'      : '800',
-  'default'    : '400',
+  'default'    : '',
 }
 adobe_styles = {
   'cond'      : 'condensed',
   'oblique'   : 'italic',
   'obl'       : 'italic',
   'italic'    : 'italic',
-  'default'   : '',
+  'default'   : 'normal',
 }
 
 def interpret_adobe(svg_ref):
@@ -353,7 +353,7 @@ def interpret_adobe(svg_ref):
   if weight == '':
     weight = adobe_weights['default']
 
-  return [family, weight, style]
+  return {'family':family, 'weight':weight, 'style':style, 'url':''}
 
 #———————————————————————————————————————— parse_adobe_sheet(font)
 
@@ -498,33 +498,135 @@ def font_list_from_link(pasted_link):
 
   return font_list, stylesheet
 
-#———————————————————————————————————————— best_adobe_match(font_array, font_list) NOT FINISHED
+#———————————————————————————————————————— best_adobe_match(target_font, font_list) NOT FINISHED
 #
 #   accepts:
 #
-#   font_array [family, weight, style]
+#   target_font {family, weight, style}
 #   font_list  [{'family': family,  'url': url, 'style': style, 'weight': weight,} ... ]
 #   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
-#   
 
-def best_adobe_match(font_array, font_list):
+def best_adobe_match(target_font, font_list):
 
-# return '⚠️ Font not found in stylesheet'
+  family = style = weight = url = ''
 
-  font_array.append('this is the url')
-  return font_array 
+  #————— get best family match (breaks for family futura-pt-bold)
+
+  counter   = 0
+  max       = 0
+  max_which = 0
+
+  for font in font_list:
+
+    # match at beginning of family name + match at end of family name
+    this_max = char_match(target_font['family'], font['family'])
+    if this_max > max:
+      max = this_max
+      max_which = counter
+
+    counter += 1
+
+  #————— family is established
   
+  if max == 0:
+    return '⚠️ Font not found in stylesheet'
+
+  else:
+    family = font_list[max_which]['family']
+
+  #————— get best style match
+
+  counter   = 0
+  max       = 0
+  max_which = 0
+
+  for font in font_list:
+    if family != font['family']: continue
+
+    this_max = char_match(target_font['style'], font['style'])
+    if this_max > max:
+      max = this_max
+      max_which = counter
+
+    counter += 1
+
+  #————— style established
+  
+  if max == 0:
+    style = ''
+  else:
+    style = font_list[max_which]['style']
+
+  #————— get best weight match
+
+  counter   = 0
+  max       = 0
+  max_which = 0
+
+  for font in font_list:
+    if family != font['family']: continue
+
+    this_max = char_match(target_font['weight'], font['weight'])
+    if this_max > max:
+      max = this_max
+      max_which = counter
+
+    counter += 1
+
+  #————— weight established
+  
+  if max == 0:
+    weight = ''
+  else:
+    weight = font_list[max_which]['weight']
+
+  #————— get url
+
+  probable_weight = ''
+
+  for font in font_list:
+    if family == font['family']:
+       if style == font['style']:
+         if weight == font['weight']:
+           url = font['url']
+           break
+         else:
+           url = font['url']
+           probable_weight = font['weight']
+
+  if weight == '': weight = probable_weight
+
+  chosen = {'family': family, 'style': style, 'weight': weight,  'url': url,}
+  
+  return chosen
+
+# target_font['url'] = 'this is the url'
+  
+#———————————————————————————————————————— char_match(str1, str2)
+#
+#   number of matching chars at beginning of name
+#   + nmuber of matching chars at end of name
+
+def char_match(str1, str2):
+
+  len1 = len(str1)
+  len2 = len(str2)
+
+  counter = min(len1, len2)
+  matching = 0
+
+  for x in range(0, counter):
+    if str1[x:x+1] == str2[x:x+1]:
+      matching += 1
+    else: break
+
+  for x in range(0, counter):
+    if str1[len1-x-1:len1-x] == str2[len2-x-1:len2-x]:
+      matching += 1
+    else: break
+
+  return matching
+
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
 
