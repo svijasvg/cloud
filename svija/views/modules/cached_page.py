@@ -46,6 +46,8 @@ from modules.script_sets_dedupe import *
 @csrf_protect
 def cached_page(request, section_code, request_slug, screen_code):
 
+  #———————————————————————————————————————— get page
+
   page = Page.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
   if not page: raise Http404 # passed to file Error404.py
 
@@ -158,6 +160,5 @@ def cached_page(request, section_code, request_slug, screen_code):
 
 
   return render(request, template, context)
-
 
 #:::::::::::::::::::::::::::::::::::::::: fin

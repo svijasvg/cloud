@@ -23,9 +23,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from svija.models import Font
 
-#———————————————————————————————————————— def
 
 def clean(file_path, svg_filename, use_p3):
+
+#———————————————————————————————————————— initialization
 
   # if unspecified, ID will be filename with extension removed (-en.svg)
   svg_ID         = cleanup(svg_filename)
@@ -135,6 +136,11 @@ def clean(file_path, svg_filename, use_p3):
         if len(font_exists) == 0:
           fonts_to_add.append(css_ref)
 
+        else:
+          font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = css_ref))[0]
+          new_font_info = "'" + font.family + "'; font-weight:" + font.weight + ", font-style: " + font.style
+          line = line_parts[0] + new_font_info + line_parts[2]
+
     #———————————————————————————————————————— ▲ close main loop
 
     if line_number > 2:
@@ -158,11 +164,8 @@ def clean(file_path, svg_filename, use_p3):
   else:
     first_line = first_line.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
 
-  #———————————————————————————————————————— return SVG ID, dimensions & contents
 
-#  return svg_ID, px_width, px_height, debug
   return svg_ID, px_width, px_height, first_line+final_svg
-
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 

@@ -78,18 +78,19 @@ def get_font_css():
   if len(adobe_fonts) > 0:
     adobe_css = first_comment(adobe_fonts[0].adobe_sheet)
   
+############################### WILL NO LONGER WORK — NEED CORRECT DECLARATION WITH WEIGHT & STYLE
+
   for this_font in adobe_fonts:
       adobe_css += "\n@font-face { font-family:'"+this_font.svg_ref + "'; src:url("+this_font.adobe_url+") format('woff2'); }"
 
 #———————————————————————————————————————— generate google font link & css
 
   google_link = make_google_link(google_fonts)
-  google_css  = make_google_css(google_fonts)
 
 
-  return google_link, woff_css + adobe_css + google_css
+  return google_link, woff_css + adobe_css
 
-#:::::::::::::::::::::::::::::::::::::::: main methods
+#:::::::::::::::::::::::::::::::::::::::: main method
 
 #———————————————————————————————————————— make_google_link(google_fonts)
 
@@ -119,94 +120,6 @@ def make_google_link(google_fonts):
 
   src = '|'.join(finished_fonts)
   return '  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' + src + '">\n'
-
-#———————————————————————————————————————— make_google_css(google_fonts)
-
-#   previously, there was no google_css per se
-#   instead, the style declarations were put in
-#   the SVG styles, inside the SVG files
-
-#   this time, I would like to move them to a block at
-#   the top of the page
-
-#   @font-face { font-family:'Khand-Medium'; src:url('/fonts/Khand-Medium.woff') format('woff'); }
-
-# .stsvg_Font-Test0{fill:#FFFFFF;fill:color(display-p3 1.0 1.0 1.0);;}
-# .stsvg_Font-Test1{fill:#333333;fill:color(display-p3 0.2 0.2 0.2);;}
-# .stsvg_Font-Test2{font-family:'OpenSans-Light';}
-# .stsvg_Font-Test3{font-size:15px;}
-# .stsvg_Font-Test4{font-family:'OpenSansLight-Italic';}
-# .stsvg_Font-Test5{font-family:'OpenSans';}
-# .stsvg_Font-Test6{font-family:'OpenSans-Italic';}
-# .stsvg_Font-Test7{font-family:'OpenSans-Semibold';}
-# .stsvg_Font-Test8{font-family:'OpenSans-SemiboldItalic';}
-# .stsvg_Font-Test9{font-family:'OpenSans-Bold';}
-# .stsvg_Font-Test10{font-family:'OpenSans-BoldItalic';}
-# .stsvg_Font-Test11{font-family:'OpenSans-Extrabold';}
-# .stsvg_Font-Test12{font-family:'OpenSans-ExtraboldItalic';}
-# .stsvg_Font-Test13{font-family:'Poppins-Thin';}
-# .stsvg_Font-Test14{font-family:'Poppins-ThinItalic';}
-# .stsvg_Font-Test15{font-family:'Poppins-ExtraLight';}
-# .stsvg_Font-Test16{font-family:'Poppins-ExtraLightItalic';}
-# .stsvg_Font-Test17{font-family:'Poppins-Light';}
-# .stsvg_Font-Test18{font-family:'Poppins-LightItalic';}
-# .stsvg_Font-Test19{font-family:'Poppins-Regular';}
-# .stsvg_Font-Test20{font-family:'Poppins-Italic';}
-# .stsvg_Font-Test21{font-family:'Poppins-Medium';}
-# .stsvg_Font-Test22{font-family:'Poppins-MediumItalic';}
-# .stsvg_Font-Test23{font-family:'Poppins-SemiBold';}
-# .stsvg_Font-Test24{font-family:'Poppins-SemiBoldItalic';}
-# .stsvg_Font-Test25{font-family:'Poppins-Bold';}
-# .stsvg_Font-Test26{font-family:'Poppins-BoldItalic';}
-# .stsvg_Font-Test27{font-family:'Poppins-ExtraBold';}
-# .stsvg_Font-Test28{font-family:'Poppins-ExtraBoldItalic';}
-# .stsvg_Font-Test29{font-family:'Poppins-Black';}
-# .stsvg_Font-Test30{font-family:'Poppins-BlackItalic';}
-
-#   @font-face {
-#       font-family: 'openSans-Bold';
-#       src: url('OpenSans-Bold-webfont.eot');
-#       src: url('OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-#            url('OpenSans-Bold-webfont.woff') format('woff'),
-#            url('OpenSans-Bold-webfont.ttf') format('truetype'),
-#            url('OpenSans-Bold-webfont.svg#openSans-Bold') format('svg');
-#       font-weight: normal;
-#       font-style: normal;
-#   }
-
-
-#   https://stackoverflow.com/a/4760881/72958
-
-def make_google_css(google_fonts):
-  if len(google_fonts) == 0: return ''
-
-  final_fonts = []
-
-  for font in google_fonts:
-
-    svg    = font.svg_ref
-    family = font.family
-    weight = font.weight
-    style  = font.style
-
-    #————— main declarations for SVG references
-
-# https://stackoverflow.com/questions/71673216/possible-to-alias-a-font-family-weight
-
-    this  = '[style="font-family: ' + svg + '"] {\n'
-    this += 'font-family: ' + family + ';'
-    this += 'font-weight: ' + weight + ';'
-    this += 'font-style: ' + style  + '; \n}'
-#   this  = '@font-face { '+this
-
-    final_fonts.append(this)
-
-  google_css = '\n'.join(final_fonts)
-
-  return '/* Google fonts */\n' + google_css + '\n'
-
-#   https://stackoverflow.com/questions/48353458/can-one-alias-multiple-font-names-with-a-single-name-in-css
-# I can use the "root" thing to redirect the SVG names to the real names
 
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
