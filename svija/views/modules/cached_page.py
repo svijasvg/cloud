@@ -38,8 +38,7 @@ from modules.convert_script_sets import *
 from modules.modules_dedupe import *
 from modules.script_sets_dedupe import *
 
-#———————————————————————————————————————— ▼ cached_page(request, section_code, request_slug, screen_code):
-#
+
 #   different according to screen code because screen code
 #   has been appended to path
 
@@ -157,7 +156,6 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   context.update(content_types)
 
-  #———————————————————————————————————————— ▲ return render
 
   return render(request, template, context)
 
