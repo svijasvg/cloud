@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: get_fonts.py
+#:::::::::::::::::::::::::::::::::::::::: get_font_css.py
 
 #———————————————————————————————————————— notes
 #
@@ -24,9 +24,10 @@ from django.db.models import Q
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
-#———————————————————————————————————————— ▼ def get_fonts()
+#———————————————————————————————————————— ▼ def font_css()
 
-def get_fonts():
+def get_font_css():
+  return '', ''
   enabled_fonts    = Font.objects.filter(enabled=True)
   woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
 

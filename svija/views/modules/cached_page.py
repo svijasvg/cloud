@@ -25,7 +25,8 @@ from modules.contains_form import *
 from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
-from modules.get_fonts import *
+from modules.add_new_fonts import *
+from modules.get_font_css import *
 from modules.get_modules import *
 from modules.get_script_sets import *
 from modules.get_page_svgs import *
@@ -75,7 +76,8 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— metatags, system js & fonts
 
-  meta_fonts, font_css = get_fonts()
+  add_new_fonts()
+  google_font_meta, font_css = get_font_css()
 
   screens = Screen.objects.order_by('pixels')
 
@@ -145,7 +147,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   context = {
     'comments'    : section.comment,
     'title'     : page.title + ' ' + section.title,
-    'meta_fonts'  : meta_fonts,
+    'google_font_meta'  : google_font_meta,
     'touch'     : section.touch,
     'system_js'   : system_js,
     'font_css'    : font_css,
