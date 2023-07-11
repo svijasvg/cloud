@@ -71,17 +71,25 @@ def get_font_css():
 #
 #    separate from earlier loop because all adobe fonts are combined
 #    into a single CSS block, with only one copyright comment section
+#
+#   <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css">
 
   adobe_css = ''
 
   # get comments from first font in list
   if len(adobe_fonts) > 0:
-    adobe_css = first_comment(adobe_fonts[0].adobe_sheet)
-  
-############################### WILL NO LONGER WORK — NEED CORRECT DECLARATION WITH WEIGHT & STYLE
+    adobe_css  = '/* adobe font css */\n\n'
+    adobe_css += first_comment(adobe_fonts[0].adobe_sheet)
 
+  
   for this_font in adobe_fonts:
-      adobe_css += "\n@font-face { font-family:'"+this_font.svg_ref + "'; src:url("+this_font.adobe_url+") format('woff2'); }"
+    family = "font-family: '"+this_font.family + "'; "
+    weight = "font-weight: " + this_font.weight + "; "
+    style  = "font-style: " + this_font.style + "; "
+    url    = "src:url("+this_font.adobe_url+") format('woff2');"
+    adobe_css += "\n@font-face { " + family + weight + style + url + " }"
+  if adobe_css != '':
+    adobe_css += '\n'
 
 #———————————————————————————————————————— generate google font link & css
 

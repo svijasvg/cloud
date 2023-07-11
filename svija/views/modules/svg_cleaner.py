@@ -138,7 +138,7 @@ def clean(file_path, svg_filename, use_p3):
 
         else:
           font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = css_ref))[0]
-          new_font_info = "'" + font.family + "'; font-weight:" + font.weight + ", font-style: " + font.style
+          new_font_info = "'" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
           line = line_parts[0] + new_font_info + line_parts[2]
 
     #———————————————————————————————————————— ▲ close main loop
