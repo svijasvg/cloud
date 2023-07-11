@@ -180,8 +180,7 @@ def make_google_link(google_fonts):
 def make_google_css(google_fonts):
   if len(google_fonts) == 0: return ''
 
-  actual_fonts = []
-  font_vars    = []
+  final_fonts = []
 
   for font in google_fonts:
 
@@ -190,23 +189,21 @@ def make_google_css(google_fonts):
     weight = font.weight
     style  = font.style
 
-    #————— using vars to redirect to google 
-    this  = '\n--' + svg + ': '
-    this += '"' + family + '"'
-    font_vars.append(this)
-
     #————— main declarations for SVG references
-    this  = 'font-family: var(--' + svg+ '); '
+
+# https://stackoverflow.com/questions/71673216/possible-to-alias-a-font-family-weight
+
+    this  = '[style="font-family: ' + svg + '"] {\n'
+    this += 'font-family: ' + family + ';'
     this += 'font-weight: ' + weight + ';'
-    this += 'font-style: ' + style  + '; }'
-    this  = '@font-face { '+this
+    this += 'font-style: ' + style  + '; \n}'
+#   this  = '@font-face { '+this
 
-    actual_fonts.append(this)
+    final_fonts.append(this)
 
-  srx = '\n:root{ ' + ';'.join(font_vars) + '\n}'
-  src = '\n'.join(actual_fonts)
+  google_css = '\n'.join(final_fonts)
 
-  return '/* Google fonts */\n' + srx + '\n\n' + src + '\n'
+  return '/* Google fonts */\n' + google_css + '\n'
 
 #   https://stackoverflow.com/questions/48353458/can-one-alias-multiple-font-names-with-a-single-name-in-css
 # I can use the "root" thing to redirect the SVG names to the real names
