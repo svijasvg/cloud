@@ -47,7 +47,6 @@
 :root { --link:        var(--text-dark); 
         --link-hover:  var(--text-dark); }
 
-
 /*———————————————————————————————————————— fonts */
 
 @font-face { /* light */
@@ -488,6 +487,14 @@ fieldset.module h2{
   color: var(--main) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+    fieldset.module h2{
+      color:var(--dark) !important;
+      border-radius:5px;
+      background-color: var(--main);
+    }
+}
+
 /*———————————————————————————————————————— collapsible inline models
 
     fieldset module.collapse */
@@ -503,8 +510,22 @@ fieldset.module.collapse h2{
   color: var(--main) !important;
 }
 
-fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+@media (prefers-color-scheme: dark) {
+    fieldset.module.collapse h2{
+      color:var(--dark) !important;
+      border-radius:5px;
+      background-color: var(--main);
+    }
+}
+
+fieldset.module.collapse h2 a.collapse-toggle:link{
 	color:var(--text-bright) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    fieldset.module.collapse h2 a.collapse-toggle:link{
+    	color:var(--bg-med) !important;
+    }
 }
 
 fieldset.module.collapse a.collapse-toggle::before{
@@ -531,6 +552,10 @@ fieldset.module.collapse.collapsed h2{
 	font-size:13px !important;
 	padding:0px 0px 0px 10px !important;
 	letter-spacing:0 !important;
+}
+
+fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+	color:var(--text-bright) !important;
 }
 
 fieldset.module.collapse.collapsed a.collapse-toggle::before{
@@ -623,6 +648,21 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— illustrator files */
 
+div#illustrator_fk-group fieldset.module h2{
+  color:#F9991F !important;
+  background-color:#310001 !important;
+  font-weight: 600 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+div#illustrator_fk-group fieldset.module h2{
+  background-color:#F9991F !important;
+  color:#310001 !important;
+  font-weight: 600 !important;
+
+}
+}
 div.fieldBox.field-filename input, /* module           */
 td.field-filename input{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
