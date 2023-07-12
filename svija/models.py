@@ -177,7 +177,7 @@ class Section(models.Model):
     comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.love for more information!', verbose_name='source code message', )
 
     def __str__(self):
-        return self.name
+        return self.code
     class Meta:
         ordering = ['order']
         verbose_name_plural = "1.2 · Sections"
