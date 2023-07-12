@@ -16,6 +16,62 @@ from django.db.models import Q
 from svija.models import Font
 import requests
 
+#———————————————————————————————————————— equivalency dictionaries
+
+adobe_weights = {
+  'extralight' : '200',
+  'extra-light': '200',
+  'extrabold'  : '800',
+  'extra-bold' : '800',
+  'semibold'   : '600',
+  'semi-bold'  : '600',
+  'ultrablack' : '900',
+  'ultra-black': '900',
+  'demi'       : '600',
+  'thin'       : '100',
+  'light'      : '300',
+  'book'       : '400',
+  'regular'    : '400',
+  'heavy'      : '700',
+  'medium'     : '500',
+  'bold'       : '700',
+  'black'      : '800',
+  'default'    : '',
+}
+
+adobe_styles = {
+  'cond'      : 'condensed',
+  'oblique'   : 'italic',
+  'obl'       : 'italic',
+  'italic'    : 'italic',
+  'default'   : 'normal',
+}
+
+google_weights = {
+  'Extralight' : '200',
+  'Extra-Light': '200',
+  'Semibold'   : '600',
+  'Semi-Bold'  : '600',
+  'Extrabold'  : '800',
+  'Extra-Bold' : '800',
+  'Thin'       : '100',
+  'Light'      : '300',
+  'Regular'    : '400',
+  'Medium'     : '500',
+  'Bold'       : '700',
+  'Black'      : '900',
+  'default'    : '400',
+}
+
+google_styles = {
+  'Cond'       : 'condensed',
+  'Oblique'    : 'italic',
+  'Obl'        : 'italic',
+  'Italic'     : 'italic',
+  'default'    : 'normal',
+}
+
+
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
@@ -126,29 +182,6 @@ def add_new_fonts():
 #   src: url(https://fonts.gstatic.com/s/opensans/v35/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4taVQUwaEQbjB_mQ.woff) format('woff');
 #   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 
-google_weights = {
-  'Extralight' : '200',
-  'Extra-Light': '200',
-  'Semibold'   : '600',
-  'Semi-Bold'  : '600',
-  'Extrabold'  : '800',
-  'Extra-Bold' : '800',
-  'Thin'       : '100',
-  'Light'      : '300',
-  'Regular'    : '400',
-  'Medium'     : '500',
-  'Bold'       : '700',
-  'Black'      : '900',
-  'default'    : '400',
-}
-google_styles = {
-  'Cond'       : 'condensed',
-  'Oblique'    : 'italic',
-  'Obl'        : 'italic',
-  'Italic'     : 'italic',
-  'default'    : 'normal',
-}
-
 def interpret_google(svg_ref):
 
   # need to replace ExtraBlack with Extrablack, it will work out well
@@ -206,34 +239,6 @@ def interpret_google(svg_ref):
 # for key in adobe_weights:
 #   if txt.find(key) > 0:
 #     txt = txt.replace(key, adobe_weights[key])
-
-adobe_weights = {
-  'extralight' : '200',
-  'extra-light': '200',
-  'extrabold'  : '800',
-  'extra-bold' : '800',
-  'semibold'   : '600',
-  'semi-bold'  : '600',
-  'ultrablack' : '900',
-  'ultra-black': '900',
-  'demi'       : '600',
-  'thin'       : '100',
-  'light'      : '300',
-  'book'       : '400',
-  'regular'    : '400',
-  'heavy'      : '700',
-  'medium'     : '500',
-  'bold'       : '700',
-  'black'      : '800',
-  'default'    : '',
-}
-adobe_styles = {
-  'cond'      : 'condensed',
-  'oblique'   : 'italic',
-  'obl'       : 'italic',
-  'italic'    : 'italic',
-  'default'   : 'normal',
-}
 
 def interpret_adobe(svg_ref):
 
