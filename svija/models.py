@@ -199,7 +199,7 @@ class Screen(models.Model):
     def __str__(self):
         return self.code
     class Meta:
-        ordering = ['width']
+        ordering = ['order', 'width']
         verbose_name = "screen size"
         verbose_name_plural = "1.3 · Screen Sizes"
 
