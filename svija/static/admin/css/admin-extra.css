@@ -639,11 +639,11 @@ td.field-filename input:focus{           /* page             */
     so are grayed-out & turn red on mouseover */
 
 div.fieldBox.field-adobe_url input#id_adobe_url,
-div.form-row.field-adobe textarea#id_adobe{
+div.form-row.field-adobe_sheet textarea#id_adobe_sheet{
   opacity:0.5;
 }
 
-div.form-row.field-adobe textarea#id_adobe:hover,
+div.form-row.field-adobe_sheet textarea#id_adobe_sheet:hover,
 div.fieldBox.field-adobe_url input#id_adobe_url:hover{
   opacity:1.0;
   border-color:red;
