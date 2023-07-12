@@ -33,7 +33,7 @@ def get_font_css():
   google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True)).order_by('family')
   google_link  = ''
 
-#———————————————————————————————————————— loop through woff fonts
+#———————————————————————————————————————— generate woff CSS
 
   woff_css = ''
 
@@ -62,10 +62,11 @@ def get_font_css():
       woff_css += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
       continue
 
-
     else:
       this_font.woff = ''
       this_font.save()
+
+  if woff_css != '': woff_css += '\n'
 
 #———————————————————————————————————————— generate adobe css
 #

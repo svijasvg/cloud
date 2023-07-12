@@ -38,9 +38,7 @@ def clean(file_path, svg_filename, use_p3):
 
   #———————————————————————————————————————— list of fonts in DB
 
-  all_fonts   = Font.objects.filter(Q(enabled=True)                 )
-# goog_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=True ))
-# file_fonts  = Font.objects.filter(Q(enabled=True) & Q(google=False))
+  all_fonts   = Font.objects.all()
   fonts_to_add  = []
 
   #———————————————————————————————————————— read SVG file
@@ -126,20 +124,25 @@ def clean(file_path, svg_filename, use_p3):
     #                                         .st2{font-family:'Signika-Regular';}
     #                                         google font: need to use google-style CSS
     #                                         missing font: need to add to fonts DB
-                 
+
     if line[1:4] == '.st':
       if line.find('family') > 0:
         line_parts = line.split("'")
-        css_ref = line_parts[1]
+        line_ref = line_parts[1]
 
-        font_exists = [x for x in all_fonts if x.svg_ref == css_ref]
+        font_exists = [x for x in all_fonts if x.svg_ref == line_ref]
         if len(font_exists) == 0:
-          fonts_to_add.append(css_ref)
+          fonts_to_add.append(line_ref)
 
         else:
-          font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = css_ref))[0]
-          new_font_info = "'" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
-          line = line_parts[0] + new_font_info + line_parts[2]
+          fonts = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).exclude(family = '')
+          if len(fonts) != 0:
+            font = fonts[0]
+            if font.woff == '':
+              new_font_info = "'" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
+              line = line_parts[0] + new_font_info + line_parts[2]
+
+# Font.objects.filter(enabled=True).exclude(woff='')
 
     #———————————————————————————————————————— ▲ close main loop
 
