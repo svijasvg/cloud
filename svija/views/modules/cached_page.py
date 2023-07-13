@@ -1,3 +1,4 @@
+
 #:::::::::::::::::::::::::::::::::::::::: cached_page.py
 
 #———————————————————————————————————————— notes
@@ -22,6 +23,7 @@ from PageObject import *
 from modules.cache_per_user import *
 from modules.combine_content import *
 from modules.contains_form import *
+from modules.create_other_screens import *
 from modules.generate_accessibility import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
@@ -51,17 +53,15 @@ def cached_page(request, section_code, request_slug, screen_code):
   page = Page.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
   if not page: raise Http404 # passed to file Error404.py
 
-  #———————————————————————————————————————— create other versions if necessary
+  #———————————————————————————————————————— create other screens if necessary
 
-  all_similar = Page.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(url=request_slug))
+  all_similar = Page.objects.filter(Q(section__code=section_code) & Q(url=request_slug))
   how_many    = len(all_similar)
-
   all_screens = Screen.objects.all()
 
   if (how_many < len(all_screens)):
-    return HttpResponse("missing pages to be created")
+    create_other_screens(request_slug, section_code, screen_code)
 
-# SET NEW PAGES TO PUBLISHED = FALSE OR WE'LL HAVE BIG PROBLEMS
 
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
@@ -174,3 +174,4 @@ def cached_page(request, section_code, request_slug, screen_code):
   return render(request, template, context)
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+
