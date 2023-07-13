@@ -352,7 +352,6 @@ class Settings(models.Model):
 
 #———————————————————————————————————————— Page · uses template & prefix
 
-
 class Page(models.Model): 
 
     published = models.BooleanField(default=True, verbose_name='published',)

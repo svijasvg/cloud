@@ -53,15 +53,12 @@ def cached_page(request, section_code, request_slug, screen_code):
   page = Page.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(url=request_slug) & Q(published=True)).first()
   if not page: raise Http404 # passed to file Error404.py
 
-  #———————————————————————————————————————— create other screens if necessary
+  #———————————————————————————————————————— create version for other screens if necessary
 
-  all_similar = Page.objects.filter(Q(section__code=section_code) & Q(url=request_slug))
-  how_many    = len(all_similar)
-  all_screens = Screen.objects.all()
+  versions = Page.objects.filter(Q(section__code=section_code) & Q(url=request_slug))
 
-  if (how_many < len(all_screens)):
-    create_other_screens(request_slug, section_code, screen_code)
-
+  if (len(versions) < len(Screen.objects.all())):
+    create_other_screens(page, screen_code)
 
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
