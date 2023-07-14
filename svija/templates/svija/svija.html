@@ -20,11 +20,11 @@
 <script>
 pageLoaded = false;
 {{ system_js                           }}
-{% include "svija/js/cookies.js"       %}
-{% include "svija/js/screens.js"       %}
-{% include "svija/js/window_mgmt.js"   %}
-{% include "svija/js/sections.js"      %}
-{% include "svija/js/tap_highlight.js" %}
+{% include "svija/js/min_cookies.js"       %}
+{% include "svija/js/min_screens.js"       %}
+{% include "svija/js/min_window_mgmt.js"   %}
+{% include "svija/js/min_sections.js"      %}
+{% include "svija/js/min_tap_highlight.js" %}
 {{ js                                  }}
 </script>
 
@@ -47,7 +47,7 @@ pageLoaded = false;
 	} // added to script from Google
 
 </script>
-<script src="{% static 'svija/js/gsap.min.js' %}"></script>
+<script src="{% static 'svija/js/min_gsap.js' %}"></script>
 
 </head><body>
 
@@ -56,7 +56,7 @@ pageLoaded = false;
 <div id="set_scroll_div"></div>
 
 <script>
-{% include "svija/js/scrollbars.js"     %}
+{% include "svija/js/min_scrollbars.js"     %}
 </script>
 
 <div id=accessibility>{{ accessible }}</div>
@@ -67,7 +67,7 @@ pageLoaded = false;
 
 <script>
 
-  {% include "svija/js/page_background.js" %}
+  {% include "svija/js/min_page_background.js" %}
 
   document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;
