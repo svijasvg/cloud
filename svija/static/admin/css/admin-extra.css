@@ -683,6 +683,7 @@ div.form-row.field-adobe_sheet textarea#id_adobe_sheet{
   opacity:0.5;
 }
 
+div.form-row.field-svg_ref input#id_svg_ref:hover,
 div.form-row.field-adobe_sheet textarea#id_adobe_sheet:hover,
 div.fieldBox.field-adobe_url input#id_adobe_url:hover{
   opacity:1.0;
