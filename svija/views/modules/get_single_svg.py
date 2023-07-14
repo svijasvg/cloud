@@ -1,3 +1,4 @@
+
 #:::::::::::::::::::::::::::::::::::::::: get_single_svg.py
 
 #———————————————————————————————————————— notes
@@ -17,9 +18,10 @@ import pathlib
 import unicodedata
 from modules.svg_cleaner import *
 
-#———————————————————————————————————————— ▼ get_single_svg(parent_obj, page_width, use_p3):
 
 def get_single_svg(parent_obj, screen_code, page_width, use_p3):
+
+#———————————————————————————————————————— if no SVG file
 
   # if empty module without AI file
   if not hasattr(parent_obj, 'filename'): return '', '', ''
@@ -65,7 +67,10 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
   if not path.exists():
     #vg = '<!-- missing svg: {} -->'.format(parent_obj.filename)
     #vg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
-    alert = '<script>alert("Missing SVG\\n{}\\ncould not be found.")</script>'.format(svija_path+svg_name)
+
+    alert_msg = '<script>alert("⚠️ Illustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
+    alert = alert_msg.format(raw_name, screen_code)
+
     return alert, '', ''
 
   #———————————————————————————————————————— create temp ID
@@ -109,10 +114,8 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     position = calculate_css(parent_obj)
     css = '\n\n' + css_dims + '\n' + position + '\n' + '}'
 
-  #———————————————————————————————————————— return final code
 
   return '\n' + svg, css, div
-
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
@@ -181,3 +184,4 @@ def purify(inp):
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+

@@ -123,7 +123,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   script_sets = get_script_sets('script sets', all_script_sets)
   content_blocks.extend(script_sets)
 
-  #———————————————————————————————————————— modules via page settings
+  #———————————————————————————————————————— modules
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
@@ -131,6 +131,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   page_modules = list(page.pagemodule_set.filter(enabled=True))
   all_modules = convert_modules(page_modules) # list of "Module" objects
 
+  # always-include modules
   if page.incl_modules:
     default_modules = Module.objects.filter(Q(section__code=section_code) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
     module_content = list(default_modules)
