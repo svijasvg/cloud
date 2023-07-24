@@ -188,7 +188,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
   # display on parent module
   list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'order', 'category',)
-  list_filter = ('section', 'screen', 'enabled', 'category', )
+  list_filter = ('section', 'screen', 'always', 'enabled', 'category', )
   save_on_top = True
   save_as = True
 
