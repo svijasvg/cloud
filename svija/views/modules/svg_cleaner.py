@@ -99,7 +99,7 @@ def clean(file_path, svg_filename, use_p3):
     if line.find('class="st') > 0:
       line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
 
-    #———————————————————————————————————————— change <rect id="SVGID_53_" to <rect id="[id]_53_"
+    #———————————————————————————————————————— change <rect id="SVGID_53_" to <rect id="SVGID_[id]_53_"
 
     if line.find('SVGID_') > 0:
       line = re.sub(r'SVGID_', r'SVGID_'+svg_ID+'_', line)
@@ -209,13 +209,18 @@ def update_css(google_font, style_string):
 #———————————————————————————————————————— remove special characters
 
 def cleanup(css_id):
+
   css_id = css_id.replace('.svg','')
+
 # per.iod in na,me.svg
   # ord returns unicode code of character
   # map executes function for each item in iterable
-  translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
-  css_id = css_id.translate(translation_table)
-  return css_id
+# translation_table = dict.fromkeys(map(ord, ' \'",.!@#$'), '-')
+# css_id = css_id.translate(translation_table)
+# value = css_id
+
+  value = re.sub("[^A-Za-z0-9-_]", "", css_id)
+  return value 
 
 #———————————————————————————————————————— remove duplicates
 
@@ -332,3 +337,4 @@ def hex_to_int(raw_hex):
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+
