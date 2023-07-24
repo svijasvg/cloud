@@ -1,4 +1,5 @@
-//———————————————————————————————————————— template: window_mgmt.js
+
+//:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
 
 //———————————————————————————————————————— start logging
 
@@ -141,14 +142,6 @@ function zoom(){
   return z;
 }
 
-//———————————————————————————————————————— pctDifferent(a, b);
-
-//    returns % difference between two numbers like 1.1, 1
-
-function pctDifferent(a, b){
-  return Math.round(Math.abs( a-b ) * 100);
-}
-
 /*———————————————————————————————————————— resize()
 
     called when a resize event is triggered */
@@ -202,4 +195,4 @@ function globalThisOuterWidth(){
 }
 
 
-//———————————————————————————————————————— fin
+//:::::::::::::::::::::::::::::::::::::::: fin

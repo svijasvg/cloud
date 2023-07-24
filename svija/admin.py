@@ -47,7 +47,7 @@ admin.site.register(Redirect, RedirectAdmin)
 
 # https://stackoverflow.com/questions/15285740/make-django-admin-to-display-no-more-than-100-characters-in-list-results
 
-descFonts    = "Fonts are added here automatically the first time they are needed · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>"
+descFonts    = 'Fonts are added automatically the first time page is loaded · <a target="_blank" href="https://fonts.adobe.com/my_fonts#web_projects-section">Adobe Fonts↑</a> · <a target="_blank" href="https://fonts.google.com">Google Fonts↑</a> · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>'
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
