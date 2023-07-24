@@ -1,3 +1,4 @@
+
 #:::::::::::::::::::::::::::::::::::::::: models.py
 
 # model names are SINGULAR
@@ -193,8 +194,8 @@ class Screen(models.Model):
     pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='break point',)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width',)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
-    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
+    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='x offset')
+    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='y offset')
 
     def __str__(self):
         return self.code
@@ -330,8 +331,8 @@ class Settings(models.Model):
     section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
 
     enabled       = models.BooleanField(default=True, verbose_name='online',)
-    url           = models.CharField(max_length=200, default='', verbose_name='site address',)
-    p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space where possible',)
+    url           = models.CharField(max_length=200, default='', verbose_name='address',)
+    p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space',)
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
@@ -452,3 +453,4 @@ class AdditionalScript(models.Model):
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+

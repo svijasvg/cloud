@@ -1,4 +1,5 @@
-#———————————————————————————————————————— models.py
+
+#:::::::::::::::::::::::::::::::::::::::: models.py
 
 #———————————————————————————————————————— import
 
@@ -27,7 +28,7 @@ admin.site.register(Control, ControlAdmin)
 
 #———————————————————————————————————————— Redirect · no dependencies
 
-descRedirect = "Forward an old page to a new one, or to create shortcuts for frequently-visited pages · <a href=https://tech.svija.love/programs/cloud/redirects target=_blank>documentation↑</a>"
+descRedirect = "Start with <b>/</b> for internal links, <b>https://</b> for other sites · <a href=https://tech.svija.love/programs/cloud/redirects target=_blank>documentation↑</a>"
 
 from .models import Redirect
 class RedirectAdmin(admin.ModelAdmin):
@@ -47,7 +48,7 @@ admin.site.register(Redirect, RedirectAdmin)
 
 # https://stackoverflow.com/questions/15285740/make-django-admin-to-display-no-more-than-100-characters-in-list-results
 
-descFonts    = 'Fonts are added automatically the first time page is loaded · <a target="_blank" href="https://fonts.adobe.com/my_fonts#web_projects-section">Adobe Fonts↑</a> · <a target="_blank" href="https://fonts.google.com">Google Fonts↑</a> · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>'
+descFonts    = 'Fonts added automatically the first time page is loaded · <a target="_blank" href="https://fonts.adobe.com/my_fonts#web_projects-section">Adobe Fonts↑</a> · <a target="_blank" href="https://fonts.google.com">Google Fonts↑</a> · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>'
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
@@ -82,7 +83,7 @@ class SectionAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     ('details', {'fields': [('code', 'default_page', ),('name','order',),],'description':descSection, }),
-    ('title & touch icon', {'fields': ['title', 'touch',],}),
+    ('title & iPhone icon', {'fields': ['title', 'touch',],}),
     ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
     ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
     ('status message & alerts', {'fields': ['form_status', 'form_sending','form_rcvd','form_alert_rcvd', 'form_alert_fail',], 'classes': ['collapse'],}),
@@ -113,7 +114,7 @@ admin.site.register(Screen, ScreenAdmin)
 
 #———————————————————————————————————————— Robots · no dependencies
 
-descRobots     = "Directives telling search engines whether or not to index your website · <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>wikipedia</a> · <a href=https://tech.svija.love/programs/cloud/robots target=_blank>documentation↑</a>"
+descRobots = "Tell search engines whether or not to index this website · <a href='https://en.wikipedia.org/wiki/Robots_exclusion_standard'>wikipedia</a> · <a href=https://tech.svija.love/programs/cloud/robots target=_blank>documentation↑</a>"
 
 from .models import Robots
 class RobotsAdmin(admin.ModelAdmin):
@@ -134,7 +135,7 @@ admin.site.register(Robots, RobotsAdmin)
 
 #———————————————————————————————————————— Script Set · no dependencies
 
-descScript0 = "Script Sets can also be included via <a href=\"/cloud/svija/page/\">page settings</a> · <a href=https://tech.svija.love/programs/cloud/script-sets target=_blank>documentation↑</a>"
+descScript0 = "Script Sets can be included here or in <a href=\"/cloud/svija/page/\">page settings</a> · <a href=https://tech.svija.love/programs/cloud/script-sets target=_blank>documentation↑</a>"
 descScript1 = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 
 from .models import ScriptScripts
@@ -165,6 +166,10 @@ admin.site.register(Script, ScriptAdmin)
 
 #———————————————————————————————————————— Module · no dependencies
 
+descModules = "Modules can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
+descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
+positdesc = 'Superimposed on Illustrator page · negative = up ↖ left · positive = down ↘ right'
+
 #———————————————————————————————————————— Module inline
 
 from .models import ModuleScript
@@ -175,10 +180,6 @@ class ModuleScriptInline(admin.TabularInline):
   verbose_name = "script"
   verbose_name_plural = "scripts"
   classes = ['collapse', 'ifempty',]
-
-descModules = "Reusable content that can be included here or via <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
-descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
-positdesc = 'Superimposed on the Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
 
 from .models import Module
@@ -216,7 +217,7 @@ class SettingsAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('main settings',   {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
+    ('website settings',   {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
     ('mail settings', {'fields': ['mail_id', 'mail_pass', 'mail_srv','mail_port','mail_tls',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   
@@ -224,6 +225,9 @@ class SettingsAdmin(admin.ModelAdmin):
 admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— Page
+
+descPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
+descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
 #———————————————————————————————————————— Page inlines
 
@@ -263,10 +267,6 @@ class AdditionalScriptInline(admin.TabularInline):
 #   classes = ['collapse']
 
 
-descPages  = "Settings that are specific to a single page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
-descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
-
-#———————————————————————————————————————— Page
 
 # https://stackoverflow.com/questions/16014719/adding-a-jquery-script-to-the-django-admin-interface
 
@@ -315,4 +315,5 @@ admin.site.register(Page, PageAdmin)
 
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin
+
