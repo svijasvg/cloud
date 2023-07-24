@@ -254,8 +254,8 @@ class Module(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
-    category = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    order = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
+    tag       = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
+    zindex    = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
 #   filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)

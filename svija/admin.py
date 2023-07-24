@@ -180,6 +180,7 @@ descModules = "Reusable content that can be included here or via <b><a href='/cl
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 positdesc = 'Superimposed on the Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
+
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
@@ -187,13 +188,13 @@ class ModuleAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent module
-  list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'order', 'category',)
-  list_filter = ('section', 'screen', 'always', 'enabled', 'category', )
+  list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'zindex', 'tag',)
+  list_filter = ('section', 'screen', 'always', 'enabled', 'tag', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-     ('name & filename', {'fields': [('name', 'enabled','always'),('category', 'screen'), ('css_id', 'section',), ('filename','order', ),], 'description':descModules, }),
+     ('name & filename', {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
      ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
      ('placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
   ]   
