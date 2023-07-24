@@ -393,6 +393,13 @@ input[type=button]:hover,
      background:var(--main);
 }
 
+/* delete are you sure › no take me back button */
+.delete-confirmation form .cancel-link:hover{
+    color: var(--button-fg);
+    background: var(--close-button-hover-bg);
+}
+
+
 /*———————————————————————————————————————— default buttons */
 
 .button.default,
