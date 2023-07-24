@@ -81,7 +81,7 @@ class SectionAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('name, code & default page', {'fields': [('name', 'code'),('default_page','order',),],'description':descSection, }),
+    ('details', {'fields': [('code', 'default_page', ),('name','order',),],'description':descSection, }),
     ('title & touch icon', {'fields': ['title', 'touch',],}),
     ('email settings',   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
     ('contact form fields', {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
