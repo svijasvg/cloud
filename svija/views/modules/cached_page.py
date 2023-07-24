@@ -121,6 +121,15 @@ def cached_page(request, section_code, request_slug, screen_code):
     all_script_sets = script_sets_dedupe(all_script_sets)
 
   script_sets = get_script_sets('script sets', all_script_sets)
+
+  #—————— set aside body js so Vibe executes last
+
+  script_sets_body_js = []
+  for set in script_sets:
+    new_set = page_obj('', '', set.body_js, '', '', '')
+    script_sets_body_js.append(new_set)
+    set.body_js = ''
+
   content_blocks.extend(script_sets)
 
   #———————————————————————————————————————— modules
@@ -141,6 +150,10 @@ def cached_page(request, section_code, request_slug, screen_code):
   page_modules = get_modules('page modules', all_modules, section_code, screen_code, page, page_width, use_p3)
 
   content_blocks.extend(page_modules)
+
+  #———————————————————————————————————————— script set body JS
+
+  content_blocks.extend(script_sets_body_js)
 
   #———————————————————————————————————————— combine content blocks
 
