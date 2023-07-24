@@ -18,7 +18,8 @@ def convert_modules(modules):
   out_modules = []
 
   for this_module_set in modules:
-    out_modules.append(this_module_set.module)
+    if this_module_set.module.enabled:
+      out_modules.append(this_module_set.module)
 
   return out_modules
 
