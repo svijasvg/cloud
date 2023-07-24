@@ -13,13 +13,15 @@
 
 #———————————————————————————————————————— def convert_modules(modules):
 
-def convert_modules(modules):
+def convert_modules(modules, section_code, screen_code):
 
   out_modules = []
 
-  for this_module_set in modules:
-    if this_module_set.module.enabled:
-      out_modules.append(this_module_set.module)
+  for set in modules:
+    mod = set.module
+    if mod.enabled and str(mod.section)==section_code and str(mod.screen)==screen_code:
+      mod.order = set.zindex
+      out_modules.append(mod)
 
   return out_modules
 

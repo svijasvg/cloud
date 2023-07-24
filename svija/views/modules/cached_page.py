@@ -138,7 +138,7 @@ def cached_page(request, section_code, request_slug, screen_code):
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
   page_modules = list(page.pagemodule_set.filter(enabled=True))
-  all_modules = convert_modules(page_modules) # list of "Module" objects
+  all_modules = convert_modules(page_modules, section_code, screen_code) # list of "Module" objects
 
   # always-include modules
   if page.incl_modules:
