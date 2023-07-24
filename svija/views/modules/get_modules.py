@@ -25,7 +25,7 @@ def get_modules(label, all_modules, section_code, screen_code, page, page_width,
 
 #———————————————————————————————————————— NEED TO SORT MODULES BY Z INDEX
 
-  all_modules.sort(key = lambda x: x.order)
+  all_modules.sort(key = lambda x: x.zindex)
 
 #———————————————————————————————————————— iterate through modules-linked-in-page
 

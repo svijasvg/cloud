@@ -20,7 +20,7 @@ def convert_modules(modules, section_code, screen_code):
   for set in modules:
     mod = set.module
     if mod.enabled and str(mod.section)==section_code and str(mod.screen)==screen_code:
-      mod.order = set.zindex
+      mod.zindex = set.zindex
       out_modules.append(mod)
 
   return out_modules
