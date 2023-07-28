@@ -298,8 +298,8 @@ class PageAdmin(admin.ModelAdmin):
                     ],'description':descPages, }),
     ('more settings',  {'fields': [
                  ('category','incl_modules','incl_scripts',),
-                 ('visible', 'offsetx', 'default_dims',),
-                 ('width', 'offsety',),
+                 ('width', 'offsetx', 'default_dims',),
+                 ('visible', 'offsety',),
                  'accessibility_name',
                  'accessibility_text',
                  'notes', 'pub_date',
