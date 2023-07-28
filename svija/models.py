@@ -415,7 +415,7 @@ class PageModule(models.Model):
 # foreignkey, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
-    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name='script set')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.script.name

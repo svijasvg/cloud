@@ -143,8 +143,8 @@ class ScriptScriptsInline(admin.TabularInline):
   model = ScriptScripts
   extra = 0 
   fields = ('enabled', 'name', 'type', 'order', 'content',)
-  verbose_name = "script"
-  verbose_name_plural = "scripts"
+  verbose_name = "script set"
+  verbose_name_plural = "script sets"
 
 from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
