@@ -21,7 +21,9 @@ import requests
 adobe_weights = {
   'extralight' : '200',
   'extra-light': '200',
+  'extrabld'   : '800',
   'extrabold'  : '800',
+  'extra-bld'  : '800',
   'extra-bold' : '800',
   'semibold'   : '600',
   'semi-bold'  : '600',
@@ -35,7 +37,7 @@ adobe_weights = {
   'heavy'      : '700',
   'medium'     : '500',
   'bold'       : '700',
-  'black'      : '800',
+  'black'      : '900',
   'default'    : '',
 }
 
