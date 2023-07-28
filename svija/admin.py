@@ -197,7 +197,7 @@ class ModuleAdmin(admin.ModelAdmin):
   fieldsets = [ 
      ('name & filename', {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
      ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-     ('placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
+     ('placement'    , {'fields': [('offsetx', 'corner', ), ( 'offsety', 'position', ),],'description': positdesc,}),
   ]   
 
   inlines = [ModuleScriptInline]
