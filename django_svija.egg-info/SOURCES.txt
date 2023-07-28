@@ -2,8 +2,6 @@ LICENSE
 MANIFEST.in
 README.md
 setup.py
-django_svija.egg-info/.PKG-INFO.un~
-django_svija.egg-info/.SOURCES.txt.un~
 django_svija.egg-info/PKG-INFO
 django_svija.egg-info/SOURCES.txt
 django_svija.egg-info/dependency_links.txt
@@ -304,11 +302,9 @@ svija/static/svija/img/ff0000.png
 svija/static/svija/js/TweenMax-2.0.2.js
 svija/static/svija/js/gsap.min.js
 svija/static/svija/js/gsap.min.js.bk
-svija/templates/admin/.base_site.html.un~
 svija/templates/admin/base_site.html
 svija/templates/admin/submit_line.html
 svija/templates/registration/logged_out.html
-svija/templates/svija/.svija.html.un~
 svija/templates/svija/debug.html
 svija/templates/svija/debug_token.html
 svija/templates/svija/detail.html
@@ -319,12 +315,6 @@ svija/templates/svija/svija.html
 svija/templates/svija/svija_token.html
 svija/templates/svija/css/svija.css
 svija/templates/svija/html/unsupported.html
-svija/templates/svija/js/.cookies.js.un~
-svija/templates/svija/js/.page_background.js.un~
-svija/templates/svija/js/.screens.js.un~
-svija/templates/svija/js/.scrollbars.js.un~
-svija/templates/svija/js/.window_mgmt.js.un~
-svija/templates/svija/js/.window_mgmt_body.js.un~
 svija/templates/svija/js/cookies.js
 svija/templates/svija/js/page_background.js
 svija/templates/svija/js/screens.js

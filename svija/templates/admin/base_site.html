@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block branding %}
-  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img title="{{ site_header|default:_('Django administration') }}" id="svija-admin-logo" src="/customization/svija-admin.png" %} width=225 height=60></a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img title="{{ site_header|default:_('Django administration') }}" id="svija-cloud-logo" src="/customization/svija-cloud.png" %} width=225 height=60></a></h1>
 {% endblock %}
 
 
@@ -40,14 +40,14 @@
     {% endif %}
     <a href="javascript:clear()">Clear Cache</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
-    v2.2.24<br>
+    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.2.25</a><br>
 
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}
       {% if docsroot %}
       {% endif %}
     {% endif %}
-    <strong>{% firstof user.get_short_name user.get_username %}</strong> ∴
+    <strong><a href="/cloud/auth/user/">{% firstof user.get_short_name user.get_username %}</a></strong> ∴
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ∴
     {% endif %}
@@ -66,5 +66,14 @@
 
 if (adminTitle.innerHTML == 'Svija administration') adminTitle.innerHTML = 'Svija Cloud Settings'
 document.title = document.title.replace('Svija administration', 'Settings List')
+
+if (adminTitle.innerHTML == 'Select module to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/font/>fonts</a>'
+
+if (adminTitle.innerHTML == 'Select page to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/font/>fonts</a>'
+
+if (adminTitle.innerHTML == 'Select font to change')
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/page/>pages</a>'
 
 </script>{% endif %}{% endblock %}

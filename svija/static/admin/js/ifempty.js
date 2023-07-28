@@ -15,10 +15,13 @@
 {
     window.addEventListener('load', function() {
 
+        // if there are "ifempty" elements on the page
         const fieldsets = document.querySelectorAll('fieldset.ifempty');
 
+        // check if there are filled-out entries
         for (const [i, elem] of fieldsets.entries()) {
-            if (elem.querySelectorAll('div.related-widget-wrapper').length > 1) {
+            var bits = elem.querySelectorAll('tr.form-row.has_original')
+            if (bits.length > 0) {
                 elem.classList.remove('collapse');
             }
         }

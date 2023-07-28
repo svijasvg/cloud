@@ -1,4 +1,5 @@
-#———————————————————————————————————————— Error404.py
+#:::::::::::::::::::::::::::::::::::::::: Error404.py
+# return HttpResponse("debugging message.")
 
 #———————————————————————————————————————— notes
 #
@@ -37,10 +38,11 @@ from svija.models import Screen, Redirect, Section, Settings
 import re
 import os
 
-#———————————————————————————————————————— Error404(request, *args, **kwargs):
 
 #@never_cache # we'll see if this is a problem
 def Error404(request, *args, **kwargs):
+
+# return HttpResponse("debugging message: "+ request.path) # /nomobile
 
 #———————————————————————————————————————— variables
 
@@ -54,8 +56,8 @@ def Error404(request, *args, **kwargs):
 
 #———————————————————————————————————————— 1. is it an admin page?
 
-  if request.path[0:6] == '/admin':
-    return HttpResponsePermanentRedirect('/admin/svija/')
+  if request.path[0:6] == '/cloud':
+    return HttpResponsePermanentRedirect('/cloud/svija/')
 
 #———————————————————————————————————————— 2. is it an image?
 # see also LinksView.py
@@ -82,17 +84,19 @@ def Error404(request, *args, **kwargs):
 
 #:::::::::::::::::::::::::::::::::::::::: it's definitely a missing page
 
-#———————————————————————————————————————— 4. is there a valid section code?
+#———————————————————————————————————————— 4. section code?
 
   section_code = request.path[1:].split('/')[0]
 
   if section_code != '':
     try:
       section = Section.objects.get(code=section_code)
+
+    # get rid of invalid code
     except:
       section_code = ''
 
-#———————————————————————————————————————— 5. get default if not
+#———————————————————————————————————————— get default if not available
 
   if section_code == '':
     try:
@@ -102,7 +106,7 @@ def Error404(request, *args, **kwargs):
       response.status_code = 404
       return response
 
-#———————————————————————————————————————— 6. is there a valid screen code in a cookie?
+#———————————————————————————————————————— 5. is there a valid screen code in a cookie?
 
   screen_code = request.COOKIES.get('screen_code')
   if screen_code == None: screen_code = ''
@@ -110,10 +114,12 @@ def Error404(request, *args, **kwargs):
   if screen_code != '':
     try:
       screen = Screen.objects.get(code=screen_code)
-    except:
-      pass
 
-#———————————————————————————————————————— 7. get default if not
+    # get rid of invalid code
+    except:
+      screen_code = ''
+
+#———————————————————————————————————————— get default if not
 
   if screen_code == '':
     try:
@@ -123,7 +129,7 @@ def Error404(request, *args, **kwargs):
       response.status_code = 404
       return response
 
-#———————————————————————————————————————— have valid screen & section; get "missing" page
+#———————————————————————————————————————— 6. get "missing" page
 
   try:
     response = cached_page(request, section_code, 'missing', screen_code)
@@ -134,4 +140,4 @@ def Error404(request, *args, **kwargs):
   return response
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin

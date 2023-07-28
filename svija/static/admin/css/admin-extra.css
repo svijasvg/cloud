@@ -3,17 +3,17 @@
 /*———————————————————————————————————————— notes
     Development takes place in:
 
-      /home/svija210901/static/admin/css 
+      /home/dev/static/admin/css 
 
     when done copy back to:
 
-      /opt/Svija-Admin/svija/static/admin/css
+      /opt/cloud/svija/static/admin/css
 
 		don't forget to copy fonts as well!  */
 
 /*———————————————————————————————————————— colors */
 
-/* in sync/Svija/Admin Customization:
+/* in sync/SVIJA/Svija Cloud/colors.css:
 
   --main:
   --accent:
@@ -46,7 +46,6 @@
 
 :root { --link:        var(--text-dark); 
         --link-hover:  var(--text-dark); }
-
 
 /*———————————————————————————————————————— fonts */
 
@@ -112,6 +111,54 @@ body{
 strong, b,
 .required label, label.required {
 	font-weight: 600 !important;
+}
+
+
+var(--font-family-primary);
+:root { --bg-head:     hsl(0, 0%,  20%);
+        --bg-dark:     hsl(0, 0%,  20%);
+        --bg-med:      hsl(0, 0%,  90%);
+        --bg-bright:   hsl(0, 0%, 100%);
+        --text-dark:   hsl(0, 0%,  20%);
+        --text-med:    hsl(0, 0%,  70%);
+        --text-bright: hsl(0, 0%,  90%); }
+
+html[data-theme="light"],
+:root {
+
+    --font-family-primary:
+        Open Sans,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        system-ui,
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-family-monospace:
+        "IBM Plex Mono",
+        ui-monospace,
+        Menlo,
+        Monaco,
+        "Cascadia Mono",
+        "Segoe UI Mono",
+        "Roboto Mono",
+        "Oxygen Mono",
+        "Ubuntu Monospace",
+        "Source Code Pro",
+        "Fira Mono",
+        "Droid Sans Mono",
+        "Courier New",
+        monospace,
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
 /*———————————————————————————————————————— header bar */
@@ -346,6 +393,13 @@ input[type=button]:hover,
      background:var(--main);
 }
 
+/* delete are you sure › no take me back button */
+.delete-confirmation form .cancel-link:hover{
+    color: var(--button-fg);
+    background: var(--close-button-hover-bg);
+}
+
+
 /*———————————————————————————————————————— default buttons */
 
 .button.default,
@@ -440,6 +494,14 @@ fieldset.module h2{
   color: var(--main) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+    fieldset.module h2{
+      color:var(--dark) !important;
+      border-radius:5px;
+      background-color: var(--main);
+    }
+}
+
 /*———————————————————————————————————————— collapsible inline models
 
     fieldset module.collapse */
@@ -455,8 +517,22 @@ fieldset.module.collapse h2{
   color: var(--main) !important;
 }
 
-fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+@media (prefers-color-scheme: dark) {
+    fieldset.module.collapse h2{
+      color:var(--dark) !important;
+      border-radius:5px;
+      background-color: var(--main);
+    }
+}
+
+fieldset.module.collapse h2 a.collapse-toggle:link{
 	color:var(--text-bright) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    fieldset.module.collapse h2 a.collapse-toggle:link{
+    	color:var(--bg-med) !important;
+    }
 }
 
 fieldset.module.collapse a.collapse-toggle::before{
@@ -483,6 +559,10 @@ fieldset.module.collapse.collapsed h2{
 	font-size:13px !important;
 	padding:0px 0px 0px 10px !important;
 	letter-spacing:0 !important;
+}
+
+fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
+	color:var(--text-bright) !important;
 }
 
 fieldset.module.collapse.collapsed a.collapse-toggle::before{
@@ -575,6 +655,21 @@ h1#site-name{ margin:0; }
 
 /*———————————————————————————————————————— illustrator files */
 
+div#illustrator_fk-group fieldset.module h2{
+  color:#F9991F !important;
+  background-color:#310001 !important;
+  font-weight: 600 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+div#illustrator_fk-group fieldset.module h2{
+  background-color:#F9991F !important;
+  color:#310001 !important;
+  font-weight: 600 !important;
+
+}
+}
 div.fieldBox.field-filename input, /* module           */
 td.field-filename input{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
@@ -591,16 +686,67 @@ td.field-filename input:focus{           /* page             */
     so are grayed-out & turn red on mouseover */
 
 div.fieldBox.field-adobe_url input#id_adobe_url,
-div.form-row.field-adobe textarea#id_adobe{
+div.form-row.field-adobe_sheet textarea#id_adobe_sheet{
   opacity:0.5;
 }
 
-div.form-row.field-adobe textarea#id_adobe:hover,
+div.form-row.field-svg_ref input#id_svg_ref:hover,
+div.form-row.field-adobe_sheet textarea#id_adobe_sheet:hover,
 div.fieldBox.field-adobe_url input#id_adobe_url:hover{
   opacity:1.0;
   border-color:red;
   color:red;
 }
 
+/*———————————————————————————————————————— fix broken submit row css */
+
+div.submit-row {
+    display:block;     /* flex */
+    text-align: right;
+}
+
+.submit-row input {
+    margin: 0 0 0 5px !important;
+	vertical-align:1px;
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    float: right;
+}
+
+.submit-row p.deletelink-box {
+    float: left;
+  margin:0px; /* fix misalignment */
+}
+
+.submit-row a.closelink {
+/*    display: block; */
+   display: inline-block;
+   margin: 0px 0 0 5px; /* 1px is to fix misalignment */
+}
+
+.submit-row input.default {
+    margin: 0 0 0 8px !important;
+}
+
+/*———————————————————————————————————————— fix checkbox height */
+
+/* Published */
+div.checkbox-row label.vCheckboxLabel {
+    padding: 2px 0px 3px 10px;
+}
+
+/* page › more settings */
+div.fieldBox input[type=checkbox]{
+  margin-top:8px;
+}
+
+/* page › more settings */
+div.fieldBox label.vCheckboxLabel {
+    vertical-align: 3px;
+    padding: 8px 0 5px 10px;
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
+

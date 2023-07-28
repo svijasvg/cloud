@@ -1,19 +1,19 @@
-#———————————————————————————————————————— views/modules/get_scripts.py
+#———————————————————————————————————————— views/modules/get_script_sets.py
 
 #———————————————————————————————————————— notes
 #
 #   very similar:   get_modules.py
 #                   get_page_modules.py
-#                   get_page_scripts.py
+#                   get_script_sets.py
 #                   get_scripts.py
 #
+#   accepts a list of "Script", all enabled
 #
-#   accepts a list of scripts, all enabled & "always include"
+#   returns a list of page objects
+#   a page object contains css, headjs, bodyjs, svg, html, form etc.
 #
-#
-#
-#
-#
+#   when python is updated to at least 3.10, use pattern matching (like case/switch)
+#   https://stackoverflow.com/questions/11479816/what-is-the-python-equivalent-for-a-case-switch-statement
 #
 #
 #———————————————————————————————————————— imports
@@ -22,40 +22,28 @@
 from modules.get_script import *
 from PageObject import page_obj
 
-#———————————————————————————————————————— def get_scripts(label, all_scripts, page_width, use_p3):
+#———————————————————————————————————————— def get_script_sets(label, all_script_sets):
 
-# Script.objects.filter(Q(enabled=True) & Q(always=True))
+# page.pagescript_set.filter(enabled=True).order_by('order')
 
-def get_scripts(label, all_scripts):
+def get_script_sets(label, all_script_sets):
 
   #comments
   hjc = hcc = bjc = svc = htc = fmc = ''
 
   final_list = []
 
-#———————————————————————————————————————— iterate through scripts
+#———————————————————————————————————————— iterate through scripts-linked-in-page
 
-  for this_group in all_scripts:
-
+  for this_script_set in all_script_sets:
+    this_group = this_script_set.scriptscripts_set.all()
 
     hj = hc = bj = sv = ht = fm = ''
 
-#———————————————————————————————————————— get SVG's
-
-#   not used for scripts
-
-
-
-
-
-
-#———————————————————————————————————————— deactivate from page?
-
-#   not called through page
 
 #———————————————————————————————————————— iterate through scripts
 
-    for this_script in this_group.scriptscripts_set.all():
+    for this_script in this_group:
       if this_script.enabled:
   
         if this_script.type == 'head JS':
@@ -85,7 +73,7 @@ def get_scripts(label, all_scripts):
 #———————————————————————————————————————— prepare return
 
   comments = page_obj(hjc, hcc, bjc, svc, htc, fmc)
-  final_list = [comments, *final_list]
+# final_list = [comments, *final_list]
 
   return final_list
 

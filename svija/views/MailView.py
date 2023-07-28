@@ -43,9 +43,10 @@ import socket
 from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
 
-#———————————————————————————————————————— MailView(request):
 
 def MailView(request):
+
+#———————————————————————————————————————— get mail settings
 
   settings  = Settings.objects.filter(enabled=True).first()
   section   = settings.section
@@ -92,7 +93,7 @@ def MailView(request):
   # referrer = https://svija.dev/access
   protocol, slash, realDomain, trash  = referrer.split('/',3)
 
-  domains = ['svija.love', 'svija.dev', 'new.svija.dev',]
+  domains = ['svija.love', 'svija.dev', 'new.svija.dev', 'dev.svija.love', ]
   authorized = False
   
   for thisDomain in domains:
@@ -128,15 +129,7 @@ def MailView(request):
   return HttpResponse(response)
 
 
-#:::::::::::::::::::::::::::::::::::::::: functions
-
-#———————————————————————————————————————— stripQuotes(str)
-
-def stripQuotes(str):
-  str = re.sub('"', "''", str)
-  str = re.sub("'", "’" , str)
-  str = re.sub("`", "’" , str)
-  return str
+#:::::::::::::::::::::::::::::::::::::::: main method
 
 #———————————————————————————————————————— send(settings, subject, body, frm, to, cc, bcc)
 
@@ -168,6 +161,17 @@ def sendx(settings, subject, body, frm, to, cc, bcc):
     response = e
 
   return response
+
+
+#:::::::::::::::::::::::::::::::::::::::: utility methods
+
+#———————————————————————————————————————— stripQuotes(str)
+
+def stripQuotes(str):
+  str = re.sub('"', "''", str)
+  str = re.sub("'", "’" , str)
+  str = re.sub("`", "’" , str)
+  return str
 
 #———————————————————————————————————————— stripReturns(str)
 
