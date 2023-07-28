@@ -339,11 +339,12 @@ class Settings(models.Model):
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
 
     # email settings
-    mail_id       = models.CharField(max_length=200, default='', verbose_name='username for sending email',blank=True,)
-    mail_pass     = models.CharField(max_length=200, default='', verbose_name='password for sending email',blank=True,)
-    mail_srv      = models.CharField(max_length=200, default='', verbose_name='server for sending email',blank=True,)
+    mail_id       = models.CharField(max_length=200, default='', verbose_name='email username',blank=True,)
+    mail_pass     = models.CharField(max_length=200, default='', verbose_name='email password',blank=True,)
+    mail_srv      = models.CharField(max_length=200, default='', verbose_name='email server',blank=True,)
     mail_port     = models.IntegerField(default=0, verbose_name='email server port', null=True, blank=True,)
     mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
+    notes         = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
     def __str__(self):
         return self.url
