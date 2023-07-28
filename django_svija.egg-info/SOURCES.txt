@@ -271,6 +271,7 @@ svija/migrations/0254_alter_module_options.py
 svija/migrations/0255_alter_module_options.py
 svija/migrations/0256_alter_scriptscripts_content.py
 svija/migrations/__init__.py
+svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/admin-extra.css
 svija/static/admin/fonts/IBMPlexMono-Regular.woff
 svija/static/admin/fonts/OpenSans-Bold.woff
