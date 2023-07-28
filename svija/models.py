@@ -385,8 +385,8 @@ class Page(models.Model):
     default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
-    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
+    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='x offset')
+    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='y offset')
 
     def __unicode__(self):
         return self.name
