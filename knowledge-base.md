@@ -7,6 +7,16 @@
 
 ### Knowledge Base
 
+### Useful Links
+
+- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
+- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
+- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
+- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
+- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
+- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
+
+---
 ### Bug Fixes
 <details><summary>PostgreSQL Failure</summary>
 
@@ -93,16 +103,6 @@ After refactoring the main page views, I got this error when I called CachedPage
 
 **fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
 </details>
-
----
-### Useful Links
-
-- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
-- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
-- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
-- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
-- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
-- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
 
 ---
 ### Etiquette
