@@ -9,7 +9,8 @@
 
 <details><summary>PostgreSQL Failure</summary>
 
-<br>Link to fix: [github.com/docker-library](https://github.com/docker-library/postgres/issues/415)
+----------------------------------------
+Link to fix: [github.com/docker-library](https://github.com/docker-library/postgres/issues/415)
 
 The command that worked:
 ```
