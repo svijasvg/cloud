@@ -7,6 +7,7 @@
 
 ### Knowledge Base
 
+### Bug Fixes
 <details><summary>PostgreSQL Failure</summary>
 
 ----------------------------------------
@@ -63,18 +64,57 @@ and "journalctl -xeu postgresql@14-main.service" for details.
 [Google Doc](https://docs.google.com/document/d/1aKoiILInZcUytrSPUqhSOInwsAKRstXX7VCc6kvuESI/edit#heading=h.f1enxlgdh64j) with my debugging steps.
 
 </details>
+<details><summary>page was not centered on load</summary>
 
+#### page was not centered on load
 
-<details><summary>good tips for webapps on iPhone</summary>
+> applies to pages that are wider than the browser window
 
-https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support
+The cause was the redirect from mobile to desktop on new windows. The mobile version loads, then reloads immediately while scrolled to 0,0.
+
+Browser default behavior is to return to the same scrolling position as before when the page is reloaded.
+
+**fix:** add `history.scrollRestoration = 'manual';` to the JS right before reloading the page.
+
 </details>
+<details><summary>page reloaded constantly</summary>
+
+#### page reloaded constantly
+
+> applies to pages on any site where both domain and subdomains are used
+
+The cause was that Django was using cookie values associated with the parent domain (**screen_code** cookies were set for both base.svija.dev and svjia.dev).
+
+**fix:** added a function to setCookie that deletes parent-domain cookies if appropriate.
+</details>
+<details><summary>'module' object is not callable</summary>
+
+After refactoring the main page views, I got this error when I called CachedPageView.py from HomePageView.py
+
+**fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
+</details>
+
+---
+### Useful Links
+
+- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
+- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
+- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
+- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
+- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
+
+---
+### Etiquette
+
 <details><summary>⚠️ label guidelines</summary>
 
-colored labels designate category
-black labels are ?
-white labels are informational
+- colored labels designate category
+- black labels are ?
+- white labels are informational
 </details>
+
+---
+### For the Future
 
 <details><summary>funny license text about cat</summary>
 
@@ -82,6 +122,8 @@ This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? 
 
 https://greem.co.uk/otherbits/jelly.html
 </details>
+
+### Technical Resources
 
 <details><summary>safari font-size info</summary>
 
@@ -96,7 +138,6 @@ as of 230724:
 - 17.0 (WebKit 19616.1.20.11.3) · Sonoma
 
 </details>
-
 <details><summary>embedded SVG's</summary>
 
 https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
@@ -111,6 +152,8 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
 ```
 
 </details>
+
+### Code
 
 <details><summary>Horizontal Scrolling Code </summary>
 
@@ -230,58 +273,7 @@ it can also be in the specific stylesheet for the page.
 
 </details>
 
-<details><summary>HN security suggestions</summary>
 
-https://news.ycombinator.com/item?id=34098369
-</details>
-
-<details><summary>HN accessibiility tips</summary>
-
-https://news.ycombinator.com/item?id=33302783
-</details>
-
-<details><summary>HN password requirements link</summary>
-
-https://news.ycombinator.com/item?id=34098369
-
-</details>
-
-<details><summary>ecommerce Django packages </summary>
-
-https://djangopackages.org/grids/g/ecommerce/
-</details>
-
-<details><summary>⚠️ BUG FIXES page was not centered on load</summary>
-
-#### page was not centered on load
-
-> applies to pages that are wider than the browser window
-
-The cause was the redirect from mobile to desktop on new windows. The mobile version loads, then reloads immediately while scrolled to 0,0.
-
-Browser default behavior is to return to the same scrolling position as before when the page is reloaded.
-
-**fix:** add `history.scrollRestoration = 'manual';` to the JS right before reloading the page.
-
-</details>
-
-<details><summary>⚠️ BUG FIXES page reloaded constantly</summary>
-
-#### page reloaded constantly
-
-> applies to pages on any site where both domain and subdomains are used
-
-The cause was that Django was using cookie values associated with the parent domain (**screen_code** cookies were set for both base.svija.dev and svjia.dev).
-
-**fix:** added a function to setCookie that deletes parent-domain cookies if appropriate.
-</details>
-
-<details><summary>⚠️ BUG FIXES 'module' object is not callable</summary>
-
-After refactoring the main page views, I got this error when I called CachedPageView.py from HomePageView.py
-
-**fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
-</details>
 
 <details><summary>triage 1</summary>
 
