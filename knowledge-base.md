@@ -19,6 +19,7 @@
 
 ---
 ### Bug Fixes
+
 <details><summary>PostgreSQL Failure</summary>
 
 ----------------------------------------
@@ -408,7 +409,7 @@ panes:
 - delete same image with wrong date
 - need a way to clear image cache : page view URL with check for admin?
 - need a way to exempt an image (just name it \_x ?) so that overriding is possible
-- 
+
 </details>
 <details><summary>list 4</summary>
 
@@ -531,7 +532,7 @@ panes:
 - print the name of the script before each script: when reading source, should be easy to recognize the source of each script
 - in addition to .st0 style definitions, replace "#SVGID_4_" definitions
 
-- </details>
+</details>
 <details><summary>list 5</summary>
 
 ---
