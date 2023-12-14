@@ -65,6 +65,10 @@ and "journalctl -xeu postgresql@14-main.service" for details.
 </details>
 
 
+<details><summary>good tips for webapps on iPhone</summary>
+
+https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support
+</details>
 <details><summary>⚠️ label guidelines</summary>
 
 colored labels designate category
@@ -666,4 +670,5 @@ See the various files for explanations.
 - & fr & fm are hardcoded in responsive.js & responsive.js in ozake.com/scripts has hard-coded languages
 
 </details>
+
 
