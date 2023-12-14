@@ -124,6 +124,7 @@ After refactoring the main page views, I got this error when I called CachedPage
 
 <details><summary>funny license text about cat</summary>
 
+---
 This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? Pfft. Anything within the realms of common sense, really. I don't want to prescribe rigidly what people can and can't do with it, so I've decided on a benchmark. It's this: you're allowed to do with this page anything you wouldn't mind me doing with your cat. So yes, you can photoshop it for comedy effect, you can copy bits of it for illustrative purposes and so on, but you can't steal it and pass it off as your own."
 
 https://greem.co.uk/otherbits/jelly.html
@@ -139,6 +140,7 @@ https://greem.co.uk/otherbits/jelly.html
 
 <details><summary>safari font-size info</summary>
 
+---
 - https://stackoverflow.com/questions/72903407/svg-text-textlength-not-working-on-mobile-safari
 - https://stackoverflow.com/questions/11768364/svg-scaling-issues-in-safari
 - https://bugs.webkit.org/show_bug.cgi?id=56543
@@ -152,6 +154,7 @@ as of 230724:
 </details>
 <details><summary>embedded SVG's</summary>
 
+---
 https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
 
 "In contrast to HTML, SVG allows you to embed other svg elements seamlessly. This way you can also create new coordinate systems by utilizing the viewBox, width and height of the inner svg element."
@@ -166,6 +169,7 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
 </details>
 <details><summary>get/set scroll position</summary>
 
+---
 https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
 
 The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
