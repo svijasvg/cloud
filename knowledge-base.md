@@ -102,11 +102,12 @@ After refactoring the main page views, I got this error when I called CachedPage
 - [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
 - [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
 - [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
+- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
 
 ---
 ### Etiquette
 
-<details><summary>⚠️ label guidelines</summary>
+<details><summary>label guidelines</summary>
 
 - colored labels designate category
 - black labels are ?
@@ -122,7 +123,13 @@ This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? 
 
 https://greem.co.uk/otherbits/jelly.html
 </details>
+<details><summary>share sheet icon</summary>
 
+![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
+
+</details>
+
+---
 ### Technical Resources
 
 <details><summary>safari font-size info</summary>
@@ -152,7 +159,19 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
 ```
 
 </details>
+<details><summary>get/set scroll position</summary>
 
+https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
+</details>
+<details><summary>ozake loading times</summary>
+
+<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
+
+</details>
+
+---
 ### Code
 
 <details><summary>Horizontal Scrolling Code </summary>
@@ -273,9 +292,10 @@ it can also be in the specific stylesheet for the page.
 
 </details>
 
+---
+### Triage
 
-
-<details><summary>triage 1</summary>
+<details><summary>list 1</summary>
 
 in addition to the normal web page being open and normally usable, there is the animation lab page that can be resized etc.
 need to decide which layout is best: wide & short, A4, or tall & thin
@@ -303,8 +323,7 @@ how will animations be loaded / updated? choice of pagescripts
 list of page
 
 </details>
-
-<details><summary>triage 2</summary>
+<details><summary>list 2</summary>
 
 https://github.com/graphite-project/graphite-web/issues/668
 export GRAPHITE_ROOT=/opt/graphite
@@ -350,15 +369,7 @@ views don't get called when cached… need to make sure that cache is emptied fr
 backups are in root folder like sync, not in same folder as sync
 
 </details>
-
-<details><summary>triage 3</summary>
-
-https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
-
-The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
-</details>
-
-<details><summary>triage 4</summary>
+<details><summary>list 3</summary>
 
 when page loads, in SVG, replace image reference:
 Links/home-hero-DSC_0020.jpg 
@@ -386,9 +397,7 @@ need a way to clear image cache : page view URL with check for admin?
 need a way to exempt an image (just name it \_x ?) so that overriding is possible
 
 </details>
-
-<details><summary>triage 5</summary>
-
+<details><summary>list 4</summary>
 
 ———————————————————————————————————————— small improvements
 
@@ -509,37 +518,7 @@ print the name of the script before each script: when reading source, should be 
 in addition to .st0 style definitions, replace "#SVGID_4_" definitions
 
 </details>
-
-<details><summary>ozake loading times</summary>
-
-<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
-
-</details>
-
-<details><summary>page progress bar</summary>
-
-
-
-https://www.city-journal.org/html/dodging-trump-bullet-10850.html
-</details>
-
-<details><summary>scroll notes</summary>
-
-the key is to do an onscroll
-set timeout
-smoothscroll back to center
-</details>
-
-<details><summary>share sheet icon</summary>
-
-![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
-
-
-
-</details>
-
-<details><summary>more triage</summary>
-
+<details><summary>list 5</summary>
 
 horizontal scrolling wrong after page resize (go into full screen to see)
 ¬ need a way to reset scroll position on resize (horizontally)
@@ -615,8 +594,7 @@ auto html menus module, add to docs
 
 
 </details>
-
-<details><summary>more tirage</summary>
+<details><summary>list 6</summary>
 
 See the various files for explanations.
 
@@ -662,5 +640,4 @@ See the various files for explanations.
 - & fr & fm are hardcoded in responsive.js & responsive.js in ozake.com/scripts has hard-coded languages
 
 </details>
-
 
