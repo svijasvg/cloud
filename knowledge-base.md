@@ -39,7 +39,8 @@ This returned:
 [1838]: pg_ctl: could not start server
 [1838]: Examine the log output.
 
-systemd[1]: postgresql@14-main.service: Can't open PID file /run/postgresql/14-main.pid (yet?) after start: Operation not permitted
+systemd[1]: postgresql@14-main.service: Can't open PID file /run/postgresql/14-main.pid (yet?) after start:
+            Operation not permitted
 systemd[1]: postgresql@14-main.service: Failed with result 'protocol'.
 systemd[1]: Failed to start PostgreSQL Cluster 14-main.
 ```
