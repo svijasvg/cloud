@@ -113,6 +113,7 @@ After refactoring the main page views, I got this error when I called CachedPage
 
 <details><summary>label guidelines</summary>
 
+---
 - colored labels designate category
 - black labels are ?
 - white labels are informational
