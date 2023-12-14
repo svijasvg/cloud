@@ -7,6 +7,7 @@
 
 ### Knowledge Base
 
+---
 ### Useful Links
 
 - [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
@@ -76,6 +77,7 @@ and "journalctl -xeu postgresql@14-main.service" for details.
 </details>
 <details><summary>page was not centered on load</summary>
 
+---
 #### page was not centered on load
 
 > applies to pages that are wider than the browser window
@@ -89,6 +91,7 @@ Browser default behavior is to return to the same scrolling position as before w
 </details>
 <details><summary>page reloaded constantly</summary>
 
+---
 #### page reloaded constantly
 
 > applies to pages on any site where both domain and subdomains are used
@@ -99,6 +102,7 @@ The cause was that Django was using cookie values associated with the parent dom
 </details>
 <details><summary>'module' object is not callable</summary>
 
+---
 After refactoring the main page views, I got this error when I called CachedPageView.py from HomePageView.py
 
 **fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
