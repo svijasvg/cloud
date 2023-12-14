@@ -306,301 +306,301 @@ it can also be in the specific stylesheet for the page.
 
 <details><summary>list 1</summary>
 
-in addition to the normal web page being open and normally usable, there is the animation lab page that can be resized etc.
-need to decide which layout is best: wide & short, A4, or tall & thin
-the point is to be able to work on an animation and see its effects
-to make it easier, we need to be able to see where objects are at all times
+- in addition to the normal web page being open and normally usable, there is the animation lab page that can be resized etc.
+- need to decide which layout is best: wide & short, A4, or tall & thin
+- the point is to be able to work on an animation and see its effects
+- to make it easier, we need to be able to see where objects are at all times
+
 panes:
-main programming workspace A- A+ buttons
-list of page scripts containing animation information from page (choose which one to modify)
-list of SVG's › (or one pane for each svg)
-list of user-created ID's in each SVG (2 pane for both)
-prefs : hightlighting style (background, outline, color, transparency, blinking)
-GSAP tips windows
-list of pagescripts anim info  with activate or no or checkboxes & edit button & new button & copy button
-made for a big monitor? Svija pages work at small sizes, there's no reason you couldn't reduce the svija
-should work on 1280x800 screen, even if the Svija page is tiny
-prefs : rows & colums of text (button "update")
+- main programming workspace A- A+ buttons
+- list of page scripts containing animation information from page (choose which one to modify)
+- list of SVG's › (or one pane for each svg)
+- list of user-created ID's in each SVG (2 pane for both)
+- prefs : hightlighting style (background, outline, color, transparency, blinking)
+- GSAP tips windows
+- list of pagescripts anim info  with activate or no or checkboxes & edit button & new button & copy button
+- made for a big monitor? Svija pages work at small sizes, there's no reason you couldn't reduce the svija
+- should work on 1280x800 screen, even if the Svija page is tiny
+- prefs : rows & colums of text (button "update")
 
-animation lab
-animation lab has list of non .st0 id's, choose your formatting to highlight
-javascript in main doc to launch anim lab
-choose key combination in admin
-anim lab w rem, responsive mais A+ A-
+- animation lab
+- animation lab has list of non .st0 id's, choose your formatting to highlight
+- javascript in main doc to launch anim lab
+- choose key combination in admin
+- anim lab w rem, responsive mais A+ A-
 
-how will animations be loaded / updated? choice of pagescripts
-list of page
+- how will animations be loaded / updated? choice of pagescripts
+- list of page
 
 </details>
 <details><summary>list 2</summary>
 
-https://github.com/graphite-project/graphite-web/issues/668
-export GRAPHITE_ROOT=/opt/graphite
-PYTHONPATH=$GRAPHITE_ROOT/webapp django-admin.py dumpdata --settings=graphite.settings > sqllite_graphite_dump.json
-this should be easy to test.
-./manage.py dumpdata > working.json
-took 1 second to run for Ozake, not a huge hit for once a day
-The basic theory is that backups are made when the page is loaded (depending on admin prefs), and downloaded every time the site is synced.
-We are going to benefit by rewriting the sync script to add a lite mode, only download or upload one file (would be nice to add dependencies in Links and Fonts at some point)
-not: models.py/admin.py:
-setting for interval between backups
-which backups to make: 1 day, 1 week, 1 month, 3 months, 1 year
-total number of backups to keep in stock (if smaller than prev. set to prev.)
-better just to configure the program, just have interval (manik could be weekly, staffeur monthly etc.)
-make a backup every day & 1/7 of the time don't replace – it make it older
-when it's a week old it , ¼ of the time don't replace, let it age
-when that one's a month old, ⅓ of the time don't replace, let it age
-when that one's three months old, ¼ of the time don't replace, let it age
-views.py:
-when page is loaded, check if a restore is called for (either in settings, restore on next visit, or because a restore db is present
-if there's a restore programmed, do it (adding comment in source code?)
-don't forget to run the postgresql script or try --natural to get rid of problem data
-if there's not a restore programmed, check dump interval
-if the most recent dump in /backups/ is not within the interval
-create a dump in/backups/
-delete databases that don't meet the "keep" requirement\*
-sync script:
-if sync up or sync down:
-do not touch anything in the /sync/backups folder
-sync the backups folder down
-also allow sync up only new for colleagues working on project
-also allow sync down by filename for colleagues working on project
-possible to not download backups (might take a long time if there are many)
-lite mode for working on one page
-restore:
-from admin page?
-upload a file, would be best
-restore on next visit from [filename]
-if you upload a fresh db in sync folder (not in sub folder)
-it will automatically replace the existing site (with backup made of existing)
-call files backup.svj
-views don't get called when cached… need to make sure that cache is emptied frequently enough to generate dumps
-backups are in root folder like sync, not in same folder as sync
+- https://github.com/graphite-project/graphite-web/issues/668
+- export GRAPHITE_ROOT=/opt/graphite
+- PYTHONPATH=$GRAPHITE_ROOT/webapp django-admin.py dumpdata --settings=graphite.settings > sqllite_graphite_dump.json
+- this should be easy to test.
+- ./manage.py dumpdata > working.json
+- took 1 second to run for Ozake, not a huge hit for once a day
+- The basic theory is that backups are made when the page is loaded (depending on admin prefs), and downloaded every time the site is synced.
+- We are going to benefit by rewriting the sync script to add a lite mode, only download or upload one file (would be nice to add dependencies in Links and Fonts at some point)
+- not: models.py/admin.py:
+- setting for interval between backups
+- which backups to make: 1 day, 1 week, 1 month, 3 months, 1 year
+- total number of backups to keep in stock (if smaller than prev. set to prev.)
+- better just to configure the program, just have interval (manik could be weekly, staffeur monthly etc.)
+- make a backup every day & 1/7 of the time don't replace – it make it older
+- when it's a week old it , ¼ of the time don't replace, let it age
+- when that one's a month old, ⅓ of the time don't replace, let it age
+- when that one's three months old, ¼ of the time don't replace, let it age
+- views.py:
+- when page is loaded, check if a restore is called for (either in settings, restore on next visit, or because a restore db is present
+- if there's a restore programmed, do it (adding comment in source code?)
+- don't forget to run the postgresql script or try --natural to get rid of problem data
+- if there's not a restore programmed, check dump interval
+- if the most recent dump in /backups/ is not within the interval
+- create a dump in/backups/
+- delete databases that don't meet the "keep" requirement\*
+- sync script:
+- if sync up or sync down:
+- do not touch anything in the /sync/backups folder
+- sync the backups folder down
+- also allow sync up only new for colleagues working on project
+- also allow sync down by filename for colleagues working on project
+- possible to not download backups (might take a long time if there are many)
+- lite mode for working on one page
+- restore:
+- from admin page?
+- upload a file, would be best
+- restore on next visit from [filename]
+- if you upload a fresh db in sync folder (not in sub folder)
+- it will automatically replace the existing site (with backup made of existing)
+- call files backup.svj
+- views don't get called when cached… need to make sure that cache is emptied frequently enough to generate dumps
+- backups are in root folder like sync, not in same folder as sync
 
 </details>
 <details><summary>list 3</summary>
 
-when page loads, in SVG, replace image reference:
-Links/home-hero-DSC_0020.jpg 
-with image width & resolution info
-treated/home-hero-DSC_0020-1680X20Q75D [day, second].jpg
-need parameters in admin/responsive for image quality & size
-page width = 1680
-pixel size = 20x (skip decimal, 20 = 2)
-quality = 0-100
-if Image is missing, go get original image and create correct size & quality
-models.py › responsive
-image resolution compared to SVG width (2x, etc.) 2-digit integer
-image quality (0-100)
-admin.py › responsive
-image resolution compared to SVG width (2x, etc.)
-image quality (0-100)
-views.py, when image is requested:
-check that referrer is site not hacker
-check uploaded image to get modified date
-check in /cached-images/ to see if appropriate image exists with correct date
-if it exists: use it
-else: treat the image then return the new image
-delete same image with wrong date
-need a way to clear image cache : page view URL with check for admin?
-need a way to exempt an image (just name it \_x ?) so that overriding is possible
-
+- when page loads, in SVG, replace image reference:
+- Links/home-hero-DSC_0020.jpg 
+- with image width & resolution info
+- treated/home-hero-DSC_0020-1680X20Q75D [day, second].jpg
+- need parameters in admin/responsive for image quality & size
+- page width = 1680
+- pixel size = 20x (skip decimal, 20 = 2)
+- quality = 0-100
+- if Image is missing, go get original image and create correct size & quality
+- models.py › responsive
+- image resolution compared to SVG width (2x, etc.) 2-digit integer
+- image quality (0-100)
+- admin.py › responsive
+- image resolution compared to SVG width (2x, etc.)
+- image quality (0-100)
+- views.py, when image is requested:
+- check that referrer is site not hacker
+- check uploaded image to get modified date
+- check in /cached-images/ to see if appropriate image exists with correct date
+- if it exists: use it
+- else: treat the image then return the new image
+- delete same image with wrong date
+- need a way to clear image cache : page view URL with check for admin?
+- need a way to exempt an image (just name it \_x ?) so that overriding is possible
+- 
 </details>
 <details><summary>list 4</summary>
 
 ———————————————————————————————————————— small improvements
 
-admin module with all prefixes and all-page list
-cross-site html in Svija? allow inclusing of html from other sites
-automatic conversion to flag in modules & pages (use entities in program)
-might want to remove 2-character limit for prefixes to allow things like "realisations". if I create multiple prefixes (realisations, fr) in a a single language/responsive, does it create an error for the default page? probably not because the site has a default prefix
-skip css by adding form fields: bottom align footer, give vertical positioning for second (after header) svg's
-rediriger une adresse telle que /contact à /en/contact selon la langue par défaut
-auto-create snippet if there's not one already
-need links between same pages in different languages
-/r shows most recent SVG with default settings
-french descriptions for all fieldsets
-hiddtn table with common flag emoji, add automatically
-add forgot password link
-https://stackoverflow.com/questions/2272002/adding-forgot-password-feature-to-django-admin-site
-admin.py hide if empty show if data
-html in snippet, go back to accessibility
+- admin module with all prefixes and all-page list
+- cross-site html in Svija? allow inclusing of html from other sites
+- automatic conversion to flag in modules & pages (use entities in program)
+- might want to remove 2-character limit for prefixes to allow things like "realisations". if I create multiple prefixes (realisations, fr) in a a single language/responsive, does it create an error for the default page? probably not because the site has a default prefix
+- skip css by adding form fields: bottom align footer, give vertical positioning for second (after header) svg's
+- rediriger une adresse telle que /contact à /en/contact selon la langue par défaut
+- auto-create snippet if there's not one already
+- need links between same pages in different languages
+- /r shows most recent SVG with default settings
+- french descriptions for all fieldsets
+- hiddtn table with common flag emoji, add automatically
+- add forgot password link
+- https://stackoverflow.com/questions/2272002/adding-forgot-password-feature-to-django-admin-site
+- admin.py hide if empty show if data
+- html in snippet, go back to accessibility
 
 ———————————————————————————————————————— housekeeping possibilites
 
-link do housekeeping now
-in admin need list of uploaded files svg & folders
-in admin need list of svgs & folders, printout of all uploads?
-add function to page load for admins only or scheduled: datadump
-- remove "update needed" from source if google font is checked
-- backup database dump
-add edit history (names, dates & times)
-add sizes to svg's for pages, check placed images for sizes
-svg filesizes in admin, warning banners on pages, admin menu when logged in
+- link do housekeeping now
+- in admin need list of uploaded files svg & folders
+- in admin need list of svgs & folders, printout of all uploads?
+- add function to page load for admins only or scheduled: datadump
+- - remove "update needed" from source if google font is checked
+- - backup database dump
+- add edit history (names, dates & times)
+- add sizes to svg's for pages, check placed images for sizes
+- svg filesizes in admin, warning banners on pages, admin menu when logged in
 
 ———————————————————————————————————————— investigate
 
-use css or other to make web pages printable IT'S ENOUGH TO NOT HAVE A MARGIN
-fetch JS & promises
+- use css or other to make web pages printable IT'S ENOUGH TO NOT HAVE A MARGIN
+- fetch JS & promises
 
 ———————————————————————————————————————— big improvements
 
-swipe navigation
-img serving
-animation lab popup to develop animations : show id's of each SVG element, work with JS in a separate window, keep at end, save to page, to file etc.
-add integration of sound effects
-bulk actions (mark pages as active): https://docs.djangoproject.com/en/2.2/ref/contrib/admin/actions/
-add database creation script to backup so with all files, you have everything to recreate the site
-admin menu when logged in w dropdown page list
-automatic menu generation
-admin module / top bar w/ all pages
+- swipe navigation
+- img serving
+- animation lab popup to develop animations : show id's of each SVG element, work with JS in a separate window, keep at end, save to page, to file etc.
+- add integration of sound effects
+- bulk actions (mark pages as active): https://docs.djangoproject.com/en/2.2/ref/contrib/admin/actions/
+- add database creation script to backup so with all files, you have everything to recreate the site
+- admin menu when logged in w dropdown page list
+- automatic menu generation
+- admin module / top bar w/ all pages
 
-not trivial: dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
+- not trivial: dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
 
-capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
+- capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
 
-need links between same pages in different languages
+- need links between same pages in different languages
 
-in admin need list of uploaded files svg & folders
-print hierarchie with pipe characters in monospaced font?
+- in admin need list of uploaded files svg & folders
+- print hierarchie with pipe characters in monospaced font?
 
-add languages, see:
-https://stackoverflow.com/questions/21469470/how-can-i-change-django-admin-language
-in comments
+- add languages, see:
+- https://stackoverflow.com/questions/21469470/how-can-i-change-django-admin-language
+- in comments
 
-dans les pages admin, remplacer date créé par date modifié
-https://stackoverflow.com/questions/37540744/django-datetime-default-value-in-migrations
-if I add date modified, I have to do manual migrations the fist time
+- dans les pages admin, remplacer date créé par date modifié
+- https://stackoverflow.com/questions/37540744/django-datetime-default-value-in-migrations
+- if I add date modified, I have to do manual migrations the fist time
 
-change anim lab becomes object finder
-add real return email addresses
-download .zip's of modules
+- change anim lab becomes object finder
+- add real return email addresses
+- download .zip's of modules
 
 ———————————————————————————————————————— huge improvements
 
-capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
-dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
+- capacity de télécharger PDF du site entier (pour modes d'emploi, par exemple)
+- dans les pages admin, ajouter puce "archivé" pour chaque page, et par défaut de ne pas montrer les pages archivées : https://stackoverflow.com/questions/851636/default-filter-in-django-admin
 
-accepter PDF comme input have a list of font widths for substituting common fonts
-version of program as mac/pc app to host site locally
+- accepter PDF comme input have a list of font widths for substituting common fonts
+- version of program as mac/pc app to host site locally
 
 ———————————————————————————————————————— working from here down
 
-https://stackoverflow.com/questions/6541477/ordering-choices-in-modelform-manytomanyfield-django/6541738#6541738
-https://stackoverflow.com/questions/8992865/django-admin-sort-foreign-key-field-list
+- https://stackoverflow.com/questions/6541477/ordering-choices-in-modelform-manytomanyfield-django/6541738#6541738
+- https://stackoverflow.com/questions/8992865/django-admin-sort-foreign-key-field-list
 
 ———————————————————————————————————————— done
 
-permettre d'utiliser les scripts & seo téléchargés aussi bien que les scripts collés dans les pages admin
-fix ID's of svg pages in illustrator, right now they're just "Pagename"
-fonts family & style not recorded correctly when missing
-fixed caching issues
-change font name to CSS ref.
-language choice in cookie warning doesn't do anything
-permettre des espaces dans les noms de fichiers SVG etc.
-change custom scripts to user scripts in page admin
-use "slug" where appropriate
-fix capitalization of "Add another Svg file" in admin › page
-wrong label for templates in admin.py (shows URL, notname)
-need to check if menu is oversized, too
-in svg_cleaner reduce oversiized SVG's to page width, other stay the same
-change Links to lower case
-svija help table like notes but w URL for original page, redirect /a
-fix incorrect text "load zindex" on page admin
-FIX ON DELETE link use PROTECT
-change button color so green is save red is delete
-changes to admin.py are not reflected witouth starting uwsgi
-jp cache probs ?
-help text in french (started)
-fixed admin colors to match screenshots of Django defaults
-use defailt live for new page in modeld.py
-cookie module
-admin reduce text contrast
-change rezise so it just updates rem & pixel
-strip out x & y coords for non x=0 tspans
-check AI script removes PDF compat & compression
-add function at end of source to do onload
-spaces in svg filenames won't work
-integrate cookie warning in admin.py
-need an error code for mail sending problems - maybe diffrerent messages for each type of error.
-print the name of the script before each script: when reading source, should be easy to recognize the source of each script
-in addition to .st0 style definitions, replace "#SVGID_4_" definitions
+- permettre d'utiliser les scripts & seo téléchargés aussi bien que les scripts collés dans les pages admin
+- fix ID's of svg pages in illustrator, right now they're just "Pagename"
+- fonts family & style not recorded correctly when missing
+- fixed caching issues
+- change font name to CSS ref.
+- language choice in cookie warning doesn't do anything
+- permettre des espaces dans les noms de fichiers SVG etc.
+- change custom scripts to user scripts in page admin
+- use "slug" where appropriate
+- fix capitalization of "Add another Svg file" in admin › page
+- wrong label for templates in admin.py (shows URL, notname)
+- need to check if menu is oversized, too
+- in svg_cleaner reduce oversiized SVG's to page width, other stay the same
+- change Links to lower case
+- svija help table like notes but w URL for original page, redirect /a
+- fix incorrect text "load zindex" on page admin
+- FIX ON DELETE link use PROTECT
+- change button color so green is save red is delete
+- changes to admin.py are not reflected witouth starting uwsgi
+- jp cache probs ?
+- help text in french (started)
+- fixed admin colors to match screenshots of Django defaults
+- use defailt live for new page in modeld.py
+- cookie module
+- admin reduce text contrast
+- change rezise so it just updates rem & pixel
+- strip out x & y coords for non x=0 tspans
+- check AI script removes PDF compat & compression
+- add function at end of source to do onload
+- spaces in svg filenames won't work
+- integrate cookie warning in admin.py
+- need an error code for mail sending problems - maybe diffrerent messages for each type of error.
+- print the name of the script before each script: when reading source, should be easy to recognize the source of each script
+- in addition to .st0 style definitions, replace "#SVGID_4_" definitions
 
-</details>
+- </details>
 <details><summary>list 5</summary>
 
-horizontal scrolling wrong after page resize (go into full screen to see)
-¬ need a way to reset scroll position on resize (horizontally)
-in svg_cleaner.py, if the svg is an empty file (not fully saved for example) the following error will result: local variable 'svg_ID' referenced before assignment. the problem is at line 65: svg_ID = parts2[0] -- return small svg with error message CREATE SMALL SVG ON THE FLY "LOADING INCOMPLETE"
-SVG title shadows on /try are wrong size if page is reloaded on pinch to zoom
-^M in any text pasted into a field, with returns ckeditor is not the problem, because it happens with language›source comments
-weird text spacing in chrome
-opacity masks broken? 
+- horizontal scrolling wrong after page resize (go into full screen to see)
+- ¬ need a way to reset scroll position on resize (horizontally)
+- in svg_cleaner.py, if the svg is an empty file (not fully saved for example) the following error will result: local variable 'svg_ID' referenced before assignment. the problem is at line 65: svg_ID = parts2[0] -- return small svg with error message CREATE SMALL SVG ON THE FLY "LOADING INCOMPLETE"
+- SVG title shadows on /try are wrong size if page is reloaded on pinch to zoom
+- ^M in any text pasted into a field, with returns ckeditor is not the problem, because it happens with language›source comments
+- weird text spacing in chrome
+- opacity masks broken? 
 
-housekeeping : add flag emoji, if present, to module & page names (replace * or •)
+- housekeeping : add flag emoji, if present, to module & page names (replace * or •)
 
-confirm that DT missing will redirect to mobile missing
-with same address
+- confirm that DT missing will redirect to mobile missing
+- with same address
 
-way to group pages for scripts etc.
-svija feature to get scroll position as percentage (percentage read of a page, for example) useable by all
-add js to cache cleared to return to previous page
-make SVG obey z-index
+- way to group pages for scripts etc.
+- svija feature to get scroll position as percentage (percentage read of a page, for example) useable by all
+- add js to cache cleared to return to previous page
+- make SVG obey z-index
 
-need a setting (with responsive) for offset x & y for main page
-    so that you can have a module above the page
+- need a setting (with responsive) for offset x & y for main page
+-     so that you can have a module above the page
 
-small admin module top left corner to clear cache
+- small admin module top left corner to clear cache
 
-add page field total size, updated during housekeeping
-auto search woff
-draggable menu like palette?
-feature imort page/module from zip
-/plus auto add svg's created in lmpast 24 hougrs
-synch/zip or stnc/add
-admin menu on al pages when logged in, like Mac dock
-importe page or module
-invisible div is 1000px high
-need to calculate page height by height of first svg, pass it into
-templates/svija/javascript/initial_scroll.js
+- add page field total size, updated during housekeeping
+- auto search woff
+- draggable menu like palette?
+- feature imort page/module from zip
+- /plus auto add svg's created in lmpast 24 hougrs
+- synch/zip or stnc/add
+- admin menu on al pages when logged in, like Mac dock
+- importe page or module
+- invisible div is 1000px high
+- need to calculate page height by height of first svg, pass it into
+- templates/svija/javascript/initial_scroll.js
 
-/em/ has trailing slash
+- /em/ has trailing slash
 
-in responsive, in /admin, in responsive I need to check for onresize for mobile,
-so if phone is rotated it will reload as desktop version or redraw
+- in responsive, in /admin, in responsive I need to check for onresize for mobile,
+- so if phone is rotated it will reload as desktop version or redraw
 
 ———— not sure
-make menu disappear on zoom, maybe · depends on menu JS
+- make menu disappear on zoom, maybe · depends on menu JS
 
 ———— admin
-blurb of helpful text for main categories link better link real answer
-  https://stackoverflow.com/questions/6231294/form-field-description-in-django-admin
-  https://stackoverflow.com/questions/7241000/django-short-description-for-property
-  https://stackoverflow.com/questions/42826287/model-description-in-django-admin
+- blurb of helpful text for main categories link better link real answer
+-   https://stackoverflow.com/questions/6231294/form-field-description-in-django-admin
+-   https://stackoverflow.com/questions/7241000/django-short-description-for-property
+-   https://stackoverflow.com/questions/42826287/model-description-in-django-admin
 
-templates/javascript/on_resize.js could scroll to where cursor is
-right now, zooming keeps the top left corner stationary
-this should be fixed AFTER loading in zoomed state is fixed
+- templates/javascript/on_resize.js could scroll to where cursor is
+- right now, zooming keeps the top left corner stationary
+- this should be fixed AFTER loading in zoomed state is fixed
 
-message in Admin from msg.svija.com, use xhr request like in mail script
-robots txt choice visible in page title if not live "checkbox alert in title"
-page source in terminal has ^M in comments, have checked and they are added by program (not from pasting)
-need to make specific errors for first part of pageview: missing prefix etc.
-right now, all fonts are loaded. would be better to load only fonts in svg
-add x & y offset for footers etc. (could have footer on side!)
-svija auto conversion svg to form
-  placeholder text in ai with layer id to replace w html text or form, convert an SVG element to HTML automatically
+- message in Admin from msg.svija.com, use xhr request like in mail script
+- robots txt choice visible in page title if not live "checkbox alert in title"
+- page source in terminal has ^M in comments, have checked and they are added by program (not from pasting)
+- need to make specific errors for first part of pageview: missing prefix etc.
+- right now, all fonts are loaded. would be better to load only fonts in svg
+- add x & y offset for footers etc. (could have footer on side!)
+- svija auto conversion svg to form
+-   placeholder text in ai with layer id to replace w html text or form, convert an SVG element to HTML automatically
 
 ————— responsive : 4 parts
-0. add default responsive for missing content, option to return 404
-3. svija mobile, if blank use DT version
+- 0. add default responsive for missing content, option to return 404
+- 3. svija mobile, if blank use DT version
 
 ———— swipe nav
-arrow key navigation (implies page order, 0= don't include)
+- arrow key navigation (implies page order, 0= don't include)
 
 ————— auto menus
-auto html menus module, add to docs
-
+- auto html menus module, add to docs
 
 </details>
 <details><summary>list 6</summary>
