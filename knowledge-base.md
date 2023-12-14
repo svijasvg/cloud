@@ -306,6 +306,7 @@ it can also be in the specific stylesheet for the page.
 
 <details><summary>list 1</summary>
 
+---
 - in addition to the normal web page being open and normally usable, there is the animation lab page that can be resized etc.
 - need to decide which layout is best: wide & short, A4, or tall & thin
 - the point is to be able to work on an animation and see its effects
@@ -335,6 +336,7 @@ panes:
 </details>
 <details><summary>list 2</summary>
 
+---
 - https://github.com/graphite-project/graphite-web/issues/668
 - export GRAPHITE_ROOT=/opt/graphite
 - PYTHONPATH=$GRAPHITE_ROOT/webapp django-admin.py dumpdata --settings=graphite.settings > sqllite_graphite_dump.json
@@ -381,6 +383,7 @@ panes:
 </details>
 <details><summary>list 3</summary>
 
+---
 - when page loads, in SVG, replace image reference:
 - Links/home-hero-DSC_0020.jpg 
 - with image width & resolution info
@@ -409,6 +412,7 @@ panes:
 </details>
 <details><summary>list 4</summary>
 
+---
 ———————————————————————————————————————— small improvements
 
 - admin module with all prefixes and all-page list
@@ -530,6 +534,7 @@ panes:
 - </details>
 <details><summary>list 5</summary>
 
+---
 - horizontal scrolling wrong after page resize (go into full screen to see)
 - ¬ need a way to reset scroll position on resize (horizontally)
 - in svg_cleaner.py, if the svg is an empty file (not fully saved for example) the following error will result: local variable 'svg_ID' referenced before assignment. the problem is at line 65: svg_ID = parts2[0] -- return small svg with error message CREATE SMALL SVG ON THE FLY "LOADING INCOMPLETE"
@@ -605,6 +610,7 @@ panes:
 </details>
 <details><summary>list 6</summary>
 
+---
 See the various files for explanations.
 
 ### lots of issues there:
