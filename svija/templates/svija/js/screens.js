@@ -55,10 +55,10 @@ if (cookiesEnabled()){
 
   // if cloud module don't redirect
   if(cloudModuleCookie == 'true' && admin)
-    return false
+    false
 
   // redirect if necessary
-  if (screen_code != correct_screen_code){
+  else if (screen_code != correct_screen_code){
     setCookie('screen_code', correct_screen_code, 7);
     history.scrollRestoration = 'manual';
     window.location.replace(document.URL);
