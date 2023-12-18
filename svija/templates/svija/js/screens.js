@@ -1,13 +1,23 @@
-//———————————————————————————————————————— template: screens.js
+//:::::::::::::::::::::::::::::::::::::::: template: screens.js
+
+/*———————————————————————————————————————— notes
+
+    this script checks the current window width against supported
+    resolutions and redirects if there's a better fit.
+
+    if cookies are not enabled, nothing is done — the version
+    of the page that was loaded is shown.
+
+    if an admin is logged in, and he has clicked on the Svija Cloud
+    module to force desktop or mobile, no redirection is done */
 
 /*———————————————————————————————————————— predefined values
 
   
-   defined higher in the page:
+   defined in system js, higher in the page:
   
    var screen_code = "cp";
    var all_screens = {0:'cp', 400:'mb'}; */
-
 
 //———————————————————————————————————————— find best fit
 
@@ -24,26 +34,36 @@ for (var x=0; x<all_screens.length; x++){
   }
 }
 
-//———————————————————————————————————————— set cookie & redirect if appropriate
+//———————————————————————————————————————— is an admin logged in?
+
+  if (typeof admin == 'undefined')
+    admin = false
+
+/*———————————————————————————————————————— set cookie & redirect if appropriate
+
+    sets cookie with correct screen code for server
+    reloads page if there's a better screen match
+
+    UNLESS
+
+    there's a cloud module cookie AND the visitor is a signed-in admin */
 
 if (cookiesEnabled()){
 
-  var isLoggedIn = false
-  if (typeof admin != 'undefined')
-    if (admin == true) isLoggedIn = true
+  var cloudModuleCookieName = cookieName('cloudModule', svija_version)
+  var cloudModuleCookie     = getCookie(cloudModuleCookieName)
 
-  var cloudName   = makeCookieName('cloudForce', svija_version)
-  var forceCookie = getCookie(cloudName)
+  // if cloud module don't redirect
+  if(cloudModuleCookie == 'true' && admin)
+    return false
 
-  if(forceCookie != 'true' || !isLoggedIn){
-
+  // redirect if necessary
+  if (screen_code != correct_screen_code){
     setCookie('screen_code', correct_screen_code, 7);
-    
-    if (screen_code != correct_screen_code){
-      history.scrollRestoration = 'manual';
-      window.location.replace(document.URL);
-    }
+    history.scrollRestoration = 'manual';
+    window.location.replace(document.URL);
   }
 }
 
-//———————————————————————————————————————— fin
+
+//:::::::::::::::::::::::::::::::::::::::: fin

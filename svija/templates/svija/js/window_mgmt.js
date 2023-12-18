@@ -1,19 +1,34 @@
 
 //:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
 
-//———————————————————————————————————————— start logging
+/*———————————————————————————————————————— notes
 
-//console.group('window mgmt on load');
+    This script sets the window size and defines the REM unit.
+
+    It's complex, because there are some circumstances where it's
+    necessary to rezise (the window changed), but others where it's
+    counterproductive (the user zoomed).
+
+    The page should stay scrolled to the same point during resizing.
+
+    There is a known issue where side columns are not taken into effect,
+    for example the reading list in Safari.
+
+    On initial load this script does little:
+
+    1. calculates the REM size
+    2. sets the scroll position if there's an offset in Svija Cloud
+    3. adds a listener to redo the rem size if something changes */
 
 //———————————————————————————————————————— variables
 
-// var visible_width = 1200;   // supplied by server
-var envMinDiff = 5;            // percent difference needed to count as a zoom
+// var visible_width = 1200;   // supplied by system JS
+
+var MIN_DIFF = 5;            // percent difference needed to count as a zoom
 
 //———————————————————————————————————————— is it Firefox?
 
-var envIsFirefox = navigator.userAgent.indexOf('Firefox')>0;
-//console.log('envIsFirefox='+envIsFirefox);
+var IS_FIREFOX = navigator.userAgent.indexOf('Firefox')>0;
 
 /*———————————————————————————————————————— get real screen size for FF & iPhone
 
@@ -21,40 +36,29 @@ var envIsFirefox = navigator.userAgent.indexOf('Firefox')>0;
     a visitor coming back and seeing an "initially zoomed" page that
     we can't detect. */
 
-//console.log('cookie screenWidth=' +getCookie('screenWidth' ));
-//console.log('cookie screenHeight='+getCookie('screenHeight'));
-
 // real screen width, for firefox
-if (envIsFirefox && getCookie('screenWidth') != '')
-  var envRealScreenWidth = getCookie('screenWidth');
+if (IS_FIREFOX && getCookie('screenWidth') != '')
+  var REAL_SCREEN_WIDTH = getCookie('screenWidth');
 else{
-  var envRealScreenWidth = globalThis.screen.availWidth;
-  setCookie('screenWidth', envRealScreenWidth, 7);
+  var REAL_SCREEN_WIDTH = globalThis.screen.availWidth;
+  setCookie('screenWidth', REAL_SCREEN_WIDTH, 7);
 }
 
 // real screen height, for iPhone
 if (getCookie('screenHeight') == ''){
-  var envRealScreenHeight = globalThis.screen.availHeight;
-  setCookie('screenHeight', envRealScreenHeight, 7);
+  var REAL_SCREEN_HEIGH = globalThis.screen.availHeight;
+  setCookie('screenHeight', REAL_SCREEN_HEIGH, 7);
 }
 else
-  var envRealScreenHeight = getCookie('screenHeight');
-
-//console.log('envRealScreenWidth='+envRealScreenWidth);
-//console.log('envRealScreenHeight='+envRealScreenHeight);
+  var REAL_SCREEN_HEIGH = getCookie('screenHeight');
 
 //———————————————————————————————————————— environmental variables
 
-var envPrevWidth    = zoomedWidth();   // used in resize();
-var envPrevZoom     = zoom();          // used in resize();
+var PREVIOUS_WIDTH = zoomedWidth();   // used in resize();
+var PREVIOUS_ZOOM  = zoom();          // used in resize();
 
-if (areDifferent(zoom(), 1)) var envLoadedZoomed = true;
-                        else var envLoadedZoomed = false;
-
-//console.log('envPrevWidth='   +envPrevWidth   );
-//console.log('envPrevZoom='    +envPrevZoom    );
-//console.log('zoom(): '        +zoom());
-//console.log('envLoadedZoomed='+envLoadedZoomed);
+if (areDifferent(zoom(), 1)) var LOADED_ZOOMED = true;
+                        else var LOADED_ZOOMED = false;
 
 //———————————————————————————————————————— set the rem unit
 
@@ -63,27 +67,19 @@ var  aiPixel = rawPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
 
-//console.log('rawPixel='+rawPixel);
-//console.log('aiPixel='+aiPixel);
-
 //———————————————————————————————————————— resize listener
 
   var resizeListener = window.addEventListener('resize', resize);
 
-//———————————————————————————————————————— set scroll position
+//———————————————————————————————————————— set scroll position per Cloud params
 
 var left_margin_px = page_offsetx * aiPixel;
 var top_margin_px  = page_offsety * aiPixel;
 
-var envXinit = Math.round(left_margin_px);
-var envYinit = Math.round(top_margin_px);
+var X_INIT = Math.round(left_margin_px);
+var Y_INIT = Math.round(top_margin_px);
 
 setScroll(); setTimeout(setScroll, 1);
-
-//———————————————————————————————————————— end logging
-
-//console.groupEnd();
-//console.log('next thing');
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
@@ -98,8 +94,8 @@ function zoomedWidth(){
 //———————————————————————————————————————— setScroll()
 
 function setScroll(){
-  if (envLoadedZoomed) return true;
-  window.scrollTo(envXinit, envYinit);
+  if (LOADED_ZOOMED) return true;
+  window.scrollTo(X_INIT, Y_INIT);
 }
 
 //———————————————————————————————————————— areDifferent(a, b);
@@ -109,7 +105,7 @@ function setScroll(){
 
 function areDifferent(a, b){
   var d = Math.round(Math.abs( a-b ) * 100);
-  if (d > envMinDiff) return  true;
+  if (d > MIN_DIFF) return  true;
                  else return false;
 }
 
@@ -120,21 +116,19 @@ function areDifferent(a, b){
 function zoom(){
 
   // android screen was rotated
-  if (globalThis.screen.availWidth == envRealScreenHeight){
-    envRealScreenHeight = globalThis.screen.availHeight;
-    envRealScreenWidth  = globalThis.screen.availWidth;
+  if (globalThis.screen.availWidth == REAL_SCREEN_HEIGH){
+    REAL_SCREEN_HEIGH = globalThis.screen.availHeight;
+    REAL_SCREEN_WIDTH  = globalThis.screen.availWidth;
   }
 
-  var w = envRealScreenWidth;               // this is just to make
+  var w = REAL_SCREEN_WIDTH;               // this is just to make
   if (w == globalThis.screen.availWidth){   // sure it's not firefox
     var z = globalThisOuterWidth()/zoomedWidth();
-//  console.log('130: not firefox');
   }
 
   // firefox
   else{
     var z = w/globalThis.screen.availWidth; 
-//  console.log('136: firefox');
   }
 
   if (!areDifferent(z, 1)) z = 1;
@@ -152,9 +146,9 @@ function resize(){
  var zoomFactor = 1;
 
   // page was just made longer
-  if (zoomedWidth() == envPrevWidth) {return true;}
+  if (zoomedWidth() == PREVIOUS_WIDTH) {return true;}
   
-  if (globalThis.innerWidth != envRealScreenHeight)
+  if (globalThis.innerWidth != REAL_SCREEN_HEIGH)
     zoomFactor = zoom();
 
   else
@@ -165,7 +159,7 @@ function resize(){
 
   document.documentElement.style.fontSize = aiPixel + 'px';
 
-  envPrevWidth = zoomedWidth();
+  PREVIOUS_WIDTH = zoomedWidth();
 
   return true;
 };
@@ -180,12 +174,12 @@ function globalThisOuterWidth(){
   var r;
 
   // iPhone rotated to landscape
-  if (window.innerWidth == envRealScreenHeight){
+  if (window.innerWidth == REAL_SCREEN_HEIGH){
     r = window.innerWidth;
   }
 
   // iPhone rotated to portrait
-  else if (globalThis.outerWidth == envRealScreenHeight){
+  else if (globalThis.outerWidth == REAL_SCREEN_HEIGH){
     r = window.innerWidth;
   }
 

@@ -1,7 +1,33 @@
-//———————————————————————————————————————— main programs
+//:::::::::::::::::::::::::::::::::::::::: template: cookies.js
+
+/*———————————————————————————————————————— notes
+
+    This script has no effect — in contains four functions used for
+    working with cookies:
+
+    setCookie(name, value, expDays)
+      sets a cookie
+
+    getCookie(cname)
+      gets a cookie
+
+    cookiesEnabled()
+      returns true if cookies enabled, else false
+ 
+    deleteParentCookieIfNecessary(cname, domain)
+      not currently used (was called by setCookie)
+      was used to delete cookies for svija.com when visiting dev.svija.com      
+      because such cookies caused conflicts
+
+    cookieName(unique, version)
+      creats a unique cookie name by concatenating unique+verion without periods */
+
+//:::::::::::::::::::::::::::::::::::::::: main methods
+
+/*———————————————————————————————————————— setCookie(name, value, expDays)
 
 // same code in static/admin/js/same-page.js
-//              templates/svija/js/cookies.js
+//              templates/svija/js/cookies.js */
 
 function setCookie(name, value, expDays) {
   value = escape(value);
@@ -25,6 +51,9 @@ function setCookie(name, value, expDays) {
   document.cookie = name + '=' + complete;
 }
 
+/*———————————————————————————————————————— getCookie(cname)
+    */
+
 function getCookie(cname) {
   var name = cname + "=";
   var ca = document.cookie.split(';');
@@ -36,14 +65,7 @@ function getCookie(cname) {
   return "";
 }
 
-function deleteParentCookieIfNecessary(cname, domain){
-  var parts = domain.split('.');
-  if (parts.length > 2){ // on subdomain
-    var domain = parts.slice(-2).join('.');
-    document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
-  }
-}
-
+//———————————————————————————————————————— cookiesEnabled()
 
 // https://stackoverflow.com/questions/63471777/testing-function-which-checks-if-cookies-are-enabled-with-qunit
 
@@ -58,15 +80,31 @@ function cookiesEnabled() {
   return false;
 }
 
-/*———————————————————————————————————————— makeCookieName(unique, version)
+/*———————————————————————————————————————— cookieName(unique, version)
 
     creates a name composed of unique + version, with periods removed
 
-    alert('makeCookeiName: ' + makeCookieName('svija', svija_version)) */
+    alert('makeCookeiName: ' + cookieName('svija', svija_version)) */
 
-function makeCookieName(unique, version){
+function cookieName(unique, version){
   version = version.replaceAll('.','')
   var res = unique+version
   return res
 }
+
+
+//:::::::::::::::::::::::::::::::::::::::: utility methods
+
+//———————————————————————————————————————— deleteParentCookieIfNecessary(cname, domain)
+
+function deleteParentCookieIfNecessary(cname, domain){
+  var parts = domain.split('.');
+  if (parts.length > 2){ // on subdomain
+    var domain = parts.slice(-2).join('.');
+    document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
+  }
+}
+
+
+//:::::::::::::::::::::::::::::::::::::::: fin
 
