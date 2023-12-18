@@ -49,8 +49,6 @@ pageLoaded = false;
 
 </head><body>
 
-{% include "svija/html/unsupported.html" %}
-
 <div id="set_scroll_div"></div>
 
 <script>
@@ -62,6 +60,8 @@ pageLoaded = false;
 {% block token%}{% endblock %}
 
 {{ body }}
+
+{% include "svija/html/unsupported.html" %}
 
 <script>// page BG & scroll div
 

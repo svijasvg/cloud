@@ -1,4 +1,4 @@
-html, body{
+/* html, body{
   background-color:white;
 }
 
@@ -8,13 +8,22 @@ body{
 
 #accessibility, svg, form, div, p{
   display:none;
-}
+} */
 
 pre#noexplorer, pre#noscript{
   display:none;
 }
 
 pre#nocookie{
-  font-size:16px;
+  font-family:verdana, sans-serif;
+  font-size:16rem;
   display:block;
+  z-index:999999;
+  position:fixed;
+  left:50rem;top:50rem;
+  background-color:#333;
+  color:white;
+  border:none;
+  border-radius:10rem;
+  padding:30rem;
 }
