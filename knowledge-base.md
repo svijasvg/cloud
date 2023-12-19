@@ -16,6 +16,7 @@
 - [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
 - [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
 - [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
+- [server hardening](https://news.ycombinator.com/item?id=37892028)
 
 ---
 ### Bug Fixes
