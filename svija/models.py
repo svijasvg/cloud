@@ -187,7 +187,7 @@ class Section(models.Model):
 
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
-    code     = alphaLower(max_length=20, default='', verbose_name='artboard name') 
+    code    = alphaAll(max_length=20, default='', verbose_name='artboard name') 
     name    = models.CharField(max_length=200, default='', verbose_name='description')
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
