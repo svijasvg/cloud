@@ -50,7 +50,7 @@ def create_other_screens(page, screen_code):
 #     # get regular fields
 #     new_page.title = page.title
 
-#———————————————————————————————————————— field types
+#———————————————————————————————————————— field types DISABLED
 
 #  BigAutoField
 #  BooleanField
