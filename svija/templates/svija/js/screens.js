@@ -61,7 +61,11 @@ if (cookiesEnabled()){
   else if (screen_code != correct_screen_code){
     setCookie('screen_code', correct_screen_code, 7);
     history.scrollRestoration = 'manual';
-    window.location.replace(document.URL);
+//  window.location.replace(document.URL);
+
+    var searchStr = 'Googlebot'                                                
+    if(window.navigator.userAgent.indexOf(searchStr) > -1)                     
+      window.location.replace(document.URL); 
   }
 }
 
