@@ -10,20 +10,24 @@ body{
   display:none;
 } */
 
-pre#noexplorer, pre#noscript{
+div#noexplorer, div#noscript{
   display:none;
 }
 
-pre#nocookie{
+div#nocoukie{
+  text-align:center;
   font-family:verdana, sans-serif;
-  font-size:16rem;
-  display:block;
-  z-index:999999;
-  position:fixed;
-  left:50rem;top:50rem;
-  background-color:#333;
+  font-size:13rem;
   color:white;
+  background-color:#333;
+  border-radius:5rem;
+  padding:15rem;
+
+  display:block !important;
+  z-index:999999;
+
+  position:fixed;
+  width:240rem;
+  left:30rem;top:30rem;
   border:none;
-  border-radius:10rem;
-  padding:30rem;
 }
