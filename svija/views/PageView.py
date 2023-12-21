@@ -60,15 +60,25 @@ def PageView(request, request_page='', request_lang=''):
 #———————————————————————————————————————— get screen code
 
   screen_code = request.COOKIES.get('screen_code')
+  all_screens   = Screen.objects.all().order_by('pixels')
 
-  if str(screen_code) == 'None':
+#———————————————————————————————————————— check if valid
 
-    all_codes   = Screen.objects.all().order_by('pixels')
+  have_valid_code = False
 
-    if all_codes[0].pixels == 0 and len(all_codes) > 1:
-      screen_code = all_codes[1].code
+  if str(screen_code) != 'None':
+    for screen in all_screens:
+      if screen_code == screen.code:
+        have_valid_code = True
+
+#———————————————————————————————————————— get screen code
+
+  if not have_valid_code:
+
+    if all_screens[0].pixels == 0 and len(all_screens) > 1:
+      screen_code = all_screens[1].code
     else:
-      screen_code = all_codes[0].code
+      screen_code = all_screens[0].code
 
   request.screen_code = screen_code
 
