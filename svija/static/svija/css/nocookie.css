@@ -1,15 +1,3 @@
-/* html, body{
-  background-color:white;
-}
-
-body{
-  overflow:hidden;
-}
-
-#accessibility, svg, form, div, p{
-  display:none;
-} */
-
 div#noexplorer, div#noscript{
   display:none;
 }
@@ -17,10 +5,11 @@ div#noexplorer, div#noscript{
 div#nocoukie{
   text-align:center;
   font-family:verdana, sans-serif;
-  font-size:13rem;
-  color:white;
-  background-color:#333;
-  border-radius:5rem;
+  font-size:8rem;
+  line-height:12rem;
+  color:black;
+  background-color:white;
+  border-radius:0 0 5rem 5rem;
   padding:15rem;
 
   display:block !important;
@@ -28,6 +17,15 @@ div#nocoukie{
 
   position:fixed;
   width:240rem;
-  left:30rem;top:30rem;
-  border:none;
+  left:30rem;top:0rem;
+  border:1rem solid black;
+  border-top:none;
+}
+
+html{
+  font-size:1.6px !important;
+}
+
+div#set_scroll_div{
+  display:none;
 }

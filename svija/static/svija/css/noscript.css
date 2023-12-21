@@ -1,15 +1,3 @@
-/* html, body{
-  background-color:white;
-}
-
-body{
-  overflow:hidden;
-}
-
-#accessibility, svg, form, div, p{
-  display:none;
-} */
-
 div#noexplorer, div#nocoukie{
   display:none;
 }
@@ -17,17 +5,27 @@ div#noexplorer, div#nocoukie{
 div#noscript{
   text-align:center;
   font-family:verdana, sans-serif;
-  font-size:1.3rem;
-  color:white;
-  background-color:#333;
-  border-radius:0.5rem;
-  padding:1.5rem;
+  font-size:8rem;
+  line-height:12rem;
+  color:black;
+  background-color:white;
+  border-radius:0 0 5rem 5rem;
+  padding:15rem;
 
   display:block !important;
   z-index:999999;
 
   position:fixed;
-  width:24rem;
-  left:3rem;top:3rem;
-  border:none;
+  width:240rem;
+  left:30rem;top:0rem;
+  border:1rem solid black;
+  border-top:none;
+}
+
+html{
+  font-size:1.6px;
+}
+
+div#set_scroll_div{
+  display:none;
 }
