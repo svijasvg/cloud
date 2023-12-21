@@ -62,7 +62,13 @@ def PageView(request, request_page='', request_lang=''):
   screen_code = request.COOKIES.get('screen_code')
 
   if str(screen_code) == 'None':
-    screen_code = Screen.objects.first().code
+
+    all_codes   = Screen.objects.all().order_by('pixels')
+
+    if all_codes[0].pixels == 0 and len(all_codes) > 1:
+      screen_code = all_codes[1].code
+    else:
+      screen_code = all_codes[0].code
 
   request.screen_code = screen_code
 
