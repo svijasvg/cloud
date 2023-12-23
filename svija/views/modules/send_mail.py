@@ -35,6 +35,7 @@
 #gitb.enable() # errors to browser
 
 import socket
+import ssl
 from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
 
@@ -48,8 +49,18 @@ def send(settings, subject, body, frm, to, cc, bcc):
 
   email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
 
+# https://www.pythonanywhere.com/forums/topic/291/
+
+# context = ssl.create_default_context()
+# context.check_hostname = False
+# context.verify_mode = ssl.CERT_NONE
+
+
   ht  = settings.mail_srv
   ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+
+# gethostbyname returns IP address
+
   pt  = settings.mail_port
   un  = settings.mail_id
   pw  = settings.mail_pass

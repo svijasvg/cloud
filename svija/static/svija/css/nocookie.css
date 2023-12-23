@@ -1,20 +1,31 @@
-html, body{
+div#noexplorer, div#noscript{
+  display:none;
+}
+
+div#nocoukie{
+  text-align:center;
+  font-family:verdana, sans-serif;
+  font-size:8rem;
+  line-height:12rem;
+  color:black;
   background-color:white;
+  border-radius:0 0 5rem 5rem;
+  padding:15rem;
+
+  display:block !important;
+  z-index:999999;
+
+  position:fixed;
+  width:240rem;
+  left:30rem;top:0rem;
+  border:1rem solid black;
+  border-top:none;
 }
 
-body{
-  overflow:hidden;
+html{
+  font-size:1.6px !important;
 }
 
-#accessibility, svg, form, div, p{
+div#set_scroll_div{
   display:none;
-}
-
-pre#noexplorer, pre#noscript{
-  display:none;
-}
-
-pre#nocookie{
-  font-size:16px;
-  display:block;
 }

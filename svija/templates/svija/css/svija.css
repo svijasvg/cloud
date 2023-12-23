@@ -1,4 +1,14 @@
+/*———————————————————————————————————————— global css
+
+https://www.toptal.com/developers/cssminifier
+
+*/
+
 /*———————————————————————————————————————— global css */
+
+html{
+  font-size:1.6px !important;
+}
 
 html,body{  margin: 0px;
            padding: env(safe-area-inset); /* https://stackoverflow.com/a/50475590/72958 */ 
@@ -38,7 +48,7 @@ svg:first-of-type{ width: 100%; }
   * { text-rendering: geometricPrecision; }
 }
 
-pre#noscript, pre#nocookie, pre#explorer{ display:none; }
+div#noscript, div#ncoukie, div#explorer{ display:none; }
 
 #initial_scroll_div{
   position:absolute;

@@ -187,7 +187,7 @@ class Section(models.Model):
 
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
-    code     = alphaLower(max_length=20, default='', verbose_name='artboard name') 
+    code    = alphaAll(max_length=20, default='', verbose_name='artboard name') 
     name    = models.CharField(max_length=200, default='', verbose_name='description')
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 
@@ -267,8 +267,8 @@ class Module(models.Model):
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
 
-    position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='position')
-    corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='relative to')
+    position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='floating/attached')
+    corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='position')
     offsetx  = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
     offsety  = models.FloatField(default=0, verbose_name='vertical offset (px)',)
 
@@ -385,8 +385,8 @@ class Page(models.Model):
     default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
     width    = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width')
     visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='offset x')
-    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='offset y')
+    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='x offset')
+    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='y offset')
 
     def __unicode__(self):
         return self.name
@@ -415,7 +415,7 @@ class PageModule(models.Model):
 # foreignkey, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
-    script = models.ForeignKey(Script, on_delete=models.CASCADE)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name='script set')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.script.name

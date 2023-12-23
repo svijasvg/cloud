@@ -30,15 +30,15 @@ def SitemapView(request):
 #———————————————————————————————————————— function
 
 def sitemap(domain, default_code, pages):
-  results = []
+  results = ['https://'+domain+'/']
 
   for page in pages:
     if page.published == True:
       page_code = page.section.code
       if page_code == default_code:
-        addr = 'http://'+domain+'/'+page.url
+        addr = 'https://'+domain+'/'+page.url
       else:
-        addr = 'http://'+domain+'/'+page_code+'/'+page.url
+        addr = 'https://'+domain+'/'+page_code+'/'+page.url
 
       if page.url != 'missing':
         results.append(addr)

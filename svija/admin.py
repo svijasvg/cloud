@@ -143,8 +143,8 @@ class ScriptScriptsInline(admin.TabularInline):
   model = ScriptScripts
   extra = 0 
   fields = ('enabled', 'name', 'type', 'order', 'content',)
-  verbose_name = "script"
-  verbose_name_plural = "scripts"
+  verbose_name = "script set"
+  verbose_name_plural = "script sets"
 
 from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
@@ -197,7 +197,7 @@ class ModuleAdmin(admin.ModelAdmin):
   fieldsets = [ 
      ('name & filename', {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
      ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
-     ('placement'    , {'fields': [('offsetx', 'position', ), ( 'offsety', 'corner', ),],'description': positdesc,}),
+     ('placement'    , {'fields': [('offsetx', 'corner', ), ( 'offsety', 'position', ),],'description': positdesc,}),
   ]   
 
   inlines = [ModuleScriptInline]
@@ -298,8 +298,8 @@ class PageAdmin(admin.ModelAdmin):
                     ],'description':descPages, }),
     ('more settings',  {'fields': [
                  ('category','incl_modules','incl_scripts',),
-                 ('visible', 'offsetx', 'default_dims',),
-                 ('width', 'offsety',),
+                 ('width', 'offsetx', 'default_dims',),
+                 ('visible', 'offsety',),
                  'accessibility_name',
                  'accessibility_text',
                  'notes', 'pub_date',
