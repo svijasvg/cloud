@@ -1,4 +1,14 @@
+/*———————————————————————————————————————— global css
+
+https://www.toptal.com/developers/cssminifier
+
+*/
+
 /*———————————————————————————————————————— global css */
+
+html{
+  font-size:1.6px !important;
+}
 
 html,body{  margin: 0px;
            padding: env(safe-area-inset); /* https://stackoverflow.com/a/50475590/72958 */ 

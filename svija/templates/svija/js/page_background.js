@@ -1,4 +1,7 @@
 //———————————————————————————————————————— page_background.js
+/*
+https://www.toptal.com/developers/javascript-minifier
+*/
 
 try {
   var firstSVG = document.body.getElementsByTagName('svg')[0]

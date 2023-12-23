@@ -1,5 +1,9 @@
 //:::::::::::::::::::::::::::::::::::::::: template: cookies.js
 
+/*
+https://www.toptal.com/developers/javascript-minifier
+*/
+
 /*———————————————————————————————————————— notes
 
     This script has no effect — in contains four functions used for

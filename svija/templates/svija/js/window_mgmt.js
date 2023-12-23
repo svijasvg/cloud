@@ -1,5 +1,8 @@
 
 //:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
+/*
+https://www.toptal.com/developers/javascript-minifier
+*/
 
 /*———————————————————————————————————————— notes
 

@@ -104,13 +104,13 @@ def clean(file_path, svg_filename, use_p3):
     if line.find('SVGID_') > 0:
       line = re.sub(r'SVGID_', r'SVGID_'+svg_ID+'_', line)
 
-    #———————————————————————————————————————— fix mixed text weight problem
+    #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
     #                                         search for <tspan x="400.88" where x != 0
 
-    exp = r'tspan x=\"[1-9]'
-    regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
-    if (re.search(exp, line)):
-      line = clean_tspans(line)
+#   exp = r'tspan x=\"[1-9]'
+#   regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
+#   if (re.search(exp, line)):
+#     line = clean_tspans(line)
   
     #———————————————————————————————————————— get id if layer like "id example" exists COMMENTED OUT
     #                                         note that this means the ID could change at the end,
