@@ -66,9 +66,9 @@ if (cookiesEnabled()){
     history.scrollRestoration = 'manual';
 //  window.location.replace(document.URL);
 
-    var searchStr = 'Googlebot'                                                
-    if(window.navigator.userAgent.indexOf(searchStr) > -1)                     
-      window.location.replace(document.URL); 
+    var searchStr = 'Googlebot'
+    if(window.navigator.userAgent.indexOf(searchStr) < 0)
+      window.location.replace(document.URL);
   }
 }
 
