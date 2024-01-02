@@ -352,12 +352,14 @@ svija/templates/svija/lab.html
 svija/templates/svija/results.html
 svija/templates/svija/svija.html
 svija/templates/svija/svija_token.html
+svija/templates/svija/css/.min_svija.css.un~
 svija/templates/svija/css/.svija.css.un~
 svija/templates/svija/css/min_svija.css
 svija/templates/svija/css/svija.css
 svija/templates/svija/html/.unsupported.html.un~
 svija/templates/svija/html/unsupported.html
 svija/templates/svija/js/.cookies.js.un~
+svija/templates/svija/js/.min_screens.js.un~
 svija/templates/svija/js/.page_background.js.un~
 svija/templates/svija/js/.screens.js.un~
 svija/templates/svija/js/.scrollbars.js.un~
