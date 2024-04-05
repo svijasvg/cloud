@@ -259,8 +259,8 @@ class Module(models.Model):
     zindex    = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
-#   filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
-    filename = addAiToEnd(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+#   filename = addAiToEnd(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
 #lass addAiToEnd(models.CharField):
 
@@ -427,8 +427,8 @@ class PageScript(models.Model):
 class Illustrator(models.Model):
 #   page = models.ForeignKey(Page, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
-#   filename = models.CharField(max_length=200, default='')
-    filename = addAiToEnd(max_length=200, default='')
+    filename = models.CharField(max_length=200, default='')
+#   filename = addAiToEnd(max_length=200, default='')
     zindex = models.IntegerField(default=0, verbose_name='z index')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):

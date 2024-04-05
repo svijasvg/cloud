@@ -43,8 +43,13 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     parent_obj.filename = ai_name
     parent_obj.save()
 
+  # if no .ai, add artboard_ before name
+  if ai_name.find('.ai') == -1:
+    raw_name = 'artboard_' + ai_name
+
   # remove '.ai'
-  raw_name = ai_name[:-3]
+  else:
+    raw_name = ai_name[:-3]
 
   # escape single quotes
 # raw_name = raw_name.replace("'", "\\/'")
