@@ -26,12 +26,14 @@ from django.db.models import Q
 from svija.models import Font
 
 
-def clean_svg(svg_path, temp_id, use_p3):
+# prelim_id is either svg_filename or an existing ID (layer name or in module settings)
+
+def clean_svg(svg_path, prelim_id, use_p3):
 
 #———————————————————————————————————————— initialization
 
   # if unspecified, ID will be filename with extension removed (-en.svg)
-  svg_id         = cleanup(temp_id)
+  svg_id         = make_safe(prelim_id)
   width = height = 0
   first_line     = ''
   final_svg      = ''
@@ -270,7 +272,7 @@ def clean_svg(svg_path, temp_id, use_p3):
     new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
     new_font.save
 
-  #———————————————————————————————————————— add new ID if necessary
+  #———————————————————————————————————————— add or correct with new ID
   #                                         single-layer AI docs have ID with layer name
   #                                         IF layer name is not just <Layer 1>
 
@@ -278,32 +280,29 @@ def clean_svg(svg_path, temp_id, use_p3):
     # <svg version="1.1" id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     if first_line.find('id="') > 0:
       parts = first_line.split('"')
-      svg_id = parts[3]
+      parts[3] = svg_id
+      first_line = '"'.join(parts)
     else:
-      first_line = first_line.replace('<svg ', '<svg id="' + svg_id + '" ', 1)
+      replacement = '<svg id="' + svg_id + '"'
+      first_line = first_line.replace('<svg', replacement, 1)
 
   else:
     # <svg id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 2100">
     if first_line.find('id="') > 0:
       parts = first_line.split('"')
-      svg_id = parts[1]
-      data_name = ' data-already="true"'
-      replacement = '<svg' + data_name
-      first_line = first_line.replace('<svg', replacement, 1)
+      parts[1] = svg_id
+      first_line = '"'.join(parts)
     else:
       replacement = '<svg id="' + svg_id + '"'
       first_line = first_line.replace('<svg', replacement, 1)
 
-
-# WHERE IS CUSTOM ID ATTRIBUTED?
-
-
-
   return svg_id, px_width, px_height, first_line+final_svg
+
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
-#———————————————————————————————————————— google font function
+#———————————————————————————————————————— update_css(google_font, style_string)
+
 # line_parts[1] = update_css(google_font, line_parts[1])
 
 def update_css(google_font, style_string):
@@ -337,9 +336,9 @@ def update_css(google_font, style_string):
   style_string = style_string[0:-1]
   return style_string
 
-#———————————————————————————————————————— remove special characters
+#———————————————————————————————————————— make_safe(css_id)
 
-def cleanup(css_id):
+def make_safe(css_id):
 
   css_id = css_id.replace('.svg','')
 
@@ -353,13 +352,13 @@ def cleanup(css_id):
   value = re.sub("[^A-Za-z0-9-_]", "", css_id)
   return value 
 
-#———————————————————————————————————————— remove duplicates
+#———————————————————————————————————————— remove_duplicates(font_array)
 
 def remove_duplicates(font_array):
   results = list( dict.fromkeys(font_array) )
   return results
 
-#———————————————————————————————————————— get x & y coords from string
+#———————————————————————————————————————— get_xy_content(str)
 
 # input: <tspan x="0" y="0" class="st2 st3">ARTISTS</tspan>
 
@@ -379,7 +378,8 @@ def get_xy_content(str):
 
   return x, y, rest, content
 
-#———————————————————————————————————————— remove x & y coords from tspan COMMENTED OUT AT CALL
+#———————————————————————————————————————— def clean_tspans(line) COMMENTED OUT AT CALL
+# remove x & y coords from tspan
 
 # fixes problem where Safari cause text tspans to bump into each other
 # delete coords for <tspan x="400.88" y="147">some text</tspan>
@@ -450,7 +450,7 @@ def color_replace(orig_line, property):
 
   return new_line
 
-#———————————————————————————————————————— convert hex color to P3 color
+#———————————————————————————————————————— hex_to_p3(hex_color)
 #                                         accepts format #45ED8F
 
 def hex_to_p3(hex_color):
@@ -459,7 +459,7 @@ def hex_to_p3(hex_color):
   b = hex_to_int(hex_color[5:7])
   return 'color(display-p3 '+ r + ' ' + g + ' ' + b + ')'
 
-#———————————————————————————————————————— convert hex value to 0-1 value
+#———————————————————————————————————————— hex_to_int(raw_hex)
 #                                         numbers starting 0x are hexadecimal
 
 def hex_to_int(raw_hex):

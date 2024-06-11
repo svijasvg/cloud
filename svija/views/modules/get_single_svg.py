@@ -110,19 +110,16 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   #———————————————————————————————————————— create temp ID
 
-# has problem because not all modules have css_id's
+  prelim_id = 'svg_' + raw_name
 
-  has_id = hasattr(parent_obj, 'css_id')
-
-  temp_id = 'svg_' + purify(raw_name)
-  if has_id:
-    if parent_obj.css_id != '': # could be '' if it had an id which was then deleted
-      temp_id = parent_obj.css_id
+  if hasattr(parent_obj, 'css_id'):
+    # could be '' if it previously had an id that was later set to ''
+    if parent_obj.css_id != '': 
+      prelim_id = parent_obj.css_id
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_id, svg_width, svg_height, svg = clean_svg(svg_path, temp_id, use_p3)
-#   svg = '\n<!-- ' + svg_id + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+  svg_id, svg_width, svg_height, svg = clean_svg(svg_path, prelim_id, use_p3)
 
   if svg_width > page_width:
     page_ratio = svg_height/svg_width
