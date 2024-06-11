@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: svg_cleaner.py
+#:::::::::::::::::::::::::::::::::::::::: clean_svg.py
 
 #   changes 230705: this program no longer handles font css
 #   it only checks if there are fonts that aren't already in DB
@@ -26,7 +26,7 @@ from django.db.models import Q
 from svija.models import Font
 
 
-def clean(file_path, svg_filename, use_p3):
+def clean_svg(file_path, svg_filename, use_p3):
 
 #———————————————————————————————————————— initialization
 

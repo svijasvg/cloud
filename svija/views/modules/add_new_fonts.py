@@ -3,7 +3,7 @@
 
 #———————————————————————————————————————— notes
 #
-#   fonts are added to DB in svg_cleaner.py
+#   fonts are added to DB in clean_svg.py
 #   the first time a page requires new fonts
 #
 #   this method fleshes out family, weight and

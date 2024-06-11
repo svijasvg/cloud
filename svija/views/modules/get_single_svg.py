@@ -16,7 +16,7 @@
 import os
 import pathlib
 import unicodedata
-from modules.svg_cleaner import *
+from modules.clean_svg import *
 
 
 def get_single_svg(parent_obj, screen_code, page_width, use_p3):
@@ -121,7 +121,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_ID, svg_width, svg_height, svg = clean(svg_path, temp_id, use_p3)
+  svg_ID, svg_width, svg_height, svg = clean_svg(svg_path, temp_id, use_p3)
 #   svg = '\n<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
 
   if svg_width > page_width:
