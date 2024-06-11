@@ -43,9 +43,39 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     parent_obj.filename = ai_name
     parent_obj.save()
 
-  # if no .ai, add artboard_ before name
-  if ai_name.find('.ai') == -1:
-    raw_name = 'artboard_' + ai_name
+#———————————————————————————————————————— remove old system of artboard_300.svg
+
+# # if no .ai, add artboard_ before name
+# if ai_name.find('.ai') == -1:
+#   raw_name = 'artboard_' + ai_name
+
+#———————————————————————————————————————— search for correct file
+
+# all_pages_artboard_name CP.svg
+
+# after last space is screen code
+# after last underscore is artboard name
+
+# if ai_name.find('.ai') == -1:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#————————————————————————————————————————
 
   # remove '.ai'
   else:
