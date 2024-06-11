@@ -121,8 +121,8 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_ID, svg_width, svg_height, svg = clean_svg(svg_path, temp_id, use_p3)
-#   svg = '\n<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+  svg_id, svg_width, svg_height, svg = clean_svg(svg_path, temp_id, use_p3)
+#   svg = '\n<!-- ' + svg_id + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
 
   if svg_width > page_width:
     page_ratio = svg_height/svg_width
@@ -138,11 +138,11 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   if is_page:
     div = '#set_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-    css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+    css_dims = '#' + svg_id + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
     css = '\n\n' + css_dims
   else:
     div = ''
-    css_dims = '#' + svg_ID + '{\n'
+    css_dims = '#' + svg_id + '{\n'
     css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
 
     # take module position into account

@@ -26,12 +26,12 @@ from django.db.models import Q
 from svija.models import Font
 
 
-def clean_svg(file_path, svg_filename, use_p3):
+def clean_svg(svg_path, temp_id, use_p3):
 
 #———————————————————————————————————————— initialization
 
   # if unspecified, ID will be filename with extension removed (-en.svg)
-  svg_ID         = cleanup(svg_filename)
+  svg_id         = cleanup(temp_id)
   width = height = 0
   first_line     = ''
   final_svg      = ''
@@ -47,7 +47,7 @@ def clean_svg(file_path, svg_filename, use_p3):
 
   #———————————————————————————————————————— read SVG file
 
-  with open(file_path, 'r', encoding='utf-8') as f:
+  with open(svg_path, 'r', encoding='utf-8') as f:
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
@@ -114,7 +114,7 @@ def clean_svg(file_path, svg_filename, use_p3):
     # old_format = true
     if line[0:4] == '\t.st' or line[1:5] == '\t.st':
       parts = line.split('.st')
-      line = '\t.st' + svg_ID + parts[1]
+      line = '\t.st' + svg_id + parts[1]
 
 # new SVG style as of April 2024:
 #
@@ -124,18 +124,18 @@ def clean_svg(file_path, svg_filename, use_p3):
 
     # old_format = false
     if line[6:11] == '.cls-':
-      line = line.replace('.cls-', '.cls' + svg_ID + '-')
+      line = line.replace('.cls-', '.cls' + svg_id + '-')
 
     #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
 
     if not old_format:
       if line[8:24] == 'clip-path: url(#':
-        line = line.replace('clippath', 'clippath' + svg_ID)
+        line = line.replace('clippath', 'clippath' + svg_id)
 
     if not old_format:
       if line[8:19] == 'fill: url(#':
-        line = line.replace('linear-gradient', 'linear-gradient' + svg_ID)
-        line = line.replace('radial-gradient', 'radial-gradient' + svg_ID)
+        line = line.replace('linear-gradient', 'linear-gradient' + svg_id)
+        line = line.replace('radial-gradient', 'radial-gradient' + svg_id)
 
     #———————————————————————————————————————— add P3 color definition NEED TO CHECK
     # fill:#FFFFFF, stroke:#9537FF
@@ -152,22 +152,22 @@ def clean_svg(file_path, svg_filename, use_p3):
 
     if old_format:
       if line.find('class="st') > 0:
-        line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_ID+r'\2', line)
+        line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_id+r'\2', line)
     elif line.find('class="cls-') > 0:
-        line = re.sub(r'([\"," "])cls-([0-9]*)(?=[\"," "])', r'\1cls'+svg_ID+'-'+r'\2', line)
+        line = re.sub(r'([\"," "])cls-([0-9]*)(?=[\"," "])', r'\1cls'+svg_id+'-'+r'\2', line)
 
     #———————————————————————————————————————— change ID's to include SVG name
 
     if old_format:
       if line.find('SVGID_') > 0:
-        line = re.sub(r'SVGID_', r'SVGID_'+svg_ID+'_', line)
+        line = re.sub(r'SVGID_', r'SVGID_'+svg_id+'_', line)
     else:
       if line.find('id="clippath') > 0:
-        line = re.sub(r'clippath', r'clippath'+svg_ID, line)
+        line = re.sub(r'clippath', r'clippath'+svg_id, line)
       if line.find('id="linear-gradient') > 0:
-        line = re.sub(r'linear-gradient', r'linear-gradient'+svg_ID, line)
+        line = re.sub(r'linear-gradient', r'linear-gradient'+svg_id, line)
       if line.find('id="radial-gradient') > 0:
-        line = re.sub(r'radial-gradient', r'radial-gradient'+svg_ID, line)
+        line = re.sub(r'radial-gradient', r'radial-gradient'+svg_id, line)
 
     #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
     #                                         search for <tspan x="400.88" where x != 0
@@ -183,7 +183,7 @@ def clean_svg(file_path, svg_filename, use_p3):
 
 #     if line[1:10] == 'g id="id_':
 #       parts = line.split('"')
-#       svg_ID = parts[1][3:]
+#       svg_id = parts[1][3:]
 
     #———————————————————————————————————————— find fonts
     #                                         .st2{font-family:'Signika-Regular';}
@@ -271,16 +271,35 @@ def clean_svg(file_path, svg_filename, use_p3):
     new_font.save
 
   #———————————————————————————————————————— add new ID if necessary
-  #                                     single-layer AI docs have ID with layer name
+  #                                         single-layer AI docs have ID with layer name
+  #                                         IF layer name is not just <Layer 1>
 
-  if first_line.find('id="') > 0:
-    parts = first_line.split('"')
-    svg_ID = parts[3]
+  if old_format:
+    # <svg version="1.1" id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    if first_line.find('id="') > 0:
+      parts = first_line.split('"')
+      svg_id = parts[3]
+    else:
+      first_line = first_line.replace('<svg ', '<svg id="' + svg_id + '" ', 1)
+
   else:
-    first_line = first_line.replace('<svg ', '<svg id="' + svg_ID + '" ', 1)
+    # <svg id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 2100">
+    if first_line.find('id="') > 0:
+      parts = first_line.split('"')
+      svg_id = parts[1]
+      data_name = ' data-already="true"'
+      replacement = '<svg' + data_name
+      first_line = first_line.replace('<svg', replacement, 1)
+    else:
+      replacement = '<svg id="' + svg_id + '"'
+      first_line = first_line.replace('<svg', replacement, 1)
 
 
-  return svg_ID, px_width, px_height, first_line+final_svg
+# WHERE IS CUSTOM ID ATTRIBUTED?
+
+
+
+  return svg_id, px_width, px_height, first_line+final_svg
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
