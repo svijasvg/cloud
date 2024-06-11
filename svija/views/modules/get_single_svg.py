@@ -3,7 +3,7 @@
 
 #———————————————————————————————————————— notes
 #
-#   used by cached_page.py
+#   used by construct_page.py
 #
 #   accepts Illustrator file, page width, and use P3
 #

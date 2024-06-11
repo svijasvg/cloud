@@ -33,7 +33,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import FileResponse, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
-from modules.cached_page import *
+from modules.construct_page import *
 from svija.models import Screen, Redirect, Section, Settings
 import re
 import os
@@ -132,7 +132,7 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— 6. get "missing" page
 
   try:
-    response = cached_page(request, section_code, 'missing', screen_code)
+    response = construct_page(request, section_code, 'missing', screen_code)
   except:
     response = HttpResponse(msg_missing)
 
