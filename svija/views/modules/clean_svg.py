@@ -143,12 +143,31 @@ def clean_svg(svg_path, prelim_id, use_p3):
     # fill:#FFFFFF, stroke:#9537FF
 
     if use_p3:
+
+#	.st0{fill:#414042;}
+#	.st1{opacity:0.3;fill:#FF00FF;}
+#	.st2{fill:#FFFFFF;}
+#	.st3{font-family:'OpenSans-Semibold';}
+
       if old_format:
-        if line.find('fill:#') > 0 or line.find('stroke:#') > 0 or line.find('stop-color:#') > 0:
-          line = add_p3(line) 
+        hash = '#'
       else:
-        if line.find('fill: #') > 0 or line.find('stroke: #') > 0 or line.find('stop-color: #') > 0:
-          line = add_p3(line) 
+        hash = ' #'
+
+      if line.find('fill:' + hash) > 0 or line.find('stroke:' + hash) > 0 or line.find('stop-color:' + hash) > 0:
+        line = add_p3(line, hash) 
+
+#            .clssvg_Footer-12 {
+#                fill: #2c2c2c;
+#            }
+#
+#            .clssvg_Footer-52 {
+#                stroke: #2f2d2c;
+#                stroke-linecap: round;
+#                stroke-linejoin: round;
+#                stroke-width: 1.195px;
+#            }
+
 
     #———————————————————————————————————————— change classes to include SVG name
 
@@ -423,12 +442,12 @@ def clean_tspans(line):
 # adds definition after fill:#FFFFFF, stroke:#9537FF
 # called line 75
 
-def add_p3(orig_line):
+def add_p3(orig_line, hash):
 
   new_line = orig_line
-  new_line = color_replace(new_line, 'fill:')
-  new_line = color_replace(new_line, 'stroke:')
-  new_line = color_replace(new_line, 'stop-color:')
+  new_line = color_replace(new_line, 'fill:', hash)
+  new_line = color_replace(new_line, 'stroke:', hash)
+  new_line = color_replace(new_line, 'stop-color:', hash)
 
   return new_line
 
@@ -436,17 +455,19 @@ def add_p3(orig_line):
 #
 #    replace color of a given property
 
-def color_replace(orig_line, property):
-  blocks = orig_line.split(property + '#') # 'fill:#' for example
+def color_replace(orig_line, property, hash):
+  blocks = orig_line.split(property + hash) # 'fill:#' for example
 
   new_line = blocks[0]
   for x in range(0, len(blocks)-1):
 
-    hex_color = '#' + blocks[x+1][0:6]
-    rest      = blocks[x+1][6:]
+    block_parts = blocks[x+1].split(';', 1)
+
+    hex_color = block_parts[0]
+    rest      = block_parts[1]
 
     p3_color  = hex_to_p3(hex_color)
-    new_line += property + hex_color + ';' + property + p3_color + ';' + rest
+    new_line += property + hash + hex_color + ';' + property + p3_color + ';' + rest
 
   return new_line
 
@@ -454,10 +475,24 @@ def color_replace(orig_line, property):
 #                                         accepts format #45ED8F
 
 def hex_to_p3(hex_color):
-  r = hex_to_int(hex_color[1:3])
-  g = hex_to_int(hex_color[3:5])
-  b = hex_to_int(hex_color[5:7])
+  hex_color = sixify(hex_color)
+
+  r = hex_to_int(hex_color[0:2])
+  g = hex_to_int(hex_color[2:4])
+  b = hex_to_int(hex_color[4:6])
   return 'color(display-p3 '+ r + ' ' + g + ' ' + b + ')'
+
+#———————————————————————————————————————— sixify(hex_color)
+
+def sixify(hex_color):
+  if len(hex_color) > 3:
+    return hex_color
+
+  else:
+    st1 = hex_color[0:1]+hex_color[0:1]
+    st2 = hex_color[1:2]+hex_color[1:2]
+    st3 = hex_color[2:3]+hex_color[2:3]
+    return st1 + st2 + st3
 
 #———————————————————————————————————————— hex_to_int(raw_hex)
 #                                         numbers starting 0x are hexadecimal
