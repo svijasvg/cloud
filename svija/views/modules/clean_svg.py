@@ -464,7 +464,11 @@ def color_replace(orig_line, property, hash):
     block_parts = blocks[x+1].split(';', 1)
 
     hex_color = block_parts[0]
-    rest      = block_parts[1]
+
+    if len(block_parts) > 1:
+      rest = block_parts[1]
+    else:
+      rest = ''
 
     p3_color  = hex_to_p3(hex_color)
     new_line += property + hash + hex_color + ';' + property + p3_color + ';' + rest
