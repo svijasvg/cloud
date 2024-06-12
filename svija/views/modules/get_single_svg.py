@@ -31,7 +31,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
   if ai_name == '':                        # deleted
     return '', '', ''
 
-  #———————————————————————————————————————— construct SVG path from AI file name
+  #———————————————————————————————————————— clean AI file path
 
   # remove everything in beginning of path if necessary
   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai
@@ -43,43 +43,9 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     parent_obj.filename = ai_name
     parent_obj.save()
 
-#———————————————————————————————————————— remove old system of artboard_300.svg
+#———————————————————————————————————————— create SVG path
 
-# # if no .ai, add artboard_ before name
-# if ai_name.find('.ai') == -1:
-#   raw_name = 'artboard_' + ai_name
-
-#———————————————————————————————————————— search for correct file
-
-# all_pages_artboard_name CP.svg
-
-# after last space is screen code
-# after last underscore is artboard name
-
-# if ai_name.find('.ai') == -1:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#————————————————————————————————————————
-
-  # remove '.ai'
-  else:
-    raw_name = ai_name[:-3]
+  raw_name = ai_name[:-3]
 
   # escape single quotes
 # raw_name = raw_name.replace("'", "\\/'")
@@ -103,8 +69,10 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     #vg = '<!-- missing svg: {} -->'.format(parent_obj.filename)
     #vg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
 
-    alert_msg = '<script>alert("⚠️ Illustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
-    alert = alert_msg.format(raw_name, screen_code)
+    alert_msg = '<script>alert("⚠️ get single svg line 108\n\nIllustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
+
+    #lert = alert_msg.format(raw_name, screen_code)
+    alert = alert_msg.format(svg_path, screen_code)
 
     return alert, '', ''
 
