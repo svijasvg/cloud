@@ -4,6 +4,9 @@
 #   changes 230705: this program no longer handles font css
 #   it only checks if there are fonts that aren't already in DB
 #   get_fonts.py handles the rest
+#
+#   the point is that this program does any modifications of
+#   the actual svg, and returns SVG + info about it
 
 import urllib # REMOVE WHEN FIX IS DONE
 
@@ -211,11 +214,19 @@ def clean_svg(svg_path, prelim_id, use_p3):
     #                                         google font: need to use google-style CSS
     #                                         missing font: need to add to fonts DB
 
+    #———————————————————————————————————————— old format SVG
+
     if old_format:
       if line[1:4] == '.st':
         if line.find('family') > 0:
 
     # if a font-family definition —————————————————————————————————————————————
+
+    # if font doesn't exist, add it to list of fonts-to-add
+    # if it does exist:
+    #   if it has a family name
+    #     if it's not a woff, we add font weight etc. to the svg line
+    #     if it is a woff, we do nothing
 
           line_parts  = line.split("'")
           line_ref    = line_parts[1]
@@ -238,6 +249,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
                 new_font_info = "'" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
                 line = line_parts[0] + new_font_info + line_parts[2]
 
+    #———————————————————————————————————————— new format SVG MAY HAVE DO DELETE FONT WEIGHT AS WELL
 
     else: # new format
       if line[8:20] == 'font-family:':
@@ -256,16 +268,21 @@ def clean_svg(svg_path, prelim_id, use_p3):
 
         # font exists
         else:
-          fonts = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).exclude(family = '')
+          font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).first()
 
-          # only treat fonts with filled-out info
-          if len(fonts) != 0:
-            font = fonts[0] # result was an array — there's only one
-
-            # woff has absolute priority
-            if font.woff == '':
-              new_font_info = ": '" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
-              line = line_parts_1[0] + new_font_info + ';'
+          # need to delete style info if it's a woff
+          if font.woff != '':
+            line = '/* woff font */ '+line
+            repeat = True
+            l = line_number
+            while repeat:
+              l += 1
+              if svg_lines[l].find('font-style') > 0:
+                svg_lines[l] = '/* style deleted */'
+              if svg_lines[l].find('font-weight') > 0:
+                svg_lines[l] = '/* weight deleted */'
+              if svg_lines[l].find('}') > 0:
+                repeat = False
 
 #   #———————————————————————————————————————— DEBUGGING
 #   fb = urllib.parse.quote(line)
@@ -315,8 +332,8 @@ def clean_svg(svg_path, prelim_id, use_p3):
       replacement = '<svg id="' + svg_id + '"'
       first_line = first_line.replace('<svg', replacement, 1)
 
-  return svg_id, px_width, px_height, first_line+final_svg
 
+  return svg_id, px_width, px_height, first_line+final_svg
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
