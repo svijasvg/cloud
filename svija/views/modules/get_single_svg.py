@@ -69,10 +69,9 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     #vg = '<!-- missing svg: {} -->'.format(parent_obj.filename)
     #vg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
 
-    alert_msg = '<script>alert("⚠️ get single svg line 108\\n\\nIllustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
+    alert_msg = '<script>alert("⚠️  Illustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
 
-    #lert = alert_msg.format(raw_name, screen_code)
-    alert = alert_msg.format(svg_path, screen_code)
+    alert = alert_msg.format(raw_name, screen_code)
 
     return alert, '', ''
 
