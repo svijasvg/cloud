@@ -29,21 +29,42 @@ from django.db.models import Q
 from svija.models import Font
 
 
-# prelim_id is either svg_filename or an existing ID (layer name or in module settings)
+# settings_id is either svg_filename or an existing ID (layer name or in module settings)
 
-def clean_svg(svg_path, prelim_id, use_p3):
+def clean_svg(raw_name, svg_path, settings_id, use_p3):
 
 #———————————————————————————————————————— initialization
 
-  # if unspecified, ID will be filename with extension removed (-en.svg)
-  svg_id         = make_safe(prelim_id)
+  svg_modifier   = 'svg_'
+  img_modifier   = 'img_'
+  style_modifier = 'cls_'
+  clip_modifier  = 'clp_'
+  gradient_modifier = 'grd_'
+
   width = height = 0
   first_line     = ''
   final_svg      = ''
   debug          = 'working'
   px_width       = 0
   px_height      = 0
-  new_format     = False
+  new_format     = False      # is it a AI28+ SVG?
+  defs_section   = False      # are we in def section at top of SVG?
+  image_ids      = {}         # image id's that are changed in defs section
+                              # and need to be updated in rest of file
+
+#———————————————————————————————————————— svg, img & style ids
+
+  raw_name = make_safe(raw_name)
+
+  if settings_id != '':
+    svg_id         = make_safe(settings_id)
+  else:
+    svg_id         = svg_modifier + raw_name
+
+  img_id           = img_modifier + raw_name
+  style_id         = style_modifier + raw_name
+  clip_id          = clip_modifier + raw_name
+  gradient_id      = gradient_modifier + raw_name
 
   #———————————————————————————————————————— list of fonts in DB
 
@@ -74,6 +95,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
     if line_number == lines_quantity: break # we're done
 
     line = svg_lines[line_number]
+    line = no_leading_space(line)
 
     #———————————————————————————————————————— keep 1st line to replace ID when done
 
@@ -112,7 +134,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
         px_height = float(dimensions[3])
 #       return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+str(px_width)+':'+str(px_height)+'</pre>'
 
-    #———————————————————————————————————————— replace '.st0' style definitions at top of SVG √
+    #———————————————————————————————————————— replace style definitions at top of SVG √
 
     # https://docs.python.org/3.3/tutorial/introduction.html#lists
 
@@ -123,24 +145,23 @@ def clean_svg(svg_path, prelim_id, use_p3):
     #      }
 
     if new_format:
-      if line[6:11] == '.cls-':
-        line = line.replace('.cls-', '.cls' + svg_id + '-')
+      if line[0:5] == '.cls-':
+        line = line.replace('.cls-', '.' + style_id + '-')
 
     else:
-      if line[0:4] == '\t.st' or line[1:5] == '\t.st':
+      if line[0:3] == '.st':
         parts = line.split('.st')
-        line = '\t.st' + svg_id + parts[1]
+        line = '.st' + svg_id + parts[1]
 
     #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
 
     if new_format:
-      if line[8:24] == 'clip-path: url(#':
-        line = line.replace('clippath', 'clippath' + svg_id)
+      if line[0:16] == 'clip-path: url(#':
+        line = line.replace('clippath', clip_id)
 
-    if new_format:
-      if line[8:19] == 'fill: url(#':
-        line = line.replace('linear-gradient', 'linear-gradient' + svg_id)
-        line = line.replace('radial-gradient', 'radial-gradient' + svg_id)
+      if line[0:11] == 'fill: url(#' or line[0:13] == 'stroke: url(#' :
+        line = line.replace('linear-gradient', gradient_id)
+        line = line.replace('radial-gradient', gradient_id)
 
     #———————————————————————————————————————— add P3 color definition
     # fill:#FFFFFF, stroke:#9537FF
@@ -156,7 +177,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
       else:
         hash = '#'
 
-      if line.find('fill:' + hash) > 0 or line.find('stroke:' + hash) > 0 or line.find('stop-color:' + hash) > 0:
+      if line.find('fill:' + hash) >= 0 or line.find('stroke:' + hash) >= 0 or line.find('stop-color:' + hash) >= 0:
         line = add_p3(line, hash) 
 
 #            .clssvg_Footer-12 {
@@ -175,24 +196,85 @@ def clean_svg(svg_path, prelim_id, use_p3):
 
     if new_format:
       if line.find('class="cls-') > 0:
-        line = re.sub(r'([\"," "])cls-([0-9]*)(?=[\"," "])', r'\1cls'+svg_id+'-'+r'\2', line)
+        line = re.sub(r'([\"," "])cls-([0-9]*)(?=[\"," "])', r'\1'+ style_id +'-'+r'\2', line)
 
     else:
       if line.find('class="st') > 0:
         line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_id+r'\2', line)
 
+
+#   <svg id="svg_AcclrateurCPcarte" data-name="avant animation" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 563">
+#       <defs>
+#           <style>
+#           .cls_AcclrateurCPcarte-1 {
+#               fill: none;
+#               stroke: url(#linear-gradient);
+#               stroke-miterlimit: 10;
+#               stroke-width: 5px;
+#           }
+#           </style>
+#           <linearGradient id="grd_AcclrateurCPcarte" x1="510.5" y1="176.833" x2="510.5" y2="257.833" gradientUnits="userSpaceOnUse">
+#               <stop offset="0" stop-color="#c1c4cf"/>
+#               <stop offset=".644" stop-color="#004955"/>
+#           </linearGradient>
+#       </defs>
+#       <rect class="cls_AcclrateurCPcarte-1" x="442.833" y="179.333" width="135.333" height="76"/>
+#   </svg>
+
+
     #———————————————————————————————————————— change ID's to include SVG name
 
     if new_format:
       if line.find('id="clippath') > 0:
-        line = re.sub(r'clippath', r'clippath'+svg_id, line)
+        line = re.sub(r'clippath', r''+clip_id, line)
       if line.find('id="linear-gradient') > 0:
-        line = re.sub(r'linear-gradient', r'linear-gradient'+svg_id, line)
+        line = re.sub(r'linear-gradient', r''+gradient_id, line)
       if line.find('id="radial-gradient') > 0:
-        line = re.sub(r'radial-gradient', r'radial-gradient'+svg_id, line)
+        line = re.sub(r'radial-gradient', r''+gradient_id, line)
     else:
       if line.find('SVGID_') > 0:
         line = re.sub(r'SVGID_', r'SVGID_'+svg_id+'_', line)
+
+    #———————————————————————————————————————— update image defs to include SVG name
+    
+    # because otherwise two svg's on the page will have images with id "image-2"
+
+    # at top:
+    # defs_section   = False      # are we in def section at top of SVG?
+    # image_ids      = {}         # image id's that are changed in defs section
+
+    if new_format:
+      if line[0:6] == "<defs>":
+        defs_section = True
+      elif line[0:7] == "</defs>":
+        defs_section = False
+
+    if defs_section:
+      if line[0:11] == '<image id="':
+        parts = line.split('"')
+        orig_id = parts[1]
+        new_id  = img_id + orig_id[5:len(orig_id)]
+        parts[1] = new_id
+        line = '"'.join(parts)
+        image_ids |= [(orig_id+'"/>', new_id+'"/>')]
+
+#  <image id="image" width="1196" height="2200" xlink:href="../../Links/Accueil MB fusée.jpg"/>
+#  <image id="image-2" width="10" height="64" xlink:href="../../Links/shadow section.png"/>
+
+    #———————————————————————————————————————— update images uses to include SVG name
+
+    if new_format and not defs_section:
+      if line[0:5] == '<use ':
+        parts = line.split('xlink:href="#')
+        if len(parts) > 1:
+          current_id = parts[1]
+          line = ':'+current_id+':'+line
+
+          if image_ids.get(current_id) is not None:
+            parts[1] = image_ids[current_id]
+            line = 'xlink:href="#'.join(parts)
+
+        line = "———— xxx ————" + line
 
     #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
     #                                         search for <tspan x="400.88" where x != 0
@@ -219,7 +301,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
     #———————————————————————————————————————— new format SVG MAY HAVE DO DELETE FONT WEIGHT AS WELL
 
     if new_format:
-      if line[8:20] == 'font-family:':
+      if line[0:12] == 'font-family:':
 
     # if a font-family definition —————————————————————————————————————————————
 
@@ -239,7 +321,6 @@ def clean_svg(svg_path, prelim_id, use_p3):
 
           # need to delete style info if it's a woff
           if font.woff != '':
-            line = '/* woff font */ '+line
             repeat = True
             l = line_number
             while repeat:
@@ -254,7 +335,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
     #———————————————————————————————————————— old format SVG
 
     else: # old format
-      if line[1:4] == '.st':
+      if line[0:3] == '.st':
         if line.find('family') > 0:
 
     # if a font-family definition —————————————————————————————————————————————
@@ -287,7 +368,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
                 line = line_parts[0] + new_font_info + line_parts[2]
 
 
-#   #———————————————————————————————————————— debugging COMMENTED OUT
+    #———————————————————————————————————————— debugging COMMENTED OUT
 #   fb = urllib.parse.quote(line)
 #   return "lkjsdf", 1200,1200, "<pre style='color:white;font-size:30px;'>" + fb + "</pre>"
 
@@ -295,10 +376,10 @@ def clean_svg(svg_path, prelim_id, use_p3):
 
     if new_format:
       if line_number > 1:
-        final_svg += '\n' + line;
+        final_svg += line
     else:
       if line_number > 2:
-        final_svg += '\n' + line;
+        final_svg += '\n' + line
 
     line_number += 1
 
@@ -337,6 +418,7 @@ def clean_svg(svg_path, prelim_id, use_p3):
 
 
   return svg_id, px_width, px_height, first_line+final_svg
+
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
@@ -527,6 +609,11 @@ def hex_to_int(raw_hex):
   p3 = int(hex, 0)
   p3 = round(p3/255,3)
   return str(p3)
+
+#———————————————————————————————————————— no_leading_space(text)
+
+def no_leading_space(text):
+  return re.sub(r"^\s+","",text)
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
