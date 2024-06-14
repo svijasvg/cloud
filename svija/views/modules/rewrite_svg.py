@@ -34,11 +34,12 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
 
 #———————————————————————————————————————— initialization
 
-  svg_modifier   = 'svg_'
-  img_modifier   = 'img_'
-  style_modifier = 'cls_'
-  clip_modifier  = 'clp_'
-  gradient_modifier = 'grd_'
+  svg_modifier    = 'svg_'
+  img_modifier    = 'img_'
+  style_modifier  = 'cls_'
+  clip_modifier   = 'clp_'
+  linear_modifier = 'lin_'
+  radial_modifier = 'rad_'
 
   width = height = 0
   first_line     = ''
@@ -63,7 +64,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   img_id           = img_modifier + raw_name
   style_id         = style_modifier + raw_name
   clip_id          = clip_modifier + raw_name
-  gradient_id      = gradient_modifier + raw_name
+  linear_id        = linear_modifier + raw_name
+  radial_id        = radial_modifier + raw_name
 
   #———————————————————————————————————————— list of fonts in DB
 
@@ -350,8 +352,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
         line = line.replace('clippath', clip_id)
 
       if line[0:11] == 'fill: url(#' or line[0:13] == 'stroke: url(#' :
-        line = line.replace('linear-gradient', gradient_id)
-        line = line.replace('radial-gradient', gradient_id)
+        line = line.replace('linear-gradient', linear_id)
+        line = line.replace('radial-gradient', radial_id)
   
       #———————————————————————————————————————— add P3 color definition
       # fill:#FFFFFF, stroke:#9537FF
@@ -407,9 +409,9 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
       if line.find('id="clippath') > 0:
         line = re.sub(r'clippath', r''+clip_id, line)
       if line.find('id="linear-gradient') > 0:
-        line = re.sub(r'linear-gradient', r''+gradient_id, line)
+        line = re.sub(r'linear-gradient', r''+linear_id, line)
       if line.find('id="radial-gradient') > 0:
-        line = re.sub(r'radial-gradient', r''+gradient_id, line)
+        line = re.sub(r'radial-gradient', r''+radial_id, line)
   
       #———————————————————————————————————————— update image defs to include SVG name
       
