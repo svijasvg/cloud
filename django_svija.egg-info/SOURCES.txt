@@ -298,6 +298,9 @@ svija/migrations/0280_alter_module_corner_alter_module_position.py
 svija/migrations/0281_alter_page_offsetx_alter_page_offsety.py
 svija/migrations/0282_alter_pagescript_script.py
 svija/migrations/0283_alter_screen_code.py
+svija/migrations/0284_alter_module_filename.py
+svija/migrations/0285_alter_illustrator_filename.py
+svija/migrations/0286_alter_screen_options_alter_section_options.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
@@ -393,8 +396,8 @@ svija/views/__init__.py
 svija/views/modules/__init__.py
 svija/views/modules/add_new_fonts.py
 svija/views/modules/cache_per_user.py
-svija/views/modules/cached_page.py
 svija/views/modules/combine_content.py
+svija/views/modules/construct_page.py
 svija/views/modules/contains_form.py
 svija/views/modules/convert_modules.py
 svija/views/modules/convert_script_sets.py
@@ -412,9 +415,9 @@ svija/views/modules/get_settings.py
 svija/views/modules/get_single_svg.py
 svija/views/modules/modules_dedupe.py
 svija/views/modules/redirect_if_possible.py
+svija/views/modules/rewrite_svg.py
 svija/views/modules/script_sets_dedupe.py
 svija/views/modules/scripts_to_page_obj.py
 svija/views/modules/send_mail.py
 svija/views/modules/send_mail_prev.py
 svija/views/modules/sitemap.py
-svija/views/modules/svg_cleaner.py
