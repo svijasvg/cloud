@@ -1,18 +1,18 @@
 
 #:::::::::::::::::::::::::::::::::::::::: rewrite_svg.py
 
-#   changes 230705: this program no longer handles font css
-#   it only checks if there are fonts that aren't already in DB
-#   get_fonts.py handles the rest
-#
-#   the point is that this program does any modifications of
-#   the actual svg, and returns SVG + info about it
 
-import urllib # REMOVE WHEN FIX IS DONE
+#import urllib # REMOVE WHEN FIX IS DONE
 
 #———————————————————————————————————————— notes
 #
-#   remove 1st two lines of SVG (XML)
+#   the point is that this program does any modifications of
+#   the actual svg, and returns SVG + info about it
+#
+#   changes 230705: this program no longer handles font css
+#   it only checks if there are fonts that aren't already in DB
+#   get_fonts.py handles the rest
+#   removes 1st lines of SVG (XML)
 #
 #   add a unique ID based on filename if necessary
 #
@@ -81,41 +81,43 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
 
   letters = svg_lines[1][1:4]
   if letters == 'svg': new_format = True
+  
+
+#:::::::::::::::::::::::::::::::::::::::: old-format SVG
+
+  if not new_format:
+    line_number = 2
+    return 'fail', 10, 10, '<script> alert("old-style SVG not processed: ' + svg_path + '") </script>'
+
+#:::::::::::::::::::::::::::::::::::::::: new-format SVG
 
   if new_format:
+
+    #———————————————————————————————————————— ▼ main loop to process SVG line by line
+  
     line_number = 1
-  else:
-    line_number = 2
-
-  #———————————————————————————————————————— ▼ main loop to process SVG line by line
-
-  lines_quantity = len(svg_lines)
-
-  while True:
-    if line_number == lines_quantity: break # we're done
-
-    line = svg_lines[line_number]
-    line = no_leading_space(line)
-
-    #———————————————————————————————————————— keep 1st line to replace ID when done
-
-    if new_format:
+    lines_quantity = len(svg_lines)
+  
+    while True:
+      if line_number == lines_quantity: break # we're done
+  
+      line = svg_lines[line_number]
+      line = no_leading_space(line)
+  
+      #———————————————————————————————————————— keep 1st line to replace ID when done
+  
       if line_number == 1:
         first_line = line
-    else:
-      if line_number == 2:
-        first_line = line
-
-    #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
-
-    # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
-    # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
-
-    # <svg version="1.1" id="zone_x2F_mainMenu_x2F__x3C_30_x2F__x25_150"
-	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
-	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
-
-    if new_format:
+  
+      #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
+  
+      # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
+      # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
+  
+      # <svg version="1.1" id="zone_x2F_mainMenu_x2F__x3C_30_x2F__x25_150"
+  	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
+  	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
+  
       if line_number == 1:
         parts1 = line.split('viewBox="')
         parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
@@ -123,184 +125,150 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
         dimensions = viewBox.split(' ')
         px_width = float(dimensions[2])
         px_height = float(dimensions[3])
-#       return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+str(px_width)+':'+str(px_height)+'</pre>'
-    else:
-      if line_number == 3:
-        parts1 = line.split('viewBox="')
-        parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
-        viewBox = parts2[0]
-        dimensions = viewBox.split(' ')
-        px_width = float(dimensions[2])
-        px_height = float(dimensions[3])
-#       return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+str(px_width)+':'+str(px_height)+'</pre>'
-
-    #———————————————————————————————————————— replace style definitions at top of SVG √
-
-    # https://docs.python.org/3.3/tutorial/introduction.html#lists
-
-    # new SVG style as of April 2024:
-    #
-    #      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15 {
-    #        stroke-miterlimit: 10;
-    #      }
-
-    if new_format:
+  #     return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+str(px_width)+':'+str(px_height)+'</pre>'
+  
+      #———————————————————————————————————————— replace style definitions at top of SVG √
+  
+      # https://docs.python.org/3.3/tutorial/introduction.html#lists
+  
+      # new SVG style as of April 2024:
+      #
+      #      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15 {
+      #        stroke-miterlimit: 10;
+      #      }
+  
       if line[0:5] == '.cls-':
         line = line.replace('.cls-', '.' + style_id + '-')
-
-    else:
-      if line[0:3] == '.st':
-        parts = line.split('.st')
-        line = '.st' + svg_id + parts[1]
-
-    #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
-
-    if new_format:
+  
+      #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
+  
       if line[0:16] == 'clip-path: url(#':
         line = line.replace('clippath', clip_id)
 
       if line[0:11] == 'fill: url(#' or line[0:13] == 'stroke: url(#' :
         line = line.replace('linear-gradient', gradient_id)
         line = line.replace('radial-gradient', gradient_id)
-
-    #———————————————————————————————————————— add P3 color definition
-    # fill:#FFFFFF, stroke:#9537FF
-
-#	.st0{fill:#414042;}
-#	.st1{opacity:0.3;fill:#FF00FF;}
-#	.st2{fill:#FFFFFF;}
-#	.st3{font-family:'OpenSans-Semibold';}
-
-    if use_p3:
-      if new_format:
+  
+      #———————————————————————————————————————— add P3 color definition
+      # fill:#FFFFFF, stroke:#9537FF
+  
+  #	.st0{fill:#414042;}
+  #	.st1{opacity:0.3;fill:#FF00FF;}
+  #	.st2{fill:#FFFFFF;}
+  #	.st3{font-family:'OpenSans-Semibold';}
+  
+      if use_p3:
         hash = ' #'
-      else:
-        hash = '#'
-
-      if line.find('fill:' + hash) >= 0 or line.find('stroke:' + hash) >= 0 or line.find('stop-color:' + hash) >= 0:
-        line = add_p3(line, hash) 
-
-#            .clssvg_Footer-12 {
-#                fill: #2c2c2c;
-#            }
-#
-#            .clssvg_Footer-52 {
-#                stroke: #2f2d2c;
-#                stroke-linecap: round;
-#                stroke-linejoin: round;
-#                stroke-width: 1.195px;
-#            }
-
-
-    #———————————————————————————————————————— change classes to include SVG name
-
-    if new_format:
+  
+        if line.find('fill:' + hash) >= 0 or line.find('stroke:' + hash) >= 0 or line.find('stop-color:' + hash) >= 0:
+          line = add_p3(line, hash) 
+  
+  #            .clssvg_Footer-12 {
+  #                fill: #2c2c2c;
+  #            }
+  #
+  #            .clssvg_Footer-52 {
+  #                stroke: #2f2d2c;
+  #                stroke-linecap: round;
+  #                stroke-linejoin: round;
+  #                stroke-width: 1.195px;
+  #            }
+  
+      #———————————————————————————————————————— change classes to include SVG name
+  
       if line.find('class="cls-') > 0:
         line = re.sub(r'([\"," "])cls-([0-9]*)(?=[\"," "])', r'\1'+ style_id +'-'+r'\2', line)
-
-    else:
-      if line.find('class="st') > 0:
-        line = re.sub(r'([\"," "])st([0-9]*)(?=[\"," "])', r'\1st'+svg_id+r'\2', line)
-
-
-#   <svg id="svg_AcclrateurCPcarte" data-name="avant animation" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 563">
-#       <defs>
-#           <style>
-#           .cls_AcclrateurCPcarte-1 {
-#               fill: none;
-#               stroke: url(#linear-gradient);
-#               stroke-miterlimit: 10;
-#               stroke-width: 5px;
-#           }
-#           </style>
-#           <linearGradient id="grd_AcclrateurCPcarte" x1="510.5" y1="176.833" x2="510.5" y2="257.833" gradientUnits="userSpaceOnUse">
-#               <stop offset="0" stop-color="#c1c4cf"/>
-#               <stop offset=".644" stop-color="#004955"/>
-#           </linearGradient>
-#       </defs>
-#       <rect class="cls_AcclrateurCPcarte-1" x="442.833" y="179.333" width="135.333" height="76"/>
-#   </svg>
-
-
-    #———————————————————————————————————————— change ID's to include SVG name
-
-    if new_format:
+  
+  
+  #   <svg id="svg_AcclrateurCPcarte" data-name="avant animation" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 563">
+  #       <defs>
+  #           <style>
+  #           .cls_AcclrateurCPcarte-1 {
+  #               fill: none;
+  #               stroke: url(#linear-gradient);
+  #               stroke-miterlimit: 10;
+  #               stroke-width: 5px;
+  #           }
+  #           </style>
+  #           <linearGradient id="grd_AcclrateurCPcarte" x1="510.5" y1="176.833" x2="510.5" y2="257.833" gradientUnits="userSpaceOnUse">
+  #               <stop offset="0" stop-color="#c1c4cf"/>
+  #               <stop offset=".644" stop-color="#004955"/>
+  #           </linearGradient>
+  #       </defs>
+  #       <rect class="cls_AcclrateurCPcarte-1" x="442.833" y="179.333" width="135.333" height="76"/>
+  #   </svg>
+  
+      #———————————————————————————————————————— change ID's to include SVG name
+  
       if line.find('id="clippath') > 0:
         line = re.sub(r'clippath', r''+clip_id, line)
       if line.find('id="linear-gradient') > 0:
         line = re.sub(r'linear-gradient', r''+gradient_id, line)
       if line.find('id="radial-gradient') > 0:
         line = re.sub(r'radial-gradient', r''+gradient_id, line)
-    else:
-      if line.find('SVGID_') > 0:
-        line = re.sub(r'SVGID_', r'SVGID_'+svg_id+'_', line)
-
-    #———————————————————————————————————————— update image defs to include SVG name
-    
-    # because otherwise two svg's on the page will have images with id "image-2"
-
-    # at top:
-    # defs_section   = False      # are we in def section at top of SVG?
-    # image_ids      = {}         # image id's that are changed in defs section
-
-    if new_format:
+  
+      #———————————————————————————————————————— update image defs to include SVG name
+      
+      # because otherwise two svg's on the page will have images with id "image-2"
+  
+      # at top:
+      # defs_section   = False      # are we in def section at top of SVG?
+      # image_ids      = {}         # image id's that are changed in defs section
+  
       if line[0:6] == "<defs>":
         defs_section = True
       elif line[0:7] == "</defs>":
         defs_section = False
-
-    if defs_section:
-      if line[0:11] == '<image id="':
-        parts = line.split('"')
-        orig_id = parts[1]
-        new_id  = img_id + orig_id[5:len(orig_id)]
-        parts[1] = new_id
-        line = '"'.join(parts)
-        image_ids |= [(orig_id+'"/>', new_id+'"/>')]
-
-#  <image id="image" width="1196" height="2200" xlink:href="../../Links/Accueil MB fusée.jpg"/>
-#  <image id="image-2" width="10" height="64" xlink:href="../../Links/shadow section.png"/>
-
-    #———————————————————————————————————————— update images uses to include SVG name
-
-    if new_format and not defs_section:
-      if line[0:5] == '<use ':
-        parts = line.split('xlink:href="#')
-        if len(parts) > 1:
-          current_id = parts[1]
-          line = ':'+current_id+':'+line
-
-          if image_ids.get(current_id) is not None:
-            parts[1] = image_ids[current_id]
-            line = 'xlink:href="#'.join(parts)
-
-        line = "———— xxx ————" + line
-
-    #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
-    #                                         search for <tspan x="400.88" where x != 0
-
-#   exp = r'tspan x=\"[1-9]'
-#   regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
-#   if (re.search(exp, line)):
-#     line = clean_tspans(line)
   
-    #———————————————————————————————————————— get id if layer like "id example" exists COMMENTED OUT
-    #                                         note that this means the ID could change at the end,
-    #                                         so .st[id]8 won't correspond
-
-#     if line[1:10] == 'g id="id_':
-#       parts = line.split('"')
-#       svg_id = parts[1][3:]
-
-    #———————————————————————————————————————— find fonts
-
-    #    .st2{font-family:'Signika-Regular';}
-    #    google font: need to use google-style CSS
-    #    missing font: need to add to fonts DB
-
-    #———————————————————————————————————————— new format SVG MAY HAVE DO DELETE FONT WEIGHT AS WELL
-
-    if new_format:
+      if defs_section:
+        if line[0:11] == '<image id="':
+          parts = line.split('"')
+          orig_id = parts[1]
+          new_id  = img_id + orig_id[5:len(orig_id)]
+          parts[1] = new_id
+          line = '"'.join(parts)
+          image_ids |= [(orig_id+'"/>', new_id+'"/>')]
+  
+  #  <image id="image" width="1196" height="2200" xlink:href="../../Links/Accueil MB fusée.jpg"/>
+  #  <image id="image-2" width="10" height="64" xlink:href="../../Links/shadow section.png"/>
+  
+      #———————————————————————————————————————— update images uses to include SVG name
+  
+      if not defs_section:
+        if line[0:5] == '<use ':
+          parts = line.split('xlink:href="#')
+          if len(parts) > 1:
+            current_id = parts[1]
+            line = ':'+current_id+':'+line
+  
+            if image_ids.get(current_id) is not None:
+              parts[1] = image_ids[current_id]
+              line = 'xlink:href="#'.join(parts)
+  
+          line = "———— xxx ————" + line
+  
+      #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
+      #                                         search for <tspan x="400.88" where x != 0
+  
+  #   exp = r'tspan x=\"[1-9]'
+  #   regex = re.compile(r'tspan x=\"[1-9][0-9,\.]*\" y=\"[0-9,\.]*\"')
+  #   if (re.search(exp, line)):
+  #     line = clean_tspans(line)
+    
+      #———————————————————————————————————————— get id if layer like "id example" exists COMMENTED OUT
+      #                                         note that this means the ID could change at the end,
+      #                                         so .st[id]8 won't correspond
+  
+  #     if line[1:10] == 'g id="id_':
+  #       parts = line.split('"')
+  #       svg_id = parts[1][3:]
+  
+      #———————————————————————————————————————— find fonts
+  
+      #    .st2{font-family:'Signika-Regular';}
+      #    google font: need to use google-style CSS
+      #    missing font: need to add to fonts DB
+  
       if line[0:12] == 'font-family:':
 
     # if a font-family definition —————————————————————————————————————————————
@@ -331,72 +299,31 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
                 svg_lines[l] = '/* weight deleted */'
               if svg_lines[l].find('}') > 0:
                 repeat = False
-
-    #———————————————————————————————————————— old format SVG
-
-    else: # old format
-      if line[0:3] == '.st':
-        if line.find('family') > 0:
-
-    # if a font-family definition —————————————————————————————————————————————
-
-    # if font doesn't exist, add it to list of fonts-to-add
-    # if it does exist:
-    #   if it has a family name
-    #     if it's not a woff, we add font weight etc. to the svg line
-    #     if it is a woff, we do nothing
-
-          line_parts  = line.split("'")
-          line_ref    = line_parts[1]
-          font_exists = [x for x in all_fonts if x.svg_ref == line_ref]
   
-          # font does not exist
-          if len(font_exists) == 0:
-            fonts_to_add.append(line_ref)
+      #———————————————————————————————————————— debugging COMMENTED OUT
+  #   fb = urllib.parse.quote(line)
+  #   return "lkjsdf", 1200,1200, "<pre style='color:white;font-size:30px;'>" + fb + "</pre>"
   
-          # font exists
-          else:
-            fonts = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).exclude(family = '')
-
-            # only treat fonts with filled-out info
-            if len(fonts) != 0:
-              font = fonts[0] # result was an array — there's only one
-
-              # woff has absolute priority
-              if font.woff == '':
-                new_font_info = "'" + font.family + "'; font-weight:" + font.weight + "; font-style: " + font.style
-                line = line_parts[0] + new_font_info + line_parts[2]
-
-
-    #———————————————————————————————————————— debugging COMMENTED OUT
-#   fb = urllib.parse.quote(line)
-#   return "lkjsdf", 1200,1200, "<pre style='color:white;font-size:30px;'>" + fb + "</pre>"
-
-    #———————————————————————————————————————— ▲ close main loop
-
-    if new_format:
+      #———————————————————————————————————————— ▲ close main loop
+  
       if line_number > 1:
         final_svg += line
-    else:
-      if line_number > 2:
-        final_svg += '\n' + line
-
-    line_number += 1
-
-  #———————————————————————————————————————— add missing fonts to DB
-
-# return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
-  fonts_to_add = remove_duplicates(fonts_to_add)
-
-  for css_ref in fonts_to_add:
-    new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
-    new_font.save
-
-  #———————————————————————————————————————— add or correct with new ID
-  #                                         single-layer AI docs have ID with layer name
-  #                                         IF layer name is not just <Layer 1>
-
-  if new_format:
+  
+      line_number += 1
+  
+    #———————————————————————————————————————— add missing fonts to DB
+  
+  # return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
+    fonts_to_add = remove_duplicates(fonts_to_add)
+  
+    for css_ref in fonts_to_add:
+      new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
+      new_font.save
+  
+    #———————————————————————————————————————— add or correct with new ID
+    #                                         single-layer AI docs have ID with layer name
+    #                                         IF layer name is not just <Layer 1>
+  
     # <svg id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1200 2100">
     if first_line.find('id="') > 0:
       parts = first_line.split('"')
@@ -405,20 +332,9 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
     else:
       replacement = '<svg id="' + svg_id + '"'
       first_line = first_line.replace('<svg', replacement, 1)
-
-  else:
-    # <svg version="1.1" id="Fond" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    if first_line.find('id="') > 0:
-      parts = first_line.split('"')
-      parts[3] = svg_id
-      first_line = '"'.join(parts)
-    else:
-      replacement = '<svg id="' + svg_id + '"'
-      first_line = first_line.replace('<svg', replacement, 1)
-
-
-  return svg_id, px_width, px_height, first_line+final_svg
-
+  
+  
+    return svg_id, px_width, px_height, first_line+final_svg
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
