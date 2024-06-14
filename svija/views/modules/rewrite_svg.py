@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: clean_svg.py
+#:::::::::::::::::::::::::::::::::::::::: rewrite_svg.py
 
 #   changes 230705: this program no longer handles font css
 #   it only checks if there are fonts that aren't already in DB
@@ -31,7 +31,7 @@ from svija.models import Font
 
 # settings_id is either svg_filename or an existing ID (layer name or in module settings)
 
-def clean_svg(raw_name, svg_path, settings_id, use_p3):
+def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
 
 #———————————————————————————————————————— initialization
 

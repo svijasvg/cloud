@@ -3,7 +3,7 @@
 
 #———————————————————————————————————————— notes
 #
-#   fonts are added to DB in clean_svg.py
+#   fonts are added to DB in rewrite_svg.py
 #
 #   this manages them AFTER they've been added
 #   it creates three things:
@@ -20,7 +20,7 @@
 #   should be first in CSS
 #   by default all fonts are included
 #
-#   clean_svg adds fonts only if they're not already in DB
+#   rewrite_svg adds fonts only if they're not already in DB
 #  
 #   if there's a global list of fonts in PageView
 #   svg cleaner can add to it

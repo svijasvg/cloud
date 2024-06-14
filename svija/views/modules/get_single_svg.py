@@ -16,7 +16,7 @@
 import os
 import pathlib
 import unicodedata
-from modules.clean_svg import *
+from modules.rewrite_svg import *
 
 
 def get_single_svg(parent_obj, screen_code, page_width, use_p3):
@@ -85,7 +85,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_id, svg_width, svg_height, svg = clean_svg(raw_name, svg_path, settings_id, use_p3)
+  svg_id, svg_width, svg_height, svg = rewrite_svg(raw_name, svg_path, settings_id, use_p3)
 
   if svg_width > page_width:
     page_ratio = svg_height/svg_width
