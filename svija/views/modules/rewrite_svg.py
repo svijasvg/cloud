@@ -584,6 +584,8 @@ def update_css(google_font, style_string):
 
 #———————————————————————————————————————— make_safe(css_id)
 
+# https://regex101.com
+
 def make_safe(css_id):
 
   css_id = css_id.replace('.svg','')
