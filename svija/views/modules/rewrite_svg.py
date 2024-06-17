@@ -433,7 +433,10 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
           new_id  = img_id + orig_id[5:len(orig_id)]
           parts[1] = new_id
           line = '"'.join(parts)
-          image_ids |= [(orig_id+'"/>', new_id+'"/>')]
+
+# python 3.10 only
+#         image_ids |= [(orig_id+'"/>', new_id+'"/>')]
+          image_ids[orig_id+'"/>'] = new_id+'"/>'
   
   #  <image id="image" width="1196" height="2200" xlink:href="../../Links/Accueil MB fusée.jpg"/>
   #  <image id="image-2" width="10" height="64" xlink:href="../../Links/shadow section.png"/>
