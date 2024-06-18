@@ -44,7 +44,9 @@ def get_modules(label, all_modules, section_code, screen_code, page, page_width,
 
 #———————————————————————————————————————— iterate through scripts
 
-      for this_script in this_module.modulescript_set.all():
+      enabled_scripts = list(this_module.modulescript_set.filter(enabled=True))
+
+      for this_script in enabled_scripts:
   
         if this_script.type == 'head JS':
           hjc = '\n\n//———————————————————————————————————————— ' + label + '\n\n'

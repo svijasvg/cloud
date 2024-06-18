@@ -181,7 +181,7 @@ class Section(models.Model):
         return self.code
     class Meta:
         ordering = ['order']
-        verbose_name_plural = "1.2 · Sections"
+        verbose_name_plural = "1.3 · Sections"
 
 #———————————————————————————————————————— Screen · no dependencies
 
@@ -202,7 +202,7 @@ class Screen(models.Model):
     class Meta:
         ordering = ['order', 'width']
         verbose_name = "screen size"
-        verbose_name_plural = "1.3 · Screen Sizes"
+        verbose_name_plural = "1.2 · Screen Sizes"
 
 #———————————————————————————————————————— Script Set · no dependencies
 

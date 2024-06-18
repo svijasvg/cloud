@@ -3,13 +3,24 @@
 
 #———————————————————————————————————————— notes
 #
-#   fonts are added to DB in svg_cleaner.py
+#   fonts are added to DB in rewrite_svg.py
 #
 #   this manages them AFTER they've been added
+#   it creates three things:
+#
+#   1. meta link to google fonts
+#   2. css for woff fonts
+#   3. css for adobe fonts
+#
+#   The last two are combined (no reason to send
+#   them separately)
+#
+#   there is ALSO CSS in the SVG source
 #
 #   should be first in CSS
 #   by default all fonts are included
-#   svg_cleaner adds fonts only if they're not already in DB
+#
+#   rewrite_svg adds fonts only if they're not already in DB
 #  
 #   if there's a global list of fonts in PageView
 #   svg cleaner can add to it

@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: cached_page.py
+#:::::::::::::::::::::::::::::::::::::::: construct_page.py
 
 #———————————————————————————————————————— notes
 #
@@ -46,7 +46,7 @@ from modules.script_sets_dedupe import *
 
 @cache_per_user(60*60*24, False)
 @csrf_protect
-def cached_page(request, section_code, request_slug, screen_code):
+def construct_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— get page
 
@@ -122,7 +122,7 @@ def cached_page(request, section_code, request_slug, screen_code):
 
   script_sets = get_script_sets('script sets', all_script_sets)
 
-  #—————— set aside body js so Vibe executes last
+  #———————————————————————————————————————— set aside body js so Vibe executes last
 
   script_sets_body_js = []
   for set in script_sets:

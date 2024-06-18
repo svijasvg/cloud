@@ -3,7 +3,7 @@
 
 #———————————————————————————————————————— notes
 #
-#   used by cached_page.py
+#   used by construct_page.py
 #
 #   accepts Illustrator file, page width, and use P3
 #
@@ -16,7 +16,7 @@
 import os
 import pathlib
 import unicodedata
-from modules.svg_cleaner import *
+from modules.rewrite_svg import *
 
 
 def get_single_svg(parent_obj, screen_code, page_width, use_p3):
@@ -31,7 +31,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
   if ai_name == '':                        # deleted
     return '', '', ''
 
-  #———————————————————————————————————————— construct SVG path from AI file name
+  #———————————————————————————————————————— clean AI file path
 
   # remove everything in beginning of path if necessary
   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai
@@ -43,13 +43,9 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     parent_obj.filename = ai_name
     parent_obj.save()
 
-  # if no .ai, add artboard_ before name
-  if ai_name.find('.ai') == -1:
-    raw_name = 'artboard_' + ai_name
+#———————————————————————————————————————— create SVG path
 
-  # remove '.ai'
-  else:
-    raw_name = ai_name[:-3]
+  raw_name = ai_name[:-3]
 
   # escape single quotes
 # raw_name = raw_name.replace("'", "\\/'")
@@ -73,26 +69,23 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
     #vg = '<!-- missing svg: {} -->'.format(parent_obj.filename)
     #vg = '<!-- missing svg: {} -->\n'.format(svija_path+svg_name)
 
-    alert_msg = '<script>alert("⚠️ Illustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
+    alert_msg = '<script>alert("⚠️  Illustrator File Missing\\n\\"{}.ai\\" containing artboard \\"{}\\"\\n\\nIf Svija Sync is running:\\n• check Illustrator file name\\n• check artboard name")</script>'
+
     alert = alert_msg.format(raw_name, screen_code)
 
     return alert, '', ''
 
   #———————————————————————————————————————— create temp ID
 
-# has problem because not all modules have css_id's
+  settings_id = ''
 
-  has_id = hasattr(parent_obj, 'css_id')
-
-  temp_id = 'svg_' + purify(raw_name)
-  if has_id:
-    if parent_obj.css_id != '': # could be '' if it had an id which was then deleted
-      temp_id = parent_obj.css_id
+  if hasattr(parent_obj, 'css_id'):
+    if parent_obj.css_id != '': 
+      settings_id = parent_obj.css_id
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_ID, svg_width, svg_height, svg = clean(svg_path, temp_id, use_p3)
-#   svg = '\n<!-- ' + svg_ID + ', ' + str(svg_width) + ', ' + str(svg_height) + ' -->'
+  svg_id, svg_width, svg_height, svg = rewrite_svg(raw_name, svg_path, settings_id, use_p3)
 
   if svg_width > page_width:
     page_ratio = svg_height/svg_width
@@ -108,11 +101,11 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   if is_page:
     div = '#set_scroll_div{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
-    css_dims = '#' + svg_ID + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
+    css_dims = '#' + svg_id + '{ width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; }'
     css = '\n\n' + css_dims
   else:
     div = ''
-    css_dims = '#' + svg_ID + '{\n'
+    css_dims = '#' + svg_id + '{\n'
     css_dims += 'width:' + str(rem_width) + 'rem; height:' + str(rem_height) + 'rem; '
 
     # take module position into account

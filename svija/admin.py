@@ -1,6 +1,7 @@
 
 #:::::::::::::::::::::::::::::::::::::::: models.py
 
+
 #———————————————————————————————————————— import
 
 from django.contrib import admin
@@ -57,7 +58,7 @@ class FontAdmin(admin.ModelAdmin):
     return obj.adobe_pasted[53:60]
 
   # display on parent page
-  list_display = ('svg_ref', 'family', 'weight', 'style', 'adobe_id', 'google', 'woff', 'enabled', 'category',)
+  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'google', 'adobe_id', 'woff', 'category',)
   list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True

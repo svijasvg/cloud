@@ -24,7 +24,7 @@ from svija.models import Section, Settings, Screen
 
 from PageObject import *
 from modules.cache_per_user import *
-from modules.cached_page import *
+from modules.construct_page import *
 
 #———————————————————————————————————————— definition
 
@@ -84,7 +84,7 @@ def PageView(request, request_page='', request_lang=''):
 
 #———————————————————————————————————————— return cached results
 
-  return cached_page(request, request_lang, request_page, screen_code)
+  return construct_page(request, request_lang, request_page, screen_code)
 
 
 #———————————————————————————————————————— fin
