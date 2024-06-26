@@ -277,8 +277,9 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
+        verbose_name = "component"
+        verbose_name_plural = "2.2 · Components"
         ordering = ['-enabled', 'name', 'section', 'screen', ]
-        verbose_name_plural = "2.1 · Components"
 
 #———————————————————————————————————————— component scripts · no dependencies
 
@@ -306,7 +307,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         ordering = ['name']
-        verbose_name = "robots.txt"
+        verbose_name = "robots file"
         verbose_name_plural = "3.3 · Robots.txt"
 
 #———————————————————————————————————————— Settings · Section & Robots
@@ -394,7 +395,7 @@ class Page(models.Model):
         return self.url
     class Meta:
         ordering = ['-published', 'url', 'section', 'screen', '-pub_date', ]
-        verbose_name_plural = "2.2 · Pages"
+        verbose_name_plural = "2.1 · Pages"
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
 #———————————————————————————————————————— Page models
