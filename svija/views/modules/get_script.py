@@ -19,7 +19,7 @@ def get_script(kind, name, content):
     filename = re.compile("^[a-z,0-9,\s,\.,_,+,\-,&]+\.[a-z]{2,4}$", re.I) 
 
     if filename.match(content):
-        sub_path = '/sync/SVIJA/Scripts/' + content
+        sub_path = '/SYNC/SVIJA/Scripts/' + content
 
         # compensate for old version of rsync
         # should have no effect if already normalized

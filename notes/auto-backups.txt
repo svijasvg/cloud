@@ -25,7 +25,7 @@ create a dump in/backups/
 delete databases that don't meet the "keep" requirement*
 sync script:
 if sync up or sync down:
-do not touch anything in the /sync/backups folder
+do not touch anything in the /SYNC/backups folder
 sync the backups folder down
 also allow sync up only new for colleagues working on project
 also allow sync down by filename for colleagues working on project
@@ -35,8 +35,8 @@ restore:
 from admin page?
 upload a file, would be best
 restore on next visit from [filename]
-if you upload a fresh db in sync folder (not in sub folder)
+if you upload a fresh db in SYNC folder (not in sub folder)
 it will automatically replace the existing site (with backup made of existing)
 call files backup.svj
 views don't get called when cached… need to make sure that cache is emptied frequently enough to generate dumps
-backups are in root folder like sync, not in same folder as sync
+backups are in root folder like SYNC, not in same folder as SYNC

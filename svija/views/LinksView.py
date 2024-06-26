@@ -20,7 +20,7 @@ def LinksView(request, request_prefix, img_file):
 
 #———————————————————————————————————————— path
 
-  sync_folder = os.path.abspath(os.path.dirname(__name__)) + '/sync/'
+  sync_folder = os.path.abspath(os.path.dirname(__name__)) + '/SYNC/'
   img_path    = sync_folder + request_prefix + '/' + img_file
 
 #———————————————————————————————————————— does file exist?

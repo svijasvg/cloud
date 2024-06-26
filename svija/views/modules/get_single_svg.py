@@ -34,7 +34,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
   #———————————————————————————————————————— clean AI file path
 
   # remove everything in beginning of path if necessary
-  # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/sync/test.ai
+  # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/sync/svija.dev/SYNC/test.ai
 
   ai_name = parent_obj.filename
 
@@ -52,7 +52,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3):
 
   svg_name = raw_name + '_' + screen_code + '.svg'
 
-  svija_path = '/sync/SVIJA/SVG Files/'
+  svija_path = '/SYNC/SVIJA/SVG Files/'
   abs_path = os.path.abspath(os.path.dirname(__name__))
 
   svg_path = abs_path + svija_path + svg_name
