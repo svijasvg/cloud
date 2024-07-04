@@ -40,7 +40,7 @@
     {% endif %}
     <a href="javascript:clear()">Clear Cache</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
-    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.2.28</a><br>
+    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.2.29</a><br>
 
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}
@@ -71,9 +71,9 @@ if (adminTitle.innerHTML == 'Select module to change')
   adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/font/>fonts</a>'
 
 if (adminTitle.innerHTML == 'Select page to change')
-  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/font/>fonts</a>'
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>components</a> · <a href=https:/cloud/svija/font/>fonts</a>'
 
 if (adminTitle.innerHTML == 'Select font to change')
-  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>modules</a> · <a href=https:/cloud/svija/page/>pages</a>'
+  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/module/>components</a>'
 
 </script>{% endif %}{% endblock %}

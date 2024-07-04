@@ -366,7 +366,7 @@ panes:
 - delete databases that don't meet the "keep" requirement\*
 - sync script:
 - if sync up or sync down:
-- do not touch anything in the /sync/backups folder
+- do not touch anything in the /SYNC/backups folder
 - sync the backups folder down
 - also allow sync up only new for colleagues working on project
 - also allow sync down by filename for colleagues working on project
@@ -376,11 +376,11 @@ panes:
 - from admin page?
 - upload a file, would be best
 - restore on next visit from [filename]
-- if you upload a fresh db in sync folder (not in sub folder)
+- if you upload a fresh db in SYNC folder (not in sub folder)
 - it will automatically replace the existing site (with backup made of existing)
 - call files backup.svj
 - views don't get called when cached… need to make sure that cache is emptied frequently enough to generate dumps
-- backups are in root folder like sync, not in same folder as sync
+- backups are in root folder like SYNC, not in same folder as SYNC
 
 </details>
 <details><summary>list 3</summary>
@@ -565,7 +565,7 @@ panes:
 - draggable menu like palette?
 - feature imort page/module from zip
 - /plus auto add svg's created in lmpast 24 hougrs
-- synch/zip or stnc/add
+- SYNCH/zip or stnc/add
 - admin menu on al pages when logged in, like Mac dock
 - importe page or module
 - invisible div is 1000px high

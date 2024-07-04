@@ -165,13 +165,13 @@ class ScriptAdmin(admin.ModelAdmin):
 
 admin.site.register(Script, ScriptAdmin)
 
-#———————————————————————————————————————— Module · no dependencies
+#———————————————————————————————————————— Component · no dependencies
 
-descModules = "Modules can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
+descModules = "Components can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 positdesc = 'Superimposed on Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
-#———————————————————————————————————————— Module inline
+#———————————————————————————————————————— Component inline
 
 from .models import ModuleScript
 class ModuleScriptInline(admin.TabularInline):
@@ -189,7 +189,7 @@ class ModuleAdmin(admin.ModelAdmin):
   class Media:
     js = ( 'admin/js/ifempty.js', )
 
-  # display on parent module
+  # display on parent component
   list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'zindex', 'tag',)
   list_filter = ('section', 'screen', 'always', 'enabled', 'tag', )
   save_on_top = True
@@ -227,7 +227,7 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— Page
 
-descPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
+descPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>components</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
 #———————————————————————————————————————— Page inlines
@@ -240,8 +240,8 @@ class ModuleInlinePage(admin.TabularInline):
   model = Page.module.through
   extra = 0 
   fields = ('enabled', 'module', 'zindex', )
-  verbose_name = "module"
-  verbose_name_plural = "modules"
+  verbose_name = "component"
+  verbose_name_plural = "components"
   classes = ['collapse', 'ifempty',]
 
 class ScriptInlinePage(admin.TabularInline):

@@ -48,29 +48,35 @@ def get_font_css():
 
   woff_css = ''
 
-  empty_woff   = "@font-face {{ font-family:'{}'; src:{}'){}; }}"
+  empty_woff   = "@font-face {{ font-family:'{}'; {} {} src:{}'){}; }}"
 
   for this_font in woff_fonts:
     woff = this_font.woff
     svg_ref = this_font.svg_ref
 
-    if woff.find(',') > 0: # local fonts
-      font_format = ''
-      locals = woff.replace(', ',',').split(',')
-      woff = "local('" + ("'), local('".join(locals))
-      woff_css += '\n'+ empty_woff.format(svg_ref, woff, font_format)
-      continue
+    w = this_font.weight.lower()
+    s = this_font.style.lower()
 
-    elif woff.find('woff2') > 0: # woff2 format
+    if w != '' and w != 'normal':
+      w = 'font-weight:' + w + ';'
+    else:
+      w = ''
+ 
+    if s != '' and s != 'regular':
+      s = 'font-style:' + s + ';'
+    else:
+      s = ''
+
+    if woff.find('woff2') > 0: # woff2 format
       font_format = " format('woff2')"
       woff_url = "url('/fonts/" + woff
-      woff_css  += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
+      woff_css  += '\n'+ empty_woff.format(svg_ref, w, s, woff_url, font_format)
       continue
 
     elif woff.find('woff') > 0: # woff format
       font_format = " format('woff')"
       woff_url = "url('/fonts/" + woff
-      woff_css += '\n'+ empty_woff.format(svg_ref, woff_url, font_format)
+      woff_css += '\n'+ empty_woff.format(svg_ref, w, s, woff_url, font_format)
       continue
 
     else:
@@ -78,6 +84,82 @@ def get_font_css():
       this_font.save()
 
   if woff_css != '': woff_css += '\n'
+
+
+
+
+#   @font-face {
+#       font-family: 'FodaDisplay-Italic';
+#       font-weight: Display;
+#       font-style: Italic;
+#       src: url('/fonts/FodaDisplay-Italic.woff') format('woff');
+#   }
+
+#   @font-face {
+#       font-family: 'FodaDisplay-Regular';
+#       font-weight: Normal;
+#       font-style: Regular;
+#       src: url('/fonts/FodaDisplay-Regular.woff') format('woff');
+#   }
+
+#   @font-face {
+#       font-family: 'MerriweatherSans-Bold';
+#       font-weight: 700;
+#       font-style: Regular;
+#       src: url('/fonts/Merriweather-Bold.woff') format('woff');
+#   }
+
+#   @font-face {
+#       font-family: 'MerriweatherSans-Regular';
+#       font-weight: Normal;
+#       font-style: Regular;
+#       src: url('/fonts/Merriweather-Regular.woff') format('woff');
+#   }
+
+#   @font-face {
+#       font-family: 'PlayfairDisplay-BlackItalic';
+#       font-weight: 800;
+#       font-style: Italic;
+#       src: url('/fonts/PlayfairDisplay-BlackItalic.woff') format('woff');
+#   }
+
+
+#           <style>
+#           .cls_240703-font-css-1 {
+#               font-family: FodaDisplay-Regular, 'Foda Display';
+#           }
+
+#           .cls_240703-font-css-2 {
+#               font-family: MerriweatherSans-Regular, 'Merriweather Sans';
+#           }
+
+#           .cls_240703-font-css-3 {
+#               font-family: MerriweatherSans-Bold, 'Merriweather Sans';
+#               font-weight: 700;
+#           }
+
+#           .cls_240703-font-css-4 {
+#               font-family: FodaDisplay-Italic, 'Foda Display';
+#           }
+
+#           .cls_240703-font-css-4, .cls_240703-font-css-5 {
+#               font-style: italic;
+#           }
+
+#           .cls_240703-font-css-6 {
+#               fill: #d8e3eb;
+#               fill: color(display-p3 0.847 0.89 0.922);
+#               stroke-width: 0px;
+#           }
+
+#           .cls_240703-font-css-5 {
+#               font-family: PlayfairDisplay-BlackItalic, 'Playfair Display';
+#               font-weight: 800;
+#           }
+#           </style>
+
+
+
 
 #———————————————————————————————————————— generate adobe css
 #
