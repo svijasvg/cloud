@@ -358,11 +358,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
       #———————————————————————————————————————— add P3 color definition
       # fill:#FFFFFF, stroke:#9537FF
   
-  #	.st0{fill:#414042;}
-  #	.st1{opacity:0.3;fill:#FF00FF;}
-  #	.st2{fill:#FFFFFF;}
-  #	.st3{font-family:'OpenSans-Semibold';}
-  
       if use_p3:
         hash = ' #'
   
@@ -492,22 +487,22 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
         if len(font_exists) == 0:
           fonts_to_add.append(line_ref)
 
-        # font exists
-        else:
-          font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).first()
+#       # font exists
+#       else:
+#         font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).first()
 
-          # need to delete style info if it's a woff
-          if font.woff != '':
-            repeat = True
-            l = line_number
-            while repeat:
-              l += 1
-              if svg_lines[l].find('font-style') > 0:
-                svg_lines[l] = '/* style deleted */'
-              if svg_lines[l].find('font-weight') > 0:
-                svg_lines[l] = '/* weight deleted */'
-              if svg_lines[l].find('}') > 0:
-                repeat = False
+#         # need to delete style info if it's a woff
+#         if font.woff != '':
+#           repeat = True
+#           l = line_number
+#           while repeat:
+#             l += 1
+#             if svg_lines[l].find('font-style') > 0:
+#               svg_lines[l] = '/* style deleted */'
+#             if svg_lines[l].find('font-weight') > 0:
+#               svg_lines[l] = '/* weight deleted */'
+#             if svg_lines[l].find('}') > 0:
+#               repeat = False
   
       #———————————————————————————————————————— debugging COMMENTED OUT
   #   fb = urllib.parse.quote(line)
