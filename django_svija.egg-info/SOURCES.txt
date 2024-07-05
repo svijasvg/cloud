@@ -301,6 +301,8 @@ svija/migrations/0283_alter_screen_code.py
 svija/migrations/0284_alter_module_filename.py
 svija/migrations/0285_alter_illustrator_filename.py
 svija/migrations/0286_alter_screen_options_alter_section_options.py
+svija/migrations/0287_alter_module_options_alter_pagemodule_options_and_more.py
+svija/migrations/0288_alter_module_options_alter_page_options_and_more.py
 svija/migrations/__init__.py
 svija/static/admin/css/.admin-extra.css.un~
 svija/static/admin/css/.new.css.un~
