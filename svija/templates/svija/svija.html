@@ -18,8 +18,16 @@
   <meta property="og:image" content="/images/capture.jpg">
 
 <script> // system JS
+
 pageLoaded = false;
-{{ system_js                           }}
+
+var arSels = {'ariaO':0, 'ariaZ':-9999, 'ariaP':'none', 'ariaF':'hidden'}
+
+{{ system_js                               }}
+
+for (const [key, value] of Object.entries(arSels)) 
+  document.documentElement.style.setProperty('--'+key, value)
+
 {% include "svija/js/min_cookies.js"       %}
 {% include "svija/js/min_screens.js"       %}
 {% include "svija/js/min_window_mgmt.js"   %}
@@ -29,7 +37,7 @@ pageLoaded = false;
 {{ comp_head_js                            }}
 </script>
 <style>
-{% include "svija/css/min_svija.css"       %}
+{% include "svija/css/svija.css"       %}
 {{ font_css }}
 {{ page_css }}
 {{ comp_css }}
@@ -50,8 +58,6 @@ pageLoaded = false;
 <script src="{% static 'svija/js/min_gsap.js' %}"></script>
 
 </head><body>
-<div style="display:none">{{ links   }}</links></div>
-<div style="display:none">{{ capture }}</links></div>
 
 <div id="set_scroll_div"></div>
 
@@ -59,11 +65,15 @@ pageLoaded = false;
 {% include "svija/js/min_scrollbars.js"     %}
 </script>
 
-<div id=accessibility>{{ accessible }}</div>
-
 {% block token%}{% endblock %}
 
+<div id=captureSvija>{{ capture }}</div>
+<div id=linksSvija  >{{ links   }}</div>
+
 {{ page_body }}
+
+<div id=accessSvija>{{ accessible }}</div>
+
 {{ comp_body }}
 
 {% include "svija/html/unsupported.html" %}
