@@ -1,8 +1,6 @@
-//:::::::::::::::::::::::::::::::::::::::: template: cookies.js
+/*:::::::::::::::::::::::::::::::::::::::: template: cookies.js
 
-/*
-https://www.toptal.com/developers/javascript-minifier
-*/
+https://www.toptal.com/developers/javascript-minifier  */
 
 /*———————————————————————————————————————— notes
 
@@ -25,6 +23,7 @@ https://www.toptal.com/developers/javascript-minifier
 
     cookieName(unique, version)
       creats a unique cookie name by concatenating unique+verion without periods */
+
 
 //:::::::::::::::::::::::::::::::::::::::: main methods
 

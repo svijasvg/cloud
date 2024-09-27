@@ -24,6 +24,7 @@ from svija.models import Section, Settings, Screen
 
 from PageObject import *
 from modules.cache_per_user import *
+from modules.iframe_page import *
 from modules.construct_page import *
 
 #———————————————————————————————————————— definition
@@ -31,7 +32,7 @@ from modules.construct_page import *
 def PageView(request, request_page='', request_lang=''):
 # return HttpResponse("debugging message.")
 
-#———————————————————————————————————————— lang is missing (one-part page address)
+#———————————————————————————————————————— section is missing (one-part page address)
 
   if request_lang == '':
 
@@ -72,19 +73,14 @@ def PageView(request, request_page='', request_lang=''):
       if screen_code == screen.code:
         have_valid_code = True
 
-#———————————————————————————————————————— get screen code
+#———————————————————————————————————————— don't have screen code
 
   if not have_valid_code:
-
-    if all_screens[0].pixels == 0 and len(all_screens) > 1:
-      screen_code = all_screens[1].code
-    else:
-      screen_code = all_screens[0].code
-
-  request.screen_code = screen_code
+    return iframe_page(request, request_lang, request_page)
 
 #———————————————————————————————————————— return cached results
 
+  request.screen_code = screen_code
   return construct_page(request, request_lang, request_page, screen_code)
 
 

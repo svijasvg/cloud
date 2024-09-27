@@ -109,7 +109,12 @@ def cache_key(request):
     q.lists()
     urlencode = q.urlencode(safe='()')
 
-    return 'pageview_%s_%s_%s' % (request.path, request.screen_code, urlencode)
+    if hasattr(request, 'screen_code'):
+      sc = request.screen_code
+    else:
+      sc = 'noCookie'
+
+    return 'pageview_%s_%s_%s' % (request.path, sc, urlencode)
 
 
 #———————————————————————————————————————— fin

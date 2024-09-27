@@ -1,7 +1,6 @@
 //:::::::::::::::::::::::::::::::::::::::: template: screens.js
-/*
-https://www.toptal.com/developers/javascript-minifier
-*/
+
+https://www.toptal.com/developers/javascript-minifier */
 
 /*———————————————————————————————————————— notes
 
