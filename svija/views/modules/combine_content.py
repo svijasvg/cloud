@@ -4,21 +4,21 @@
 
 def combine_content(blocks):
 
-    js = css = body = ''
+    head_js = css = body = ''
 
     for i in blocks:
-        js   += i['head_js']
-        css  += i['css']
-        body += i['svgs']
-        body += i['html']
-        body += i['form']
+        head_js   += i['head_js']
+        css       += i['css']
+        body      += i['svgs']
+        body      += i['html']
+        body      += i['form']
 
-#———————————————————————————————————————— javascript after content
+#———————————————————————————————————————— javascript is included just after content
 
     for i in blocks:
         if i['body_js'] != '':
             body += '<script>' + i['body_js'] + '</script>'
 
-    return { 'js':js, 'css':css, 'body':body, }
+    return { 'head_js':head_js, 'css':css, 'body':body, }
 
 #———————————————————————————————————————— fin

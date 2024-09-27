@@ -64,18 +64,19 @@ def construct_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
-  settings       = Settings.objects.filter(enabled=True).first()
-  section        = Section.objects.filter(code=section_code).first()
+  settings         = Settings.objects.filter(enabled=True).first()
+  section          = Section.objects.filter(code=section_code).first()
 
   # now called screen
-  responsive     = Screen.objects.filter(code=screen_code).first()
+  responsive       = Screen.objects.filter(code=screen_code).first()
 
-  use_p3         = settings.p3_color
+  use_p3           = settings.p3_color
 
-  template       = 'svija/svija.html'
-  accessible     = get_accessibility(page.accessibility_text)
-  links, capture = generate_links(settings.url, Page.objects.all(), page)
-  content_blocks = []
+  template         = 'svija/svija.html'
+  accessible       = get_accessibility(page.accessibility_text)
+  links, capture   = generate_links(settings.url, Page.objects.all(), page)
+  page_blocks      = []
+  component_blocks = []
 
   if not page.default_dims: page_width = page.width
   else:          page_width = responsive.width
@@ -97,17 +98,17 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— page SVG's and scripts
 
-  # once something is appended to content_blocks, the order is set
+  # once something is appended to page_blocks, the order is set
   # so it has to be appended in the correct order
 
   # return HttpResponse("debugging message: "+str(page_width)) # 1200
   svgs, css_dimensions = get_page_svgs(screen_code, page, page_width, use_p3)
 
   # page SVG's
-  content_blocks.append( scripts_to_page_obj('page', [], svgs, css_dimensions)) # append svg's w/dimensions
+  page_blocks.append( scripts_to_page_obj('page', [], svgs, css_dimensions)) # append svg's w/dimensions
 
   # page additional scripts
-  content_blocks.append( scripts_to_page_obj('page additional scripts', page.additionalscript_set.all(),'' , ''))
+  page_blocks.append( scripts_to_page_obj('page additional scripts', page.additionalscript_set.all(),'' , ''))
 
   #———————————————————————————————————————— script sets
 
@@ -132,9 +133,9 @@ def construct_page(request, section_code, request_slug, screen_code):
     script_sets_body_js.append(new_set)
     set.body_js = ''
 
-  content_blocks.extend(script_sets)
+  page_blocks.extend(script_sets)
 
-  #———————————————————————————————————————— modules
+  #———————————————————————————————————————— components
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
@@ -151,22 +152,23 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   page_modules = get_modules('page modules', all_modules, section_code, screen_code, page, page_width, use_p3)
 
-  content_blocks.extend(page_modules)
+  page_blocks.extend(page_modules)
 
   #———————————————————————————————————————— script set body JS
 
-  content_blocks.extend(script_sets_body_js)
+  page_blocks.extend(script_sets_body_js)
 
   #———————————————————————————————————————— combine content blocks
 
-  content_types = combine_content(content_blocks)
+  page_content = combine_content(page_blocks)
+  component_content = combine_content(component_blocks)
 
   #———————————————————————————————————————— if form, add CSRF token
 
-  if contains_form(content_blocks):
+  if contains_form(page_blocks):
     form_js = generate_form_js(section)
     template = template.replace('.html', '_token.html')
-    content_types['js'] += "\n" + form_js
+    page_content['head_js'] += "\n" + form_js
 
   #———————————————————————————————————————— template context
 
@@ -181,9 +183,17 @@ def construct_page(request, section_code, request_slug, screen_code):
     'links'            : links,
     'capture'          : capture,
     'analytics_id'     : settings.analytics_id,
+    'components'       : '<!-- component content -->'
   }
 
-  context.update(content_types)
+#   https://docs.djangoproject.com/en/5.1/ref/templates/api/
+#
+#   Context.update(other_dict)[source]¶
+#   In addition to push() and pop(), the Context object also defines an update() method.
+#   This works like push() but takes a dictionary as an argument and
+#   pushes that dictionary onto the stack instead of an empty one.
+
+  context.update(page_content)
 
 
   return render(request, template, context)
