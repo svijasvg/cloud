@@ -125,7 +125,7 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   script_sets = get_script_sets('script sets', all_script_sets)
 
-  #———————————————————————————————————————— set aside body js so Vibe executes last
+  #———————————————————————————————————————— set aside body js so Vibe executes last MOVE AFTER COMPONENTS	***********************
 
   script_sets_body_js = []
   for set in script_sets:
@@ -135,7 +135,7 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   page_blocks.extend(script_sets)
 
-  #———————————————————————————————————————— components
+  #———————————————————————————————————————— component content
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
@@ -152,11 +152,12 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   page_modules = get_modules('page modules', all_modules, section_code, screen_code, page, page_width, use_p3)
 
-  page_blocks.extend(page_modules)
+  component_blocks.extend(page_modules)
 
   #———————————————————————————————————————— script set body JS
+  # at end of everything, so Vibed will execute last
 
-  page_blocks.extend(script_sets_body_js)
+  component_blocks.extend(script_sets_body_js)
 
   #———————————————————————————————————————— combine content blocks
 
@@ -195,11 +196,10 @@ def construct_page(request, section_code, request_slug, screen_code):
 #   pushes that dictionary onto the stack instead of an empty one.
 
   context.update(page_content)
+  context.update(component_content)
 
 
   return render(request, template, context)
 
-
 #:::::::::::::::::::::::::::::::::::::::: fin
-
 
