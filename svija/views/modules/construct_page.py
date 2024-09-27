@@ -24,9 +24,10 @@ from modules.cache_per_user import *
 from modules.combine_content import *
 from modules.contains_form import *
 from modules.create_other_screens import *
-from modules.generate_accessibility import *
+from modules.generate_links import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
+from modules.get_accessible import *
 from modules.add_new_fonts import *
 from modules.get_font_css import *
 from modules.get_modules import *
@@ -63,17 +64,18 @@ def construct_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
-  settings    = Settings.objects.filter(enabled=True).first()
-  section    = Section.objects.filter(code=section_code).first()
+  settings       = Settings.objects.filter(enabled=True).first()
+  section        = Section.objects.filter(code=section_code).first()
 
   # now called screen
-  responsive    = Screen.objects.filter(code=screen_code).first()
+  responsive     = Screen.objects.filter(code=screen_code).first()
 
-  use_p3      = settings.p3_color
+  use_p3         = settings.p3_color
 
-  template    = 'svija/svija.html'
-  accessible    = generate_accessibility(settings.url, Page.objects.all(), page)
-  content_blocks  = []
+  template       = 'svija/svija.html'
+  accessible     = get_accessibility(page.accessibility_text)
+  links, capture = generate_links(settings.url, Page.objects.all(), page)
+  content_blocks = []
 
   if not page.default_dims: page_width = page.width
   else:          page_width = responsive.width
@@ -169,14 +171,16 @@ def construct_page(request, section_code, request_slug, screen_code):
   #———————————————————————————————————————— template context
 
   context = {
-    'comments'    : section.comment,
-    'title'     : page.title + ' ' + section.title,
-    'google_font_meta'  : google_font_meta,
-    'touch'     : section.touch,
-    'system_js'   : system_js,
-    'font_css'    : font_css,
-    'accessible'  : accessible,
-    'analytics_id'  : settings.analytics_id,
+    'comments'         : section.comment,
+    'title'            : page.title + ' ' + section.title,
+    'google_font_meta' : google_font_meta,
+    'touch'            : section.touch,
+    'system_js'        : system_js,
+    'font_css'         : font_css,
+    'accessible'       : accessible,
+    'links'            : links,
+    'capture'          : capture,
+    'analytics_id'     : settings.analytics_id,
   }
 
   context.update(content_types)
@@ -184,5 +188,7 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   return render(request, template, context)
 
+
 #:::::::::::::::::::::::::::::::::::::::: fin
+
 

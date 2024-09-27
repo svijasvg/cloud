@@ -48,6 +48,8 @@ pageLoaded = false;
 <script src="{% static 'svija/js/min_gsap.js' %}"></script>
 
 </head><body>
+<div style="display:none">{{ links   }}</links></div>
+<div style="display:none">{{ capture }}</links></div>
 
 <div id="set_scroll_div"></div>
 
@@ -60,6 +62,8 @@ pageLoaded = false;
 {% block token%}{% endblock %}
 
 {{ body }}
+
+{{ modules }}
 
 {% include "svija/html/unsupported.html" %}
 

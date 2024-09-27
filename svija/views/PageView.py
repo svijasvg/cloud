@@ -29,6 +29,7 @@ from modules.construct_page import *
 #———————————————————————————————————————— definition
 
 def PageView(request, request_page='', request_lang=''):
+# return HttpResponse("debugging message.")
 
 #———————————————————————————————————————— lang is missing (one-part page address)
 

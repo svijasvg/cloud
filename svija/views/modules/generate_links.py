@@ -1,4 +1,4 @@
-#———————————————————————————————————————— generate_accessibility.py
+#———————————————————————————————————————— generate_links.py
 
 #———————————————————————————————————————— notes
 #
@@ -15,9 +15,9 @@ from svija.models import Settings
 
 #———————————————————————————————————————— program
 
-# accessible = generate_accessibility(settings.url, Page.objects.all(), page)
+# accessible = generate_links(settings.url, Page.objects.all(), page)
 
-def generate_accessibility(url, pages, page):
+def generate_links(url, pages, page):
 
   links = prev  = ''
 
@@ -60,12 +60,11 @@ def generate_accessibility(url, pages, page):
 
 #———————————————————————————————————————— add capture
 
-  text = get_accessibility(page.accessibility_text)
   capture = '/images/capture.jpg'
-  tag = '{0}\n\n{1}<a href=http://{2}><img src={3}></a>'
-  results = tag.format(text,links,url,capture)
+  tag = '<a href=http://{0}><img src={1}></a>'
+  capture_tag = tag.format(url,capture)
 
-  return results
+  return links, capture_tag
 
 
 #———————————————————————————————————————— fin
