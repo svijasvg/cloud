@@ -1,8 +1,10 @@
 #———————————————————————————————————————— views/modules/combine_content.py
 
-# accepts a list of content blocks that each contain 6 elements
+#   accepts a list of content blocks that each contain 6 elements
 
-def combine_content(blocks):
+#   returns 3-element dict: head_js, css, body
+
+def combine_content(blocks, prefix):
 
     head_js = css = body = ''
 
@@ -19,6 +21,6 @@ def combine_content(blocks):
         if i['body_js'] != '':
             body += '<script>' + i['body_js'] + '</script>'
 
-    return { 'head_js':head_js, 'css':css, 'body':body, }
+    return { prefix+'_head_js':head_js, prefix+'_css':css, prefix+'_body':body, }
 
 #———————————————————————————————————————— fin

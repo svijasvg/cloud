@@ -160,15 +160,17 @@ def construct_page(request, section_code, request_slug, screen_code):
 
   #———————————————————————————————————————— combine content blocks
 
-  page_content = combine_content(page_blocks)
-  component_content = combine_content(component_blocks)
+  # both contain head_js, css, body
+
+  page_content      = combine_content(page_blocks,      'page')
+  component_content = combine_content(component_blocks, 'comp')
 
   #———————————————————————————————————————— if form, add CSRF token
 
   if contains_form(page_blocks):
     form_js = generate_form_js(section)
     template = template.replace('.html', '_token.html')
-    page_content['head_js'] += "\n" + form_js
+    page_content['page_head_js'] += "\n" + form_js
 
   #———————————————————————————————————————— template context
 
@@ -188,7 +190,7 @@ def construct_page(request, section_code, request_slug, screen_code):
 
 #   https://docs.djangoproject.com/en/5.1/ref/templates/api/
 #
-#   Context.update(other_dict)[source]¶
+#   Context.update(other_dict)
 #   In addition to push() and pop(), the Context object also defines an update() method.
 #   This works like push() but takes a dictionary as an argument and
 #   pushes that dictionary onto the stack instead of an empty one.

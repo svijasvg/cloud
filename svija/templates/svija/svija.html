@@ -25,12 +25,12 @@ pageLoaded = false;
 {% include "svija/js/min_window_mgmt.js"   %}
 {% include "svija/js/min_sections.js"      %}
 {% include "svija/js/min_tap_highlight.js" %}
-{{ head_js                                 }}
+{{ page_head_js                            }}
 </script>
 <style>
 {% include "svija/css/min_svija.css"       %}
 {{ font_css }}
-{{ css }}
+{{ page_css }}
 </style>
 <!-- Google's script with IF added -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
@@ -61,7 +61,7 @@ pageLoaded = false;
 
 {% block token%}{% endblock %}
 
-{{ body }}
+{{ page_body }}
 
 {{ components }}
 
