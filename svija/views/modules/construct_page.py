@@ -185,7 +185,6 @@ def construct_page(request, section_code, request_slug, screen_code):
     'links'            : links,
     'capture'          : capture,
     'analytics_id'     : settings.analytics_id,
-    'components'       : '<!-- component content -->'
   }
 
 #   https://docs.djangoproject.com/en/5.1/ref/templates/api/
