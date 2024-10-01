@@ -1,17 +1,65 @@
-<html><head><style>
-
-iframe{
-  border:none;
-  margin:0;
- padding:0;
-   width:100%;
-  height:100%;
-}
-
-</style><script>
+<html><head><script>
 
 {% include "svija/js/min_cookies.js"       %}
 // {{ all_screens }}  has entities instead of single quotes
+
+// store value in localstorage
+
+// if value not in localstorage:
+/*———————————————————————————————————————— fetchRemote(path, callback)
+
+    https://github.com/Adobe-CEP/Getting-Started-guides/blob/master/Network%20requests%20and%20responses%20with%20Fetch/readme.md
+
+    Note that fetch() is not the only way that CEP gives you to make network requests.
+
+    Since Chromium Embedded Framework is essentially a browser, you can use
+    an XMLHttpRequest (or a client-side library that wraps it, such as jQuery)
+    You can also take advantage of Node.js within CEP, which gives you even
+    more alternatives for making network requests.
+
+    three params: ID, path, and callback function */
+
+function myCallback(text, path){
+  document.write(text)
+}
+
+var SERVER = 'myserver'
+var VERSION = 10.2
+
+function fetchRemote(path, callback) {
+
+  path = 'https://' + SERVER + '/' + VERSION +'/'+ path
+  var pathRand = path + '?' + Math.random()
+
+  callback = myCallback
+  pathRand = '/'
+
+  fetch(pathRand)
+    .then(function(res){
+      if (res.ok){
+        return res.text()
+      }
+    })
+    .then(function(text){
+      if (typeof text != 'undefined'){
+        if (text != '') callback(text, path)
+        else{
+          alert('Empty File\n' + path)
+          callback('', '', path)
+        }
+      }
+      else {
+        alert('404 Error\n' + path)
+        callback('', '', path)
+      }
+    })
+
+  .catch(function(err){
+    alert('Server not found\n' + path)
+    callback('', '', path)
+   })
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: template/svija/jsscreens.js
 
@@ -61,16 +109,26 @@ for (var x=0; x<all_screens.length; x++){
 
     there's a cloud module cookie AND the visitor is a signed-in admin */
 
-correct_screen_code = 'computer'
+  correct_screen_code = 'mobile'
 
 //if (!cookiesEnabled()) current path+= "nocookie"
   setCookie('screen_code', correct_screen_code, 7);
 
+  path = path + '?nohead'
+  fetchRemote('path', 'callback')
 
 //:::::::::::::::::::::::::::::::::::::::: fin
 
-</script>
+</script></head>
 
-</head><body>
-<iframe src="{{ current_path }}" title="{{ page_title }}"></iframe>
-</body></html>
+
+
+
+
+
+
+<!-- use this instead:
+
+    https://stackoverflow.com/questions/73533135/chrome-violation-when-using-document-write-with-generated-iframe-source-altern
+
+-->
