@@ -35,12 +35,15 @@ def PageView(request, request_sect='', request_page=''):
   sections = Section.objects.filter(Q(code=request_sect))
 
   if len(sections) > 0:
+    section     = sections.get(code=request_sect)
     section_url = request_sect
 
   else:
-    section = get_object_or_404(Settings, enabled=True).section
+    section     = get_object_or_404(Settings, enabled=True).section
     section_url = section.code
 
+    if request_page == '':
+      request_page = request_sect
 
 #———————————————————————————————————————— determine page
 
