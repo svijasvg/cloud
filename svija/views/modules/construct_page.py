@@ -47,7 +47,6 @@ from modules.script_sets_dedupe import *
 @cache_per_user(60*60*24, False)
 @csrf_protect
 def construct_page(request, section_code, request_slug, screen_code):
-  return HttpResponse(section_code +' : '+ request_slug +' : '+ screen_code)
 
   #———————————————————————————————————————— get page
 
