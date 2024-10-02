@@ -41,13 +41,13 @@ from modules.convert_script_sets import *
 from modules.modules_dedupe import *
 from modules.script_sets_dedupe import *
 
-
 #   different according to screen code because screen code
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
 @csrf_protect
 def construct_page(request, section_code, request_slug, screen_code):
+  return HttpResponse(section_code +' : '+ request_slug +' : '+ screen_code)
 
   #———————————————————————————————————————— get page
 

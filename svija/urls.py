@@ -53,8 +53,8 @@ urlpatterns = [
 #———————————————————————————————————————— SVG pages
 
     path('',                                        views.PageView),   # prefix/slug
-    path('<slug:request_page>',                     views.PageView),   # prefix/slug
-    path('<slug:request_lang>/<slug:request_page>', views.PageView),   # prefix/slug
+    path('<slug:request_sect>',                     views.PageView),   # prefix/slug
+    path('<slug:request_sect>/<slug:request_page>', views.PageView),   # prefix/slug
 
 #———————————————————————————————————————— redirects
 

@@ -39,16 +39,17 @@ recalculate: if (cookiesEnabled()){
   code = calculate_code(all_screens)
 
   // store code for next visit
+
   localStorage.screen_code = code
   setCookie('screen_code', code, 7)
 
   // this page is wrong, so reload
-  if (screen_code != code){
-    history.scrollRestoration = 'manual'
-    window.location.replace(document.URL)
-  }
-}
 
+  if (screen_code != code)
+    window.location.replace(document.URL)
+
+
+}
 
 /*:::::::::::::::::::::::::::::::::::::::: functions */
 
