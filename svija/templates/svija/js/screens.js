@@ -1,7 +1,7 @@
-//:::::::::::::::::::::::::::::::::::::::: template: screens.js
-/*
-https://www.toptal.com/developers/javascript-minifier
-*/
+
+/*:::::::::::::::::::::::::::::::::::::::: template: screens.js
+
+    https://www.toptal.com/developers/javascript-minifier */
 
 /*———————————————————————————————————————— notes
 
@@ -11,66 +11,70 @@ https://www.toptal.com/developers/javascript-minifier
     if cookies are not enabled, nothing is done — the version
     of the page that was loaded is shown.
 
-    if an admin is logged in, and he has clicked on the Svija Cloud
-    module to force desktop or mobile, no redirection is done */
+    if a screen code exists in localStorage or a cookie,
+    the cookie is renewed and localStorage is set
+
+    if no cookie or localStorage, the correct screen is determined
+    and the screen code is stored in localStorage and a cookie. */
 
 /*———————————————————————————————————————— predefined values
-
   
    defined in system js, higher in the page:
   
-   var screen_code = "cp";
-   var all_screens = {0:'cp', 400:'mb'}; */
+   var screen_code = "cp"
+   var all_screens = {0:'cp', 400:'mb'} */
 
-//———————————————————————————————————————— find best fit
 
-var win_width = globalThis.outerWidth;
-var correct_screen_code = all_screens[0][1];
-var min_value = 1000000;
+recalculate: if (cookiesEnabled()){
 
-for (var x=0; x<all_screens.length; x++){
-  key   = all_screens[x][0];
-  value = all_screens[x][1];
-  if (win_width < key && win_width < min_value){
-    min_value = key;
-    correct_screen_code = value;
+/*———————————————————————————————————————— not first visit */
+
+  if (typeof localStorage.screen_code != 'undefined'){
+    setCookie('screen_code', localStorage.screen_code, 7)
+    break recalculate
   }
-}
 
-//———————————————————————————————————————— is an admin logged in?
+/*———————————————————————————————————————— first visit */
 
-  if (typeof admin == 'undefined')
-    admin = false
+  code = calculate_code(all_screens)
 
-/*———————————————————————————————————————— set cookie & redirect if appropriate
+  // store code for next visit
+  localStorage.screen_code = code
+  setCookie('screen_code', code, 7)
 
-    sets cookie with correct screen code for server
-    reloads page if there's a better screen match
-
-    UNLESS
-
-    there's a cloud module cookie AND the visitor is a signed-in admin */
-
-if (cookiesEnabled()){
-
-  var cloudModuleCookieName = cookieName('cloudModule', svija_version)
-  var cloudModuleCookie     = getCookie(cloudModuleCookieName)
-
-  // if cloud module don't redirect
-  if(cloudModuleCookie == 'true' && admin)
-    false
-
-  // redirect if necessary
-  else if (screen_code != correct_screen_code){
-    setCookie('screen_code', correct_screen_code, 7);
-    history.scrollRestoration = 'manual';
-//  window.location.replace(document.URL);
-
-    var searchStr = 'Googlebot'
-    if(window.navigator.userAgent.indexOf(searchStr) < 0)
-      window.location.replace(document.URL);
+  // this page is wrong, so reload
+  if (screen_code != code){
+    history.scrollRestoration = 'manual'
+    window.location.replace(document.URL)
   }
 }
 
 
-//:::::::::::::::::::::::::::::::::::::::: fin
+/*:::::::::::::::::::::::::::::::::::::::: functions */
+
+/*———————————————————————————————————————— calculate_code(all_screens)
+
+    */
+
+function calculate_code(all_screens){
+  var win_width = globalThis.outerWidth
+  var      code = all_screens[0][1]
+  var min_value = 999999
+  
+  for (var x=0; x<all_screens.length; x++){
+
+      key = all_screens[x][0]
+    value = all_screens[x][1]
+
+    if (win_width < key && win_width < min_value){
+      min_value = key
+      code = value
+    }
+  }
+
+  return code
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: fin */
+
