@@ -3,8 +3,8 @@
 
 #———————————————————————————————————————— notes
 #
-# from django.http import HttpResponse
-# return HttpResponse("debugging message.")
+#   from django.http import HttpResponse
+#   return HttpResponse("debugging message.")
 #
 #———————————————————————————————————————— import
 
@@ -141,11 +141,15 @@ def construct_page(request, section_url, page_url, screen_code):
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
   page_modules = list(page.pagemodule_set.filter(enabled=True))
+
+  debug = ''
+
   all_modules = convert_modules(page_modules, section_url, screen_code) # list of "Module" objects
 
   # always-include modules
   if page.incl_modules:
     default_modules = Module.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
+
     module_content = list(default_modules)
     all_modules.extend(module_content)
     all_modules = modules_dedupe(all_modules) 

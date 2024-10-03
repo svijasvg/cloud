@@ -1,8 +1,6 @@
 /*———————————————————————————————————————— global css
 
-https://www.toptal.com/developers/cssminifier
-
-*/
+    https://www.toptal.com/developers/cssminifier */
 
 /*———————————————————————————————————————— global css */
 
@@ -33,10 +31,10 @@ svg{
 /*———————————————————————————————————————— hide capture, links & accessibility */
 
 #captureSvija, #linksSvija, #accessSvija{
-         opacity: var(--ariaO);
-         z-index: var(--ariaZ); 
-  pointer-events: var(--ariaP);
-        overflow: var(--ariaF);
+         opacity: var(--XXO);
+         z-index: var(--XXZ); 
+  pointer-events: var(--XXP);
+        overflow: var(--XXF);
 }
 
 /*———————————————————————————————————————— position capture, links & accessibility */
