@@ -19,7 +19,7 @@ import unicodedata
 from modules.rewrite_svg import *
 
 
-def get_single_svg(parent_obj, screen_code, page_width, use_p3, is_page):
+def get_single_svg(parent_obj, screen_code, page_width, use_p3, is_page, page_title):
 
 #———————————————————————————————————————— if no SVG file
 
@@ -85,7 +85,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3, is_page):
 
   #———————————————————————————————————————— finalize ID, coordinates and content
 
-  svg_id, svg_width, svg_height, svg = rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page)
+  svg_id, svg_width, svg_height, svg = rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title)
 
   if svg_width > page_width:
     page_ratio = svg_height/svg_width

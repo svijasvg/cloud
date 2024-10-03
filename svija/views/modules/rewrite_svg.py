@@ -30,7 +30,7 @@ from svija.models import Font
 
 # settings_id is either svg_filename or an existing ID (layer name or in module settings)
 
-def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page):
+def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
 
 #———————————————————————————————————————— initialization
 
@@ -540,9 +540,9 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page):
     #———————————————————————————————————————— add aria accesibility tags
 
     if is_page:
-      replacement = '<svg aria-details="accessibility"'
+      replacement = '<svg aria-label="content" aria-description="' + page_title + '" aria-details="accessSvija"'
     else:
-      replacement = '<svg aria-label="menu element"'
+      replacement = '<svg aria-label="menu element" aria-description="' + raw_name + '" aria-details="linksSvija"'
 
     first_line = first_line.replace('<svg', replacement, 1)
   

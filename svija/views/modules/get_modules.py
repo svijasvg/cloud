@@ -40,7 +40,7 @@ def get_modules(label, all_modules, section_code, screen_code, page, page_width,
 
       svc = '\n\n<!--———————————————————————————————————————— ' + label + ' -->\n\n'
   
-      sv, hc, rien = get_single_svg(this_module, screen_code, page_width, use_p3, False)
+      sv, hc, rien = get_single_svg(this_module, screen_code, page_width, use_p3, False, '')
 
 #———————————————————————————————————————— iterate through scripts
 

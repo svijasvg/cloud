@@ -21,7 +21,7 @@ def get_page_svgs(screen_code, page, page_width, use_p3):
     # also edit modules/generate_system_js.py
     for this_svg in all_svgs:
         if this_svg.enabled:
-            s, c, d = get_single_svg(this_svg, screen_code, page_width, use_p3, True)
+            s, c, d = get_single_svg(this_svg, screen_code, page_width, use_p3, True, page.title)
             svgs += s
             css += c
             
