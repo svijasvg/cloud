@@ -203,8 +203,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
               parts[1] = image_ids[current_id]
               line = 'xlink:href="#'.join(parts)
   
-          line = "———— xxx ————" + line
-  
       #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
       #                                         search for <tspan x="400.88" where x != 0
   
@@ -343,7 +341,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
       #        stroke-miterlimit: 10;
       #      }
   
-      if line[0:5] == '.cls-':
+      if line[0:1] == '.':
         line = line.replace('.cls-', '.' + style_id + '-')
   
       #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
@@ -448,8 +446,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
             if image_ids.get(current_id) is not None:
               parts[1] = image_ids[current_id]
               line = 'xlink:href="#'.join(parts)
-  
-          line = "———— xxx ————" + line
   
       #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
       #                                         search for <tspan x="400.88" where x != 0
