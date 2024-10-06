@@ -23,38 +23,11 @@ svg{
 /* width & height include padding & borders */
 * { box-sizing: border-box; }
 
-/*———————————————————————————————————————— variables */
-
-/* variables are in template svija.html
-   var arSels = {'ariaO':0.5, 'ariaZ':9999, 'ariaP':'none', 'ariaF':'hidden'} */
-
 /*———————————————————————————————————————— hide capture, links & accessibility */
 
 #captureSvija, #linksSvija, #accessSvija{
-         opacity: var(--XXO);
-         z-index: var(--XXZ); 
-  pointer-events: var(--XXP);
-        overflow: var(--XXF);
+ display:none;
 }
-
-/*———————————————————————————————————————— position capture, links & accessibility */
-
-#captureSvija, #linksSvija, #accessSvija{
-         display: block;
-        position: absolute;
-            left: 5%;
-       max-width: 90%;
-      max-height: 25%;
-background-color: lime;
-       font-size: 10rem;
-     line-height: 14rem;
-}
-
-/*———————————————————————————————————————— 1/3 each */
-
-#captureSvija{ top:  6%; }
-#linksSvija  { top: 37%; }
-#accessSvija { top: 68%; }
 
 /*———————————————————————————————————————— window management */
 

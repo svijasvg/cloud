@@ -22,12 +22,6 @@
 pageLoaded = false;
 
 {{ system_js                               }}
-
-var arSels = {'XXO':0, 'XXZ':-9999, 'XXP':'none', 'XXF':'hidden'}
-
-for (const [key, value] of Object.entries(arSels)) 
-  document.documentElement.style.setProperty('--'+key, value)
-
 {% include "svija/js/min_cookies.js"       %}
 {% include "svija/js/min_screens.js"       %}
 {% include "svija/js/min_window_mgmt.js"   %}
