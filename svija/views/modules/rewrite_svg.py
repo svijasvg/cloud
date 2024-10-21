@@ -47,7 +47,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   debug          = 'working'
   px_width       = 0
   px_height      = 0
-  new_format     = False      # is it a AI28+ SVG?
+  new_format     = True       # is it saved "export" instead of "save as" in Svija Tools
   defs_section   = False      # are we in def section at top of SVG?
   image_ids      = {}         # image id's that are changed in defs section
                               # and need to be updated in rest of file
@@ -78,10 +78,42 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
-  #———————————————————————————————————————— old or new format SVG?
+  #———————————————————————————————————————— old or new format SVG? EXPLANATION
+  #
+  # Data-Name format:
+  # <?xml version="1.0" encoding="UTF-8"?>
+  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
+  #   <defs>
+  #     <style>
+  #       .cls-1 {
+  # 
+  #
+  # x2F format
+  # <?xml version="1.0" encoding="UTF-8"?>
+  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
+  #   <defs>
+  #     <style>
+  #       .cls-1 {
+  #
+  # Save-As format
+  # <?xml version="1.0" encoding="utf-8"?>
+  # <!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+  # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  # 	 viewBox="0 0 1680 3040" style="enable-background:new 0 0 1680 3040;" xml:space="preserve">
+  # <style type="text/css">
+  # 	.st0{fill:url(#SVGID_1_);}
+  #
+  #———————————————————————————————————————— delete first line if <?xml...
 
-  letters = svg_lines[1][1:4]
-  if letters == 'svg': new_format = True
+  letters = svg_lines[0][2:5]
+  if letters == 'xml': svg_lines.pop(0)
+
+  #———————————————————————————————————————— delete first line if <!-- Generator: ...
+
+  letters = svg_lines[0][5:14]
+  if letters == 'Generator':
+    svg_lines.pop(0)
+    new_format = False
   
 
 #:::::::::::::::::::::::::::::::::::::::: old-format SVG
@@ -90,7 +122,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
 
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
-    line_number = 2
+    line_number = 0
     lines_quantity = len(svg_lines)
   
     while True:
@@ -101,7 +133,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   
       #———————————————————————————————————————— keep 1st line to replace ID when done
   
-      if line_number == 2:
+      if line_number == 0:
         first_line = line
   
       #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
@@ -113,7 +145,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
   	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
-      if line_number == 3:
+      if line_number == 1:
         parts1 = line.split('viewBox="')
         parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
         viewBox = parts2[0]
@@ -299,7 +331,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
 
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
-    line_number = 1
+    line_number = 0
     lines_quantity = len(svg_lines)
   
     while True:
@@ -310,7 +342,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   
       #———————————————————————————————————————— keep 1st line to replace ID when done
   
-      if line_number == 1:
+      if line_number == 0:
         first_line = line
   
       #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
@@ -322,7 +354,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
   	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
-      if line_number == 1:
+      if line_number == 0:
         parts1 = line.split('viewBox="')
         parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
         viewBox = parts2[0]
