@@ -1,8 +1,6 @@
 /*———————————————————————————————————————— global css
 
-https://www.toptal.com/developers/cssminifier
-
-*/
+    https://www.toptal.com/developers/cssminifier */
 
 /*———————————————————————————————————————— global css */
 
@@ -22,31 +20,16 @@ svg{
     overflow:hidden;   /* necessary for IE */
 }
 
-/* avoids flash when SVG is resized */
-svg:first-of-type{ width: 100%; }
-
-#accessibility{ /* positioning */
-        position: absolute;
-  pointer-events: none;
-           width: 80%;     margin-left: auto; margin-right: auto;
-          height: 20rem;   margin-top :-22rem;
-        overflow: hidden;
-  pointer-events: none;
-         z-index: -999; 
-}
-
-#accessibility, #accessibility a:link, #accessibility a:visited{
-   font: normal 1rem/1.4rem verdana;
-  color: #999;
-}
-
 /* width & height include padding & borders */
 * { box-sizing: border-box; }
 
-/* smooth font scaling in Safari */
-@supports (font: -apple-system-body) and (-webkit-appearance: none) {
-  * { text-rendering: geometricPrecision; }
+/*———————————————————————————————————————— hide capture, links & accessibility */
+
+#captureSvija, #linksSvija, #accessSvija{
+ display:none;
 }
+
+/*———————————————————————————————————————— window management */
 
 div#noscript, div#nocoukie, div#explorer{ display:none; }
 
@@ -55,3 +38,15 @@ div#noscript, div#nocoukie, div#explorer{ display:none; }
   top:0;
   left:0;
 }
+/*———————————————————————————————————————— bug fixes */
+
+/* avoids flash when SVG is resized */
+svg:first-of-type{ width: 100%; }
+
+/* smooth font scaling in Safari */
+@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+  * { text-rendering: geometricPrecision; }
+}
+
+/*———————————————————————————————————————— fin */
+

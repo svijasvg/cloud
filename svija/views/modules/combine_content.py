@@ -1,24 +1,26 @@
 #———————————————————————————————————————— views/modules/combine_content.py
 
-# accepts a list of content blocks that each contain 6 elements
+#   accepts a list of content blocks that each contain 6 elements
 
-def combine_content(blocks):
+#   returns 3-element dict: head_js, css, body
 
-    js = css = body = ''
+def combine_content(blocks, prefix):
+
+    head_js = css = body = ''
 
     for i in blocks:
-        js   += i['head_js']
-        css  += i['css']
-        body += i['svgs']
-        body += i['html']
-        body += i['form']
+        head_js   += i['head_js']
+        css       += i['css']
+        body      += i['svgs']
+        body      += i['html']
+        body      += i['form']
 
-#———————————————————————————————————————— javascript after content
+#———————————————————————————————————————— javascript is included just after content
 
     for i in blocks:
         if i['body_js'] != '':
             body += '<script>' + i['body_js'] + '</script>'
 
-    return { 'js':js, 'css':css, 'body':body, }
+    return { prefix+'_head_js':head_js, prefix+'_css':css, prefix+'_body':body, }
 
 #———————————————————————————————————————— fin

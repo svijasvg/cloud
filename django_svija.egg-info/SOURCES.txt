@@ -348,6 +348,7 @@ svija/templates/admin/base_site.html
 svija/templates/admin/submit_line.html
 svija/templates/registration/logged_out.html
 svija/templates/svija/.debug.html.un~
+svija/templates/svija/.iframe.html.un~
 svija/templates/svija/.svija.html.un~
 svija/templates/svija/debug.html
 svija/templates/svija/debug_token.html
@@ -404,8 +405,8 @@ svija/views/modules/contains_form.py
 svija/views/modules/convert_modules.py
 svija/views/modules/convert_script_sets.py
 svija/views/modules/create_other_screens.py
-svija/views/modules/generate_accessibility.py
 svija/views/modules/generate_form_js.py
+svija/views/modules/generate_links.py
 svija/views/modules/generate_system_js.py
 svija/views/modules/get_accessible.py
 svija/views/modules/get_font_css.py

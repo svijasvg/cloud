@@ -18,19 +18,23 @@
   <meta property="og:image" content="/images/capture.jpg">
 
 <script> // system JS
+
 pageLoaded = false;
-{{ system_js                           }}
+
+{{ system_js                               }}
 {% include "svija/js/min_cookies.js"       %}
 {% include "svija/js/min_screens.js"       %}
 {% include "svija/js/min_window_mgmt.js"   %}
 {% include "svija/js/min_sections.js"      %}
 {% include "svija/js/min_tap_highlight.js" %}
-{{ js                                  }}
+{{ page_head_js                            }}
+{{ comp_head_js                            }}
 </script>
 <style>
 {% include "svija/css/min_svija.css"       %}
 {{ font_css }}
-{{ css }}
+{{ page_css }}
+{{ comp_css }}
 </style>
 <!-- Google's script with IF added -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics_id }}"></script>
@@ -55,11 +59,16 @@ pageLoaded = false;
 {% include "svija/js/min_scrollbars.js"     %}
 </script>
 
-<div id=accessibility>{{ accessible }}</div>
-
 {% block token%}{% endblock %}
 
-{{ body }}
+<div id=captureSvija>{{ capture }}</div>
+<div id=linksSvija  >{{ links   }}</div>
+
+{{ page_body }}
+
+<div id=accessSvija>{{ accessible }}</div>
+
+{{ comp_body }}
 
 {% include "svija/html/unsupported.html" %}
 

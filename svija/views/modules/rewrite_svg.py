@@ -30,7 +30,7 @@ from svija.models import Font
 
 # settings_id is either svg_filename or an existing ID (layer name or in module settings)
 
-def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
+def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
 
 #———————————————————————————————————————— initialization
 
@@ -47,7 +47,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   debug          = 'working'
   px_width       = 0
   px_height      = 0
-  new_format     = False      # is it a AI28+ SVG?
+  new_format     = True       # is it saved "export" instead of "save as" in Svija Tools
   defs_section   = False      # are we in def section at top of SVG?
   image_ids      = {}         # image id's that are changed in defs section
                               # and need to be updated in rest of file
@@ -78,10 +78,42 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
-  #———————————————————————————————————————— old or new format SVG?
+  #———————————————————————————————————————— old or new format SVG? EXPLANATION
+  #
+  # Data-Name format:
+  # <?xml version="1.0" encoding="UTF-8"?>
+  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
+  #   <defs>
+  #     <style>
+  #       .cls-1 {
+  # 
+  #
+  # x2F format
+  # <?xml version="1.0" encoding="UTF-8"?>
+  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
+  #   <defs>
+  #     <style>
+  #       .cls-1 {
+  #
+  # Save-As format
+  # <?xml version="1.0" encoding="utf-8"?>
+  # <!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+  # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  # 	 viewBox="0 0 1680 3040" style="enable-background:new 0 0 1680 3040;" xml:space="preserve">
+  # <style type="text/css">
+  # 	.st0{fill:url(#SVGID_1_);}
+  #
+  #———————————————————————————————————————— delete first line if <?xml...
 
-  letters = svg_lines[1][1:4]
-  if letters == 'svg': new_format = True
+  letters = svg_lines[0][2:5]
+  if letters == 'xml': svg_lines.pop(0)
+
+  #———————————————————————————————————————— delete first line if <!-- Generator: ...
+
+  letters = svg_lines[0][5:14]
+  if letters == 'Generator':
+    svg_lines.pop(0)
+    new_format = False
   
 
 #:::::::::::::::::::::::::::::::::::::::: old-format SVG
@@ -90,7 +122,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
 
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
-    line_number = 2
+    line_number = 0
     lines_quantity = len(svg_lines)
   
     while True:
@@ -101,7 +133,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   
       #———————————————————————————————————————— keep 1st line to replace ID when done
   
-      if line_number == 2:
+      if line_number == 0:
         first_line = line
   
       #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
@@ -113,7 +145,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
   	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
-      if line_number == 3:
+      if line_number == 1:
         parts1 = line.split('viewBox="')
         parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
         viewBox = parts2[0]
@@ -202,8 +234,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
             if image_ids.get(current_id) is not None:
               parts[1] = image_ids[current_id]
               line = 'xlink:href="#'.join(parts)
-  
-          line = "———— xxx ————" + line
   
       #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
       #                                         search for <tspan x="400.88" where x != 0
@@ -301,7 +331,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
 
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
-    line_number = 1
+    line_number = 0
     lines_quantity = len(svg_lines)
   
     while True:
@@ -312,7 +342,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   
       #———————————————————————————————————————— keep 1st line to replace ID when done
   
-      if line_number == 1:
+      if line_number == 0:
         first_line = line
   
       #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
@@ -324,7 +354,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
   	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
   	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
-      if line_number == 1:
+      if line_number == 0:
         parts1 = line.split('viewBox="')
         parts2 = parts1[1].split('"') # edited 220720 to remove space following double quote for when viewBox is last on the line
         viewBox = parts2[0]
@@ -343,7 +373,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
       #        stroke-miterlimit: 10;
       #      }
   
-      if line[0:5] == '.cls-':
+      if line[0:1] == '.':
         line = line.replace('.cls-', '.' + style_id + '-')
   
       #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
@@ -449,8 +479,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
               parts[1] = image_ids[current_id]
               line = 'xlink:href="#'.join(parts)
   
-          line = "———— xxx ————" + line
-  
       #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
       #                                         search for <tspan x="400.88" where x != 0
   
@@ -537,7 +565,16 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3):
       replacement = '<svg id="' + svg_id + '"'
       first_line = first_line.replace('<svg', replacement, 1)
   
+    #———————————————————————————————————————— add aria accesibility tags
+
+    if is_page:
+      replacement = '<svg aria-label="content" aria-description="' + page_title + '" aria-details="accessSvija"'
+    else:
+      replacement = '<svg aria-label="menu element" aria-description="' + raw_name + '" aria-details="linksSvija"'
+
+    first_line = first_line.replace('<svg', replacement, 1)
   
+
     return svg_id, px_width, px_height, first_line+final_svg
 
 #:::::::::::::::::::::::::::::::::::::::: methods
