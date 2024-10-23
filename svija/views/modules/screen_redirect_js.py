@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: views/modules/screen_redirect_js.py
+#:::::::::::::::::::::::::::::::::::::::: views/modules/generate_system_js.py
 
 #———————————————————————————————————————— notes
 #
@@ -22,7 +22,9 @@ from svija.models import Screen
 
 #:::::::::::::::::::::::::::::::::::::::: definition
 
-def generate_system_js(user, version, settings, page, section_code, request_slug, this_screen, screens):
+def screen_redirect_js(ua):
+
+    return '// boopsy'
 
 #   this_screen = Screen.objects.filter(code=screen).first()
 
@@ -44,6 +46,9 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
 
     # milliseconds
     system_js += 'var milliseconds = "' + str(time.time_ns()) +'"\n'
+
+    # don't redirect if Google
+    system_js += 'var redirectable = ' + not_google(ua) + '\n'
 
 #———————————————————————————————————————— screens
 
@@ -90,6 +95,20 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
     system_js += dim_js
 
     return system_js
+
+
+#:::::::::::::::::::::::::::::::::::::::: functions
+
+
+
+def not_google(ua):
+
+  # https://stackoverflow.com/questions/6579876/how-to-match-a-substring-in-a-string-ignoring-case
+
+  if re.search('google', ua, re.IGNORECASE):
+    return 'false'
+
+  return 'true'
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin

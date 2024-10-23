@@ -45,7 +45,7 @@ recalculate: if (cookiesEnabled()){
 
   // this page is wrong, so reload
 
-  if (screen_code != code)
+  if (screen_code != code && redirectable)
     window.location.replace(document.URL)
 
 

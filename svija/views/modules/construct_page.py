@@ -35,6 +35,7 @@ from modules.get_script_sets import *
 from modules.get_page_svgs import *
 from modules.get_script import *
 from modules.redirect_if_possible import *
+from modules.screens_redirect_js import *
 from modules.scripts_to_page_obj import *
 from modules.convert_modules import *
 from modules.convert_script_sets import *
@@ -95,6 +96,10 @@ def construct_page(request, section_url, page_url, screen_code):
   screens = Screen.objects.order_by('pixels')
 
   system_js = generate_system_js(request.user, svija.views.version, settings, page, section_url, page_url, responsive, screens)
+
+  ua = request.headers["User-Agent"]
+
+  system_js += screen_redirect_js(ua)
 
   #———————————————————————————————————————— page SVG's and scripts
 
