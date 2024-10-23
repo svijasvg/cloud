@@ -152,7 +152,11 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
         dimensions = viewBox.split(' ')
         px_width = float(dimensions[2])
         px_height = float(dimensions[3])
+#       return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+line+'</pre>'
+#       viewBox="0 0 1200 2437" style="enable-background:new 0 0 1200 2437;" xml:space="preserve">
+
 #       return 'zzz', 1200, 1200, '<pre style="font-size:30px">'+str(px_width)+':'+str(px_height)+'</pre>'
+#       <pre style="font-size:30px">1200.0:2437.0</pre>
   
       #———————————————————————————————————————— replace style definitions at top of SVG √
   
@@ -295,7 +299,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   
       #———————————————————————————————————————— ▲ close main loop
   
-      if line_number > 2:
+      if line_number > 0:
         final_svg += '\n' + line
   
       line_number += 1
@@ -538,7 +542,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, page_title):
   
       #———————————————————————————————————————— ▲ close main loop
   
-      if line_number > 1:
+      if line_number > 0:
         final_svg += line
   
       line_number += 1

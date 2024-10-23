@@ -25,9 +25,11 @@
    var all_screens = {0:'cp', 400:'mb'} */
 
 
+correct_code = calculate_code(all_screens)
+
 recalculate: if (cookiesEnabled()){
 
-/*———————————————————————————————————————— not first visit */
+/*———————————————————————————————————————— prolong cookie if set */
 
   if (typeof localStorage.screen_code != 'undefined'){
     setCookie('screen_code', localStorage.screen_code, 7)
@@ -36,17 +38,10 @@ recalculate: if (cookiesEnabled()){
 
 /*———————————————————————————————————————— first visit */
 
-  code = calculate_code(all_screens)
-
   // store code for next visit
 
-  localStorage.screen_code = code
-  setCookie('screen_code', code, 7)
-
-  // this page is wrong, so reload
-
-  if (screen_code != code)
-    window.location.replace(document.URL)
+  localStorage.screen_code = correct_code
+  setCookie('screen_code', correct_code, 7)
 
 
 }
