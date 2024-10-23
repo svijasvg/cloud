@@ -1,5 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: views/modules/screen_redirect_js.py
+#:::::::::::::::::::::::::::::::::::::::: views/modules/generate_system_js.py
 
 #———————————————————————————————————————— notes
 #
