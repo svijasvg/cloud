@@ -419,6 +419,7 @@ svija/views/modules/get_single_svg.py
 svija/views/modules/modules_dedupe.py
 svija/views/modules/redirect_if_possible.py
 svija/views/modules/rewrite_svg.py
+svija/views/modules/screen_redirect_js.py
 svija/views/modules/script_sets_dedupe.py
 svija/views/modules/scripts_to_page_obj.py
 svija/views/modules/send_mail.py
