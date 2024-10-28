@@ -26,6 +26,7 @@
 
 
 correct_code = calculate_code(all_screens)
+first_visit  = false
 
 recalculate: if (cookiesEnabled()){
 
@@ -42,9 +43,15 @@ recalculate: if (cookiesEnabled()){
 
   localStorage.screen_code = correct_code
   setCookie('screen_code', correct_code, 7)
+  first_visit = true
 
 
 }
+
+// added separately in screen_redirect_js.py view module:
+
+// code = 'if (cookiesEnabled()) if (screen_code != correct_code) window.location.replace(document.URL)'
+
 
 /*:::::::::::::::::::::::::::::::::::::::: functions */
 

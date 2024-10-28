@@ -20,7 +20,7 @@ def screen_redirect_js(ua):
   if re.search(str, ua, re.IGNORECASE):
     return ''
 
-  code = 'if (cookiesEnabled()) if (screen_code != correct_code) window.location.replace(document.URL)'
+  code = 'if (first_visit) if (screen_code != correct_code) window.location.replace(document.URL)'
 
   return code
 
