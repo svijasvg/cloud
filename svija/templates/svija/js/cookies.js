@@ -18,11 +18,6 @@ https://www.toptal.com/developers/javascript-minifier
     cookiesEnabled()
       returns true if cookies enabled, else false
  
-    deleteParentCookieIfNecessary(cname, domain)
-      not currently used (was called by setCookie)
-      was used to delete cookies for svija.com when visiting dev.svija.com      
-      because such cookies caused conflicts
-
     cookieName(unique, version)
       creats a unique cookie name by concatenating unique+verion without periods */
 
@@ -34,39 +29,40 @@ https://www.toptal.com/developers/javascript-minifier
 //              templates/svija/js/cookies.js */
 
 function setCookie(name, value, expDays) {
-  value = escape(value);
+  value = escape(value)
 
-//deleteParentCookieIfNecessary(name, window.location.hostname);
+  if (expDays > 7) expDays = 7 // max in Safari
 
-  if (expDays > 7) expDays = 7; // max in Safari
-
-  var d = new Date();
-  d.setTime(d.getTime() + (expDays*24*60*60*1000));
+  var d = new Date()
+  d.setTime(d.getTime() + (expDays*24*60*60*1000))
 
   var expy = '; expires=' + d.toUTCString();
   var path = '; path=/';
-  var domn = '; domain='  + window.location.hostname;
+
+  // https://stackoverflow.com/questions/43324480/how-does-a-browser-handle-cookie-with-no-path-and-no-domain
+  // including domain causes svija.com cookies to apply to subdomains
+  // breaking any sites like dev.svija.site
 
 // var secu = '; SameSite=Lax; Secure;';
 // secu deprecated: developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 // var complete = value + expy + path + domn + secu;
 
-  var complete = value + expy + path + domn;
-  document.cookie = name + '=' + complete;
+  var complete = value + expy + path
+  document.cookie = name + '=' + complete
 }
 
 /*———————————————————————————————————————— getCookie(cname)
     */
 
 function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
+  var name = cname + "="
+  var ca = document.cookie.split(';')
   for(var i=0; i<ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1);
-    if (c.indexOf(name) != -1) return unescape(c.substring(name.length,c.length));
+    var c = ca[i]
+    while (c.charAt(0)==' ') c = c.substring(1)
+    if (c.indexOf(name) != -1) return unescape(c.substring(name.length,c.length))
   }
-  return "";
+  return ""
 }
 
 //———————————————————————————————————————— cookiesEnabled()
@@ -76,12 +72,12 @@ function getCookie(cname) {
 function cookiesEnabled() {
 
   if (navigator.cookieEnabled) {
-      document.cookie = "test_cookie";
+      document.cookie = "test_cookie"
       if (document.cookie.indexOf("test_cookie") != -1)
-        return true;
+        return true
   }
 
-  return false;
+  return false
 }
 
 /*———————————————————————————————————————— cookieName(unique, version)
@@ -96,18 +92,6 @@ function cookieName(unique, version){
   return res
 }
 
-
-//:::::::::::::::::::::::::::::::::::::::: utility methods
-
-//———————————————————————————————————————— deleteParentCookieIfNecessary(cname, domain)
-
-function deleteParentCookieIfNecessary(cname, domain){
-  var parts = domain.split('.');
-  if (parts.length > 2){ // on subdomain
-    var domain = parts.slice(-2).join('.');
-    document.cookie = cname + '=;domain=.' + domain + ';path=/;max-age=0';
-  }
-}
 
 
 //:::::::::::::::::::::::::::::::::::::::: fin
