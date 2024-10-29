@@ -365,6 +365,7 @@ svija/templates/svija/css/svija.css
 svija/templates/svija/html/.unsupported.html.un~
 svija/templates/svija/html/unsupported.html
 svija/templates/svija/js/.cookies.js.un~
+svija/templates/svija/js/.min_cookies.js.un~
 svija/templates/svija/js/.min_screens.js.un~
 svija/templates/svija/js/.page_background.js.un~
 svija/templates/svija/js/.screens.js.un~
