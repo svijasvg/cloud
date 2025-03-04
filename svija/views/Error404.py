@@ -132,7 +132,7 @@ def Error404(request, *args, **kwargs):
 #———————————————————————————————————————— 6. get "missing" page
 
   try:
-    response = construct_page(request, section_code, 'missing', screen_code)
+    response = construct_page(request, section_code, 'missing', screen_code, 404)
   except:
     response = HttpResponse(msg_missing)
 

@@ -67,7 +67,7 @@ def PageView(request, request_sect='', request_page=''):
   request.screen_code = screen_code
 
 
-  return construct_page(request, section_url, page_url, screen_code)
+  return construct_page(request, section_url, page_url, screen_code, 200)
 
 #:::::::::::::::::::::::::::::::::::::::: functions
 

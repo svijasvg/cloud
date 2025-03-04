@@ -47,7 +47,7 @@ from modules.script_sets_dedupe import *
 
 @cache_per_user(60*60*24, False)
 @csrf_protect
-def construct_page(request, section_url, page_url, screen_code):
+def construct_page(request, section_url, page_url, screen_code, status_code):
 # return HttpResponse(section_url +' : '+ page_url +' : '+ screen_code)
 
   #———————————————————————————————————————— get page
@@ -207,7 +207,7 @@ def construct_page(request, section_url, page_url, screen_code):
   context.update(component_content)
 
 
-  return render(request, template, context)
+  return render(request, template, context, status=status_code)
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 
