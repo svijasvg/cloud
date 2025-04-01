@@ -1,4 +1,4 @@
-*Updated 20 April, 2023 ·  dev.svija.love*
+*Updated 1 April, 2025 ·  svija.dev*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
