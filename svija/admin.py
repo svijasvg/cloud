@@ -4,6 +4,7 @@
 
 #———————————————————————————————————————— import
 
+from django.conf import settings
 from django.contrib import admin
 from urllib.parse import quote
 
@@ -211,6 +212,14 @@ descSettings = "To request a different website address, please visit <a href='ht
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
+
+  # prevent bulk deletion in list view except in debug mode
+  # https://gaetangrond.me/posts/django/protecting-data-in-django-admin-preventing-accidental-deletions/
+  def has_add_permission(self, request, obj=None):
+    return settings.DEBUG
+
+  def has_delete_permission(self, request, obj=None):
+    return settings.DEBUG
 
   # display on parent page
   list_display = ('url', 'enabled', 'section', 'robots',)
