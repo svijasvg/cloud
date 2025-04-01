@@ -48,7 +48,9 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
 #———————————————————————————————————————— screens
 
     all_x_screens = []
+    # page.pagescript_set.filter(enabled=True).order_by('order')
     for one_screen in screens:
+      if one_screen.code != '★':
         all_x_screens.append( str(one_screen.pixels) +  ', "' + one_screen.code +'"')
 
     system_js += "var all_screens = [[" + '], ['.join(all_x_screens) + "]]\n" 

@@ -59,7 +59,8 @@ def PageView(request, request_sect='', request_page=''):
   if screen_code is None:
     screen_code = 'xkcd'
 
-  screens = Screen.objects.filter(Q(code=screen_code))
+# screens = Screen.objects.filter(Q(code=screen_code))
+  screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='★')
 
   if len(screens) == 0:
     screen_code = derived_screen(request.headers["User-Agent"])

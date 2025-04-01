@@ -53,14 +53,10 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
   #———————————————————————————————————————— get page
 
   page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
-  if not page: raise Http404 # passed to file Error404.py
 
-  #———————————————————————————————————————— create version for other screens if necessary COMMENTED OUT
-
-# versions = Page.objects.filter(Q(section__code=section_url) & Q(url=page_url))
-
-# if (len(versions) < len(Screen.objects.all())):
-#   create_other_screens(page, screen_code)
+  if not page:
+    page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code='★') & Q(url=page_url) & Q(published=True)).first()
+    if not page: raise Http404 # passed to file Error404.py
 
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
