@@ -54,6 +54,11 @@ class alphaAll(models.CharField):
         value = re.sub("[^A-Za-z0-9-_]","",value)
         return value
 
+class alphaStar(models.CharField):
+    def get_prep_value(self, value):
+        value = re.sub("[^A-Za-z0-9-_★]","",value)
+        return value.lower()
+
 class UrlField(models.CharField):                                              # deprecated, need to delete
     def get_prep_value(self, value):
         value = re.sub("[^A-Za-z0-9-_]","",value)
@@ -143,7 +148,7 @@ def get_default_section_id():
   return Section.objects.first().id
 
 class Section(models.Model):
-    code = alphaLower(max_length=20, default='', blank=False, verbose_name='address',)
+    code = alphaStar(max_length=20, default='', blank=False, verbose_name='address',)
     name = models.CharField(max_length=100, default='', verbose_name='description',)
 #   code = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=False,)
@@ -187,7 +192,7 @@ class Section(models.Model):
 
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
-    code    = alphaAll(max_length=20, default='', verbose_name='artboard name') 
+    code    = alphaStar(max_length=20, default='', verbose_name='artboard name') 
     name    = models.CharField(max_length=200, default='', verbose_name='description')
     order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
 

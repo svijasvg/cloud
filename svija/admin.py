@@ -1,6 +1,5 @@
 
-#:::::::::::::::::::::::::::::::::::::::: models.py
-
+#:::::::::::::::::::::::::::::::::::::::: admin.py
 
 #———————————————————————————————————————— import
 
@@ -16,6 +15,14 @@ admin.site.index_title = 'Svija Cloud Settings' # top of the admin index page (a
 
 from .models import Control
 class ControlAdmin(admin.ModelAdmin):
+
+  # prevent bulk deletion in list view except in debug mode
+  # https://gaetangrond.me/posts/django/protecting-data-in-django-admin-preventing-accidental-deletions/
+  def has_add_permission(self, request, obj=None):
+    return settings.DEBUG
+
+  def has_delete_permission(self, request, obj=None):
+    return settings.DEBUG
 
   # display on parent page
   list_display = ('limit', 'used', 'cached',)
