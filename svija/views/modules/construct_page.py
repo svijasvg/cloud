@@ -41,6 +41,7 @@ from modules.convert_modules import *
 from modules.convert_script_sets import *
 from modules.modules_dedupe import *
 from modules.script_sets_dedupe import *
+from modules.update_db import *
 
 #   different according to screen code because screen code
 #   has been appended to path
@@ -50,13 +51,29 @@ from modules.script_sets_dedupe import *
 def construct_page(request, section_url, page_url, screen_code, status_code):
 # return HttpResponse(section_url +' : '+ page_url +' : '+ screen_code)
 
+  #———————————————————————————————————————— do updates
+
+  vb = update_db()
+  if vb != False:
+    return HttpResponse("<pre>" + vb)
+
+# if update_db():
+#   return HttpResponse("<pre>DATABASE UPDATED")
+
   #———————————————————————————————————————— get page
 
   page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
 
   if not page:
+    page = Page.objects.filter(Q(section__code='★') & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
+
+  if not page:
     page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code='★') & Q(url=page_url) & Q(published=True)).first()
-    if not page: raise Http404 # passed to file Error404.py
+
+  if not page:
+    page = Page.objects.filter(Q(section__code='★') & Q(screen__code='★') & Q(url=page_url) & Q(published=True)).first()
+
+  if not page: raise Http404 # passed to file Error404.py
 
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
