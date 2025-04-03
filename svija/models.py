@@ -246,7 +246,7 @@ class ScriptScripts(models.Model):
         verbose_name_plural = "included scripts"
         ordering = ["order"]
 
-#———————————————————————————————————————— Component · no dependencies
+#———————————————————————————————————————— Module· no dependencies
 
 positions = ('attached', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
@@ -282,11 +282,11 @@ class Module(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "component"
-        verbose_name_plural = "2.2 · Components"
+        verbose_name = "module"
+        verbose_name_plural = "2.2 · Module"
         ordering = ['-enabled', 'name', 'section', 'screen', ]
 
-#———————————————————————————————————————— component scripts · no dependencies
+#———————————————————————————————————————— module scripts · no dependencies
 
 class ModuleScript(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
@@ -382,7 +382,7 @@ class Page(models.Model):
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='link name')
     accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
 
-    incl_modules = models.BooleanField(default=True, verbose_name='default components',)
+    incl_modules = models.BooleanField(default=True, verbose_name='default modules',)
     incl_scripts = models.BooleanField(default=True, verbose_name='default scripts',)
 
     module = models.ManyToManyField(Module, through='PageModule')
@@ -414,8 +414,8 @@ class PageModule(models.Model):
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "link to component"
-        verbose_name_plural = "links to components"
+        verbose_name = "link to module"
+        verbose_name_plural = "links to modules"
         ordering = ["zindex"]
 
 # foreignkey, available sitewide

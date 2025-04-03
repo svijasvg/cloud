@@ -33,8 +33,12 @@ def get_modules(label, all_modules, section_code, screen_code, page, page_width,
 
     hj = hc = bj = sv = ht = fm = ''
 
-    if (this_module.section.code == section_code
-    and this_module.screen.code  == screen_code):
+    if all([
+#     this_module.section.code == section_code,
+#     this_module.screen.code  == screen_code,
+      this_module.section.code == section_code or str(this_module.section.code) == '★',
+      this_module.screen.code  == screen_code or str(this_module.screen.code) == '★',
+    ]):
 
 #———————————————————————————————————————— get SVG's
 

@@ -90,7 +90,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
   accessible       = get_accessibility(page.accessibility_text)
   links, capture   = generate_links(settings.url, Page.objects.all(), page)
   page_blocks      = []
-  component_blocks = []
+  module_blocks    = []
 
   if not page.default_dims: page_width = page.width
   else:          page_width = responsive.width
@@ -149,15 +149,16 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   page_blocks.extend(script_sets)
 
-  #———————————————————————————————————————— component content
+  #———————————————————————————————————————— page modules
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
+  # list of page modules, a different object than a simple module
+  # connected by foreign keys
   page_modules = list(page.pagemodule_set.filter(enabled=True))
 
-  debug = ''
-
+  # filters out incompatible modules & extracts module objects from page_module objects
   all_modules = convert_modules(page_modules, section_url, screen_code) # list of "Module" objects
 
   # always-include modules
@@ -170,19 +171,19 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   page_modules = get_modules('page modules', all_modules, section_url, screen_code, page, page_width, use_p3)
 
-  component_blocks.extend(page_modules)
+  module_blocks.extend(page_modules)
 
   #———————————————————————————————————————— script set body JS
   # at end of everything, so Vibed will execute last
 
-  component_blocks.extend(script_sets_body_js)
+  module_blocks.extend(script_sets_body_js)
 
   #———————————————————————————————————————— combine content blocks
 
   # both contain head_js, css, body
 
   page_content      = combine_content(page_blocks,      'page')
-  component_content = combine_content(component_blocks, 'comp')
+  module_content = combine_content(module_blocks, 'comp')
 
   #———————————————————————————————————————— if form, add CSRF token
 
@@ -217,7 +218,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 #   pushes that dictionary onto the stack instead of an empty one.
 
   context.update(page_content)
-  context.update(component_content)
+  context.update(module_content)
 
 
   return render(request, template, context, status=status_code)
