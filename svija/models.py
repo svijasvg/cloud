@@ -283,7 +283,7 @@ class Module(models.Model):
         return self.name
     class Meta:
         verbose_name = "module"
-        verbose_name_plural = "2.2 · Module"
+        verbose_name_plural = "2.2 · Modules"
         ordering = ['-enabled', 'name', 'section', 'screen', ]
 
 #———————————————————————————————————————— module scripts · no dependencies

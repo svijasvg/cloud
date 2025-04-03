@@ -163,12 +163,13 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   # always-include modules
   if page.incl_modules:
-    default_modules = Module.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
+    default_modules = Module.objects.filter((Q(section__code=section_url)|Q(section__code='★'))  &  (Q(screen__code=screen_code)|Q(screen__code='★'))  &  Q(enabled=True)  &  Q(always=True))
 
     module_content = list(default_modules)
     all_modules.extend(module_content)
     all_modules = modules_dedupe(all_modules) 
 
+  # added after default modules so they can display on top
   page_modules = get_modules('page modules', all_modules, section_url, screen_code, page, page_width, use_p3)
 
   module_blocks.extend(page_modules)
