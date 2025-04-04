@@ -39,7 +39,7 @@ def PageView(request, section_url='', page_url=''):
 #                                         and _page_url
 
   if page_url == '' and section_url != '' :
-    sections = Section.objects.filter(Q(code=section_url))
+    sections = Section.objects.filter(Q(code=section_url) & Q(enabled=True))
 
     if len(sections) == 0:
       page_url    = section_url
@@ -53,7 +53,7 @@ def PageView(request, section_url='', page_url=''):
 
 #———————————————————————————————————————— get section or 404
 
-  section = get_object_or_404(Section, code=section_url)
+  section = get_object_or_404(Section, code=section_url, enabled=True)
 
 #———————————————————————————————————————— if page_url = '' get default
 

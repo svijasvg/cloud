@@ -79,7 +79,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
   settings         = Settings.objects.filter(enabled=True).first()
-  section          = Section.objects.filter(code=section_url).first()
+  section          = Section.objects.filter(Q(code=section_url) & Q(enabled=True)).first()
 
   # now called screen
   responsive       = Screen.objects.filter(code=screen_code).first()
