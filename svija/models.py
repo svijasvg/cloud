@@ -149,7 +149,7 @@ def get_default_section_id():
 
 class Section(models.Model):
     code     = alphaStar(max_length=20, default='', blank=False, verbose_name='address',)
-    language = models.BooleanField(default=False, verbose_name='is a language',)
+    language = models.BooleanField(default=False, verbose_name='language code',)
     enabled  = models.BooleanField(default=True, verbose_name='enabled',)
     name     = models.CharField(max_length=100, default='', verbose_name='name',)
 #   code     = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)

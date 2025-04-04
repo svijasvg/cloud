@@ -103,12 +103,20 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   #———————————————————————————————————————— metatags, system js & fonts
 
+  language_code = ''
+
+  if section.language:
+    language_code = ' lang="'+ str(section.code) + '"'
+
+# return HttpResponse("<pre>&lt;html" + language_code+"&gt;")
+
   add_new_fonts()
   google_font_meta, font_css = get_font_css()
 
   screens = Screen.objects.order_by('pixels')
 
   system_js = generate_system_js(request.user, svija.views.version, settings, page, section_url, page_url, responsive, screens)
+
 
   #———————————————————————————————————————— page SVG's and scripts
 
@@ -199,6 +207,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   context = {
     'comments'         : section.comment,
+    'language_code'    : language_code,
     'title'            : page.title + ' ' + section.title,
     'google_font_meta' : google_font_meta,
     'touch'            : section.touch,
