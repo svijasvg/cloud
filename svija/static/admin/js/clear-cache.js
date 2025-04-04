@@ -8,6 +8,14 @@
     If the request is successful, the /csync script
     returns 1 */
 
+//———————————————————————————————————————— remove link if there's no input field
+//                                         because csrf cookie won't be available
+
+window.addEventListener("load", (event) => {
+  if (document.getElementsByTagName('input').length == 0)
+    document.getElementById('clearCache').innerHTML = ''
+});
+
 //———————————————————————————————————————— clear()
 
 function clear(){
