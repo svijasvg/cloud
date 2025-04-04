@@ -148,9 +148,11 @@ def get_default_section_id():
   return Section.objects.first().id
 
 class Section(models.Model):
-    code = alphaStar(max_length=20, default='', blank=False, verbose_name='address',)
-    name = models.CharField(max_length=100, default='', verbose_name='description',)
-#   code = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
+    code     = alphaStar(max_length=20, default='', blank=False, verbose_name='address',)
+    language = models.BooleanField(default=True, verbose_name='is a language',)
+    enabled  = models.BooleanField(default=True, verbose_name='enabled',)
+    name     = models.CharField(max_length=100, default='', verbose_name='description',)
+#   code     = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=False,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
@@ -362,7 +364,7 @@ class Settings(models.Model):
 
 class Page(models.Model): 
 
-    published = models.BooleanField(default=True, verbose_name='published',)
+    published = models.BooleanField(default=True, verbose_name='enabled',)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
 #   url       = models.CharField(max_length=200, default='', verbose_name='address')
