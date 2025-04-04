@@ -263,7 +263,7 @@ class Module(models.Model):
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
 		# to rename
     tag       = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    zindex    = models.PositiveSmallIntegerField(default=0, verbose_name='Z-index')
+    zindex    = models.SmallIntegerField(default=0, verbose_name='Z-index')
 
     css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
     filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
@@ -411,7 +411,7 @@ class Page(models.Model):
 class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    zindex = models.IntegerField(default=0, verbose_name='z index')
+    zindex = models.SmallIntegerField(default=0, verbose_name='z index')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.module.name
@@ -437,7 +437,7 @@ class Illustrator(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
     filename = models.CharField(max_length=200, default='')
 #   filename = addAiToEnd(max_length=200, default='')
-    zindex = models.IntegerField(default=0, verbose_name='z index')
+    zindex = models.SmalltIntegerField(default=0, verbose_name='z index')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.filename
