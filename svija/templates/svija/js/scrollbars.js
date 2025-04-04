@@ -21,6 +21,7 @@ var rawPixel = zoomedWidthBody() / visible_width; // ⚠️  NEEDED IN OTHER SCR
 
 document.documentElement.style.fontSize = aiPixel + 'px';
 
+setScroll(); setTimeout(setScroll, 1);
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 

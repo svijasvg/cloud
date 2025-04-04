@@ -86,7 +86,7 @@ from .models import Section
 class SectionAdmin(admin.ModelAdmin):
 
   # display on parent page
-  list_display = ('code', 'name', 'default_page', 'title', 'email', 'order',)
+  list_display = ('code', 'name', 'enabled', 'default_page', 'title', 'email', 'order',)
   save_on_top = True
   save_as = True
 
@@ -164,22 +164,28 @@ class ScriptAdmin(admin.ModelAdmin):
   save_on_top = True
   save_as = True
 
+  class Media:
+    js = ( 'admin/js/ifempty.js', )
+
   fieldsets = [ 
      ('name & filename', {'fields': [('name', 'enabled',),('category', 'always',), ], 'description':descScript0, }),
-     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descScript1, }),
+     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty',],'description':descScript1, }),
   ]   
 
   inlines = [ScriptScriptsInline]
 
 admin.site.register(Script, ScriptAdmin)
 
-#———————————————————————————————————————— Component · no dependencies
+#———————————————————————————————————————— Module · no dependencies
 
-descModules = "Components can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
+descModules = "Modules can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
 descDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 positdesc = 'Superimposed on Illustrator page · negative = up ↖ left · positive = down ↘ right'
 
-#———————————————————————————————————————— Component inline
+#———————————————————————————————————————— Module inline
+
+# my SO question & answer
+# https://stackoverflow.com/questions/73108883/is-there-a-way-to-make-a-collapsed-inline-initially-visible-in-django-admin-if
 
 from .models import ModuleScript
 class ModuleScriptInline(admin.TabularInline):
@@ -188,6 +194,9 @@ class ModuleScriptInline(admin.TabularInline):
   fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = "script"
   verbose_name_plural = "scripts"
+
+# my SO question & answer
+# https://stackoverflow.com/questions/73108883/is-there-a-way-to-make-a-collapsed-inline-initially-visible-in-django-admin-if
   classes = ['collapse', 'ifempty',]
 
 
@@ -197,7 +206,7 @@ class ModuleAdmin(admin.ModelAdmin):
   class Media:
     js = ( 'admin/js/ifempty.js', )
 
-  # display on parent component
+  # display on parent module
   list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'zindex', 'tag',)
   list_filter = ('section', 'screen', 'always', 'enabled', 'tag', )
   save_on_top = True
@@ -205,7 +214,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
      ('name & filename', {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
-     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse'],'description':descDefaultY, }),
+     ('instructions'   , {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty', ],'description':descDefaultY, }),
      ('placement'    , {'fields': [('offsetx', 'corner', ), ( 'offsety', 'position', ),],'description': positdesc,}),
   ]   
 
@@ -243,7 +252,7 @@ admin.site.register(Settings, SettingsAdmin)
 
 #———————————————————————————————————————— Page
 
-descPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>components</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
+descPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
 descPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
 
 #———————————————————————————————————————— Page inlines
@@ -256,8 +265,8 @@ class ModuleInlinePage(admin.TabularInline):
   model = Page.module.through
   extra = 0 
   fields = ('enabled', 'module', 'zindex', )
-  verbose_name = "component"
-  verbose_name_plural = "components"
+  verbose_name = "module"
+  verbose_name_plural = "modules"
   classes = ['collapse', 'ifempty',]
 
 class ScriptInlinePage(admin.TabularInline):

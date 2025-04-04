@@ -22,17 +22,17 @@
 pageLoaded = false;
 
 {{ system_js                               }}
-{% include "svija/js/min_cookies.js"       %}
-{% include "svija/js/min_screens.js"       %}
+{% include "svija/js/cookies.js"       %}
+{% include "svija/js/screens.js"       %}
 {{ redirect_js                             }}
-{% include "svija/js/min_window_mgmt.js"   %}
-{% include "svija/js/min_sections.js"      %}
-{% include "svija/js/min_tap_highlight.js" %}
+{% include "svija/js/window_mgmt.js"   %}
+{% include "svija/js/sections.js"      %}
+{% include "svija/js/tap_highlight.js" %}
 {{ page_head_js                            }}
 {{ comp_head_js                            }}
 </script>
 <style>
-{% include "svija/css/min_svija.css"       %}
+{% include "svija/css/svija.css"       %}
 {{ font_css }}
 {{ page_css }}
 {{ comp_css }}
@@ -57,7 +57,7 @@ pageLoaded = false;
 <div id="set_scroll_div"></div>
 
 <script>
-{% include "svija/js/min_scrollbars.js"     %}
+{% include "svija/js/scrollbars.js"     %}
 </script>
 
 {% block token%}{% endblock %}
@@ -75,7 +75,7 @@ pageLoaded = false;
 
 <script>// page BG & scroll div
 
-  {% include "svija/js/min_page_background.js" %}
+  {% include "svija/js/page_background.js" %}
 
   document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;

@@ -4,6 +4,8 @@
 https://www.toptal.com/developers/javascript-minifier
 */
 
+//alert('window_mgmt.js\n'+screen_code)
+
 /*———————————————————————————————————————— notes
 
     This script sets the window size and defines the REM unit.
@@ -82,7 +84,8 @@ var top_margin_px  = page_offsety * aiPixel;
 var X_INIT = Math.round(left_margin_px);
 var Y_INIT = Math.round(top_margin_px);
 
-setScroll(); setTimeout(setScroll, 1);
+// this can't work because this script is in head
+//setScroll(); setTimeout(setScroll, 1);
 
 
 //:::::::::::::::::::::::::::::::::::::::: methods
@@ -99,6 +102,7 @@ function zoomedWidth(){
 function setScroll(){
   if (LOADED_ZOOMED) return true;
   window.scrollTo(X_INIT, Y_INIT);
+  console.log('init values: '+X_INIT+':'+ Y_INIT);
 }
 
 //———————————————————————————————————————— areDifferent(a, b);
