@@ -75,7 +75,8 @@ def PageView(request, section_url='', page_url=''):
   request.screen_code = screen_code # needed by cache_per_user.py
 
 
-# return HttpResponse("debugging message."+screen_code)
+# return HttpResponse("<pre>"+str(screen_code))
+
   return construct_page(request, section_url, page_url, screen_code, 200) # why code 200?
 
 #:::::::::::::::::::::::::::::::::::::::: functions
@@ -99,7 +100,7 @@ certain_cp  = [ 'x86_64',
 
 def derived_screen(user_agent):
 
-  all_screens = Screen.objects.all().order_by('pixels')
+  all_screens = Screen.objects.all().exclude(code='★').order_by('pixels')
 
   if len(all_screens) == 1:
     return all_screens[0].code

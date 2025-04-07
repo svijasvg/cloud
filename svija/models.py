@@ -437,7 +437,7 @@ class Illustrator(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
     filename = models.CharField(max_length=200, default='')
 #   filename = addAiToEnd(max_length=200, default='')
-    zindex = models.SmalltIntegerField(default=0, verbose_name='z index')
+    zindex = models.SmallIntegerField(default=0, verbose_name='z index')
     enabled = models.BooleanField(default=True, verbose_name='enabled',)
     def __str__(self):
         return self.filename
