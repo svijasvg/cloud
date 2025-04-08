@@ -39,35 +39,15 @@ from datetime import datetime
 # for stripping chars from page › url
 import re                                                                         
 
-#———————————————————————————————————————— reused translations
+#———————————————————————————————————————— array: script types
 
-text = _('always include')
-text = _('artboard width')
-text = _('contents')
-text = _('display order')
-text = _('enabled')
-text = _('illustrator file')
-text = _('included script')
-text = _('included scripts')
-text = _('instructions link')
-text = _('instructions notes')
-text = _('load order')
-text = _('name')
-text = _('optional tag')
-text = _('screen size')
-text = _('script content')
-text = _('script name')
-text = _('script set')
-text = _('script type')
-text = _('section')
-text = _('visible width')
-text = _('x offset')
-text = _('y offset')
-text = _('z index')
-
-#———————————————————————————————————————— array: types of scripts
-
-script_types = ('CSS', 'head JS', 'body JS', 'HTML', 'form',)
+script_types = (
+    ('CSS',     _('css script')),
+    ('head JS', _('head js script')),
+    ('body JS', _('body js script')),
+    ('HTML',    _('html script')),
+    ('form',    _('form script')),
+    )
 
 #———————————————————————————————————————— functions to correct input
 
@@ -134,7 +114,7 @@ class Redirect(models.Model):
         return self.from_url
     class Meta:
         verbose_name = _("url redirect")
-        verbose_name_plural = _("url redirects")
+        verbose_name_plural = _("url redirects model list")
 
 #———————————————————————————————————————— Font · no dependencies TR
 
@@ -157,9 +137,9 @@ class Font(models.Model):
     def __str__(self):
         return self.svg_ref
     class Meta:
-        verbose_name = _("font")
-        verbose_name_plural = _("2.3 · Fonts")
         ordering = ['-enabled', 'category', 'family', 'style', 'svg_ref',]
+        verbose_name = _("font")
+        verbose_name_plural = _("font model list")
 
 #———————————————————————————————————————— section · no dependencies
 
@@ -230,7 +210,7 @@ class Section(models.Model):
     class Meta:
         ordering = ['order']
         verbose_name = _("section")
-        verbose_name_plural = _("sections")
+        verbose_name_plural = _("section model list")
 
 #———————————————————————————————————————— screen · no dependencies
 
@@ -251,7 +231,7 @@ class Screen(models.Model):
     class Meta:
         ordering = ['order', 'width']
         verbose_name = _("screen size")
-        verbose_name_plural = _("screen sizes")
+        verbose_name_plural = _("screen size model list")
 
 #———————————————————————————————————————— script set · no dependencies
 
@@ -273,7 +253,7 @@ class Script(models.Model):
     class Meta:
         ordering = ['-enabled', 'category', 'name', ]
         verbose_name = _("script set")
-        verbose_name_plural = _("script sets")
+        verbose_name_plural = _("script set model list")
 
 #———————————————————————————————————————— script set scripts · script
 
@@ -290,12 +270,22 @@ class ScriptScripts(models.Model):
         ordering = ["order"]
         # only seen when deleting a script set, as a dependency
         verbose_name = _("included script")
-        verbose_name_plural = _("included scripts")
+        verbose_name_plural = _("included script")
 
 #———————————————————————————————————————— module· no dependencies
 
-positions = ('attached', 'floating', 'none',)
-corners = ('top left', 'top right', 'bottom left', 'bottom right',)
+positions = (
+    ('attached', _("position attached")),
+    ('floating', _("position floating")),
+    ('none', _("position none")),
+    )
+
+corners = (
+    ('top left', _("top left")),
+    ('top right', _("top right")),
+    ('bottom left', _("bottom left")),
+    ('bottom right', _("bottom right")),
+    )
 
 class Module(models.Model):
 
@@ -330,7 +320,7 @@ class Module(models.Model):
     class Meta:
         ordering = ['-enabled', 'name', 'section', 'screen', ]
         verbose_name = _("module")
-        verbose_name_plural = _("modules")
+        verbose_name_plural = _("module model list")
 
 #———————————————————————————————————————— module scripts · no dependencies
 
@@ -359,7 +349,7 @@ class Robots(models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = _("robots file")
-        verbose_name_plural = _("robots.txt")
+        verbose_name_plural = _("robots model list")
 
 #———————————————————————————————————————— settings · section & robots
 
@@ -403,7 +393,7 @@ class Settings(models.Model):
         return self.url
     class Meta:
         verbose_name = _("website")
-        verbose_name_plural = _("website settings")
+        verbose_name_plural = _("website settings model list")
 
 #———————————————————————————————————————— Page · uses template & prefix
 
@@ -448,7 +438,7 @@ class Page(models.Model):
     class Meta:
         ordering = ['-published', 'url', 'section', 'screen', '-pub_date', ]
         verbose_name_plural = _("page")
-        verbose_name_plural = _("page listing")
+        verbose_name_plural = _("page model list")
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
 #———————————————————————————————————————— Page models
