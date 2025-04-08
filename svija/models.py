@@ -13,8 +13,9 @@
 #———————————————————————————————————————— localization
 #
 #   1. modifiy this file by adding _( 'string' )
+#      close the file
 #   2. django-admin makemessages --all
-#   3. :vsp locale/en/*/*.po and update all texts
+#   3. vi -O models.py locale/en/*/*.po
 #   4. django-admin compilemessages
 #   5. ./manage.py makemigrations
 #   6. ./manage.py migrate
@@ -37,6 +38,32 @@ from datetime import datetime
 
 # for stripping chars from page › url
 import re                                                                         
+
+#———————————————————————————————————————— reused translations
+
+text = _('always include')
+text = _('artboard width')
+text = _('contents')
+text = _('display order')
+text = _('enabled')
+text = _('illustrator file')
+text = _('included script')
+text = _('included scripts')
+text = _('instructions link')
+text = _('instructions notes')
+text = _('load order')
+text = _('name')
+text = _('optional tag')
+text = _('screen size')
+text = _('script content')
+text = _('script name')
+text = _('script set')
+text = _('script type')
+text = _('section')
+text = _('visible width')
+text = _('x offset')
+text = _('y offset')
+text = _('z index')
 
 #———————————————————————————————————————— array: types of scripts
 
@@ -77,7 +104,7 @@ class UrlField(models.CharField):                                              #
         value = re.sub("[^A-Za-z0-9-_]","",value)
         return value.lower()
 
-#———————————————————————————————————————— Control · no dependencies
+#———————————————————————————————————————— control · no dependencies
 
 # _h fields are not in admin, but are updated when password is correct by cache_per_user module
 
@@ -96,7 +123,7 @@ class Control(models.Model):
         verbose_name = "control"
         verbose_name_plural = "Control"
 
-#———————————————————————————————————————— Redirect · no dependencies TR
+#———————————————————————————————————————— redirect · no dependencies
 
 class Redirect(models.Model): 
     enabled = models.BooleanField(default=True, verbose_name=_('redirect enabled'),)
@@ -134,7 +161,7 @@ class Font(models.Model):
         verbose_name_plural = _("2.3 · Fonts")
         ordering = ['-enabled', 'category', 'family', 'style', 'svg_ref',]
 
-#———————————————————————————————————————— Section · no dependencies TR
+#———————————————————————————————————————— section · no dependencies
 
 # Create or retrieve a placeholder
 def get_sentinel_language():
@@ -205,7 +232,7 @@ class Section(models.Model):
         verbose_name = _("section")
         verbose_name_plural = _("sections")
 
-#———————————————————————————————————————— Screen · no dependencies
+#———————————————————————————————————————— screen · no dependencies
 
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
@@ -226,18 +253,18 @@ class Screen(models.Model):
         verbose_name = _("screen size")
         verbose_name_plural = _("screen sizes")
 
-#———————————————————————————————————————— Script Set · no dependencies
+#———————————————————————————————————————— script set · no dependencies
 
 # to rename
 class Script(models.Model):
 
-    name         = models.CharField(max_length=200, default='')
-    enabled      = models.BooleanField(default=True, verbose_name='enabled',)
-    always       = models.BooleanField(default=False, verbose_name='always include',)
+    name         = models.CharField(max_length=200, default='', verbose_name=_('script set name'),)
+    enabled      = models.BooleanField(default=True, verbose_name=_('enabled'),)
+    always       = models.BooleanField(default=False, verbose_name=_('always include'),)
 		# to rename
-    category     = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
-    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
+    category     = models.CharField(max_length=100, default='', verbose_name=_('optional tag'), blank=True,)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
+    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
 
     def __unicode__(self):
         return self.name
@@ -245,94 +272,96 @@ class Script(models.Model):
         return self.name
     class Meta:
         ordering = ['-enabled', 'category', 'name', ]
-        verbose_name_plural = "3.1 · Script Sets"
+        verbose_name = _("script set")
+        verbose_name_plural = _("script sets")
 
-#———————————————————————————————————————— Script Set Scripts · script
+#———————————————————————————————————————— script set scripts · script
 
 class ScriptScripts(models.Model):
     script  = models.ForeignKey(Script, on_delete=models.CASCADE)
-    type    = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name    = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=200000, default='', verbose_name='content',)
-    order   = models.IntegerField(default=0, verbose_name='load order')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    type    = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name=_('script type'),)
+    name    = models.CharField(max_length=200, default='', verbose_name=_('script name'),)
+    content = models.TextField(max_length=200000, default='', verbose_name=_('script content'),)
+    order   = models.IntegerField(default=0, verbose_name=_('load order'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "included script"
-        verbose_name_plural = "included scripts"
         ordering = ["order"]
+        # only seen when deleting a script set, as a dependency
+        verbose_name = _("included script")
+        verbose_name_plural = _("included scripts")
 
-#———————————————————————————————————————— Module· no dependencies
+#———————————————————————————————————————— module· no dependencies
 
 positions = ('attached', 'floating', 'none',)
 corners = ('top left', 'top right', 'bottom left', 'bottom right',)
 
 class Module(models.Model):
 
-    name      = models.CharField(max_length=200, default='')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    name      = models.CharField(max_length=200, default='', verbose_name=_('name'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
 
-    always    = models.BooleanField(default=False, verbose_name='always include',)
-    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section')
+    always    = models.BooleanField(default=False, verbose_name=_('always include'),)
+    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name=_('screen size'),)
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name=_('section'))
 		# to rename
-    tag       = models.CharField(max_length=100, default='', verbose_name='tag (optional)', blank=True,)
-    zindex    = models.SmallIntegerField(default=0, verbose_name='Z-index')
+    tag       = models.CharField(max_length=100, default='', verbose_name=_('optional tag'), blank=True,)
+    zindex    = models.SmallIntegerField(default=0, verbose_name=_('z index'),)
 
-    css_id = models.CharField(max_length=200, default='', verbose_name='object ID (optional)', blank=True,)
-    filename = models.CharField(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
+    css_id = models.CharField(max_length=200, default='', verbose_name=_('css id'), blank=True,)
+    filename = models.CharField(max_length=200, default='', blank=True, verbose_name=_('illustrator file'),)
 #   filename = addAiToEnd(max_length=200, default='', blank=True, verbose_name='Illustrator file',)
 
 #lass addAiToEnd(models.CharField):
 
-    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name='link',)
-    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
+    url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
+    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
 
-    position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name='floating/attached')
-    corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name='position')
-    offsetx  = models.FloatField(default=0, verbose_name='horizontal offset (px)',)
-    offsety  = models.FloatField(default=0, verbose_name='vertical offset (px)',)
+    position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name=_('floating attached'),)
+    corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name=_('corner position'),)
+    offsetx  = models.FloatField(default=0, verbose_name=_('horizontal offset'),)
+    offsety  = models.FloatField(default=0, verbose_name=_('vertical offset'),)
 
     def __unicode__(self):
         return self.name
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "module"
-        verbose_name_plural = "2.2 · Modules"
         ordering = ['-enabled', 'name', 'section', 'screen', ]
+        verbose_name = _("module")
+        verbose_name_plural = _("modules")
 
 #———————————————————————————————————————— module scripts · no dependencies
 
 class ModuleScript(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name=_('script type'),)
+    name = models.CharField(max_length=200, default='', verbose_name=_('script name'),)
+    content = models.TextField(max_length=50000, default='', verbose_name=_('script content'),)
+    order = models.IntegerField(default=0, verbose_name=_('load order'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "included script"
-        verbose_name_plural = "included scripts"
         ordering = ["order"]
+        verbose_name = _("included script")
+        verbose_name_plural = _("included scripts")
 
-#———————————————————————————————————————— Robots · no dependencies
+#———————————————————————————————————————— robots · no dependencies
 
 class Robots(models.Model):
-    name = models.CharField(max_length=200, default='')
-    contents = models.TextField(max_length=5000, default='', verbose_name='file contents',blank=True,)
+    name = models.CharField(max_length=200, default='', verbose_name=_('name'), )
+    contents = models.TextField(max_length=5000, default='', verbose_name=_('contents'),blank=True,)
 
     def __str__(self):
         return self.name
     class Meta:
         ordering = ['name']
-        verbose_name = "robots file"
-        verbose_name_plural = "3.3 · Robots.txt"
+        verbose_name = _("robots file")
+        verbose_name_plural = _("robots.txt")
 
-#———————————————————————————————————————— Settings · Section & Robots TR
+#———————————————————————————————————————— settings · section & robots
 
 def get_sentinel_robots():                                                        # deprecated, need to delete
     return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
@@ -355,18 +384,18 @@ class Settings(models.Model):
 
     enabled       = models.BooleanField(default=True, verbose_name=_('on line'),)
     url           = models.CharField(max_length=200, default='', verbose_name=_('site url'),)
-    p3_color      = models.BooleanField(default=True, verbose_name=_('use "Display P3" color space'),)
+    p3_color      = models.BooleanField(default=True, verbose_name=_('display p3'),)
 
-    analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics ID'),blank=True,)
+    analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics id'),blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
-    maps_api_key  = models.CharField(max_length=200, default='', verbose_name=_('Maps API key'),blank=True,)
+    maps_api_key  = models.CharField(max_length=200, default='', verbose_name=_('maps api key'),blank=True,)
 
     # email settings
     mail_id       = models.CharField(max_length=200, default='', verbose_name=_('email username'),    blank=True,)
     mail_pass     = models.CharField(max_length=200, default='', verbose_name=_('email password'),    blank=True,)
     mail_srv      = models.CharField(max_length=200, default='', verbose_name=_('email server'),      blank=True,)
     mail_port     = models.IntegerField(             default=0,  verbose_name=_('email server port'), blank=True, null=True,)
-    mail_tls      = models.BooleanField(default=True, verbose_name=_('use TLS'),)
+    mail_tls      = models.BooleanField(default=True, verbose_name=_('use tls'),)
     notes         = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('notes'),)
 
    # @admin.display(description=_('Is it a mouse?'))
@@ -380,37 +409,37 @@ class Settings(models.Model):
 
 class Page(models.Model): 
 
-    published = models.BooleanField(default=True, verbose_name='enabled',)
-    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name='screen size',)
-    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name='section',)
+    published = models.BooleanField(default=True, verbose_name=_('enabled'),)
+    screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name=_('screen size'),)
+    section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name=_('section'),)
 #   url       = models.CharField(max_length=200, default='', verbose_name='address')
-    url       = alphaLower(max_length=200, default='', verbose_name='address') 
+    url       = alphaLower(max_length=200, default='', verbose_name=_('address'),) 
 
 		# to rename
-    category  = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
+    category  = models.CharField(max_length=200, default='', verbose_name=_('optional tag'), blank=True,)
 
     # meta
-    notes     = models.TextField(max_length=2000, default='', blank=True)
-    pub_date  = models.DateTimeField(default=datetime.now, blank=True, verbose_name='publication date',)
+    notes     = models.TextField(max_length=2000, default='', blank=True, verbose_name=('notes'),)
+    pub_date  = models.DateTimeField(default=datetime.now, blank=True, verbose_name=_('publication date'),)
 
     # used in page construction
-    title  = models.CharField(max_length=200, default='', blank=True)
+    title  = models.CharField(max_length=200, default='', blank=True, verbose_name=_('page title'),)
 
     # accessibility
-    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name='link name')
-    accessibility_text = RichTextField(verbose_name='accessibility content', blank=True)
+    accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name=_('link name'),)
+    accessibility_text = RichTextField(verbose_name=_('accessibility content'), blank=True)
 
-    incl_modules = models.BooleanField(default=True, verbose_name='default modules',)
-    incl_scripts = models.BooleanField(default=True, verbose_name='default scripts',)
+    incl_modules = models.BooleanField(default=True, verbose_name=_('default modules'),)
+    incl_scripts = models.BooleanField(default=True, verbose_name=_('default scripts'),)
 
     module = models.ManyToManyField(Module, through='PageModule')
     script = models.ManyToManyField(Script, through='PageScript')
 
-    default_dims = models.BooleanField(default=True, verbose_name='default dimensions',)
-    width    = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width')
-    visible  = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name='x offset')
-    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name='y offset')
+    default_dims = models.BooleanField(default=True, verbose_name=_('default dimensions'),)
+    width    = models.PositiveSmallIntegerField(default=0, verbose_name=_('artboard width'),)
+    visible  = models.PositiveSmallIntegerField(default=0, verbose_name=_('visible width'),)
+    offsetx  = models.PositiveSmallIntegerField(default=0, verbose_name=_('x offset'),)
+    offsety  = models.PositiveSmallIntegerField(default=0, verbose_name=_('y offset'),)
 
     def __unicode__(self):
         return self.name
@@ -418,7 +447,8 @@ class Page(models.Model):
         return self.url
     class Meta:
         ordering = ['-published', 'url', 'section', 'screen', '-pub_date', ]
-        verbose_name_plural = "2.1 · Pages"
+        verbose_name_plural = _("page")
+        verbose_name_plural = _("page listing")
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
 
 #———————————————————————————————————————— Page models
@@ -427,54 +457,54 @@ class Page(models.Model):
 class PageModule(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    zindex = models.SmallIntegerField(default=0, verbose_name='z index')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    zindex = models.SmallIntegerField(default=0, verbose_name=_('z index'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.module.name
     class Meta:
-        verbose_name = "link to module"
-        verbose_name_plural = "links to modules"
+        verbose_name = _("link to module")
+        verbose_name_plural = _("links to modules")
         ordering = ["zindex"]
 
 # foreignkey, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
-    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name='script set')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name=_('script set'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.script.name
     class Meta:
-        verbose_name = "link to script"
-        verbose_name_plural = "links to script"
+        verbose_name = _("link to script")
+        verbose_name_plural = _("links to script")
         ordering = ["script"]
 
 class Illustrator(models.Model):
 #   page = models.ForeignKey(Page, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name = 'illustrator_fk')
-    filename = models.CharField(max_length=200, default='')
+    filename = models.CharField(max_length=200, default='', verbose_name=_('file name'),)
 #   filename = addAiToEnd(max_length=200, default='')
-    zindex = models.SmallIntegerField(default=0, verbose_name='z index')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    zindex = models.SmallIntegerField(default=0, verbose_name=_('z index'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.filename
     class Meta:
-        verbose_name = "Illustrator file"
-        verbose_name_plural = "Illustrator files"
+        verbose_name = _("illustrator file")
+        verbose_name_plural = _("illustrator files")
         ordering = ["zindex"]
 
 class AdditionalScript(models.Model):
     page = models.ForeignKey(Page, on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name='type')
-    name = models.CharField(max_length=200, default='')
-    content = models.TextField(max_length=50000, default='', verbose_name='content',)
-    order = models.IntegerField(default=0, verbose_name='load order')
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
+    type = models.CharField(max_length=255, default='', choices=Choices(*script_types), verbose_name=_('script type'),)
+    name = models.CharField(max_length=200, default='', verbose_name=_('name'),)
+    content = models.TextField(max_length=50000, default='', verbose_name=_('contents'),)
+    order = models.IntegerField(default=0, verbose_name=_('load order'),)
+    enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = "additional script"
-        verbose_name_plural = "additional scripts"
         ordering = ["order"]
+        verbose_name = _("additional script")
+        verbose_name_plural = _("additional scripts")
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
