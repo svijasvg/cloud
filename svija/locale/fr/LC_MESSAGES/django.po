@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-08 09:12+0200\n"
+"POT-Creation-Date: 2025-04-08 11:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,272 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: models.py:339
-msgid "robots.txt"
+
+#: models.py:102
+msgid "redirect enabled"
 msgstr ""
 
-#: models.py:341
+#: models.py:103
+msgid "from URL"
+msgstr ""
+
+#: models.py:104
+msgid "to URL"
+msgstr ""
+
+#: models.py:109
+msgid "url redirect"
+msgstr ""
+
+#: models.py:110
+msgid "url redirects"
+msgstr ""
+
+#: models.py:115
+msgid "svg name"
+msgstr ""
+
+#: models.py:116
+msgid "font family"
+msgstr ""
+
+#: models.py:117
+msgid "font weight"
+msgstr ""
+
+#: models.py:118
+msgid "font style"
+msgstr ""
+
+#: models.py:119
+msgid "woff name"
+msgstr ""
+
+#: models.py:121
+msgid "google font"
+msgstr ""
+
+#: models.py:122
+msgid "font enabled"
+msgstr ""
+
+#: models.py:123
+msgid "adobe link"
+msgstr ""
+
+#: models.py:124
+msgid "adobe url"
+msgstr ""
+
+#: models.py:125
+msgid "adobe contents"
+msgstr ""
+
+#: models.py:128
+msgid "optional tag"
+msgstr ""
+
+#: models.py:133
+msgid "font"
+msgstr ""
+
+#: models.py:134
+msgid "2.3 · Fonts"
+msgstr ""
+
+#: models.py:165
+msgid "section address"
+msgstr ""
+
+#: models.py:166
+msgid "language code"
+msgstr ""
+
+#: models.py:167
+msgid "section enabled"
+msgstr ""
+
+#: models.py:168
+msgid "section name"
+msgstr ""
+
+#: models.py:170
+msgid "default page"
+msgstr ""
+
+#: models.py:172 models.py:214
+msgid "display order"
+msgstr ""
+
+#: models.py:174
+msgid "section title"
+msgstr ""
+
+#: models.py:175
+msgid "iphone icon"
+msgstr ""
+
+#: models.py:177
+msgid "destination email"
+msgstr ""
+
+#: models.py:178
+msgid "bcc address"
+msgstr ""
+
+#: models.py:179
+msgid "email subject"
+msgstr ""
+
+#: models.py:181
+msgid "return address label"
+msgstr ""
+
+#: models.py:184
+msgid "name label"
+msgstr ""
+
+#: models.py:185
+msgid "business label"
+msgstr ""
+
+#: models.py:186
+msgid "email label"
+msgstr ""
+
+#: models.py:187
+msgid "message label"
+msgstr ""
+
+#: models.py:188
+msgid "send label"
+msgstr ""
+
+#: models.py:191
+msgid "initial status"
+msgstr ""
+
+#: models.py:192
+msgid "sending status"
+msgstr ""
+
+#: models.py:193
+msgid "sent status"
+msgstr ""
+
+#: models.py:196
+msgid "email sent alert"
+msgstr ""
+
+#: models.py:197
+msgid "send failed alert"
+msgstr ""
+
+#: models.py:199
+msgid "source code message"
+msgstr ""
+
+#: models.py:205
+msgid "section"
+msgstr ""
+
+#: models.py:206
+msgid "sections"
+msgstr ""
+
+#: models.py:212
+msgid "artboard code"
+msgstr ""
+
+#: models.py:213
+msgid "screen name"
+msgstr ""
+
+#: models.py:216
+msgid "break point"
+msgstr ""
+
+#: models.py:217
+msgid "artboard width"
+msgstr ""
+
+#: models.py:218
+msgid "visible width"
+msgstr ""
+
+#: models.py:219
+msgid "x offset"
+msgstr ""
+
+#: models.py:220
+msgid "y offset"
+msgstr ""
+
+#: models.py:226
+msgid "screen size"
+msgstr ""
+
+#: models.py:227
+msgid "screen sizes"
+msgstr ""
+
+#: models.py:355
 msgid "default section"
 msgstr ""
 
-#: models.py:363
-msgid "website setting"
+#: models.py:357
+msgid "on line"
 msgstr ""
 
-#: models.py:364
+#: models.py:358
+msgid "site url"
+msgstr ""
+
+#: models.py:359
+msgid "use \"Display P3\" color space"
+msgstr ""
+
+#: models.py:361
+msgid "analytics ID"
+msgstr ""
+
+#: models.py:362
+msgid "cookies allowed"
+msgstr ""
+
+#: models.py:363
+msgid "Maps API key"
+msgstr ""
+
+#: models.py:366
+msgid "email username"
+msgstr ""
+
+#: models.py:367
+msgid "email password"
+msgstr ""
+
+#: models.py:368
+msgid "email server"
+msgstr ""
+
+#: models.py:369
+msgid "email server port"
+msgstr ""
+
+#: models.py:370
+msgid "use TLS"
+msgstr ""
+
+#: models.py:371
+msgid "notes"
+msgstr ""
+
+#: models.py:377
+msgid "website"
+msgstr ""
+
+#: models.py:378
 msgid "website settings"
 msgstr ""
 

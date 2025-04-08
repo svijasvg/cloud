@@ -10,10 +10,23 @@
 
 # on_delete: stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
+#———————————————————————————————————————— localization
+#
+#   1. modifiy this file by adding _( 'string' )
+#   2. django-admin makemessages --all
+#   3. :vsp locale/en/*/*.po and update all texts
+#   4. django-admin compilemessages
+#   5. ./manage.py makemigrations
+#   6. ./manage.py migrate
+#   7. service uwsgi restart
+#
 #———————————————————————————————————————— imports
 
-from django.db import models
+
 import datetime
+
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 # pip install django-model-utils
@@ -83,45 +96,45 @@ class Control(models.Model):
         verbose_name = "control"
         verbose_name_plural = "Control"
 
-#———————————————————————————————————————— Redirect · no dependencies
+#———————————————————————————————————————— Redirect · no dependencies TR
 
 class Redirect(models.Model): 
-    enabled = models.BooleanField(default=True, verbose_name='enabled',)
-    from_url = models.CharField(max_length=200, default='', verbose_name='old URL')
-    to_url = models.CharField(max_length=200, default='', verbose_name='new URL')
+    enabled = models.BooleanField(default=True, verbose_name=_('redirect enabled'),)
+    from_url = models.CharField(max_length=200, default='', verbose_name=_('from URL'))
+    to_url = models.CharField(max_length=200, default='', verbose_name=_('to URL'))
 
     def __str__(self):
         return self.from_url
     class Meta:
-        verbose_name = "redirect"
-        verbose_name_plural = "3.2 · Redirects"
+        verbose_name = _("url redirect")
+        verbose_name_plural = _("url redirects")
 
-#———————————————————————————————————————— Font · no dependencies
+#———————————————————————————————————————— Font · no dependencies TR
 
 class Font(models.Model): 
-    svg_ref      = models.CharField(max_length=100, default='', verbose_name='SVG name')
-    family       = models.CharField(max_length=100, default='', verbose_name='family', blank=True)
-    weight       = models.CharField(max_length=100, default='', verbose_name='weight', blank=True)
-    style        = models.CharField(max_length=100, default='', verbose_name='style', blank=True)
-    woff         = models.CharField(max_length=100, default='', verbose_name='WOFF filename', blank=True)
+    svg_ref      = models.CharField(max_length=100, default='', verbose_name=_('svg name'))
+    family       = models.CharField(max_length=100, default='', verbose_name=_('font family'), blank=True)
+    weight       = models.CharField(max_length=100, default='', verbose_name=_('font weight'), blank=True)
+    style        = models.CharField(max_length=100, default='', verbose_name=_('font style'), blank=True)
+    woff         = models.CharField(max_length=100, default='', verbose_name=_('woff name'), blank=True)
 
-    google       = models.BooleanField(default=False, verbose_name='Google font',)
-    enabled      = models.BooleanField(default=True, verbose_name='enabled',)
-    adobe_pasted = models.CharField(max_length=300, default='', verbose_name='pasted Adobe link', blank=True)
-    adobe_url    = models.CharField(max_length=300, default='', verbose_name='font file URL', blank=True)
-    adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name='link contents', blank=True,)
+    google       = models.BooleanField(default=False, verbose_name=_('google font'),)
+    enabled      = models.BooleanField(default=True, verbose_name=_('font enabled'),)
+    adobe_pasted = models.CharField(max_length=300, default='', verbose_name=_('adobe link'), blank=True)
+    adobe_url    = models.CharField(max_length=300, default='', verbose_name=_('adobe url'), blank=True)
+    adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
 
 		# to rename
-    category = models.CharField(max_length=200, default='', verbose_name='tag (optional)', blank=True,)
+    category = models.CharField(max_length=200, default='', verbose_name=_('optional tag'), blank=True,)
 
     def __str__(self):
         return self.svg_ref
     class Meta:
-        verbose_name = "font"
-        verbose_name_plural = "2.3 · Fonts"
+        verbose_name = _("font")
+        verbose_name_plural = _("2.3 · Fonts")
         ordering = ['-enabled', 'category', 'family', 'style', 'svg_ref',]
 
-#———————————————————————————————————————— Section · no dependencies
+#———————————————————————————————————————— Section · no dependencies TR
 
 # Create or retrieve a placeholder
 def get_sentinel_language():
@@ -139,6 +152,7 @@ def get_sentinel_section():
 def get_sentinel_section_id():
     return get_sentinel_section().id
 
+
 # https://stackoverflow.com/questions/73069401/how-to-get-django-admin-pulldown-list-to-just-show-the-first-order-by-item-ins
 # so section pulldown will have first element selected
 def get_default_section():
@@ -148,68 +162,69 @@ def get_default_section_id():
   return Section.objects.first().id
 
 class Section(models.Model):
-    code     = alphaStar(max_length=20, default='', blank=False, verbose_name='address',)
-    language = models.BooleanField(default=False, verbose_name='language code',)
-    enabled  = models.BooleanField(default=True, verbose_name='enabled',)
-    name     = models.CharField(max_length=100, default='', verbose_name='name',)
+    code     = alphaStar(max_length=20, default='', blank=False, verbose_name=_('section address'),)
+    language = models.BooleanField(default=False, verbose_name=_('language code'),)
+    enabled  = models.BooleanField(default=True, verbose_name=_('section enabled'),)
+    name     = models.CharField(max_length=100, default='', verbose_name=_('section name'),)
 #   code     = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
-    default_page = models.CharField(max_length=200, default='', verbose_name='default page',blank=False,)
+    default_page = models.CharField(max_length=200, default='', verbose_name=_('default page'),blank=False,)
 
-    order = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_('display order'),)
 
-    title = models.CharField(max_length=100, default='', blank=True, verbose_name='section title',)
-    touch = models.CharField(max_length=100, default='', blank=True, verbose_name='iPhone icon name',)
+    title = models.CharField(max_length=100, default='', blank=True, verbose_name=_('section title'),)
+    touch = models.CharField(max_length=100, default='', blank=True, verbose_name=_('iphone icon'),)
 
-    email    = models.CharField(max_length=100, default='', blank=True, verbose_name='destination email',)
-    bcc      = models.CharField(max_length=200, default='', verbose_name='bcc address',blank=True,)
-    subject  = models.CharField(max_length=200, default='', verbose_name='email subject',blank=True,)
+    email    = models.CharField(max_length=100, default='', blank=True, verbose_name=_('destination email'),)
+    bcc      = models.CharField(max_length=200, default='', verbose_name=_('bcc address'),blank=True,)
+    subject  = models.CharField(max_length=200, default='', verbose_name=_('email subject'),blank=True,)
 
-    mail_frm = models.CharField(max_length=200, default='', verbose_name='return address label',blank=True,)
+    mail_frm = models.CharField(max_length=200, default='', verbose_name=_('return address label'),blank=True,)
 
     # field labels
-    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name='name',)
-    form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name='business',)
-    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name='email',)
-    form_message    = models.CharField(max_length=100, default='', blank=True, verbose_name='message',)
-    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name='send button',)
+    form_name       = models.CharField(max_length=100, default='', blank=True, verbose_name=_('name label'),)
+    form_business   = models.CharField(max_length=100, default='', blank=True, verbose_name=_('business label'),)
+    form_email      = models.CharField(max_length=100, default='', blank=True, verbose_name=_('email label'),)
+    form_message    = models.CharField(max_length=100, default='', blank=True, verbose_name=_('message label'),)
+    form_send       = models.CharField(max_length=100, default='', blank=True, verbose_name=_('send label'),)
 
     # status messages
-    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name='initial status',)
-    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name='while sending',)
-    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent',)
+    form_status     = models.CharField(max_length=100, default='', blank=True, verbose_name=_('initial status'),)
+    form_sending    = models.CharField(max_length=100, default='', blank=True, verbose_name=_('sending status'),)
+    form_rcvd       = models.CharField(max_length=100, default='', blank=True, verbose_name=_('sent status'),)
 
     # alerts
-    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name='email sent (alert)',)
-    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name='send failed (alert)',)
+    form_alert_rcvd = models.CharField(max_length=100, default='', blank=True, verbose_name=_('email sent alert'),)
+    form_alert_fail = models.CharField(max_length=100, default='', blank=True, verbose_name=_('send failed alert'),)
 
-    comment       = models.TextField(max_length=5000, default='Site built entirely in SVG with Svija – visit svija.love for more information!', verbose_name='source code message', )
+    comment       = models.TextField(max_length=5000, default='Site built entirely in Adobe Illustrator – visit svija.com for more information!', verbose_name=_('source code message'), )
 
     def __str__(self):
         return self.code
     class Meta:
         ordering = ['order']
-        verbose_name_plural = "1.3 · Sections"
+        verbose_name = _("section")
+        verbose_name_plural = _("sections")
 
 #———————————————————————————————————————— Screen · no dependencies
 
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
-    code    = alphaStar(max_length=20, default='', verbose_name='artboard name') 
-    name    = models.CharField(max_length=200, default='', verbose_name='description')
-    order   = models.PositiveSmallIntegerField(default=0, verbose_name='display order')
+    code    = alphaStar(max_length=20, default='',         verbose_name=_('artboard code'),) 
+    name    = models.CharField(max_length=200, default='', verbose_name=_('screen name'),)
+    order   = models.PositiveSmallIntegerField(default=0,  verbose_name=_('display order'),)
 
-    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name='break point',)
-    width   = models.PositiveSmallIntegerField(default=0, verbose_name='artboard width',)
-    visible = models.PositiveSmallIntegerField(default=0, verbose_name='visible width')
-    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name='x offset')
-    offsety = models.PositiveSmallIntegerField(default=0, verbose_name='y offset')
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name=_('break point'),)
+    width   = models.PositiveSmallIntegerField(default=0, verbose_name=_('artboard width'),)
+    visible = models.PositiveSmallIntegerField(default=0, verbose_name=_('visible width'),)
+    offsetx = models.PositiveSmallIntegerField(default=0, verbose_name=_('x offset'),)
+    offsety = models.PositiveSmallIntegerField(default=0, verbose_name=_('y offset'),)
 
     def __str__(self):
         return self.code
     class Meta:
         ordering = ['order', 'width']
-        verbose_name = "screen size"
-        verbose_name_plural = "1.2 · Screen Sizes"
+        verbose_name = _("screen size")
+        verbose_name_plural = _("screen sizes")
 
 #———————————————————————————————————————— Script Set · no dependencies
 
@@ -317,9 +332,7 @@ class Robots(models.Model):
         verbose_name = "robots file"
         verbose_name_plural = "3.3 · Robots.txt"
 
-#———————————————————————————————————————— Settings · Section & Robots
-
-from django.utils.translation import gettext_lazy as _
+#———————————————————————————————————————— Settings · Section & Robots TR
 
 def get_sentinel_robots():                                                        # deprecated, need to delete
     return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
