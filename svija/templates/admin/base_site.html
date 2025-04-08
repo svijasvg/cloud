@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %}
+{% load l10n %}
 {% load i18n static %}
 
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
@@ -38,7 +39,7 @@
       <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ∴
       <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ∴ -->
     {% endif %}
-    <span id="clearCache"><a href="javascript:clear()">Clear Cache</a> ∴ </span>
+    <span id="clearCache"><a href="javascript:clear()">{% trans "Clear Cache" %}</a> ∴ </span>
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
     <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.3</a><br>
 
@@ -49,7 +50,7 @@
     {% endif %}
     <strong><a href="/cloud/auth/user/">{% firstof user.get_short_name user.get_username %}</a></strong> ∴
     {% if user.has_usable_password %}
-    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> ∴
+    <a href="{% url 'admin:password_change' %}">{% trans "Change password" %}</a> ∴
     {% endif %}
     <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
     

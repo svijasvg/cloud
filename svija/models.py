@@ -319,6 +319,8 @@ class Robots(models.Model):
 
 #———————————————————————————————————————— Settings · Section & Robots
 
+from django.utils.translation import gettext_lazy as _
+
 def get_sentinel_robots():                                                        # deprecated, need to delete
     return Robots.objects.get_or_create(name="undefined",contents="n/a")[0]
 
@@ -336,29 +338,30 @@ class Settings(models.Model):
 		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
     robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  blank=True, on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
     #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
-    section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name='default section')
+    section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name=_('default section'))
 
-    enabled       = models.BooleanField(default=True, verbose_name='online',)
-    url           = models.CharField(max_length=200, default='', verbose_name='address',)
-    p3_color      = models.BooleanField(default=True, verbose_name='use "Display P3" color space',)
+    enabled       = models.BooleanField(default=True, verbose_name=_('on line'),)
+    url           = models.CharField(max_length=200, default='', verbose_name=_('site url'),)
+    p3_color      = models.BooleanField(default=True, verbose_name=_('use "Display P3" color space'),)
 
-    analytics_id  = models.CharField(max_length=200, default='', verbose_name='analytics ID',blank=True,)
-    tracking_on   = models.BooleanField(default=False, verbose_name='cookies allowed by default',)
-    maps_api_key  = models.CharField(max_length=200, default='', verbose_name='Google Maps API key',blank=True,)
+    analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics ID'),blank=True,)
+    tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
+    maps_api_key  = models.CharField(max_length=200, default='', verbose_name=_('Maps API key'),blank=True,)
 
     # email settings
-    mail_id       = models.CharField(max_length=200, default='', verbose_name='email username',blank=True,)
-    mail_pass     = models.CharField(max_length=200, default='', verbose_name='email password',blank=True,)
-    mail_srv      = models.CharField(max_length=200, default='', verbose_name='email server',blank=True,)
-    mail_port     = models.IntegerField(default=0, verbose_name='email server port', null=True, blank=True,)
-    mail_tls      = models.BooleanField(default=True, verbose_name='use TLS',)
-    notes         = models.TextField(max_length=2000, default='', blank=True, verbose_name='notes',)
+    mail_id       = models.CharField(max_length=200, default='', verbose_name=_('email username'),    blank=True,)
+    mail_pass     = models.CharField(max_length=200, default='', verbose_name=_('email password'),    blank=True,)
+    mail_srv      = models.CharField(max_length=200, default='', verbose_name=_('email server'),      blank=True,)
+    mail_port     = models.IntegerField(             default=0,  verbose_name=_('email server port'), blank=True, null=True,)
+    mail_tls      = models.BooleanField(default=True, verbose_name=_('use TLS'),)
+    notes         = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('notes'),)
 
+   # @admin.display(description=_('Is it a mouse?'))
     def __str__(self):
         return self.url
     class Meta:
-        verbose_name = "website"
-        verbose_name_plural = "1.1 · URL & Settings"
+        verbose_name = _("website")
+        verbose_name_plural = _("website settings")
 
 #———————————————————————————————————————— Page · uses template & prefix
 
