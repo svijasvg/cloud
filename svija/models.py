@@ -16,6 +16,9 @@
 #      close the file
 #   2. django-admin makemessages --all
 #   3. vi -O models.py locale/en/*/*.po
+#
+#   if necessary copy to the opposite language
+#
 #   4. django-admin compilemessages
 #   5. ./manage.py makemigrations
 #   6. ./manage.py migrate
@@ -172,13 +175,13 @@ class Section(models.Model):
     code     = alphaStar(max_length=20, default='', blank=False, verbose_name=_('section address'),)
     language = models.BooleanField(default=False, verbose_name=_('language code'),)
     enabled  = models.BooleanField(default=True, verbose_name=_('section enabled'),)
-    name     = models.CharField(max_length=100, default='', verbose_name=_('section name'),)
+    name     = models.CharField(max_length=100, default='', verbose_name=_('name'),)
 #   code     = models.CharField(max_length=20, default='', blank=False, verbose_name='code (visible to users)',)
     default_page = models.CharField(max_length=200, default='', verbose_name=_('default page'),blank=False,)
 
     order = models.PositiveSmallIntegerField(default=0, verbose_name=_('display order'),)
 
-    title = models.CharField(max_length=100, default='', blank=True, verbose_name=_('section title'),)
+    title = models.CharField(max_length=100, default='', blank=True, verbose_name=_('title'),)
     touch = models.CharField(max_length=100, default='', blank=True, verbose_name=_('iphone icon'),)
 
     email    = models.CharField(max_length=100, default='', blank=True, verbose_name=_('destination email'),)
@@ -217,10 +220,10 @@ class Section(models.Model):
 class Screen(models.Model):
 #   code    = models.CharField(max_length=20, default='', verbose_name='artboard name',)
     code    = alphaStar(max_length=20, default='',         verbose_name=_('artboard code'),) 
-    name    = models.CharField(max_length=200, default='', verbose_name=_('screen name'),)
+    name    = models.CharField(max_length=200, default='', verbose_name=_('name'),)
     order   = models.PositiveSmallIntegerField(default=0,  verbose_name=_('display order'),)
 
-    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name=_('break point'),)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name=_('max width'),)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name=_('artboard width'),)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name=_('visible width'),)
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name=_('x offset'),)
@@ -233,12 +236,12 @@ class Screen(models.Model):
         verbose_name = _("screen size")
         verbose_name_plural = _("screen size model list")
 
-#———————————————————————————————————————— script set · no dependencies
+#———————————————————————————————————————— script library · no dependencies
 
 # to rename
 class Script(models.Model):
 
-    name         = models.CharField(max_length=200, default='', verbose_name=_('script set name'),)
+    name         = models.CharField(max_length=200, default='', verbose_name=_('script library name'),)
     enabled      = models.BooleanField(default=True, verbose_name=_('enabled'),)
     always       = models.BooleanField(default=False, verbose_name=_('always include'),)
 		# to rename
@@ -252,10 +255,10 @@ class Script(models.Model):
         return self.name
     class Meta:
         ordering = ['-enabled', 'category', 'name', ]
-        verbose_name = _("script set")
-        verbose_name_plural = _("script set model list")
+        verbose_name = _("script library")
+        verbose_name_plural = _("script library model list")
 
-#———————————————————————————————————————— script set scripts · script
+#———————————————————————————————————————— script library scripts · script
 
 class ScriptScripts(models.Model):
     script  = models.ForeignKey(Script, on_delete=models.CASCADE)
@@ -268,7 +271,7 @@ class ScriptScripts(models.Model):
         return self.name
     class Meta:
         ordering = ["order"]
-        # only seen when deleting a script set, as a dependency
+        # only seen when deleting a script library, as a dependency
         verbose_name = _("included script")
         verbose_name_plural = _("included script")
 
@@ -310,8 +313,8 @@ class Module(models.Model):
 
     position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name=_('floating attached'),)
     corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name=_('corner position'),)
-    offsetx  = models.FloatField(default=0, verbose_name=_('horizontal offset'),)
-    offsety  = models.FloatField(default=0, verbose_name=_('vertical offset'),)
+    offsetx  = models.FloatField(default=0, verbose_name=_('x offset'),)
+    offsety  = models.FloatField(default=0, verbose_name=_('y offset'),)
 
     def __unicode__(self):
         return self.name
@@ -319,7 +322,7 @@ class Module(models.Model):
         return self.name
     class Meta:
         ordering = ['-enabled', 'name', 'section', 'screen', ]
-        verbose_name = _("module")
+        verbose_name = "module"
         verbose_name_plural = _("module model list")
 
 #———————————————————————————————————————— module scripts · no dependencies
@@ -348,7 +351,7 @@ class Robots(models.Model):
         return self.name
     class Meta:
         ordering = ['name']
-        verbose_name = _("robots file")
+        verbose_name = _("robots.txt file")
         verbose_name_plural = _("robots model list")
 
 #———————————————————————————————————————— settings · section & robots
@@ -413,7 +416,7 @@ class Page(models.Model):
     pub_date  = models.DateTimeField(default=datetime.now, blank=True, verbose_name=_('publication date'),)
 
     # used in page construction
-    title  = models.CharField(max_length=200, default='', blank=True, verbose_name=_('page title'),)
+    title  = models.CharField(max_length=200, default='', blank=True, verbose_name=_('title'),)
 
     # accessibility
     accessibility_name = models.CharField(max_length=200, default='', blank=True, verbose_name=_('link name'),)
@@ -459,7 +462,7 @@ class PageModule(models.Model):
 # foreignkey, available sitewide
 class PageScript(models.Model):
     page   = models.ForeignKey(Page,   on_delete=models.CASCADE)
-    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name=_('script set'),)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, verbose_name=_('script library'),)
     enabled = models.BooleanField(default=True, verbose_name=_('enabled'),)
     def __str__(self):
         return self.script.name
@@ -493,8 +496,8 @@ class AdditionalScript(models.Model):
         return self.name
     class Meta:
         ordering = ["order"]
-        verbose_name = _("additional script")
-        verbose_name_plural = _("additional scripts")
+        verbose_name = _("script")
+        verbose_name_plural = _("scripts")
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin

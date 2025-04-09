@@ -14,6 +14,7 @@ admin.site.index_title = 'Svija Cloud Settings' # top of the admin index page (a
 
 #———————————————————————————————————————— reused translations
 
+text = _('scripts')
 text = _('always include')
 text = _('artboard width')
 text = _('contents')
@@ -22,17 +23,25 @@ text = _('enabled')
 text = _('illustrator file')
 text = _('included script')
 text = _('included scripts')
+text = _('instructions')
 text = _('instructions link')
 text = _('instructions notes')
+text = _('link instructions') 
 text = _('load order')
 text = _('name')
+text = _('name filename')
 text = _('optional tag')
 text = _('screen size')
+text = _('script')
 text = _('script content')
 text = _('script name')
-text = _('script set')
+text = _('script library')
+text = _('script libraries')
 text = _('script type')
+text = _('scripts')
 text = _('section')
+text = _('settings')
+text = _('title')
 text = _('visible width')
 text = _('x offset')
 text = _('y offset')
@@ -76,7 +85,7 @@ class RedirectAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('redirect settings'),  {'fields': ['from_url', 'to_url','enabled',], 'description':descRedirect,}),
+    (_('settings'),  {'fields': ['from_url', 'to_url','enabled',], 'description':descRedirect,}),
   ]   
 
 admin.site.register(Redirect, RedirectAdmin)
@@ -101,7 +110,7 @@ class FontAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('font information'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
+    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
 
   ]   
 
@@ -121,7 +130,7 @@ class SectionAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('section details'), {'fields': [('code', 'enabled', 'language', ),('name', 'order',), 'default_page',],'description':descSection, }),
+    (_('settings'), {'fields': [('code', 'enabled', 'language', ),('name', 'order',), 'default_page',],'description':descSection, }),
     (_('title iPhone icon'), {'fields': ['title', 'touch',],}),
     (_('section email settings'),   {'fields': ['email', 'bcc', 'subject','mail_frm',], 'classes': ['collapse']}),
     (_('contact form fields'), {'fields': ['form_name', 'form_business', 'form_email','form_message','form_send',], 'classes': ['collapse'],}),
@@ -166,7 +175,7 @@ class RobotsAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('name file contents'),{'fields': ['name', 'contents', ], 'description':descRobots, }),
+    (_('settings'),{'fields': ['name', 'contents', ], 'description':descRobots, }),
   ]   
   verbose_name = "robots.txt"
 
@@ -174,18 +183,18 @@ class RobotsAdmin(admin.ModelAdmin):
 
 admin.site.register(Robots, RobotsAdmin)
 
-#———————————————————————————————————————— script Set · no dependencies
+#———————————————————————————————————————— script library · no dependencies
 
-descScript0 = _('descScript0')
-descScript1 = _('descScript1')
+descScript = _('descScript')
+descLinkInstr = _('link instructions')
 
 from .models import ScriptScripts
 class ScriptScriptsInline(admin.TabularInline):
   model = ScriptScripts
   extra = 0 
   fields = ('enabled', 'name', 'type', 'order', 'content',)
-  verbose_name = _("script set")
-  verbose_name_plural = _("script sets")
+  verbose_name = _("script")
+  verbose_name_plural = _("scripts")
 
 from .models import Script
 class ScriptAdmin(admin.ModelAdmin):
@@ -200,8 +209,8 @@ class ScriptAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   fieldsets = [ 
-     (_('name filename'), {'fields': [('name', 'enabled',),('category', 'always',), ], 'description':descScript0, }),
-     (_('instructions') , {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty',],'description':descScript1, }),
+     (_('settings'), {'fields': [('name', 'enabled',),('category', 'always',), ], 'description':descScript, }),
+     (_('instructions') , {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty',],'description':descLinkInstr, }),
   ]   
 
   inlines = [ScriptScriptsInline]
@@ -211,7 +220,7 @@ admin.site.register(Script, ScriptAdmin)
 #———————————————————————————————————————— module · no dependencies
 
 descModules  = _('descModules') 
-descDefaultY = _('descDefaultY') 
+#escLinkInstr = _('link instructions') # ABOVE, IN SCRIPT SET
 positdesc    = _('positdesc') 
 #escModules = "Modules can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
 #escDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
@@ -248,8 +257,8 @@ class ModuleAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-     (_('name filename'), {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
-     (_('instructions' ), {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty', ],'description':descDefaultY, }),
+     (_('settings'     ), {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
+     (_('instructions' ), {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty', ],'description':descLinkInstr, }),
      (_('placement'    ), {'fields': [('offsetx', 'corner', ), ( 'offsety', 'position', ),],'description': positdesc,}),
   ]   
 
@@ -296,16 +305,16 @@ class ModuleInlinePage(admin.TabularInline):
   model = Page.module.through
   extra = 0 
   fields = ('enabled', 'module', 'zindex', )
-  verbose_name = _("module")
-  verbose_name_plural = _("modules")
+  verbose_name = "module"
+  verbose_name_plural = "modules"
   classes = ['collapse', 'ifempty',]
 
 class ScriptInlinePage(admin.TabularInline):
   model = Page.script.through
   extra = 0 
   fields = ('enabled', 'script',)
-  verbose_name = _("script set")
-  verbose_name_plural = _("script sets")
+  verbose_name = _("script library")
+  verbose_name_plural = _("script libraries")
   classes = ['collapse', 'ifempty',]
 
 class IllustratorInlinePage(admin.TabularInline):
@@ -313,20 +322,20 @@ class IllustratorInlinePage(admin.TabularInline):
   extra = 0 
   #fields = ('zindex', 'filename',)
   fields = ('enabled','filename','zindex',)
-  verbose_name_plural = ('illustrator files')
+  verbose_name_plural = _('illustrator files')
 
 class AdditionalScriptInline(admin.TabularInline):
   model = AdditionalScript
   extra = 0 
   fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = _("script")
-  verbose_name_plural = _("additional scripts")
+  verbose_name_plural = _("scripts")
 #   classes = ['collapse']
 
 #———————————————————————————————————————— page
 
 descPages  = _('descPages')
-descPixels = _('descPixels')
+#descPixels = _('descPixels')
 
 #escPages  = "Settings specific to this page · see also <a href='/cloud/svija/module/'>modules</a> · <a href=https://tech.svija.love/programs/cloud/pages target=_blank>documentation↑</a>"
 #escPixels = "Values are in pixels · Check \"Override default dimensions\" to activate"
