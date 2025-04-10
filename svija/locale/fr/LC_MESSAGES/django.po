@@ -6,12 +6,12 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 2.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-09 14:55+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2025-04-10 15:15+0200\n"
+"PO-Revision-Date: 2025-04-10 10:19+0200\n"
+"Last-Translator: Andrew Swift <andy@svija.com>>\n"
+"Language-Team: LANGAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 # :::::::::::::::::::::::::::::::::::::::: admin.py
 # ———————————————————————————————————————— multiple uses
-#: admin.py:17 admin.py:41 admin.py:197 admin.py:240 admin.py:332 models.py:500
+#: admin.py:17 admin.py:40 admin.py:196 admin.py:239 admin.py:351 models.py:500
 msgid "scripts"
 msgstr "scripts"
 
@@ -49,234 +49,228 @@ msgstr "activé"
 msgid "illustrator file"
 msgstr "fichier Illustrator"
 
-#: admin.py:24 models.py:275 models.py:276 models.py:341
+#: admin.py:24 admin.py:344 models.py:485
+msgid "illustrator files"
+msgstr "Fichiers Illustrator"
+
+#: admin.py:25 models.py:275 models.py:276 models.py:341
 msgid "included script"
 msgstr "script inclus"
 
-#: admin.py:25 models.py:342
+#: admin.py:26 models.py:342
 msgid "included scripts"
 msgstr "scripts inclus"
 
-#: admin.py:26 admin.py:213 admin.py:261
+#: admin.py:27 admin.py:212 admin.py:280
 msgid "instructions"
-msgstr "instructions"
+msgstr "Instructions"
 
-#: admin.py:27 models.py:249 models.py:311
+#: admin.py:28 models.py:249 models.py:311
 msgid "instructions link"
 msgstr "lien"
 
-#: admin.py:28 models.py:250 models.py:312
+#: admin.py:29 models.py:250 models.py:312
 msgid "instructions notes"
 msgstr "notes"
 
-#: admin.py:29 admin.py:189
+#: admin.py:30 admin.py:188
 msgid "link instructions"
 msgstr ""
 "Notes d’utilisation et lien vers les instructions sur <a href=https://tech."
 "svija.com target=_blank>tech.svija.com</a>"
 
-#: admin.py:30 models.py:268 models.py:335 models.py:493
+#: admin.py:31 models.py:268 models.py:335 models.py:493
 msgid "load order"
 msgstr "ordre de chargement"
 
-#: admin.py:31 models.py:178 models.py:223 models.py:295 models.py:347
+#: admin.py:32 models.py:178 models.py:223 models.py:295 models.py:347
 #: models.py:491
 msgid "name"
 msgstr "nom"
 
-#: admin.py:32
-msgid "name filename"
-msgstr "nom & fichier"
-
-#: admin.py:33 models.py:138 models.py:248 models.py:302 models.py:412
-msgid "optional tag"
-msgstr "tag (facultatif)"
-
-#: admin.py:34 models.py:236 models.py:299 models.py:406
+#: admin.py:33 models.py:236 models.py:299 models.py:406
 msgid "screen size"
-msgstr "écran"
+msgstr "taille d'écran"
 
-#: admin.py:35 admin.py:196 admin.py:239 admin.py:331 models.py:499
+#: admin.py:34 admin.py:195 admin.py:238 admin.py:350 models.py:499
 msgid "script"
 msgstr "script"
 
-#: admin.py:36 models.py:267 models.py:334
+#: admin.py:35 models.py:267 models.py:334
 msgid "script content"
 msgstr "contenu"
 
-#: admin.py:37 models.py:266 models.py:333
+#: admin.py:36 models.py:266 models.py:333
 msgid "script name"
 msgstr "nom"
 
-#: admin.py:38 admin.py:316 models.py:258 models.py:465
+#: admin.py:37 admin.py:335 models.py:258 models.py:465
 msgid "script library"
 msgstr "bibliothèque de scripts"
 
-#: admin.py:39 admin.py:317
-#, fuzzy
-#| msgid "script library"
-msgid "script librarys"
-msgstr "bibliothèque de scripts"
+#: admin.py:38 admin.py:336
+msgid "script libraries"
+msgstr "bibliothèques de scripts"
 
-#: admin.py:40 models.py:265 models.py:332 models.py:490
+#: admin.py:39 models.py:265 models.py:332 models.py:490
 msgid "script type"
 msgstr "type"
 
-#: admin.py:42 models.py:215 models.py:300 models.py:407
+#: admin.py:41 models.py:215 models.py:300 models.py:407
 msgid "section"
 msgstr "Section"
 
-#: admin.py:43 admin.py:88 admin.py:113 admin.py:133 admin.py:178 admin.py:212
-#: admin.py:260
+#: admin.py:42 admin.py:87 admin.py:112 admin.py:132 admin.py:177 admin.py:211
+#: admin.py:279
 msgid "settings"
 msgstr "paramètres"
 
-#: admin.py:44 models.py:184 models.py:419
+#: admin.py:43 models.py:184 models.py:419
 msgid "title"
 msgstr "titre"
 
-#: admin.py:45 models.py:228 models.py:433
+#: admin.py:44 models.py:228 models.py:433
 msgid "visible width"
 msgstr "largueur visible"
 
-#: admin.py:46 models.py:229 models.py:316 models.py:434
+#: admin.py:45 models.py:229 models.py:316 models.py:434
 msgid "x offset"
 msgstr "décalage X"
 
-#: admin.py:47 models.py:230 models.py:317 models.py:435
+#: admin.py:46 models.py:230 models.py:317 models.py:435
 msgid "y offset"
 msgstr "décalage Y"
 
-#: admin.py:48 models.py:303 models.py:453 models.py:479
+#: admin.py:47 models.py:303 models.py:453 models.py:479
 msgid "z index"
 msgstr "indice z"
 
 # ———————————————————————————————————————— redirect
-#: admin.py:76
+#: admin.py:75
 msgid "descRedirect"
 msgstr ""
-"Liens internes commencent par <b>/</b> · liens externes commencent par "
-"<b>https://</b> · <a href=https://tech.svija.com/programs/cloud/redirects "
-"target=_blank>documentation↑</a>"
+"Liens internes commencent par un <b>/ simple</b> · liens externes commencent "
+"par <b>https://</b> · <a href=https://tech.svija.com/programs/cloud/"
+"redirects target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— font
-#: admin.py:97
+#: admin.py:96
 msgid "descFonts"
 msgstr ""
 "Les polices sont ajoutées ici lors du premier chargement de la page · <a "
 "href=https://fonts.adobe.com/my_fonts#web_projects-section "
-"target=_blank>Adobe Fonts↑</a> · <a href=https://fonts.google.com/ "
-"target=_blank>Google Fonts↑</a> · <a href=https://tech.svija.com/programs/"
+"target=_blank>polices Adobe↑</a> · <a href=https://fonts.google.com/ "
+"target=_blank>polices Google↑</a> · <a href=https://tech.svija.com/programs/"
 "cloud/fonts target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— section
-#: admin.py:121
+#: admin.py:120
 msgid "descSection"
 msgstr ""
 "Sections disponibles ou langues prises en charge · <a href=https://tech."
 "svija.com/programs/cloud/sections target=_blank>documentation↑</a>"
 
-#: admin.py:134
+#: admin.py:133
 msgid "title iPhone icon"
-msgstr "titre & icône iPhone"
+msgstr "Titre & icône iPhone"
+
+#: admin.py:134
+msgid "section email settings"
+msgstr "Paramètres de mail"
 
 #: admin.py:135
-msgid "section email settings"
-msgstr "paramètres de mail"
+msgid "contact form fields"
+msgstr "Étiquettes champs formulaire"
 
 #: admin.py:136
-msgid "contact form fields"
-msgstr "champs formulaire"
+msgid "status message alerts"
+msgstr "Messages de statut et alertes"
 
 #: admin.py:137
-msgid "status message alerts"
-msgstr "messages de statut et alertes"
-
-#: admin.py:138
 msgid "section source message"
-msgstr "message code source"
+msgstr "Message code source"
 
 # ———————————————————————————————————————— screen
-#: admin.py:145
+#: admin.py:144
 msgid "descScreens"
 msgstr ""
-"Tailles d'écran prises en charge · largeur maximale=0 pour illimité · <a "
-"href=https://tech.svija.com/programs/cloud/screens "
+"Tailles d'écran prises en charge · maximale=0 pour une largeur illimitée · "
+"<a href=https://tech.svija.com/programs/cloud/screens "
 "target=_blank>documentation↑</a>"
 
-#: admin.py:157
+#: admin.py:156
 msgid "screens details"
 msgstr "détails"
 
-#: admin.py:158
+#: admin.py:157
 msgid "pixel dimensions"
 msgstr "format en pixels"
 
 # ———————————————————————————————————————— robots
-#: admin.py:166
+#: admin.py:165
 msgid "descRobots"
 msgstr ""
-"Indique aux moteurs de recherche s'ils doivent ou non indexer ce site web · "
-"<a href=https://en.wikipedia.org/wiki/Robots_exclusion_standard "
-"target=_blank>wikipedia</a> · <a href=https://tech.svija.com/programs/cloud/"
+"Indique aux moteurs de recherche s'ils doivent ou non référencer le site · "
+"<a href=https://fr.wikipedia.org/wiki/Protocole_d%27exclusion_des_robots "
+"target=_blank>Wikipedia</a> · <a href=https://tech.svija.com/programs/cloud/"
 "robots target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— script library
-#: admin.py:188
+#: admin.py:187
 msgid "descScript"
 msgstr ""
-"Les groupes de scripts peuvent être ajoutés ici ou dans les Paramètres de "
-"Page · <a href=https://tech.svija.com/programs/cloud/script-sets "
-"target=_blank>documentation↑</a>"
+"Les bibliothèques de scripts peuvent être incluses ici ou dans les <a href=/"
+"cloud/svija/page/ target=_blank>paramètres de page</a> · <a href=https://"
+"tech.svija.com/programs/cloud/script-sets target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— module
-#: admin.py:222
+#: admin.py:221
 msgid "descModules"
 msgstr ""
-"Les modules peuvent être inclus ici ou dans les <a href=https://svija.dev/"
-"cloud/svija/page/>Paramètres de Page</a> · <a href=https://tech.svija.com/"
-"programs/cloud/modules target=_blank>documentation↑</a>"
+"Les modules peuvent être inclus ici ou dans les <a href=/cloud/svija/page/"
+">paramètres de page</a> · <a href=https://tech.svija.com/programs/cloud/"
+"modules target=_blank>documentation↑</a>"
 
-#: admin.py:224
+#: admin.py:223
 msgid "positdesc"
 msgstr ""
-"Superposé à la page Illustrator · négatif = en haut / à gauche · positif = "
-"en bas / à droite"
+"Superposé à la page Illustrator · décalage négatif = en haut / à gauche · "
+"décalage positif = en bas / à droite"
 
-#: admin.py:262
+#: admin.py:281
 msgid "placement"
 msgstr "positionnement"
 
 # ———————————————————————————————————————— settings
-#: admin.py:271
+#: admin.py:290
 msgid "descSettings"
 msgstr ""
 "Pour changer l'adresse de votre site web, visiter <a href=https://tech.svija."
 "com/url target=_blank>tech.svija.com/url</a> · <a href=https://tech.svija."
 "com/programs/cloud/settings target=_blank>documentation↑</a>"
 
-#: admin.py:291
+#: admin.py:310
 msgid "website settings"
-msgstr "paramètres du site"
+msgstr "Paramètres du site"
 
-#: admin.py:292
+#: admin.py:311
 msgid "email sending"
-msgstr "envoi de mail"
+msgstr "Envoi de mail"
 
 # ———————————————————————————————————————— page
-#: admin.py:337
+#: admin.py:356
 msgid "descPages"
 msgstr ""
 "Paramètres spécifiques à cette page · <a href=https://tech.svija.com/"
 "programs/cloud/pages target=_blank>documentation↑</a>"
 
-#: admin.py:366
+#: admin.py:385
 msgid "page setup"
 msgstr "paramètres"
 
-#: admin.py:371
+#: admin.py:390
 msgid "more page settings"
-msgstr "autres paramètres"
+msgstr "Autres paramètres"
 
 # :::::::::::::::::::::::::::::::::::::::: models.py
 # ———————————————————————————————————————— script types
@@ -307,11 +301,11 @@ msgstr "activé"
 
 #: models.py:113
 msgid "from URL"
-msgstr "ancienne URL"
+msgstr "ancienne adresse"
 
 #: models.py:114
 msgid "to URL"
-msgstr "nouvelle URL"
+msgstr "nouvelle adresse"
 
 #: models.py:119
 msgid "url redirect"
@@ -340,7 +334,7 @@ msgstr "style"
 
 #: models.py:129
 msgid "woff name"
-msgstr "nom WOFF"
+msgstr "fichier WOFF"
 
 #: models.py:131
 msgid "google font"
@@ -377,7 +371,7 @@ msgstr "adresse"
 
 #: models.py:176
 msgid "language code"
-msgstr "code langue"
+msgstr "langue"
 
 #: models.py:177
 msgid "section enabled"
@@ -461,12 +455,12 @@ msgid "artboard code"
 msgstr "plan de travail"
 
 #: models.py:226
-msgid "max width"
-msgstr "largeur maximale"
+msgid "break point"
+msgstr "point de rupture"
 
 #: models.py:237
 msgid "screen size model list"
-msgstr "1.2 · Écrans"
+msgstr "1.2 · Tailles d'écrans"
 
 # ———————————————————————————————————————— script library
 #: models.py:244
@@ -563,11 +557,11 @@ msgstr "clé API Google Maps"
 
 #: models.py:387
 msgid "email username"
-msgstr "identifiant mail"
+msgstr "identifiant"
 
 #: models.py:388
 msgid "email password"
-msgstr "mot de passe mail"
+msgstr "mot de passe"
 
 #: models.py:389
 msgid "email server"
@@ -575,7 +569,7 @@ msgstr "serveur SMTP"
 
 #: models.py:390
 msgid "email server port"
-msgstr "port SMTP"
+msgstr "port"
 
 #: models.py:391
 msgid "use tls"
@@ -651,10 +645,6 @@ msgstr "liens vers scripts"
 msgid "file name"
 msgstr "nom"
 
-#: models.py:485
-msgid "illustrator files"
-msgstr "fichiers Illustrator"
-
 # ———————————————————————————————————————— template admin base_site
 #: templates/admin/base_site.html:5
 msgid "Django site admin"
@@ -664,19 +654,27 @@ msgstr ""
 msgid "Django administration"
 msgstr ""
 
-#: templates/admin/base_site.html:40
+#: templates/admin/base_site.html:34
+msgid "cache cleared"
+msgstr "Le cache a été vidé."
+
+#: templates/admin/base_site.html:35
+msgid "unable to clear cache"
+msgstr "Impossible de vider le cache — êtes-vous connecté à Internet ?"
+
+#: templates/admin/base_site.html:45
 msgid "Visit site"
 msgstr ""
 
-#: templates/admin/base_site.html:42
-msgid "Clear Cache"
-msgstr "Vider cache"
+#: templates/admin/base_site.html:47
+msgid "clear cache link"
+msgstr "vider cache"
 
-#: templates/admin/base_site.html:53
+#: templates/admin/base_site.html:58
 msgid "Change password"
 msgstr ""
 
-#: templates/admin/base_site.html:55
+#: templates/admin/base_site.html:60
 msgid "Log out"
 msgstr ""
 
@@ -710,50 +708,11 @@ msgstr ""
 
 #: templates/registration/logged_out.html:6
 msgid "Thanks for using Svija."
-msgstr ""
+msgstr "Merci d'avoir choisi Svija."
 
 #: templates/registration/logged_out.html:7
 msgid "Log in again"
 msgstr ""
 
-# :::::::::::::::::::::::::::::::::::::::: admin.py
-# ———————————————————————————————————————— multiple uses
-#~ msgid "additional scripts"
-#~ msgstr "scripts supplémentaires"
-
-#~ msgid "script sets"
-#~ msgstr "groupes de scripts"
-
-#~ msgid "redirect settings"
-#~ msgstr "paramètres de redirection"
-
-#~ msgid "font settings"
-#~ msgstr "paramètres de police"
-
-#~ msgid "section details"
-#~ msgstr "détails"
-
-#~ msgid "name file contents"
-#~ msgstr "nom et contenu du fichier"
-
-#~ msgid "section name"
-#~ msgstr "étiquette"
-
-#~ msgid "section title"
-#~ msgstr "titre de section"
-
-#~ msgid "screen name"
-#~ msgstr "étiquette"
-
-# ———————————————————————————————————————— script set
-#~ msgid "script set name"
-#~ msgstr "nom"
-
-#~ msgid "horizontal offset"
-#~ msgstr "décalage horizontal"
-
-#~ msgid "vertical offset"
-#~ msgstr "décalage vertical"
-
-#~ msgid "additional script"
-#~ msgstr "script supplémentaire"
+#~ msgid "name filename"
+#~ msgstr "nom & fichier"

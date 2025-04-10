@@ -135,7 +135,7 @@ class Font(models.Model):
     adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
 
 		# to rename
-    category = models.CharField(max_length=200, default='', verbose_name=_('optional tag'), blank=True,)
+    category = models.CharField(max_length=200, default='', verbose_name='tag', blank=True,)
 
     def __str__(self):
         return self.svg_ref
@@ -223,7 +223,7 @@ class Screen(models.Model):
     name    = models.CharField(max_length=200, default='', verbose_name=_('name'),)
     order   = models.PositiveSmallIntegerField(default=0,  verbose_name=_('display order'),)
 
-    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name=_('max width'),)
+    pixels  = models.PositiveSmallIntegerField(default=0, verbose_name=_('break point'),)
     width   = models.PositiveSmallIntegerField(default=0, verbose_name=_('artboard width'),)
     visible = models.PositiveSmallIntegerField(default=0, verbose_name=_('visible width'),)
     offsetx = models.PositiveSmallIntegerField(default=0, verbose_name=_('x offset'),)
@@ -245,7 +245,7 @@ class Script(models.Model):
     enabled      = models.BooleanField(default=True, verbose_name=_('enabled'),)
     always       = models.BooleanField(default=False, verbose_name=_('always include'),)
 		# to rename
-    category     = models.CharField(max_length=100, default='', verbose_name=_('optional tag'), blank=True,)
+    category     = models.CharField(max_length=100, default='', verbose_name='tag', blank=True,)
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
     instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
 
@@ -299,7 +299,7 @@ class Module(models.Model):
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name=_('screen size'),)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name=_('section'))
 		# to rename
-    tag       = models.CharField(max_length=100, default='', verbose_name=_('optional tag'), blank=True,)
+    tag       = models.CharField(max_length=100, default='', verbose_name='tag', blank=True,)
     zindex    = models.SmallIntegerField(default=0, verbose_name=_('z index'),)
 
     css_id = models.CharField(max_length=200, default='', verbose_name=_('css id'), blank=True,)
@@ -409,7 +409,7 @@ class Page(models.Model):
     url       = alphaLower(max_length=200, default='', verbose_name=_('address'),) 
 
 		# to rename
-    category  = models.CharField(max_length=200, default='', verbose_name=_('optional tag'), blank=True,)
+    category  = models.CharField(max_length=200, default='', verbose_name='tag', blank=True,)
 
     # meta
     notes     = models.TextField(max_length=2000, default='', blank=True, verbose_name=('notes'),)

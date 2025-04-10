@@ -21,6 +21,7 @@ text = _('contents')
 text = _('display order')
 text = _('enabled')
 text = _('illustrator file')
+text = _('illustrator files')
 text = _('included script')
 text = _('included scripts')
 text = _('instructions')
@@ -29,8 +30,6 @@ text = _('instructions notes')
 text = _('link instructions') 
 text = _('load order')
 text = _('name')
-text = _('name filename')
-text = _('optional tag')
 text = _('screen size')
 text = _('script')
 text = _('script content')
@@ -244,6 +243,18 @@ class ModuleScriptInline(admin.TabularInline):
   classes = ['collapse', 'ifempty',]
 
 
+#class AuthorAdmin(admin.ModelAdmin):
+#
+#    list_display = ['profile_photo', 'first_name', 'last_name', 'title']
+#
+#    @admin.display(description='Profile Photo')
+#    def profile_photo(self, obj) :
+#        return '<img src="%s" title="%s" />' % (resize_image(obj.photo, '100x100'), obj.title)
+
+
+
+
+
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
@@ -251,10 +262,18 @@ class ModuleAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent module
-  list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'zindex', 'tag',)
+  list_display = ('name', 'enabled', 'always', 'section', 'screen', 'filename', 'zindex', 'tag_header',)
   list_filter = ('section', 'screen', 'always', 'enabled', 'tag', )
   save_on_top = True
   save_as = True
+
+  @admin.display(description='tag')
+  def tag_header(self,obj) :
+     return obj.tag
+
+# @admin.filter(description='tag')
+# def tag_header(self,obj) :
+#    return obj.tag
 
   fieldsets = [ 
      (_('settings'     ), {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),

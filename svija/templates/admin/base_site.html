@@ -1,3 +1,4 @@
+<!-- /opt/venv/djangoEnv/lib/python3.10/site-packages/django/contrib/admin/templates/admin -->
 {% extends "admin/base.html" %}
 {% load l10n %}
 {% load i18n static %}
@@ -22,13 +23,23 @@
 
 {% block usertools %}
 {% if has_permission %}
+
+<div id="quick-links">
+  <a id=page_button href=/cloud/svija/page/>pages</a><a id=module_button href=/cloud/svija/module/>modules</a>
+</div>
+
 <div id="user-tools">
   <script>
     
 		// address for link in header
-    var hrf = location.href;
-    hrf = hrf.replace('https://', '');
-    hrf = hrf.split('/')[0];
+    var hrf = location.href
+    hrf = hrf.replace('https://', '')
+    hrf = hrf.split('/')[0]
+
+    // strings for clear() function in static/admin/js/clear-cache.js
+    var MSG_CACHE_CLEARED = '{% trans 'cache cleared' %}'
+    var MSG_CACHE_UNABLE  = '{% trans 'unable to clear cache' %}'
+
   </script>
 
   {% block welcome-msg %}
@@ -36,10 +47,10 @@
 
   {% block userlinks %}
     {% if site_url %}
-      <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf); </script></b></a> ∴
+      <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf) </script></b></a> ∴
       <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ∴ -->
     {% endif %}
-    <span id="clearCache"><a href="javascript:clear()">{% trans "Clear Cache" %}</a> ∴ </span>
+    <span id="clearCache"><a href="javascript:clear()">{% trans "clear cache link" %}</a> ∴ </span>
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
     <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.3</a><br>
 
@@ -62,19 +73,3 @@
 
 {% block nav-global %}{% endblock %}
 <!-- /opt/venv/djangoEnv/lib/python3.8/site-packages/django/contrib/admin/templates/admin -->
-
-{% block content_title %}{% if title %}<h1 id='adminTitle'>{{ title }}</h1><script>
-
-if (adminTitle.innerHTML == 'Svija administration') adminTitle.innerHTML = 'Svija Cloud Settings'
-document.title = document.title.replace('Svija administration', 'Settings List')
-
-if (adminTitle.innerHTML == 'Select module to change')
-  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/font/>fonts</a>'
-
-if (adminTitle.innerHTML == 'Select page to change')
-  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/module/>components</a> · <a href=https:/cloud/svija/font/>fonts</a>'
-
-if (adminTitle.innerHTML == 'Select font to change')
-  adminTitle.innerHTML += ' · <a href=https:/cloud/svija/page/>pages</a> · <a href=https:/cloud/svija/module/>components</a>'
-
-</script>{% endif %}{% endblock %}

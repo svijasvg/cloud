@@ -1,4 +1,7 @@
-/*———————————————————————————————————————— clear-cache.js
+
+//:::::::::::::::::::::::::::::::::::::::: clear-cache.js
+
+/*———————————————————————————————————————— notes
 
     Empties the cache when the user clicks on the link
     in the admin header
@@ -14,7 +17,7 @@
 window.addEventListener("load", (event) => {
   if (document.getElementsByTagName('input').length == 0)
     document.getElementById('clearCache').innerHTML = ''
-});
+})
 
 //———————————————————————————————————————— clear()
 
@@ -24,15 +27,15 @@ function clear(){
   // it doesn't make sense but it seems to work so 
   // I won't mess with it 
 
-  var csrfcookie = '';
+  var csrfcookie = ''
   
   if (csrfcookie == '')
-    csrfcookie = document.getElementsByTagName('input')[0].value;
+    csrfcookie = document.getElementsByTagName('input')[0].value
 
 //———————————————————————————————————— data = new FormData()
 
-  let data = new FormData();
-  data.append('message', 'humpty');
+  let data = new FormData()
+  data.append('message', 'humpty')
 
   const request = new Request( '/csync', {
 
@@ -41,27 +44,34 @@ function clear(){
       mode   : 'same-origin',
       body   : data
 
-  });
+  })
 
   fetch(request).then(
     function(response){
       return response.text().then(
         function(text){
-         showAlert(text);
+         showAlert(text)
         }
       )
     }
-  );
+   ).catch(
+     function(text){
+       showAlert(text)
+       return
+     }
+   )
 
-  return false;
+  return false
 }
 
+//:::::::::::::::::::::::::::::::::::: functions
 
 //———————————————————————————————————— showAlert(returnValue){
 
 function showAlert(returnValue){
-  if (returnValue == 1) alert('Cache cleared.');
-  else alert('Unable to clear cache — are you connected to the internet?');
+  if (returnValue == 1) alert(MSG_CACHE_CLEARED)
+  else alert(MSG_CACHE_UNABLE)
 }
 
-//————————————————————————————————————————
+//:::::::::::::::::::::::::::::::::::::::: fin
+
