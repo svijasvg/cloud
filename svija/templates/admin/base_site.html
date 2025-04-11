@@ -11,52 +11,9 @@
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="Admin">
-  <script src="{% static "admin/js/clear-cache.js" %}"></script>
+  <script src="{% static "admin/js/fetch-remote.js" %}"></script>
   <script src="{% static "admin/js/same-page.js" %}"></script>
   <script>
-
-//———————————————————————————————————— tools fetch function
-
-function getRemoteFile(path, callback) {
-
-  path = path + '?' + Math.random()
-
-  const request = new Request( path, {
-    method : 'POST',
-    headers: {'Content-Type': 'text/plain'},
-    mode   : 'cors',
-  })
-
-  fetch(request)
-    .then(
-      function(result){
-        if (result.ok) return result.text()
-        else { console.log(`!result.ok: ${path}`) }
-      }
-    ).then(
-      function(text){
-        if (text != '') callback(text)
-        else{ console.log(`#94 empty file: ${path}`) }
-      }
-   ).catch(
-     function(err){
-       console.log(err)
-       return ''
-     }
-   )
-}
-
-//———————————————————————————————————— getNews()
-
-function getNews(code_lang){
-  getRemoteFile('https://tools.svija.com/index.html', returnFunc)
-}
-
-function returnFunc(txt){
-  document.getElementById('newsMessage').innerHTML = txt
-}
-
-//———————————————————————————————————— fin
 
 </script>
 {% endblock %}
@@ -81,7 +38,7 @@ function returnFunc(txt){
     hrf = hrf.replace('https://', '')
     hrf = hrf.split('/')[0]
 
-    // strings for clear() function in static/admin/js/clear-cache.js
+    // strings for clear() function in static/admin/js/fetch-remote.js
     var MSG_CACHE_CLEARED = '{% trans 'cache cleared' %}'
     var MSG_CACHE_UNABLE  = '{% trans 'unable to clear cache' %}'
 
@@ -95,7 +52,7 @@ function returnFunc(txt){
       <a href="{{ site_url }}" target=_blank><b><script> document.write(hrf) </script></b></a> ∴
       <!-- <a href="{{ site_url }}" target=_blank><b>{% trans 'Visit site' %}</b></a> ∴ -->
     {% endif %}
-    <span id="clearCache"><a href="javascript:clear()">{% trans "clear cache link" %}</a> ∴ </span>
+    <a href="javascript:clearCache()">{% trans "clear cache link" %}</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
     <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.3</a><br>
 

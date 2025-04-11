@@ -1,5 +1,7 @@
 #———————————————————————————————————————— ClearCacheView.py
 #
+# Header set Access-Control-Allow-Origin
+#
 # /csync clears cache, for admins only, launched by Svija Sync
 # or by header in admin pages
 # returns 1 in case of success
