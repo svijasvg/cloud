@@ -13,7 +13,52 @@
   <meta name="apple-mobile-web-app-title" content="Admin">
   <script src="{% static "admin/js/clear-cache.js" %}"></script>
   <script src="{% static "admin/js/same-page.js" %}"></script>
+  <script>
 
+//———————————————————————————————————— tools fetch function
+
+function getRemoteFile(path, callback) {
+
+  path = path + '?' + Math.random()
+
+  const request = new Request( path, {
+    method : 'POST',
+    headers: {'Content-Type': 'text/plain'},
+    mode   : 'cors',
+  })
+
+  fetch(request)
+    .then(
+      function(result){
+        if (result.ok) return result.text()
+        else { console.log(`!result.ok: ${path}`) }
+      }
+    ).then(
+      function(text){
+        if (text != '') callback(text)
+        else{ console.log(`#94 empty file: ${path}`) }
+      }
+   ).catch(
+     function(err){
+       console.log(err)
+       return ''
+     }
+   )
+}
+
+//———————————————————————————————————— getNews()
+
+function getNews(code_lang){
+  getRemoteFile('https://tools.svija.com/index.html', returnFunc)
+}
+
+function returnFunc(txt){
+  document.getElementById('newsMessage').innerHTML = txt
+}
+
+//———————————————————————————————————— fin
+
+</script>
 {% endblock %}
 
 {% block branding %}
@@ -83,18 +128,13 @@
 </style>
 <script>
 
-  var news_en = "<h1>hot news</h1><p>There's a new svija tools available. There's a new svija tools available. There's a new svija tools available. There's a new svija tools available. There's a new svija tools available. There's a new svija tools available.</p>"
-
-  var newContent = '<div id="newsMessage">' + news_en + '</div>'
+  var newContent = '<div id="newsMessage"></div>'
   var oldContent = document.getElementById('header').outerHTML 
   document.getElementById('header').outerHTML = newContent + oldContent
 
+  getNews(navigator.language.substr(0,2))
+
 </script>
-
-
-
-
-
 
 {% endblock %}
 <!-- /opt/venv/djangoEnv/lib/python3.8/site-packages/django/contrib/admin/templates/admin -->
