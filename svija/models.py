@@ -247,7 +247,8 @@ class Script(models.Model):
 		# to rename
     category     = models.CharField(max_length=100, default='', verbose_name='tag', blank=True,)
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
-    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
+#   instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
+    instructions = RichTextField(default='', blank=True, verbose_name=_('instructions notes'),)
 
     def __unicode__(self):
         return self.name
@@ -309,7 +310,8 @@ class Module(models.Model):
 #lass addAiToEnd(models.CharField):
 
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
-    instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
+    #nstructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
+    instructions = RichTextField(default='', blank=True, verbose_name=_('instructions notes'),)
 
     position = models.CharField(max_length=255, default='attached', choices=Choices(*positions), verbose_name=_('floating attached'),)
     corner   = models.CharField(max_length=255, default='top left', choices=Choices(*corners), verbose_name=_('corner position'),)
