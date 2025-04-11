@@ -42,7 +42,7 @@ def generate_links(url, pages, page):
       tag = '<a alt="{4}" href="https://{0}/{1}{2}">{3}</a> · ' # include section
 
     name = this_page.accessibility_name
-    if name == '': name = 'link'
+    if name == '': name = this_page.title
 
 #———————————————————————————————————————— add any pages that aren't dupes (cp/mb) or "missing"
 
