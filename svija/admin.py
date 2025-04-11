@@ -210,7 +210,7 @@ class ScriptAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
      (_('settings'), {'fields': [('name', 'enabled',),('category', 'always',), ], 'description':descScript, }),
-     (_('instructions') , {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty',],'description':descLinkInstr, }),
+     (_('instructions') , {'fields': [('instructions', 'url', ),], 'classes': ['collapse', 'ifempty',],'description':descLinkInstr, }),
   ]   
 
   inlines = [ScriptScriptsInline]
@@ -244,18 +244,6 @@ class ModuleScriptInline(admin.TabularInline):
   classes = ['collapse', 'ifempty',]
 
 
-#class AuthorAdmin(admin.ModelAdmin):
-#
-#    list_display = ['profile_photo', 'first_name', 'last_name', 'title']
-#
-#    @admin.display(description='Profile Photo')
-#    def profile_photo(self, obj) :
-#        return '<img src="%s" title="%s" />' % (resize_image(obj.photo, '100x100'), obj.title)
-
-
-
-
-
 from .models import Module
 class ModuleAdmin(admin.ModelAdmin):
 
@@ -278,7 +266,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
      (_('settings'     ), {'fields': [('name', 'enabled','always'),('tag', 'screen'), ('css_id', 'section',), ('filename','zindex', ),], 'description':descModules, }),
-     (_('instructions' ), {'fields': [('url', 'instructions'),], 'classes': ['collapse', 'ifempty', ],'description':descLinkInstr, }),
+     (_('instructions' ), {'fields': [('instructions', 'url'),], 'classes': ['collapse', 'ifempty', ],'description':descLinkInstr, }),
      (_('placement'    ), {'fields': [('offsetx', 'corner', ), ( 'offsety', 'position', ),],'description': positdesc,}),
   ]   
 
