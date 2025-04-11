@@ -109,7 +109,8 @@ class FontAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
+#   (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
+    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'weight',), ('style', 'woff',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
 
   ]   
 
