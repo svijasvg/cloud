@@ -21,18 +21,19 @@
 
 pageLoaded = false;
 
-{{ system_js                               }}
+{{ system_js                           }}
 {% include "svija/js/cookies.js"       %}
 {% include "svija/js/screens.js"       %}
-{{ redirect_js                             }}
+{{ redirect_js                         }}
 {% include "svija/js/window_mgmt.js"   %}
 {% include "svija/js/sections.js"      %}
 {% include "svija/js/tap_highlight.js" %}
-{{ page_head_js                            }}
-{{ comp_head_js                            }}
+{{ page_head_js                        }}
+{{ comp_head_js                        }}
 </script>
 <style>
 {% include "svija/css/svija.css"       %}
+{% include "svija/css/vibe.css"        %}
 {{ font_css }}
 {{ page_css }}
 {{ comp_css }}
@@ -76,6 +77,8 @@ pageLoaded = false;
 <script>// page BG & scroll div
 
   {% include "svija/js/page_background.js" %}
+  {% include "svija/js/vibe_check.js" %}
+  {% include "svija/js/vibe.js" %}
 
   document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;
