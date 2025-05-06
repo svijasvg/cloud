@@ -68,6 +68,8 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
 
 #———————————————————————————————————————— admin signed in?
 
+    # doesn't work in Chrome
+
     if user.is_superuser:
       system_js += "var admin=true\n"
 

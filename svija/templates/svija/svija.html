@@ -85,4 +85,10 @@ pageLoaded = false;
 
 </script>
 
+{% if request.user.is_staff %}
+{% include  "svija/css/cloud_module.css"  %}
+{% include "svija/html/cloud_module.html" %}
+{% include   "svija/js/cloud_module.js"   %}
+{% endif %}
+
 </body></html>{% endautoescape %}
