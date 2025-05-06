@@ -1,10 +1,13 @@
 <style>
 
+/*———————————————————————————————————————— cloud_module.css */
+
 #cloudModule{
+  font-size:16rem;
   position:absolute;
   top:0;
-  left:0;
-  width:200px;
+  margin-left:auto; margin-right:auto;
+  width:50%;
   height:100px;
   background-color:lime;
 }
