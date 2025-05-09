@@ -17,6 +17,25 @@
     this script handles the PAGES and MOBILE link */
 
 
+//:::::::::::::::::::::::::::::::::::::::: CSS styles
+
+/*———————————————————————————————————————— system JS
+
+var svija_version='2.3.3'
+var section_code = "en"
+var screen_code = "cp"
+var page_pk = 94
+var milliseconds = "1746793412577319970"
+var all_screens = [[0, "cp"], [500, "mb"]] // WHAT IS THIS CALLED?
+var tracking_on = false
+var page_url = 'https://dev.svija.love/en/home'
+var admin=true
+var page_width = 1680
+var visible_width = 1200
+var page_offsetx = 240
+var page_offsety = 0 */
+
+
 //:::::::::::::::::::::::::::::::::::::::: link functions
 
 /*———————————————————————————————————————— page link
@@ -25,7 +44,7 @@
     visited  — modules & fonts are just regular links
     page_pk is in system js */
 
-function func_cloudComponentPages(){
+function cloudComponentPages(){
   window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank').focus()
 }
 
@@ -37,14 +56,38 @@ function func_cloudComponentPages(){
     cloudForce is used by templates/svija/js/screens.js
     to NOT redirect if used */
 
-function func_cloudComponentVersion(){
-  alert('relocating')
-  return true
-
+function cloudComponentVersion(){
   if (all_screens.length < 2)
     return true
 
-  code = convertCode(code)
+  var this_screen = 0
+
+  for(let [key, value] of Object.entries(all_screens)) {
+    alert(key+'::'+value)
+  }
+
+//for (var x=0; x<all_screens.length; x++){
+//  if (all_screens[x].value == code)
+//    this_screen = x
+//}
+
+  // switch between biggest & smallest
+  // https://stackoverflow.com/questions/7196212/how-to-create-a-dictionary-and-add-key-value-pairs-dynamically-in-javascript
+  // https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
+
+
+
+
+
+
+
+
+
+
+// we don't have code — it was sent by the module svg. Now we need to deduce it.
+
+  return true
+
   localStorage.screen_code = code
   setCookie('screen_code', code, 7)
 

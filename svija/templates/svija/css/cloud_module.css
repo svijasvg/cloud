@@ -1,15 +1,161 @@
+
 <style>
 
 /*———————————————————————————————————————— cloud_module.css */
 
-#cloudModule{
-  font-size:16rem;
-  position:absolute;
-  top:0;
-  margin-left:auto; margin-right:auto;
-  width:50%;
-  height:100px;
-  background-color:lime;
+@font-face {
+  font-family:'cloudModuleFont';
+  src:url('/static/svija/woff/Montserrat-Medium.woff') format('woff');
+ }
+
+/*———————————————————————————————————————— size-independent */
+
+div#cloudModule{
+
+  position:fixed;
+  transition:0.5s;
+  background-clip: padding-box;
+
+/* left & width set by JS */
+
+  background-color:#404040;
+  color:#d0d0d0;
+
+  text-align:center;
 }
 
+
+
+/*———————————————————————————————————————— link appearance */
+
+div#cloudModule{
+  font-family:cloudModuleFont;
+  letter-spacing:0.8rem;
+}
+
+div#cloudModule a:link, div#cloudModule a:visited{
+  color:#fff;
+  opacity:0.8;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+
+div#cloudModule a:hover, div#cloudModule a:active{
+  opacity:1;
+  text-decoration:none;
+}
+
+/*———————————————————————————————————————— size-dependent SMALL */
+
+@media screen and ( max-width: 700px ){
+
+  div#cloudModule{
+    height:5.6vw;
+    top:-2.8vw;
+    left:15vw;
+    width:70vw;
+    padding-left:0;
+    padding-right:0;
+    background-color:#404040;
+    border-bottom:2vw solid #0000; /* easier to click */
+  }
+
+  div#cloudModule:hover{
+    top:0;
+  }
+
+  div#cloudModule{
+    padding-top:0.4vw;
+    font-size:2.2vw;
+  }
+
+  div#cloudModule img{
+    width:9.0vw;
+    margin-right:2vw;
+    vertical-align:-0.29vw; /* +up  -down */
+  }
+
+
+}
+
+/*———————————————————————————————————————— size-dependent LARGE */
+
+@media screen and ( min-width: 700px ){
+
+  div#cloudModule{
+    height:2.3vw;
+    top:-1.5vw;
+    left:29vw;
+    width:42vw;
+    padding-left:4vw;
+    padding-right:4vw;
+    background-color:#404040;
+    border-bottom:0.5vw solid #0000; /* easier to click */
+  }
+
+  div#cloudModule:hover{
+    top:0;
+  }
+
+  div#cloudModule{
+    font-size:1vw;
+    padding-top:0.25vw;
+  }
+
+  div#cloudModule img{
+    width:5.0vw;
+    margin-right:1.0vw;
+    vertical-align:-0.24vw; /* +up  -down */
+  }
+
+}
+
+
+/*
+
+  font-family:cloudModuleFont;
+  letter-spacing:0.8rem;
+
+  border-bottom:4rem solid #0000; /* easier to click */
+}
+
+/* div#cloudModule{
+
+
+  padding-top:3rem;
+  font-size:16rem;
+  font-size:9.5rem;
+  line-height:11rem;
+}
+
+
+/*———————————————————————————————————————— size-dependent */
+
+/* @media screen and ( min-width: 1000px ){
+  div#cloudModule{
+    background-color:#404040;
+  }
+}
+
+@media screen and ( max-width: 1000px ){
+
+  div#cloudModule{
+    background-color:lime;
+  }
+
+}
+
+/*———————————————————————————————————————— size-independent */
+
+/*div#cloudModule img{
+  width:49.66rem;
+  margin-right:10rem;
+  height:12rem;
+  vertical-align:-2.5rem;
+}
+
+
+/*———————————————————————————————————————— fin */
+
 </style>
+
