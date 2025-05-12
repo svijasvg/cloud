@@ -30,7 +30,7 @@ div#cloudModule{
 
 div#cloudModule{
   font-family:cloudModuleFont;
-  letter-spacing:0.8rem;
+  letter-spacing:0.20vw;
 }
 
 div#cloudModule a:link, div#cloudModule a:visited{
@@ -65,7 +65,7 @@ div#cloudModule a:hover, div#cloudModule a:active{
   }
 
   div#cloudModule{
-    padding-top:0.4vw;
+    padding-top:0.45vw;
     font-size:2.2vw;
   }
 
@@ -83,8 +83,8 @@ div#cloudModule a:hover, div#cloudModule a:active{
 @media screen and ( min-width: 700px ){
 
   div#cloudModule{
-    height:2.3vw;
-    top:-1.5vw;
+    height:2.0vw;
+    top:-1.3vw;
     left:29vw;
     width:42vw;
     padding-left:4vw;
@@ -98,60 +98,16 @@ div#cloudModule a:hover, div#cloudModule a:active{
   }
 
   div#cloudModule{
-    font-size:1vw;
-    padding-top:0.25vw;
+    font-size:0.7vw;
+    padding-top:0.24vw;
   }
 
   div#cloudModule img{
-    width:5.0vw;
+    width:4.2vw;
     margin-right:1.0vw;
     vertical-align:-0.24vw; /* +up  -down */
   }
 
-}
-
-
-/*
-
-  font-family:cloudModuleFont;
-  letter-spacing:0.8rem;
-
-  border-bottom:4rem solid #0000; /* easier to click */
-}
-
-/* div#cloudModule{
-
-
-  padding-top:3rem;
-  font-size:16rem;
-  font-size:9.5rem;
-  line-height:11rem;
-}
-
-
-/*———————————————————————————————————————— size-dependent */
-
-/* @media screen and ( min-width: 1000px ){
-  div#cloudModule{
-    background-color:#404040;
-  }
-}
-
-@media screen and ( max-width: 1000px ){
-
-  div#cloudModule{
-    background-color:lime;
-  }
-
-}
-
-/*———————————————————————————————————————— size-independent */
-
-/*div#cloudModule img{
-  width:49.66rem;
-  margin-right:10rem;
-  height:12rem;
-  vertical-align:-2.5rem;
 }
 
 

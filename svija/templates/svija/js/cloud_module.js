@@ -26,7 +26,7 @@ var section_code = "en"
 var screen_code = "cp"
 var page_pk = 94
 var milliseconds = "1746793412577319970"
-var all_screens = [[0, "cp"], [500, "mb"]] // WHAT IS THIS CALLED?
+var all_screens = [[0, "cp"], [500, "mb"]]
 var tracking_on = false
 var page_url = 'https://dev.svija.love/en/home'
 var admin=true
@@ -37,6 +37,10 @@ var page_offsety = 0 */
 
 
 //:::::::::::::::::::::::::::::::::::::::: link functions
+
+/*———————————————————————————————————————— update link name to mobile/desktop
+
+      */
 
 /*———————————————————————————————————————— page link
 
@@ -56,40 +60,24 @@ function cloudComponentPages(){
     cloudForce is used by templates/svija/js/screens.js
     to NOT redirect if used */
 
+// get screen code which does not equal current screen code and THAT'S IT
+
 function cloudComponentVersion(){
   if (all_screens.length < 2)
     return true
 
-  var this_screen = 0
+  var new_code = screen_code
 
-  for(let [key, value] of Object.entries(all_screens)) {
-    alert(key+'::'+value)
+  for (var x=0; x<all_screens.length; x++) {
+    var code = all_screens[x][1]
+    if (code != screen_code)
+      new_code = code
   }
 
-//for (var x=0; x<all_screens.length; x++){
-//  if (all_screens[x].value == code)
-//    this_screen = x
-//}
+//alert(`screen code: ${screen_code}\nnew_code: ${new_code}`)
 
-  // switch between biggest & smallest
-  // https://stackoverflow.com/questions/7196212/how-to-create-a-dictionary-and-add-key-value-pairs-dynamically-in-javascript
-  // https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
-
-
-
-
-
-
-
-
-
-
-// we don't have code — it was sent by the module svg. Now we need to deduce it.
-
-  return true
-
-  localStorage.screen_code = code
-  setCookie('screen_code', code, 7)
+  localStorage.screen_code = new_code
+  setCookie('screen_code', new_code, 7)
 
   window.location.replace(document.URL)
 }
