@@ -39,8 +39,9 @@ var page_offsety = 0 */
 //:::::::::::::::::::::::::::::::::::::::: link functions
 
 /*———————————————————————————————————————— update link name to mobile/desktop
+    */
 
-      */
+cloudModuleScreenName.innerHTML = getCurrentScreenCodeName()
 
 /*———————————————————————————————————————— page link
 
@@ -52,7 +53,7 @@ function cloudComponentPages(){
   window.open("/cloud/svija/page/"+page_pk+"/change/", '_blank').focus()
 }
 
-/*———————————————————————————————————————— mobile/desktop link
+/*———————————————————————————————————————— changeScreenCode()
 
     used to redirect to mobile or desktop on the opposite
     platform. cookieName is a supplied variable
@@ -62,7 +63,7 @@ function cloudComponentPages(){
 
 // get screen code which does not equal current screen code and THAT'S IT
 
-function cloudComponentVersion(){
+function changeScreenCode(){
   if (all_screens.length < 2)
     return true
 
@@ -84,6 +85,20 @@ function cloudComponentVersion(){
 
 
 //:::::::::::::::::::::::::::::::::::::::: utility functions
+
+/*———————————————————————————————————————— getScreenCodeName()
+    */
+
+function getCurrentScreenCodeName(){
+  var otherScreenCodeName = 'screen'
+
+  for (var x=0; x<all_screens.length; x++) {
+    var code = all_screens[x][1]
+    if (code != screen_code)
+      otherScreenCodeName = all_screens[x][2]
+  }
+  return otherScreenCodeName
+}
 
 /*———————————————————————————————————————— convertCode(code)
 
