@@ -18,13 +18,15 @@ Reused translations are listed at the top of `admin.py`.
 
 if necessary copy to the opposite language
 
-4. django-admin compilemessages
+4. `django-admin compilemessages`
 
 Then for each site:
 
-5. ./manage.py makemigrations
-6. ./manage.py migrate
-7. service uwsgi restart
+5. `./manage.py makemigrations`
+6. `./manage.py migrate`
+7. `service uwsgi restart`
+
+How to change strings in templates? how to change strings in JS?
 
 ---
 ### Useful Links
