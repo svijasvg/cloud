@@ -10,20 +10,6 @@
 
 # on_delete: stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
 
-#———————————————————————————————————————— localization
-#
-#   1. modifiy this file by adding _( 'string' )
-#      close the file
-#   2. django-admin makemessages --all
-#   3. vi -O models.py locale/en/*/*.po
-#
-#   if necessary copy to the opposite language
-#
-#   4. django-admin compilemessages
-#   5. ./manage.py makemigrations
-#   6. ./manage.py migrate
-#   7. service uwsgi restart
-#
 #———————————————————————————————————————— imports
 
 
