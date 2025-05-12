@@ -28,6 +28,8 @@ Then for each site:
 
 How to change strings in templates? how to change strings in JS?
 
+Strings in templates: `{{ _('key_string') }}`
+
 ---
 ### Useful Links
 
