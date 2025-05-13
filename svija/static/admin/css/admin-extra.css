@@ -780,6 +780,8 @@ a#page_button:hover, a#page_button:active, a#module_button:hover, a#module_butto
   opacity:100%
 }
 
+@media screen and ( max-width: 700px ){
+}
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
 
