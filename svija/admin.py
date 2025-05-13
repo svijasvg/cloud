@@ -298,7 +298,7 @@ class SettingsAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
-    (_('Svija Cloud colors'), {'fields': [('color_main', 'color_accent', 'color_dark',),],'description': descColors,}),
+    (_('Svija Cloud colors'), {'fields': [('color_main', 'color_dark', 'color_accent',),],'description': descColors,}),
     (_('email sending'   ), {'fields': [('mail_id', 'mail_pass'), ('mail_srv','mail_port','mail_tls'),'notes',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   

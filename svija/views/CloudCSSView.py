@@ -1,3 +1,4 @@
+
 #———————————————————————————————————————— CloudCSSView.py
 
 from django.http import HttpResponse
@@ -10,12 +11,13 @@ def CloudCSSView(request):
     color_accent = settings.color_accent
     color_dark = settings.color_dark
 
-    response = "--main:{} --accent:{}; --dark:{};"
+    response = "--main:{}; --accent:{}; --dark:{};"
 
     response = response.format(color_main, color_accent, color_dark)
 
     response = ":root { " +response + " }"
 
-    return HttpResponse(response, content_type='text/plain; charset=utf8')
+    return HttpResponse(response, content_type='text/css; charset=utf8')
 
 #———————————————————————————————————————— fin
+
