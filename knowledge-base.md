@@ -7,6 +7,30 @@
 
 ### Knowledge Base
 
+### News Header
+
+To add a message to the cloud header, update the following html files:
+- `https://cloud.svija.com/en/`
+- `https://cloud.svija.com/fr/`
+
+All CSS needs to be included. Do not include head/body tags. SSH to `apache.svija.com` then:
+```
+vi -O */index.html
+```
+
+static/admin/js/fetch-remote.js` contains:
+```
+function getNews(code_lang){
+  if (code_lang != 'fr') code_lang = 'en'
+  getRemoteFile(`https://cloud.svija.com/${code_lang}/index.html`, updateNews)
+}
+
+function updateNews(txt){
+  document.getElementById('newsMessage').innerHTML = txt
+}
+```
+
+---
 ### Localization
 
 Reused translations are listed at the top of `admin.py`.
