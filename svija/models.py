@@ -72,6 +72,12 @@ class UrlField(models.CharField):                                              #
         value = re.sub("[^A-Za-z0-9-_]","",value)
         return value.lower()
 
+class slashOrHTTPS(models.CharField):         # for redirects
+    def get_prep_value(self, value):
+        if value[0:4] != 'http' and value[0:1] != '/':
+          value = '/' + value
+        return value.lower()
+
 #———————————————————————————————————————— control · no dependencies
 
 # _h fields are not in admin, but are updated when password is correct by cache_per_user module
@@ -95,7 +101,8 @@ class Control(models.Model):
 
 class Redirect(models.Model): 
     enabled = models.BooleanField(default=True, verbose_name=_('redirect enabled'),)
-    from_url = models.CharField(max_length=200, default='', verbose_name=_('from URL'))
+    from_url = slashOrHTTPS(max_length=200, default='', verbose_name=_('from URL'))
+#        url   = alphaLower(max_length=200, default='', verbose_name=_('address'),) 
     to_url = models.CharField(max_length=200, default='', verbose_name=_('to URL'))
 
     def __str__(self):
