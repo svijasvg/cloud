@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-12 15:11+0200\n"
+"POT-Creation-Date: 2025-05-13 10:03+0200\n"
 "PO-Revision-Date: 2025-04-10 10:19+0200\n"
 "Last-Translator: Andrew Swift <andy@svija.com>>\n"
 "Language-Team: LANGAGE <LL@li.org>\n"
@@ -20,28 +20,28 @@ msgstr ""
 
 # :::::::::::::::::::::::::::::::::::::::: admin.py
 # ———————————————————————————————————————— multiple uses
-#: admin.py:17 admin.py:41 admin.py:198 admin.py:241 admin.py:341 models.py:488
+#: admin.py:17 admin.py:41 admin.py:198 admin.py:241 admin.py:342 models.py:492
 msgid "scripts"
 msgstr "scripts"
 
-#: admin.py:18 models.py:232 models.py:285
+#: admin.py:18 models.py:231 models.py:284
 msgid "always include"
 msgstr "always include"
 
-#: admin.py:19 models.py:213 models.py:420
+#: admin.py:19 models.py:212 models.py:424
 msgid "artboard width"
 msgstr "artboard width"
 
-#: admin.py:20 models.py:336 models.py:480
+#: admin.py:20 models.py:335 models.py:484
 msgid "contents"
 msgstr "contents"
 
-#: admin.py:21 models.py:168 models.py:210
+#: admin.py:21 models.py:167 models.py:209
 msgid "display order"
 msgstr "display order"
 
-#: admin.py:22 models.py:231 models.py:256 models.py:283 models.py:324
-#: models.py:393 models.py:442 models.py:454 models.py:468 models.py:482
+#: admin.py:22 models.py:230 models.py:255 models.py:282 models.py:323
+#: models.py:397 models.py:446 models.py:458 models.py:472 models.py:486
 msgid "enabled"
 msgstr "enabled"
 
@@ -49,19 +49,19 @@ msgstr "enabled"
 msgid "fonts"
 msgstr "fonts"
 
-#: admin.py:24 models.py:293 models.py:472
+#: admin.py:24 models.py:292 models.py:476
 msgid "illustrator file"
 msgstr "illustrator file"
 
-#: admin.py:25 admin.py:334 models.py:473
+#: admin.py:25 admin.py:335 models.py:477
 msgid "illustrator files"
 msgstr "Illustrator Files"
 
-#: admin.py:26 models.py:262 models.py:263 models.py:329
+#: admin.py:26 models.py:261 models.py:262 models.py:328
 msgid "included script"
 msgstr "included script"
 
-#: admin.py:27 models.py:330
+#: admin.py:27 models.py:329
 msgid "included scripts"
 msgstr "included scripts"
 
@@ -69,11 +69,11 @@ msgstr "included scripts"
 msgid "instructions"
 msgstr "Instructions"
 
-#: admin.py:29 models.py:235 models.py:298
+#: admin.py:29 models.py:234 models.py:297
 msgid "instructions link"
 msgstr "link"
 
-#: admin.py:30 models.py:237 models.py:300
+#: admin.py:30 models.py:236 models.py:299
 msgid "instructions notes"
 msgstr "notes"
 
@@ -83,44 +83,44 @@ msgstr ""
 "Usage notes and link to instructions at <a href=https://tech.svija.com "
 "target=_blank>tech.svija.com</a>"
 
-#: admin.py:32 models.py:255 models.py:323 models.py:481
+#: admin.py:32 models.py:254 models.py:322 models.py:485
 msgid "load order"
 msgstr "load order"
 
-#: admin.py:33 models.py:164 models.py:209 models.py:282 models.py:335
-#: models.py:479
+#: admin.py:33 models.py:163 models.py:208 models.py:281 models.py:334
+#: models.py:483
 msgid "name"
 msgstr "name"
 
-#: admin.py:34 models.py:222 models.py:286 models.py:394
+#: admin.py:34 models.py:221 models.py:285 models.py:398
 msgid "screen size"
 msgstr "screen size"
 
-#: admin.py:35 admin.py:197 admin.py:240 admin.py:340 models.py:487
+#: admin.py:35 admin.py:197 admin.py:240 admin.py:341 models.py:491
 msgid "script"
 msgstr "script"
 
-#: admin.py:36 models.py:254 models.py:322
+#: admin.py:36 models.py:253 models.py:321
 msgid "script content"
 msgstr "content"
 
-#: admin.py:37 models.py:253 models.py:321
+#: admin.py:37 models.py:252 models.py:320
 msgid "script name"
 msgstr "name"
 
-#: admin.py:38 admin.py:325 models.py:245 models.py:453
+#: admin.py:38 admin.py:326 models.py:244 models.py:457
 msgid "script library"
 msgstr "script library"
 
-#: admin.py:39 admin.py:326
+#: admin.py:39 admin.py:327
 msgid "script libraries"
 msgstr "Script Libraries"
 
-#: admin.py:40 models.py:252 models.py:320 models.py:478
+#: admin.py:40 models.py:251 models.py:319 models.py:482
 msgid "script type"
 msgstr "type"
 
-#: admin.py:42 models.py:201 models.py:287 models.py:395
+#: admin.py:42 models.py:200 models.py:286 models.py:399
 msgid "section"
 msgstr "Section"
 
@@ -129,23 +129,23 @@ msgstr "Section"
 msgid "settings"
 msgstr "settings"
 
-#: admin.py:44 models.py:170 models.py:407
+#: admin.py:44 models.py:169 models.py:411
 msgid "title"
 msgstr "title"
 
-#: admin.py:45 models.py:214 models.py:421
+#: admin.py:45 models.py:213 models.py:425
 msgid "visible width"
 msgstr "visible width"
 
-#: admin.py:46 models.py:215 models.py:304 models.py:422
+#: admin.py:46 models.py:214 models.py:303 models.py:426
 msgid "x offset"
 msgstr "X offset"
 
-#: admin.py:47 models.py:216 models.py:305 models.py:423
+#: admin.py:47 models.py:215 models.py:304 models.py:427
 msgid "y offset"
 msgstr "Y offset"
 
-#: admin.py:48 models.py:290 models.py:441 models.py:467
+#: admin.py:48 models.py:289 models.py:445 models.py:471
 msgid "z index"
 msgstr "Z index"
 
@@ -252,399 +252,421 @@ msgstr ""
 "url target=_blank>tech.svija.com/url</a> · <a href=https://tech.svija.com/"
 "programs/cloud/settings target=_blank>documentation↑</a>"
 
+# ———————————————————————————————————————— robots
+#: admin.py:281
+msgid "descColors"
+msgstr ""
+"Change the colors of this interface by entering valid CSS colors"
+
 #: admin.py:300
 msgid "website settings"
 msgstr "settings"
 
 #: admin.py:301
+msgid "Svija Cloud colors"
+msgstr ""
+
+#: admin.py:302
 msgid "email sending"
 msgstr "Email Sending"
 
 # ———————————————————————————————————————— page
-#: admin.py:346
+#: admin.py:347
 msgid "descPages"
 msgstr ""
 "Settings specific to this page · <a href=https://tech.svija.com/programs/"
 "cloud/pages target=_blank>documentation↑</a>"
 
-#: admin.py:375
+#: admin.py:376
 msgid "page setup"
 msgstr "page setup"
 
-#: admin.py:380
+#: admin.py:381
 msgid "more page settings"
 msgstr "More Settings"
 
 # :::::::::::::::::::::::::::::::::::::::: models.py
 # ———————————————————————————————————————— script types
-#: models.py:34
+#: models.py:33
 msgid "css script"
 msgstr "CSS"
 
-#: models.py:35
+#: models.py:34
 msgid "head js script"
 msgstr "head JS"
 
-#: models.py:36
+#: models.py:35
 msgid "body js script"
 msgstr "body JS"
 
-#: models.py:37
+#: models.py:36
 msgid "html script"
 msgstr "HTML"
 
-#: models.py:38
+#: models.py:37
 msgid "form script"
 msgstr "form"
 
 # ———————————————————————————————————————— redirect
-#: models.py:98
+#: models.py:97
 msgid "redirect enabled"
 msgstr "enabled"
 
-#: models.py:99
+#: models.py:98
 msgid "from URL"
 msgstr "from address"
 
-#: models.py:100
+#: models.py:99
 msgid "to URL"
 msgstr "to address"
 
-#: models.py:105
+#: models.py:104
 msgid "url redirect"
 msgstr "redirect"
 
-#: models.py:106
+#: models.py:105
 msgid "url redirects model list"
 msgstr "3.2 · Redirects"
 
 # ———————————————————————————————————————— font
-#: models.py:111
+#: models.py:110
 msgid "svg name"
 msgstr "SVG name"
 
-#: models.py:112
+#: models.py:111
 msgid "font family"
 msgstr "family"
 
-#: models.py:113
+#: models.py:112
 msgid "font weight"
 msgstr "weight"
 
-#: models.py:114
+#: models.py:113
 msgid "font style"
 msgstr "style"
 
-#: models.py:115
+#: models.py:114
 msgid "woff name"
 msgstr "WOFF filename"
 
-#: models.py:117
+#: models.py:116
 msgid "google font"
 msgstr "Google font"
 
-#: models.py:118
+#: models.py:117
 msgid "font enabled"
 msgstr "enabled"
 
-#: models.py:119
+#: models.py:118
 msgid "adobe link"
 msgstr "Adobe link"
 
-#: models.py:120
+#: models.py:119
 msgid "adobe url"
 msgstr "Adobe font file URL"
 
-#: models.py:121
+#: models.py:120
 msgid "adobe contents"
 msgstr "Adobe CSS"
 
-#: models.py:130
+#: models.py:129
 msgid "font"
 msgstr "font"
 
-#: models.py:131
+#: models.py:130
 msgid "font model list"
 msgstr "2.3 · Fonts"
 
 # ———————————————————————————————————————— section
-#: models.py:161
+#: models.py:160
 msgid "section address"
 msgstr "address"
 
-#: models.py:162
+#: models.py:161
 msgid "language code"
-msgstr "language"
+msgstr "language code"
 
-#: models.py:163
+#: models.py:162
 msgid "section enabled"
 msgstr "enabled"
 
-#: models.py:166
+#: models.py:165
 msgid "default page"
 msgstr "default page"
 
-#: models.py:171
+#: models.py:170
 msgid "iphone icon"
 msgstr "iPhone Icon"
 
-#: models.py:173
+#: models.py:172
 msgid "destination email"
 msgstr "recipient"
 
-#: models.py:174
+#: models.py:173
 msgid "bcc address"
 msgstr "BCC address"
 
-#: models.py:175
+#: models.py:174
 msgid "email subject"
 msgstr "subject"
 
-#: models.py:177
+#: models.py:176
 msgid "return address label"
 msgstr "return address label"
 
-#: models.py:180
+#: models.py:179
 msgid "name label"
 msgstr "name"
 
-#: models.py:181
+#: models.py:180
 msgid "business label"
 msgstr "business"
 
-#: models.py:182
+#: models.py:181
 msgid "email label"
 msgstr "email address"
 
-#: models.py:183
+#: models.py:182
 msgid "message label"
 msgstr "message"
 
-#: models.py:184
+#: models.py:183
 msgid "send label"
 msgstr "send button"
 
-#: models.py:187
+#: models.py:186
 msgid "initial status"
 msgstr "initial status"
 
-#: models.py:188
+#: models.py:187
 msgid "sending status"
 msgstr "sending status"
 
-#: models.py:189
+#: models.py:188
 msgid "sent status"
 msgstr "sent status"
 
-#: models.py:192
+#: models.py:191
 msgid "email sent alert"
 msgstr "email sent (alert)"
 
-#: models.py:193
+#: models.py:192
 msgid "send failed alert"
 msgstr "sending failed (alert)"
 
-#: models.py:195
+#: models.py:194
 msgid "source code message"
 msgstr "Source Code Message"
 
-#: models.py:202
+#: models.py:201
 msgid "section model list"
 msgstr "1.3 · Sections"
 
 # ———————————————————————————————————————— screen
-#: models.py:208
+#: models.py:207
 msgid "artboard code"
 msgstr "artboard name"
 
-#: models.py:212
+#: models.py:211
 msgid "break point"
 msgstr "break point"
 
-#: models.py:223
+#: models.py:222
 msgid "screen size model list"
 msgstr "1.2 · Screen Sizes"
 
 # ———————————————————————————————————————— script library
-#: models.py:230
+#: models.py:229
 msgid "script library name"
 msgstr "name"
 
 # ———————————————————————————————————————— script library
-#: models.py:246
+#: models.py:245
 msgid "script library model list"
 msgstr "3.1 · Script Libraries"
 
 # ———————————————————————————————————————— module
-#: models.py:268
+#: models.py:267
 msgid "position attached"
 msgstr "attached"
 
-#: models.py:269
+#: models.py:268
 msgid "position floating"
 msgstr "floating"
 
-#: models.py:270
+#: models.py:269
 msgid "position none"
 msgstr "none"
 
-#: models.py:274
+#: models.py:273
 msgid "top left"
 msgstr "top left"
 
-#: models.py:275
+#: models.py:274
 msgid "top right"
 msgstr "top right"
 
-#: models.py:276
+#: models.py:275
 msgid "bottom left"
 msgstr "bottom left"
 
-#: models.py:277
+#: models.py:276
 msgid "bottom right"
 msgstr "bottom right"
 
-#: models.py:292
+#: models.py:291
 msgid "css id"
 msgstr "CSS ID"
 
-#: models.py:302
+#: models.py:301
 msgid "floating attached"
 msgstr "floating/attached"
 
-#: models.py:303
+#: models.py:302
 msgid "corner position"
 msgstr "corner"
 
-#: models.py:314
+#: models.py:313
 msgid "module model list"
 msgstr "2.2 · Modules"
 
 # ———————————————————————————————————————— robots
-#: models.py:342
+#: models.py:341
 msgid "robots.txt file"
 msgstr "robots.txt"
 
-#: models.py:343
+#: models.py:342
 msgid "robots model list"
 msgstr "3.3 · Robots.txt"
 
 # ———————————————————————————————————————— settings
-#: models.py:364
+#: models.py:363
 msgid "default section"
 msgstr "default section"
 
-#: models.py:366
+#: models.py:365
 msgid "on line"
-msgstr "on line"
+msgstr "online"
 
-#: models.py:367
+#: models.py:366
 msgid "site url"
 msgstr "URL"
 
-#: models.py:368
+#: models.py:367
 msgid "display p3"
 msgstr "\"Display P3\" color"
 
-#: models.py:370
+#: models.py:369
 msgid "analytics id"
 msgstr "analytics ID"
 
-#: models.py:371
+#: models.py:370
 msgid "cookies allowed"
 msgstr "cookies allowed"
 
-#: models.py:372
+#: models.py:371
 msgid "maps api key"
 msgstr "Google Maps API key"
 
+#: models.py:374
+msgid "main color"
+msgstr "main color"
+
 #: models.py:375
+msgid "accent color"
+msgstr "accent color"
+
+#: models.py:376
+msgid "dark color"
+msgstr "dark color"
+
+#: models.py:379
 msgid "email username"
 msgstr "username"
 
-#: models.py:376
+#: models.py:380
 msgid "email password"
 msgstr "password"
 
-#: models.py:377
+#: models.py:381
 msgid "email server"
 msgstr "SMTP server"
 
-#: models.py:378
+#: models.py:382
 msgid "email server port"
 msgstr "port"
 
-#: models.py:379
+#: models.py:383
 msgid "use tls"
 msgstr "use TLS"
 
-#: models.py:380
+#: models.py:384
 msgid "notes"
 msgstr "notes"
 
-#: models.py:386
+#: models.py:390
 msgid "website"
 msgstr "website"
 
-#: models.py:387
+#: models.py:391
 msgid "website settings model list"
 msgstr "1.1 · URL & Settings"
 
 # ———————————————————————————————————————— page
-#: models.py:397
+#: models.py:401
 msgid "address"
 msgstr "address"
 
-#: models.py:404
+#: models.py:408
 msgid "publication date"
 msgstr "publication date"
 
-#: models.py:410
+#: models.py:414
 msgid "link name"
 msgstr "name"
 
-#: models.py:411
+#: models.py:415
 msgid "accessibility content"
 msgstr "accessibility content"
 
-#: models.py:413
+#: models.py:417
 msgid "default modules"
 msgstr "default modules"
 
-#: models.py:414
+#: models.py:418
 msgid "default scripts"
 msgstr "default scripts"
 
-#: models.py:419
+#: models.py:423
 msgid "default dimensions"
 msgstr "default dimensions"
 
-#: models.py:431
+#: models.py:435
 msgid "page"
 msgstr "page"
 
-#: models.py:432
+#: models.py:436
 msgid "page model list"
 msgstr "2.1 · Pages"
 
 # ———————————————————————————————————————— page models
-#: models.py:446
+#: models.py:450
 msgid "link to module"
 msgstr "link to module"
 
-#: models.py:447
+#: models.py:451
 msgid "links to modules"
 msgstr "links to modules"
 
-#: models.py:458
+#: models.py:462
 msgid "link to script"
 msgstr "link to script"
 
-#: models.py:459
+#: models.py:463
 msgid "links to script"
 msgstr "links to script"
 
-#: models.py:465
+#: models.py:469
 msgid "file name"
 msgstr "file name"
 

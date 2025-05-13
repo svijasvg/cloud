@@ -33,6 +33,7 @@ urlpatterns = [
 
 #———————————————————————————————————————— exact addresses
 
+    path('cloud.css',   views.CloudCSSView  ),
     path('csync',       views.ClearCacheView),   # Sync + Admin top bar
     path('mail',        views.MailView      ),
     path('send',        views.SendView      ),   # send test mail to see what happens

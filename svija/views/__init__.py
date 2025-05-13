@@ -13,6 +13,7 @@ if not path in sys.path: sys.path.insert(1, path)
 from .PageObject     import *
 from .PageView       import *
 
+from .CloudCSSView   import *
 from .MailView       import *
 from .ClearCacheView import *
 from .SendView       import *

@@ -278,7 +278,7 @@ admin.site.register(Module, ModuleAdmin)
 #———————————————————————————————————————— settings · depends on robots
 
 descSettings = _('descSettings')
-#escSettings = "To request a different website address, please visit <a href='https://tech.svija.love/url' target='_blank'>tech.svija.love/url</a> · <a href=https://tech.svija.love/programs/cloud/settings target=_blank>documentation↑</a>"
+descColors= _('descColors')
 
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
@@ -298,6 +298,7 @@ class SettingsAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id','tracking_on', ), ('section',), 'robots',],'description': descSettings,}),
+    (_('Svija Cloud colors'), {'fields': [('color_main', 'color_accent', 'color_dark',),],'description': descColors,}),
     (_('email sending'   ), {'fields': [('mail_id', 'mail_pass'), ('mail_srv','mail_port','mail_tls'),'notes',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   

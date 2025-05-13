@@ -12,7 +12,6 @@
 
 #———————————————————————————————————————— imports
 
-
 import datetime
 
 from django.db import models
@@ -370,6 +369,11 @@ class Settings(models.Model):
     analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics id'),blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
     maps_api_key  = models.CharField(max_length=200, default='', verbose_name=_('maps api key'),blank=True,)
+
+    # color settings
+    color_main     = models.CharField(max_length=80, default='rgb(70%, 100%, 0%)', verbose_name=_('main color'),blank=True,)
+    color_accent   = models.CharField(max_length=80, default='rgb(87%, 100%, 60% )', verbose_name=_('accent color'),blank=True,)
+    color_dark     = models.CharField(max_length=80, default='rgb(15%, 15%, 15% )', verbose_name=_('dark color'),blank=True,)
 
     # email settings
     mail_id       = models.CharField(max_length=200, default='', verbose_name=_('email username'),    blank=True,)
