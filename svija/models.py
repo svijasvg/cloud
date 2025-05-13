@@ -65,7 +65,7 @@ class alphaAll(models.CharField):
 
 class alphaStar(models.CharField):
     def get_prep_value(self, value):
-        value = re.sub("[^A-Za-z0-9-_★]","",value)
+        value = re.sub("[^A-Za-z0-9-_*]","",value)
         return value.lower()
 
 class UrlField(models.CharField):                                              # deprecated, need to delete

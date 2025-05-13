@@ -65,13 +65,13 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
   page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
 
   if not page:
-    page = Page.objects.filter(Q(section__code='★') & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
+    page = Page.objects.filter(Q(section__code='*') & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
 
   if not page:
-    page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code='★') & Q(url=page_url) & Q(published=True)).first()
+    page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code='*') & Q(url=page_url) & Q(published=True)).first()
 
   if not page:
-    page = Page.objects.filter(Q(section__code='★') & Q(screen__code='★') & Q(url=page_url) & Q(published=True)).first()
+    page = Page.objects.filter(Q(section__code='*') & Q(screen__code='*') & Q(url=page_url) & Q(published=True)).first()
 
   if not page: raise Http404 # passed to file Error404.py
 
@@ -171,7 +171,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   # always-include modules
   if page.incl_modules:
-    default_modules = Module.objects.filter((Q(section__code=section_url)|Q(section__code='★'))  &  (Q(screen__code=screen_code)|Q(screen__code='★'))  &  Q(enabled=True)  &  Q(always=True))
+    default_modules = Module.objects.filter((Q(section__code=section_url)|Q(section__code='*'))  &  (Q(screen__code=screen_code)|Q(screen__code='*'))  &  Q(enabled=True)  &  Q(always=True))
 
     module_content = list(default_modules)
     all_modules.extend(module_content)

@@ -22,8 +22,8 @@ def convert_modules(modules, section_code, screen_code):
     mod = set.module
     if all([
       mod.enabled,
-      str(mod.section)==section_code or str(mod.section)=='★',
-      str(mod.screen)==screen_code or str(mod.screen)=='★',
+      str(mod.section)==section_code or str(mod.section)=='*',
+      str(mod.screen)==screen_code or str(mod.screen)=='*',
     ]):
       mod.zindex = set.zindex
       out_modules.append(mod)

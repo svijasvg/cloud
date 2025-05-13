@@ -67,7 +67,7 @@ def PageView(request, section_url='', page_url=''):
   if screen_code is None:
     screen_code = 'xkcd'
 
-  screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='★')
+  screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='*')
 
   if len(screens) == 0:
     screen_code = derived_screen(request.headers["User-Agent"])
@@ -100,7 +100,7 @@ certain_cp  = [ 'x86_64',
 
 def derived_screen(user_agent):
 
-  all_screens = Screen.objects.all().exclude(code='★').order_by('pixels')
+  all_screens = Screen.objects.all().exclude(code='*').order_by('pixels')
 
   if len(all_screens) == 1:
     return all_screens[0].code

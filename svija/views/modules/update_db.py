@@ -15,16 +15,16 @@ def update_db():
 
 #———————————————————————————————————————— 2.3.3
 
-#  add ★ screen if not present
+#  add * screen if not present
 
-  screens = Screen.objects.filter(Q(code='★'))
+  screens = Screen.objects.filter(Q(code='*'))
 
   if len(screens) == 0:
     screens = Screen.objects.all()
     return 'no catch-all screen'
     return str(len(screens))
 
-#  add ★ section if not present
+#  add * section if not present
 
 #———————————————————————————————————————— exit
 
@@ -32,5 +32,5 @@ def update_db():
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 
-# screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='★')
+# screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='*')
 #   screen_code = derived_screen(request.headers["User-Agent"])
