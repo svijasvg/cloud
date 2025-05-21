@@ -388,16 +388,16 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
         font_weight = ''   # normal CSS font-weight value
         font_style  = ''   # normal CSS font-style value
 
-        if font_family[0:1] == "'": font_family = font_family[1:-1] # remove quotes
+        if font_family[0:1] == "'":
+          font_family = font_family[1:-1] # remove quotes
 
-        class_line = svg_lines[x-1][6:-2]
-        classes = class_line.split(', ')
+        classes = extract_classes(svg_lines[x-1])
 
         if 'font-weight' in svg_lines[x+1]:
-          font_weight = extract_value('weight', svg_lines[x+1])
+          font_weight = extract_weight_style('weight', svg_lines[x+1])
 
         if 'font-style' in svg_lines[x+1]:
-          font_style = extract_value('style', svg_lines[x+1])
+          font_style = extract_weight_style('style', svg_lines[x+1])
 
         new_font = {
           'svg_ref': svg_ref,
@@ -412,20 +412,25 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
     #———————————————————————————————————————— get font weight/style defs
 
-		# loop through fonts / classes / stylesheet, looking for style info
-    # 20 fonts * 200 classes * 200 lines = 800,000 iterations, might want to optimize that...
+		# loop through css looking for style info, then match fonts / classes
 
     for x in range(css_first, css_last):
 
       # look for font-weight where previous line is not font-family
       if 'font-weight' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
         classes = get_class_list(svg_lines, x)
-        fonts_to_add.append('⚠️  font-weight found at line ' + str(x) + ':'+'°'.join(classes))
-
+        for font_object in font_objects_to_add:
+          if classes_match(classes, font_object['classes']):
+            fonts_to_add.append('⚠️  MATCH WORKED')
+            
       # look for font-style where previous line is not font-family
       if 'font-style' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
         classes = get_class_list(svg_lines, x)
-        fonts_to_add.append('⚠️  font-style found at line ' + str(x) + ':'+'°'.join(classes))
+        for font_object in font_objects_to_add:
+          if classes_match(classes, font_object['classes']):
+
+            fonts_to_add.append(':'.join(classes)+'   '+':'.join(font_object['classes']))
+            fonts_to_add.append('⚠️  MATCH WORKED')
 
       # get a list of classes to which it applies
       # find the font which contains that class and add the info (overwrite the info)
@@ -702,14 +707,35 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
+#———————————————————————————————————————— classes_match(classes, font_object)
+
+def classes_match(list1, list2):
+  return True
+
 #———————————————————————————————————————— get_class_list(svg_lines, x)
 
 def get_class_list(svg_lines, x):
-  return ['.cls2', '.cls3',]
+  if '.cls-' in svg_lines[x-1]:
 
-#———————————————————————————————————————— extract_value(which, str)
+		#                                                    THIS IS NOT PROGRAMMED
+    return [svg_lines[x-1], 'xxx',]
 
-def extract_value(which, str):
+  return get_class_list(svg_lines, x-1)
+
+# if previous line contains .cls, extract class list
+# or return get_class_list(svg_lines, x-1)
+
+#———————————————————————————————————————— extract_classes(str)
+
+#      .cls-8, .cls-43, .cls79 { 
+
+def extract_classes(str):
+  str = str[6:-2]
+  return str.split(', ')
+
+#———————————————————————————————————————— extract_weight_style(which, str)
+
+def extract_weight_style(which, str):
   trash, result  = str.split('font-' + which + ': ')
   return result[:-1]
 
