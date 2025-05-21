@@ -67,11 +67,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   linear_id        = linear_modifier + raw_name
   radial_id        = radial_modifier + raw_name
 
-  #———————————————————————————————————————— list of fonts in DB
-
-  all_fonts   = Font.objects.all()
-  fonts_to_add  = []
-
   #———————————————————————————————————————— read SVG file
 
   with open(svg_path, 'r', encoding='utf-8') as f:
@@ -119,6 +114,11 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 #:::::::::::::::::::::::::::::::::::::::: old-format SVG
 
   if not new_format:
+
+    #———————————————————————————————————————— list of fonts in DB
+
+    all_fonts   = Font.objects.all()
+    fonts_to_add  = []
 
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
@@ -329,10 +329,114 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   
     return svg_id, px_width, px_height, first_line+final_svg
   
+
 #:::::::::::::::::::::::::::::::::::::::: new-format SVG
 
   if new_format:
 
+    lines_quantity = len(svg_lines)
+    all_fonts   = Font.objects.all()
+    fonts_to_add  = []
+
+
+
+
+# REDO LOOPS TO USE RANGE (0, LINES_QUANTITY), SOOOO EASY
+
+
+
+
+
+    #———————————————————————————————————————— get line range for CSS defs
+
+    line_number = 0
+    style_start_line = 0
+    style_end_line = 0
+
+    while True:
+      if line_number == lines_quantity: break # we're done
+      line = svg_lines[line_number]
+      section = line[0:9]
+      if section == '    <styl':
+        fonts_to_add.append('first line: ' + str(line_number))
+        style_start_line = line_number + 1
+        
+      if section == '    </sty':
+        fonts_to_add.append('last line: ' + str(line_number))
+        style_end_line = line_number - 1
+        
+      line_number += 1
+
+    #———————————————————————————————————————— get svg ref & font family
+
+    for x in range(style_start_line, style_end_line):
+      voodoo = False
+
+    #———————————————————————————————————————— ▼ font loop to process SVG line by line
+
+    line_number = 0
+  
+    while True:
+      if line_number == lines_quantity: break # we're done
+  
+      line = svg_lines[line_number]
+      line = no_leading_space(line)
+
+      #———————————————————————————————————————— find fonts
+  
+      #    .st2{font-family:'Signika-Regular';}
+      #    google font: need to use google-style CSS
+      #    missing font: need to add to fonts DB
+  
+      if line[0:12] == 'font-family:':
+
+    # if a font-family definition —————————————————————————————————————————————
+
+        line_parts_1 = line.split(': ', 1)
+        line_parts_2 = line_parts_1[1].split(',', 1)
+        line_ref     = line_parts_2[0]
+        line_rest    = line_parts_2[1]
+        font_exists  = [x for x in all_fonts if x.svg_ref == line_ref]
+
+        # font does not exist
+        if len(font_exists) == 0:
+          fonts_to_add.append(line_ref)
+
+#       # font exists
+#       else:
+#         font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).first()
+
+#         # need to delete style info if it's a woff
+#         if font.woff != '':
+#           repeat = True
+#           l = line_number
+#           while repeat:
+#             l += 1
+#             if svg_lines[l].find('font-style') > 0:
+#               svg_lines[l] = '/* style deleted */'
+#             if svg_lines[l].find('font-weight') > 0:
+#               svg_lines[l] = '/* weight deleted */'
+#             if svg_lines[l].find('}') > 0:
+#               repeat = False
+  
+      #———————————————————————————————————————— COMMENTED OUT debugging 
+  #   fb = urllib.parse.quote(line)
+  #   return "lkjsdf", 1200,1200, "<pre style='color:white;font-size:30px;'>" + fb + "</pre>"
+  
+      #———————————————————————————————————————— ▲ close font loop
+  
+      line_number += 1
+  
+    #———————————————————————————————————————— add missing fonts to DB
+  
+  # return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
+    fonts_to_add = remove_duplicates(fonts_to_add)
+  
+    for css_ref in fonts_to_add:
+      new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
+      new_font.save
+  
+  
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
   
     line_number = 0
@@ -483,7 +587,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
               parts[1] = image_ids[current_id]
               line = 'xlink:href="#'.join(parts)
   
-      #———————————————————————————————————————— fix mixed text weight problem COMMENTED OUT
+      #———————————————————————————————————————— COMMENTED OUT fix mixed text weight problem 
       #                                         search for <tspan x="400.88" where x != 0
   
   #   exp = r'tspan x=\"[1-9]'
@@ -491,7 +595,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   #   if (re.search(exp, line)):
   #     line = clean_tspans(line)
     
-      #———————————————————————————————————————— get id if layer like "id example" exists COMMENTED OUT
+      #———————————————————————————————————————— COMMENTED OUT get id if layer like "id example" exists 
       #                                         note that this means the ID could change at the end,
       #                                         so .st[id]8 won't correspond
   
@@ -499,62 +603,12 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   #       parts = line.split('"')
   #       svg_id = parts[1][3:]
   
-      #———————————————————————————————————————— find fonts
-  
-      #    .st2{font-family:'Signika-Regular';}
-      #    google font: need to use google-style CSS
-      #    missing font: need to add to fonts DB
-  
-      if line[0:12] == 'font-family:':
-
-    # if a font-family definition —————————————————————————————————————————————
-
-        line_parts_1 = line.split(': ', 1)
-        line_parts_2 = line_parts_1[1].split(',', 1)
-        line_ref     = line_parts_2[0]
-        line_rest    = line_parts_2[1]
-        font_exists  = [x for x in all_fonts if x.svg_ref == line_ref]
-
-        # font does not exist
-        if len(font_exists) == 0:
-          fonts_to_add.append(line_ref)
-
-#       # font exists
-#       else:
-#         font = Font.objects.filter(Q(enabled=True) & Q(svg_ref = line_ref)).first()
-
-#         # need to delete style info if it's a woff
-#         if font.woff != '':
-#           repeat = True
-#           l = line_number
-#           while repeat:
-#             l += 1
-#             if svg_lines[l].find('font-style') > 0:
-#               svg_lines[l] = '/* style deleted */'
-#             if svg_lines[l].find('font-weight') > 0:
-#               svg_lines[l] = '/* weight deleted */'
-#             if svg_lines[l].find('}') > 0:
-#               repeat = False
-  
-      #———————————————————————————————————————— debugging COMMENTED OUT
-  #   fb = urllib.parse.quote(line)
-  #   return "lkjsdf", 1200,1200, "<pre style='color:white;font-size:30px;'>" + fb + "</pre>"
-  
       #———————————————————————————————————————— ▲ close main loop
   
       if line_number > 0:
         final_svg += line
   
       line_number += 1
-  
-    #———————————————————————————————————————— add missing fonts to DB
-  
-  # return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
-    fonts_to_add = remove_duplicates(fonts_to_add)
-  
-    for css_ref in fonts_to_add:
-      new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
-      new_font.save
   
     #———————————————————————————————————————— add or correct with new ID
     #                                         single-layer AI docs have ID with layer name
@@ -583,7 +637,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
-#———————————————————————————————————————— update_css(google_font, style_string)
+#———————————————————————————————————————— NO REFERENCE TO THIS update_css(google_font, style_string)
 
 # line_parts[1] = update_css(google_font, line_parts[1])
 

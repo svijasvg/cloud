@@ -6,9 +6,8 @@
 #   fonts are added to DB in rewrite_svg.py
 #   the first time a page requires new fonts
 #
-#   this method fleshes out family, weight and
-#   style after the user has added an Adobe CSS
-#   link or checked the "Google Font" box
+#   the method below fleshes out the family,
+#   weight and style
 #
 #———————————————————————————————————————— imports
 
@@ -152,7 +151,6 @@ def integrate_fonts():
     this_font.adobe_url   = font['url']
     this_font.adobe_sheet = stylesheet
     this_font.save()
-
 
 #———————————————————————————————————————— add new Google fonts
 
