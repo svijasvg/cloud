@@ -330,50 +330,116 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     return svg_id, px_width, px_height, first_line+final_svg
   
 
-#:::::::::::::::::::::::::::::::::::::::: new-format SVG
+#:::::::::::::::::::::::::::::::::::::::: new-format SVG # REDO LOOPS TO USE RANGE (0, LINES_QUANTITY), SOOOO EASY
 
   if new_format:
 
-    lines_quantity = len(svg_lines)
-    all_fonts   = Font.objects.all()
-    fonts_to_add  = []
+    #———————————————————————————————————————— line range for CSS defs
 
+    css_first = 0
+    css_last = 0
 
+    for x in range(0, len(svg_lines)-1):
 
-
-# REDO LOOPS TO USE RANGE (0, LINES_QUANTITY), SOOOO EASY
-
-
-
-
-
-    #———————————————————————————————————————— get line range for CSS defs
-
-    line_number = 0
-    style_start_line = 0
-    style_end_line = 0
-
-    while True:
-      if line_number == lines_quantity: break # we're done
-      line = svg_lines[line_number]
-      section = line[0:9]
+      section = svg_lines[x][0:9]
       if section == '    <styl':
-        fonts_to_add.append('first line: ' + str(line_number))
-        style_start_line = line_number + 1
+        css_first = x + 1
         
       if section == '    </sty':
-        fonts_to_add.append('last line: ' + str(line_number))
-        style_end_line = line_number - 1
-        
-      line_number += 1
+        css_last = x - 1
 
-    #———————————————————————————————————————— get svg ref & font family
+    #———————————————————————————————————————— get svg ref, font family & cls-#
 
-    for x in range(style_start_line, style_end_line):
-      voodoo = False
+      # .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+      #   font-family: OpenSans-Light, 'Open Sans';
+# or  #   font-family: Kamerik105W00-Bold, Kamerik105W00-Bold;
+      #   font-weight: 300;
+      # }
 
-    #———————————————————————————————————————— ▼ font loop to process SVG line by line
+    all_fonts     = Font.objects.all()
+    fonts_to_add  = []
 
+    font_objects_to_add  = []
+
+    #———————————————————————————————————————— add main font defs to font_object_to_add
+ 
+    for x in range(css_first, css_last):
+
+      if 'font-family' in svg_lines[x]:
+
+        #———————————————————————————————————————— get svg reference and font family
+
+        svg_ref     = ''   # first part of font-family definition in SVG code, corresponds to the old-style svg reference
+        font_family = ''   # second part of font-family definition in SVG code, corresponds to normal CSS usage
+
+        line = svg_lines[x][21:-1]
+        svg_ref, font_family = line.split(', ', 1)
+
+        #———————————————————————————————————————— if font is already listed, skip the rest of the loop
+
+        if font_eksist(svg_ref, all_fonts): continue
+
+        #———————————————————————————————————————— it's a new font so get classes, weight and style
+        #                                         only search one line ahead — if it turns out that
+        #                                         it's necessary to look two lines ahead, we'll
+        #																					implement it later
+
+        classes     = []   # array of .cls-# classes to which this font applies
+        font_weight = ''   # normal CSS font-weight value
+        font_style  = ''   # normal CSS font-style value
+
+        if font_family[0:1] == "'": font_family = font_family[1:-1] # remove quotes
+
+        class_line = svg_lines[x-1][6:-2]
+        classes = class_line.split(', ')
+
+        if 'font-weight' in svg_lines[x+1]:
+          font_weight = extract_value('weight', svg_lines[x+1])
+
+        if 'font-style' in svg_lines[x+1]:
+          font_style = extract_value('style', svg_lines[x+1])
+
+        new_font = {
+          'svg_ref': svg_ref,
+          'family' : font_family,
+          'weight' : font_weight,
+          'style'  : font_style,
+          'classes': classes,
+        }
+
+
+        font_objects_to_add.append(new_font)
+
+    #———————————————————————————————————————— get font weight/style defs
+
+		# loop through fonts / classes / stylesheet, looking for style info
+    # 20 fonts * 200 classes * 200 lines = 800,000 iterations, might want to optimize that...
+
+    for x in range(css_first, css_last):
+
+      # look for font-weight where previous line is not font-family
+      if 'font-weight' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
+        classes = get_class_list(svg_lines, x)
+        fonts_to_add.append('⚠️  font-weight found at line ' + str(x) + ':'+'°'.join(classes))
+
+      # look for font-style where previous line is not font-family
+      if 'font-style' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
+        classes = get_class_list(svg_lines, x)
+        fonts_to_add.append('⚠️  font-style found at line ' + str(x) + ':'+'°'.join(classes))
+
+      # get a list of classes to which it applies
+      # find the font which contains that class and add the info (overwrite the info)
+
+
+
+# working assumption: in the SVG body, text will only have a single class — so no need to go searching through the body to get combinations
+
+# cycle through each font
+# for each font, cycle through classes, see if we can get more info
+
+    #———————————————————————————————————————— ▼ font loop to process SVG line by line LINE 423 COMMENTED OUT
+
+    lines_quantity = len(svg_lines)
     line_number = 0
   
     while True:
@@ -396,11 +462,10 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
         line_parts_2 = line_parts_1[1].split(',', 1)
         line_ref     = line_parts_2[0]
         line_rest    = line_parts_2[1]
-        font_exists  = [x for x in all_fonts if x.svg_ref == line_ref]
 
-        # font does not exist
-        if len(font_exists) == 0:
-          fonts_to_add.append(line_ref)
+        if font_eksist(line_ref, all_fonts):
+          biminy = 'boop'
+#         fonts_to_add.append(line_ref)
 
 #       # font exists
 #       else:
@@ -636,6 +701,25 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     return svg_id, px_width, px_height, first_line+final_svg
 
 #:::::::::::::::::::::::::::::::::::::::: methods
+
+#———————————————————————————————————————— get_class_list(svg_lines, x)
+
+def get_class_list(svg_lines, x):
+  return ['.cls2', '.cls3',]
+
+#———————————————————————————————————————— extract_value(which, str)
+
+def extract_value(which, str):
+  trash, result  = str.split('font-' + which + ': ')
+  return result[:-1]
+
+#———————————————————————————————————————— font_eksist(line_ref, all_fonts)
+
+def font_eksist(line_ref, all_fonts):
+   occurences = [x for x in all_fonts if line_ref == x.svg_ref]
+
+   if len(occurences) != 0: return True
+   else: return False
 
 #———————————————————————————————————————— NO REFERENCE TO THIS update_css(google_font, style_string)
 
