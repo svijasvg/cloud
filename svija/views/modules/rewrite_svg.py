@@ -416,29 +416,28 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     # loop through css looking for style info, then match fonts / classes
 
     for x in range(css_first, css_last):
-
+      xstr = str(x)
       # look for font-weight where previous line is not font-family
       if 'font-weight' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
         classes = get_class_list(svg_lines, x)
         for font_object in font_objects_to_add:
           if classes_match(classes, font_object['classes']):
-            str = svg_lines[x][21:-1]
-            fonts_to_add.append(font_object['svg_ref'] + ' weight: '+ str)
+            valstr = svg_lines[x][21:-1]
+            font_object['weight'] = valstr
             
       # look for font-style where previous line is not font-family
       if 'font-style' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
         classes = get_class_list(svg_lines, x)
         for font_object in font_objects_to_add:
           if classes_match(classes, font_object['classes']):
-            str = svg_lines[x][20:-1]
-            fonts_to_add.append(font_object['svg_ref'] + ' style: '+ str)
+            valstr = svg_lines[x][20:-1]
+            font_object['style'] = valstr
 
-      # get a list of classes to which it applies
-      # find the font which contains that class and add the info (overwrite the info)
+    #———————————————————————————————————————— ▲ end loop
 
     #———————————————————————————————————————— add new fonts
 
-    fonts_to_add = remove_duplicates(fonts_to_add) # NOT DONE BUT SHOULD NOT BE NECESSARY
+    fonts_objects_to_add = remove_duplicates(fonts_to_add) # NOT DONE BUT SHOULD NOT BE NECESSARY
   
     for font_object in font_objects_to_add:
       new_font = Font.objects.create(
@@ -512,8 +511,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     #———————————————————————————————————————— COMMENTED OUT add missing fonts to DB
   
   # return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
-    fonts_to_add = remove_duplicates(fonts_to_add)
-  
+#   fonts_to_add = remove_duplicates(fonts_to_add)
+# 
 #   for css_ref in fonts_to_add:
 #     new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
 #     new_font.save
