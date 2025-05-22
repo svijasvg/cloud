@@ -111,7 +111,7 @@ class Redirect(models.Model):
         verbose_name = _("url redirect")
         verbose_name_plural = _("url redirects model list")
 
-#———————————————————————————————————————— Font · no dependencies TR
+#———————————————————————————————————————— font · no dependencies TR
 
 class Font(models.Model): 
     svg_ref      = models.CharField(max_length=100, default='', verbose_name=_('svg name'))

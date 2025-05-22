@@ -94,9 +94,9 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   # <?xml version="1.0" encoding="utf-8"?>
   # <!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
   # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-  # 	 viewBox="0 0 1680 3040" style="enable-background:new 0 0 1680 3040;" xml:space="preserve">
+  #    viewBox="0 0 1680 3040" style="enable-background:new 0 0 1680 3040;" xml:space="preserve">
   # <style type="text/css">
-  # 	.st0{fill:url(#SVGID_1_);}
+  #   .st0{fill:url(#SVGID_1_);}
   #
   #———————————————————————————————————————— delete first line if <?xml...
 
@@ -142,8 +142,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
       # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
   
       # <svg version="1.1" id="zone_x2F_mainMenu_x2F__x3C_30_x2F__x25_150"
-  	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
-  	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
+      # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
+      # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
       if line_number == 1:
         parts1 = line.split('viewBox="')
@@ -175,10 +175,10 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
       #———————————————————————————————————————— add P3 color definition
       # fill:#FFFFFF, stroke:#9537FF
   
-  #	.st0{fill:#414042;}
-  #	.st1{opacity:0.3;fill:#FF00FF;}
-  #	.st2{fill:#FFFFFF;}
-  #	.st3{font-family:'OpenSans-Semibold';}
+  #  .st0{fill:#414042;}
+  #  .st1{opacity:0.3;fill:#FF00FF;}
+  #  .st2{fill:#FFFFFF;}
+  #  .st3{font-family:'OpenSans-Semibold';}
   
       if use_p3:
         hash = '#'
@@ -334,7 +334,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
   if new_format:
 
-    #———————————————————————————————————————— line range for CSS defs
+    #———————————————————————————————————————— line range for CSS defs CONVERT TO FUNCTION
 
     css_first = 0
     css_last = 0
@@ -348,7 +348,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
       if section == '    </sty':
         css_last = x - 1
 
-    #———————————————————————————————————————— get svg ref, font family & cls-#
+    #———————————————————————————————————————— initialize arrays
 
       # .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
       #   font-family: OpenSans-Light, 'Open Sans';
@@ -361,7 +361,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
     font_objects_to_add  = []
 
-    #———————————————————————————————————————— add main font defs to font_object_to_add
+    #———————————————————————————————————————— ▼ loop adding new fonts to font_object_to_add
  
     for x in range(css_first, css_last):
 
@@ -379,10 +379,10 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
         if font_eksist(svg_ref, all_fonts): continue
 
-        #———————————————————————————————————————— it's a new font so get classes, weight and style
+        #———————————————————————————————————————— if it's new, get classes, weight and style
         #                                         only search one line ahead — if it turns out that
         #                                         it's necessary to look two lines ahead, we'll
-        #																					implement it later
+        #                                          implement it later
 
         classes     = []   # array of .cls-# classes to which this font applies
         font_weight = ''   # normal CSS font-weight value
@@ -407,12 +407,13 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
           'classes': classes,
         }
 
+    #———————————————————————————————————————— ▲ end loop by appending new font
 
         font_objects_to_add.append(new_font)
 
-    #———————————————————————————————————————— get font weight/style defs
+    #———————————————————————————————————————— ▼ loop through css to get font weight/style defs
 
-		# loop through css looking for style info, then match fonts / classes
+    # loop through css looking for style info, then match fonts / classes
 
     for x in range(css_first, css_last):
 
@@ -421,28 +422,39 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
         classes = get_class_list(svg_lines, x)
         for font_object in font_objects_to_add:
           if classes_match(classes, font_object['classes']):
-            fonts_to_add.append('⚠️  MATCH WORKED')
+            str = svg_lines[x][21:-1]
+            fonts_to_add.append(font_object['svg_ref'] + ' weight: '+ str)
             
       # look for font-style where previous line is not font-family
       if 'font-style' in svg_lines[x] and 'font-family' not in svg_lines[x-1] :
         classes = get_class_list(svg_lines, x)
         for font_object in font_objects_to_add:
           if classes_match(classes, font_object['classes']):
-
-            fonts_to_add.append(':'.join(classes)+'   '+':'.join(font_object['classes']))
-            fonts_to_add.append('⚠️  MATCH WORKED')
+            str = svg_lines[x][20:-1]
+            fonts_to_add.append(font_object['svg_ref'] + ' style: '+ str)
 
       # get a list of classes to which it applies
       # find the font which contains that class and add the info (overwrite the info)
 
+    #———————————————————————————————————————— add new fonts
+
+    fonts_to_add = remove_duplicates(fonts_to_add) # NOT DONE BUT SHOULD NOT BE NECESSARY
+  
+    for font_object in font_objects_to_add:
+      new_font = Font.objects.create(
+        svg_ref = font_object['svg_ref'],
+        family  = font_object['family'],
+        weight  = font_object['weight'],
+        style   = font_object['style'],
+        enabled = True,
+      )
+
+      new_font.save
+
+    #———————————————————————————————————————— ▲ close loop
 
 
-# working assumption: in the SVG body, text will only have a single class — so no need to go searching through the body to get combinations
-
-# cycle through each font
-# for each font, cycle through classes, see if we can get more info
-
-    #———————————————————————————————————————— ▼ font loop to process SVG line by line LINE 423 COMMENTED OUT
+    #———————————————————————————————————————— ▼ OLD CODE font loop to process SVG line by line LINE 423 COMMENTED OUT
 
     lines_quantity = len(svg_lines)
     line_number = 0
@@ -497,14 +509,14 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   
       line_number += 1
   
-    #———————————————————————————————————————— add missing fonts to DB
+    #———————————————————————————————————————— COMMENTED OUT add missing fonts to DB
   
   # return 'zzz', 1200, 1200, '<pre style="font-size:30px">:'+str(line_number)+':'+line[0:11]+':</pre>'
     fonts_to_add = remove_duplicates(fonts_to_add)
   
-    for css_ref in fonts_to_add:
-      new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
-      new_font.save
+#   for css_ref in fonts_to_add:
+#     new_font = Font.objects.create(svg_ref = css_ref, enabled=True)
+#     new_font.save
   
   
     #———————————————————————————————————————— ▼ main loop to process SVG line by line
@@ -529,8 +541,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
       # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
   
       # <svg version="1.1" id="zone_x2F_mainMenu_x2F__x3C_30_x2F__x25_150"
-  	  # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
-  	  # style="enable-background:new 0 0 500 150;" xml:space="preserve">
+      # xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 150"
+      # style="enable-background:new 0 0 500 150;" xml:space="preserve">
   
       if line_number == 0:
         parts1 = line.split('viewBox="')
@@ -707,23 +719,34 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
 #:::::::::::::::::::::::::::::::::::::::: methods
 
-#———————————————————————————————————————— classes_match(classes, font_object)
+#———————————————————————————————————————— classes_match(classes, font_object) TO PROGRAM
+
+#   accepts two arrays containg values like '.cls-23'
+#   if they both contain the same element return true
 
 def classes_match(list1, list2):
-  return True
+  for x in range(len(list1)):
+    for y in range(len(list2)):
+      if list1[x] == list2[y]: return True
 
-#———————————————————————————————————————— get_class_list(svg_lines, x)
+  return False
+
+#———————————————————————————————————————— get_class_list(svg_lines, x) ⚠️  INFINITE LOOP RISK
+
+#   x is a line in SVG containing either 'font-style' or 'font-weight'
+#   and where the previous line did not contain 'font-family'
+#   meaning that it's font information in the CSS separately from the family
+#
+#   we are looking for a line that resembles this:
+#
+#     .cls-8, .cls-11 {
 
 def get_class_list(svg_lines, x):
   if '.cls-' in svg_lines[x-1]:
-
-		#                                                    THIS IS NOT PROGRAMMED
-    return [svg_lines[x-1], 'xxx',]
+    str = svg_lines[x-1][6:-2] # strip initial spaces & final brace
+    return str.split(', ')
 
   return get_class_list(svg_lines, x-1)
-
-# if previous line contains .cls, extract class list
-# or return get_class_list(svg_lines, x-1)
 
 #———————————————————————————————————————— extract_classes(str)
 
