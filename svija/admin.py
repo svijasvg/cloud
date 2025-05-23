@@ -95,7 +95,7 @@ admin.site.register(Redirect, RedirectAdmin)
 # https://stackoverflow.com/questions/15285740/make-django-admin-to-display-no-more-than-100-characters-in-list-results
 
 descFonts    = _('descFonts')
-#escFonts    = 'Fonts added automatically the first time page is loaded · <a target="_blank" href="https://fonts.adobe.com/my_fonts#web_projects-section">Adobe Fonts↑</a> · <a target="_blank" href="https://fonts.google.com">Google Fonts↑</a> · <a href=https://tech.svija.love/programs/cloud/fonts target=_blank>documentation↑</a>'
+descAdobe    = _('"Google Font" will be automatically disabled')
 
 from .models import Font
 class FontAdmin(admin.ModelAdmin):
@@ -110,8 +110,8 @@ class FontAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-#   (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'woff',), ('weight', 'style',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
-    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'category',), ('family', 'weight',), ('style', 'woff',), ('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descFonts,}),
+    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'family',), ('woff', 'weight',), ('category', 'style',),], 'description':descFonts,}),
+    (_('adobe fonts'),  {'fields': [('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descAdobe,}),
 
   ]   
 
