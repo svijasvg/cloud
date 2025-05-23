@@ -194,14 +194,14 @@ def write_font_css():
 
 #:::::::::::::::::::::::::::::::::::::::: main method
 
-#———————————————————————————————————————— make_google_link(google_fonts)
+#———————————————————————————————————————— make_google_link(google_fonts) MAKE LOWER CASE
 
 #   https://developers.google.com/fonts/docs/getting_started
 #   https://fonts.googleapis.com/css?family=Cantarell:i|Droid+Serif:700
 #                                           fontName:400,500,500italic|fontName
 
 def make_google_link(google_fonts):
-  if len(google_fonts) == 0: return ''
+  if len(google_fonts) == 0: return '<!-- google no fonts found -->'
 
   this_family    = google_fonts[0].family.replace(' ', '+')
   finished_fonts = [this_family+':']

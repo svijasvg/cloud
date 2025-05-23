@@ -78,11 +78,46 @@ google_styles = {
 
 def integrate_fonts():
 
+#———————————————————————————————————————— remove conflicts
+#
+#   if google is checked, can't add adobe or woff
+#   if woff is filled out, can't add adobe
+#
+#   google > woff > adobe
+
+  all_fonts = Font.objects.filter(enabled=True)
+
+  for this_font in all_fonts:
+    if this_font.google and this_font.woff != '':
+      this_font.woff = ''
+      this_font.save()
+      
+    if this_font.google and this_font.adobe_pasted != '': # worked
+      this_font.adobe_pasted = ''
+      this_font.adobe_url    = ''
+      this_font.adobe_sheet  = ''
+      this_font.save()
+      
+    if this_font.woff != '' and this_font.adobe_pasted != '': # worked
+      this_font.adobe_pasted = ''
+      this_font.adobe_url    = ''
+      this_font.adobe_sheet  = ''
+      this_font.save()
+
 #———————————————————————————————————————— arrays
+#
+#   need a way to know if the font has been filled out
+#   the current way is broken by the new rewrite_svg
+#
+#   I don't want to mess with information that may have been manualy modified
 
   woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
   adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe_sheet='')).exclude(adobe_pasted='')
-  google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True) & Q(family=''))
+  google_fonts = Font.objects.filter(
+                   Q(enabled = True ) &
+                   Q(google  =  True) &
+                  (Q(family  = ''   ) | Q(weight='') | Q(style=''))
+                 )
 
 #———————————————————————————————————————— add new WOFF fonts
 #
@@ -145,22 +180,36 @@ def integrate_fonts():
       continue
 
     # all is good so save info
-    this_font.family      = font['family']
-    this_font.weight      = font['weight']
-    this_font.style       = font['style']
+    if this_font.family == '':
+      this_font.family      = font['family']
+    if this_font.weight == '':
+      this_font.weight      = font['weight']
+    if this_font. style == '':
+      this_font.style       = font['style']
+
     this_font.adobe_url   = font['url']
     this_font.adobe_sheet = stylesheet
+
     this_font.save()
 
-#———————————————————————————————————————— add new Google fonts
+#———————————————————————————————————————— add new Google fonts COMMENTED OUT
 
-  for this_font in google_fonts:
+#   this is seemingly unnecessary — all the necessary information is already
+#   supplied via the SVG code
 
-    font = interpret_google(this_font.svg_ref)
-    this_font.family      = font['family']
-    this_font.weight      = font['weight']
-    this_font.style       = font['style']
-    this_font.save()
+#   https://tech.svija.com/reference/fonts/google-fonts
+
+# for this_font in google_fonts:
+
+#   font = interpret_google(this_font.svg_ref)
+#   if this_font.family == '':
+#     this_font.family      = font['family']
+#   if this_font.weight == '':
+#     this_font.weight      = font['weight']
+#   if this_font. style == '':
+#     this_font.style       = font['style']
+
+#   this_font.save()
 
 
   return True
@@ -184,8 +233,8 @@ def integrate_fonts():
 
 def interpret_google(svg_ref):
 
-  # need to replace ExtraBlack with Extrablack, it will work out well
-  svg_ref = fix_caps_adobe(svg_ref)
+  # need to replace ExtraBlack with Extrablack — why? don't remember
+  svg_ref = fix_caps(svg_ref)
 
   raw_string = add_dashes(svg_ref)
 
@@ -242,10 +291,10 @@ def interpret_google(svg_ref):
 
 def interpret_adobe(svg_ref):
 
-  # need to replace ExtraBlack with Extrablack, it will work out well
-  svg_ref = fix_caps_adobe(svg_ref)
+  # need to replace ExtraBlack with Extrablack
+  svg_ref = fix_caps(svg_ref)
 
-  raw_string = add_dashes(svg_ref).lower()
+  raw_string = add_dashes(svg_ref)
 
   parts = raw_string.split('-')
   parts[0] = convert_number_to_word(parts[0]) # fix for a font called "8"
@@ -539,14 +588,14 @@ def convert_number_to_word(family):
 
   return word_equivalents[family]
 
-#———————————————————————————————————————— fix_caps_adobe(entry)
+#———————————————————————————————————————— fix_caps(entry)
 #
 #   exists to convert FuturaPT-ExtraBoldObl to FuturaPT-ExtraboldObl
 #   later on in process the style will be found correctly
 #
 #   accepts a string and does a dict search/replace
 
-adobe_replacements = {
+caps_replacements = {
   'ExtraLight' : 'Extralight',
   'Extra-Light': 'Extralight',
   'ExtraBold'  : 'Extrabold',
@@ -557,12 +606,12 @@ adobe_replacements = {
   'Ultra-Black': 'Ultrablack',
 }
 
-def fix_caps_adobe(entry):
+def fix_caps(entry):
   if entry == '': return entry
 
-  for key in adobe_replacements:
+  for key in caps_replacements:
     if entry.find(key) > 0:
-      entry = entry.replace(key, adobe_replacements[key])
+      entry = entry.replace(key, caps_replacements[key])
       break
 
   return entry
