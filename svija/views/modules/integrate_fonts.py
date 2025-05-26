@@ -9,6 +9,10 @@
 #   the method below fleshes out the family,
 #   weight and style
 #
+#   this may no longer be necessary now that
+#   rewrite_svg correctly adds family, weight
+#   and style
+#
 #———————————————————————————————————————— imports
 
 from django.db.models import Q
@@ -78,6 +82,10 @@ google_styles = {
 
 def integrate_fonts():
 
+
+
+
+
 #———————————————————————————————————————— remove conflicts
 #
 #   if google is checked, can't add adobe or woff
@@ -119,7 +127,7 @@ def integrate_fonts():
                   (Q(family  = ''   ) | Q(weight='') | Q(style=''))
                  )
 
-#———————————————————————————————————————— add new WOFF fonts
+#———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
 #
 #   this just means cleaning up path if someone
 #   dragged it from the finder

@@ -29,7 +29,7 @@ from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_accessible import *
 from modules.integrate_fonts import *
-from modules.write_font_css import *
+from modules.font_css import *
 from modules.get_modules import *
 from modules.get_script_sets import *
 from modules.get_page_svgs import *
@@ -111,7 +111,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 # return HttpResponse("<pre>&lt;html" + language_code+"&gt;")
 
   integrate_fonts()
-  google_font_meta, font_css = write_font_css()
+  google_font_meta, font_cssx = font_css()
 
   screens = Screen.objects.order_by('pixels')
 
@@ -213,7 +213,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
     'touch'            : section.touch,
     'system_js'        : system_js,
     'redirect_js'      : screen_redirect_js(ua),
-    'font_css'         : font_css,
+    'font_css'         : font_cssx,
     'accessible'       : accessible,
     'links'            : links,
     'capture'          : capture,

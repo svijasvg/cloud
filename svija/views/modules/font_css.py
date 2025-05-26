@@ -1,12 +1,15 @@
 
-#:::::::::::::::::::::::::::::::::::::::: write_font_css.py
+#:::::::::::::::::::::::::::::::::::::::: font_css.py
 
 #———————————————————————————————————————— notes
 #
-#   fonts are added to DB in rewrite_svg.py
+#   fonts are added to DB in rewrite_svg
 #
-#   this manages them AFTER they've been added
-#   it creates three things:
+#   font information is cleaned up in integrate_fonts
+#   which is currently disabled (returns True)
+#
+#   the method below manages them AFTER they've been
+#   added it creates three things:
 #
 #   1. meta link to google fonts
 #   2. css for woff fonts
@@ -35,14 +38,14 @@ from django.db.models import Q
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
-def write_font_css():
+def font_css():
 
 #———————————————————————————————————————— set up arrays
 
   woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
   adobe_fonts  = Font.objects.filter(enabled=True).exclude(adobe_pasted='')
   google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True)).order_by('family')
-  google_link  = ''
+  google_meta  = ''
 
 #———————————————————————————————————————— generate woff CSS
 
@@ -85,82 +88,6 @@ def write_font_css():
 
   if woff_css != '': woff_css += '\n'
 
-
-
-
-#   @font-face {
-#       font-family: 'FodaDisplay-Italic';
-#       font-weight: Display;
-#       font-style: Italic;
-#       src: url('/fonts/FodaDisplay-Italic.woff') format('woff');
-#   }
-
-#   @font-face {
-#       font-family: 'FodaDisplay-Regular';
-#       font-weight: Normal;
-#       font-style: Regular;
-#       src: url('/fonts/FodaDisplay-Regular.woff') format('woff');
-#   }
-
-#   @font-face {
-#       font-family: 'MerriweatherSans-Bold';
-#       font-weight: 700;
-#       font-style: Regular;
-#       src: url('/fonts/Merriweather-Bold.woff') format('woff');
-#   }
-
-#   @font-face {
-#       font-family: 'MerriweatherSans-Regular';
-#       font-weight: Normal;
-#       font-style: Regular;
-#       src: url('/fonts/Merriweather-Regular.woff') format('woff');
-#   }
-
-#   @font-face {
-#       font-family: 'PlayfairDisplay-BlackItalic';
-#       font-weight: 800;
-#       font-style: Italic;
-#       src: url('/fonts/PlayfairDisplay-BlackItalic.woff') format('woff');
-#   }
-
-
-#           <style>
-#           .cls_240703-font-css-1 {
-#               font-family: FodaDisplay-Regular, 'Foda Display';
-#           }
-
-#           .cls_240703-font-css-2 {
-#               font-family: MerriweatherSans-Regular, 'Merriweather Sans';
-#           }
-
-#           .cls_240703-font-css-3 {
-#               font-family: MerriweatherSans-Bold, 'Merriweather Sans';
-#               font-weight: 700;
-#           }
-
-#           .cls_240703-font-css-4 {
-#               font-family: FodaDisplay-Italic, 'Foda Display';
-#           }
-
-#           .cls_240703-font-css-4, .cls_240703-font-css-5 {
-#               font-style: italic;
-#           }
-
-#           .cls_240703-font-css-6 {
-#               fill: #d8e3eb;
-#               fill: color(display-p3 0.847 0.89 0.922);
-#               stroke-width: 0px;
-#           }
-
-#           .cls_240703-font-css-5 {
-#               font-family: PlayfairDisplay-BlackItalic, 'Playfair Display';
-#               font-weight: 800;
-#           }
-#           </style>
-
-
-
-
 #———————————————————————————————————————— generate adobe css
 #
 #    separate from earlier loop because all adobe fonts are combined
@@ -185,23 +112,23 @@ def write_font_css():
   if adobe_css != '':
     adobe_css += '\n'
 
-#———————————————————————————————————————— generate google font link & css
+#———————————————————————————————————————— generate google meta link
 
-  google_link = make_google_link(google_fonts)
+  google_meta = make_google_meta(google_fonts)
 
 
-  return google_link, woff_css + adobe_css
+  return google_meta, woff_css + adobe_css
 
 #:::::::::::::::::::::::::::::::::::::::: main method
 
-#———————————————————————————————————————— make_google_link(google_fonts) MAKE LOWER CASE
+#———————————————————————————————————————— make_google_meta(google_fonts) MAKE LOWER CASE
 
 #   https://developers.google.com/fonts/docs/getting_started
 #   https://fonts.googleapis.com/css?family=Cantarell:i|Droid+Serif:700
 #                                           fontName:400,500,500italic|fontName
 
-def make_google_link(google_fonts):
-  if len(google_fonts) == 0: return '<!-- google no fonts found -->'
+def make_google_meta(google_fonts):
+  if len(google_fonts) == 0: return '<!-- no google fonts found -->'
 
   this_family    = google_fonts[0].family.replace(' ', '+')
   finished_fonts = [this_family+':']
