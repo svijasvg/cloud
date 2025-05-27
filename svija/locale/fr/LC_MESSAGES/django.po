@@ -360,15 +360,15 @@ msgstr "activé"
 
 #: models.py:118
 msgid "adobe link"
-msgstr "lien Adobe"
+msgstr "lien copié"
 
 #: models.py:119
 msgid "adobe url"
-msgstr "URL fichier Adobe"
+msgstr "URL fichier police"
 
 #: models.py:120
 msgid "adobe contents"
-msgstr "CSS Adobe"
+msgstr "code CSS"
 
 #: models.py:129
 msgid "font"

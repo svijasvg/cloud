@@ -9,10 +9,6 @@
 #   the method below fleshes out the family,
 #   weight and style
 #
-#   this may no longer be necessary now that
-#   rewrite_svg correctly adds family, weight
-#   and style
-#
 #———————————————————————————————————————— imports
 
 from django.db.models import Q
@@ -45,11 +41,10 @@ adobe_weights = {
 }
 
 adobe_styles = {
-  'cond'      : 'condensed',
   'oblique'   : 'italic',
   'obl'       : 'italic',
   'italic'    : 'italic',
-  'default'   : 'normal',
+  'book'      : 'normal',
 }
 
 google_weights = {
@@ -77,14 +72,17 @@ google_styles = {
 }
 
 
-
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
 def integrate_fonts():
 
+#:::::::::::::::::::::::::::::::::::::::: WHILE DEBUGGING
 
-
-
+  all_fonts = Font.objects.filter(enabled=True)
+  for this_font in all_fonts:
+    this_font.adobe_pasted = '<link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">'
+    this_font.save()
+#   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">
 
 #———————————————————————————————————————— remove conflicts
 #
@@ -112,39 +110,167 @@ def integrate_fonts():
       this_font.adobe_sheet  = ''
       this_font.save()
 
-#———————————————————————————————————————— arrays
-#
-#   need a way to know if the font has been filled out
-#   the current way is broken by the new rewrite_svg
-#
+#———————————————————————————————————————— initialize arrays WOFF & GOOGLE COMMENTED OUT ALL FONTS ARE ADOBE
+
 #   I don't want to mess with information that may have been manualy modified
 
-  woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
+
   adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe_sheet='')).exclude(adobe_pasted='')
-  google_fonts = Font.objects.filter(
-                   Q(enabled = True ) &
-                   Q(google  =  True) &
-                  (Q(family  = ''   ) | Q(weight='') | Q(style=''))
-                 )
 
-#———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
+# woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
+# google_fonts = Font.objects.filter(
+#                  Q(enabled = True ) &
+#                  Q(google  =  True) &
+#                 (Q(family  = ''   ) | Q(weight='') | Q(style=''))
+#                )
+
+#———————————————————————————————————————— ▼ get Adobe stylesheets
 #
-#   this just means cleaning up path if someone
-#   dragged it from the finder
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
-  for this_font in woff_fonts:
+#   there will only be a few different CSS sheets for Adobe Fonts —
+#   normally, there will only be one.
+#   
+#   So I'm better off flooping through the fonts, and getting the
+#   corret stylesheet into a dict, with the Adobe ID as the index
+#   and a list of associated fonts & URLS
+#   
+#   otherwise I'm duplicationg work for each font that doesn't have to be done
 
-    # remove everything in beginning of path if necessary
-    # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/SYNC/SVIJA/Fonts/Woff Files/clarendon.woff
+#   in admin.py:
+#   return obj.adobe_pasted[53:60]
 
-    woff = this_font.woff
-    if woff.find('/') > -1:
-      woff = woff.rpartition("/")[2]
-      this_font.woff = woff
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">      svija.dev
+#   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">  alt.svija.dev (1 font)
+
+  adobe_sheets       = {}
+  adobe_sheets_split = {}
+
+  for this_font in adobe_fonts:
+
+#———————————————————————————————————————— verify pasted format & length
+
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+
+    if this_font.adobe_pasted[0:22] != '<link rel="stylesheet"':
+      this_font.adobe_url = "⚠️ Pasted link is wrong format"
+      this_font.adobe_sheet = this_font.adobe_pasted[0:22]
       this_font.save()
 
-#———————————————————————————————————————— add new Adobe fonts
+#     del this_font
+      continue
 
+    if len(this_font.adobe_pasted) != 66:
+      this_font.adobe_url = "⚠️ Pasted link is wrong length"
+      this_font.adobe_sheet = this_font.adobe_pasted
+      this_font.save()
+
+#     del this_font
+      continue
+
+#———————————————————————————————————————— it it's already treated, continue
+
+    adobe_id = this_font.adobe_pasted[53:60]
+
+    if adobe_id in adobe_sheets: continue
+
+#———————————————————————————————————————— get associated CSS file
+
+    css_str = css_file_from_tag(this_font.adobe_pasted) # worked
+
+#———————————————————————————————————————— if empty, skip
+
+    if css_str == '':
+      this_font.adobe_url = '⚠️ Pasted link returned wrong content'
+      this_font.adobe_sheet = ''
+      this_font.save()
+
+      # remove this_font from adobe_fonts
+      continue
+
+#———————————————————————————————————————— ▲ get font list from file
+
+    adobe_sheets[adobe_id]       = css_str
+    adobe_sheets_split[adobe_id] = fonts_from_sheet(css_str)
+
+    debug = ''
+
+    for f in adobe_sheets_split['jpl1zaz']:
+      debug += 'family: ' + f['family'] + '\n'
+      debug += 'weight: ' + f['weight'] + '\n'
+      debug += 'style: '  + f['style' ] + '\n'
+      debug += '———————————————————\n'
+
+  for this_font in adobe_fonts:
+    this_font.adobe_sheet = debug
+    this_font.save()
+
+  return True
+ 
+#:::::::::::::::::::::::::::::::::::::::: font info
+
+#———————————————————————————————————————— correct font info COMBINE WITH FOLLOWING SECTION
+
+  for this_font in adobe_fonts:
+    this_font.weight = adobe_weight(this_font, adobe_weights)
+    this_font.style  = adobe_style(this_font, adobe_styles)
+    this_font.save()
+
+#———————————————————————————————————————— get font url and save css sheet
+
+  for this_font in adobe_fonts:
+
+    adobe_id   = this_font.adobe_pasted[53:60]
+    candidates = adobe_sheets_split[adobe_id]
+
+#   this worked as expected
+#   if 'oope' in this_font.svg_ref:
+#     this_font.style = '⚠️ COOPER BL*CK'
+
+#     debug = ''
+#     for candidate in candidates:
+#       if candidate['family'][0:3] == 'coo':
+#          debug = simplified(this_font.svg_ref) +'\n' + simplified(candidate['family'])
+#          if  simplified(this_font.svg_ref) == simplified(candidate['family']):
+#            debug += '\nMATCHED'
+
+#     this_font.adobe_sheet = debug 
+#     this_font.save()
+#     return True
+
+
+    woff2_url    = url_from_font_list(this_font, candidates) 
+    if woff2_url == '':
+      this_font.style = 'URL not found' 
+      this_font.adobe_url = '⚠️ search CSS manually'
+    else:
+      this_font.adobe_url = woff2_url
+
+    this_font.adobe_sheet = adobe_sheets[adobe_id]
+    this_font.save()
+
+
+#:::::::::::::::::::::::::::::::::::::::: debugging
+
+  return True
+
+#:::::::::::::::::::::::::::::::::::::::: debugging
+
+  for this_font in adobe_fonts:
+    this_font.adobe_url = 'sheets length: '+str(len(adobe_sheets))
+    for this_id in adobe_sheets.keys():
+      this_font.adobe_sheet += this_id + ':'+str(len(adobe_sheets[this_id]))+'\n'
+
+    this_font.save()
+
+  return True
+
+#:::::::::::::::::::::::::::::::::::::::: legacy code
+
+#———————————————————————————————————————— add new Adobe fonts
+#
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+#
 #   right now, the Adobe stylesheet is parsed again for each new font
 #   but generally, there will only be one stylesheet for a site
 # 
@@ -152,11 +278,14 @@ def integrate_fonts():
 #   but I need a way to track which sheets were integrated
 #   so that if someone uses two different adobe sheets
 #   it will still work
-
+#
 #   web project for dev.svija.love
 #   <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css">
 
+
   for this_font in adobe_fonts:
+
+    break
 
     # check for valid link
     if this_font.adobe_pasted[0] != '<':   # contents is not "<link rel..."
@@ -164,6 +293,13 @@ def integrate_fonts():
       this_font.adobe_sheet = ''
       this_font.save()
       continue
+
+    this_font.adobe_url = "⚠️  DEBUG INFO"
+    debug_str = ''
+    for x_font in font_list:
+      debug_str += x_font
+    this_font.adobe_sheet = stylesheet
+    this_font.save()
 
     # get list of fonts in stylesheet
     font_list, stylesheet = font_list_from_link(this_font.adobe_pasted)
@@ -199,6 +335,23 @@ def integrate_fonts():
     this_font.adobe_sheet = stylesheet
 
     this_font.save()
+
+
+#———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
+#
+#   this just means cleaning up path if someone
+#   dragged it from the finder
+
+# for this_font in woff_fonts:
+
+#   # remove everything in beginning of path if necessary
+#   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/SYNC/SVIJA/Fonts/Woff Files/clarendon.woff
+
+#   woff = this_font.woff
+#   if woff.find('/') > -1:
+#     woff = woff.rpartition("/")[2]
+#     this_font.woff = woff
+#     this_font.save()
 
 #———————————————————————————————————————— add new Google fonts COMMENTED OUT
 
@@ -282,6 +435,193 @@ def interpret_google(svg_ref):
 
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related methods
+
+#———————————————————————————————————————— url_from_font_list(this_font, candidates) 
+#
+#   need a dump of candidate list, something is wrong
+
+def url_from_font_list(this_font, candidates):
+
+
+  for x in range(len(candidates)):
+    candidate = candidates[x]
+
+    #f candidate['family'] == 'eight': return 'FOUND: '+str(simplified(this_font.family) == simplified('eight'))
+
+#———————————————————————————————————————— exact matches
+
+    if this_font.weight == candidate['weight']:
+      if this_font.style == candidate['style']:
+
+        if simplified(this_font.svg_ref) == simplified(candidate['family']):
+          return candidate['url']
+
+        if simplified(this_font.family) == simplified(candidate['family']):
+          return candidate['url']
+
+#———————————————————————————————————————— style matches
+
+    if this_font.style == candidate['style']:
+
+      if simplified(this_font.svg_ref) == simplified(candidate['family']):
+        return candidate['url']
+
+      if simplified(this_font.family) == simplified(candidate['family']):
+        return candidate['url']
+
+#———————————————————————————————————————— weight matches
+
+    if this_font.weight == candidate['weight']:
+
+      if simplified(this_font.svg_ref) == simplified(candidate['family']):
+        return candidate['url']
+
+      if simplified(this_font.family) == simplified(candidate['family']):
+        return candidate['url']
+
+#———————————————————————————————————————— family matches
+
+#   if this_font.weight == candidate['weight']:
+
+#     if simplified(this_font.svg_ref) == simplified(candidate['family']):
+#       return candidate['url']
+
+#     if simplified(this_font.family) == simplified(candidate['family']):
+#       return candidate['url']
+
+  return ''
+
+# svg ref: FolkRoughOT
+# svg fam: Folk Rough OT
+# adb css: ff-folk-rough
+
+#———————————————————————————————————————— fonts_from_sheet(css_str)
+#
+#   extracts fonts from and Adobe typekit CSS sheet
+#
+#   https://use.typekit.net/jpl1zaz.css?lkjsdlmkqsd
+#
+#   returns a list of font dictionaries with
+#   family, weight, style and woff2 src URL
+
+def fonts_from_sheet(css_str):
+  css_str = css_str.split('@font-face', 1)[1]
+  css_str = css_str.split('\n\n.tk-', 1)[0]
+
+  font_list = []
+  blocks    = css_str.split('@font-face')
+
+  for block in blocks:
+    lines = block.split('\n')
+
+    ffamily = lines[1][13:-2]
+    furl    = lines[2].split('"')[1]
+
+    finfo   = lines[3][29:-21]
+    fstyle  = finfo.split(';')[0]
+    fweight = finfo.split(':')[1]
+
+    font = {'family': ffamily, 'weight': fweight, 'style': fstyle, 'url':furl}
+    font_list.append(font)
+
+  return font_list
+
+#———————————————————————————————————————— find_font_in_sheet(this_font, css_sheet) 
+
+def find_font_in_sheet(this_font, css_sheet):
+  return 'find_font_in_sheet()'
+
+#———————————————————————————————————————— fix_adobe_style(font, adobe_styles)
+
+def adobe_style(font, adobe_styles):
+
+  svg_name   = font.svg_ref.lower()
+  old_style = font.style
+  new_style = ''
+
+  for this_style in adobe_styles.keys():
+    if this_style in svg_name:
+      new_style = adobe_styles[this_style]
+      break
+
+  if new_style != '': return new_style
+  if old_style != '': return old_style
+  return 'normal'
+
+#———————————————————————————————————————— fix_adobe_weight(font, adobe_weights)
+
+def adobe_weight(font, adobe_weights):
+
+  svg_name   = font.svg_ref.lower()
+  old_weight = font.weight
+  new_weight = ''
+
+  for this_weight in adobe_weights.keys():
+    if this_weight in svg_name:
+      new_weight = adobe_weights[this_weight]
+      break
+
+  if new_weight != '': return new_weight
+  if old_weight != '': return old_weight
+  return '400'
+
+#———————————————————————————————————————— font_list_from_css(this_font)
+
+#   accepts css sheet from pasted adobe link
+#
+#   returns array of fonts found in css string
+#
+#   returned fonts are dictionaries
+#   - family: family name
+#   - woff2 : woff source URL
+#   - style : style
+#   - weight: number
+
+# upper or lower?
+
+def font_list_from_css(stylesheet):
+
+  #———————————————————————————————————————— initialize
+
+  font_list = []
+  start_index = 0
+
+  how_many = int(stylesheet.count('font-face'))
+
+  for x in range(how_many):
+
+    #———————————————————————————————————— name
+  
+    name_begin = stylesheet.find('font-family', start_index) + 13
+    name_end   = stylesheet.find('"', name_begin)
+    name       = stylesheet[name_begin:name_end]
+  
+    #———————————————————————————————————— url
+
+    url_begin = stylesheet.find('url("', name_end) + 5
+    url_end   = stylesheet.find('")', url_begin)
+    url       = stylesheet[url_begin:url_end]
+  
+    #———————————————————————————————————— get style indexes
+  
+    style_begin = stylesheet.find('font-style:', name_end) + 11
+    style_end   = stylesheet.find(';', style_begin)
+    style       = stylesheet[style_begin:style_end]
+  
+    #———————————————————————————————————— get weight indexes
+  
+    weight_begin = stylesheet.find('font-weight:', name_end) + 12
+    weight_end   = stylesheet.find(';', weight_begin)
+    weight       = stylesheet[weight_begin:weight_end]
+  
+    #———————————————————————————————————— add font to list
+
+    font = {'family': name,  'url': url, 'style': style, 'weight': weight,}
+    font_list.append(font)
+    start_index = style_end
+
+
+  return font_list
 
 #———————————————————————————————————————— interpret_adobe(svg_ref)
 
@@ -526,8 +866,30 @@ def best_adobe_match(target_font, font_list):
 
   return chosen
   
+#———————————————————————————————————————— css_file_from_tag(pasted_link)
+
+def css_file_from_tag(pasted_link):
+
+  parts = pasted_link.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+  stylesheet = file_from_url(parts[3])
+  if stylesheet[0:2] != '/*': return ''
+  return stylesheet
+
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
+
+#———————————————————————————————————————— simplified(str)
+#
+#   lower case, no dashes or spaces
+#   to compare svg references to adobe css refs
+#   beware of the font called '8'
+
+def simplified(str):
+
+  if is_valid_integer(str):
+    str = convert_number_to_word(str)
+
+  return str.replace(' ', '').replace('-', '').lower()
 
 #———————————————————————————————————————— add_dashes(txt)
 #
@@ -574,7 +936,18 @@ def file_from_url(url):
   except Exception as e:
     return str(e)
 
+#———————————————————————————————————————— is_valid_integer(s):
+
+def is_valid_integer(s):
+  try:
+    int(s)
+    return True
+  except ValueError:
+    return False
+
 #———————————————————————————————————————— convert_number_to_word(family)
+#
+#   for font called '8'
 
 word_equivalents = {
   '1'      : 'one',
@@ -656,4 +1029,177 @@ print( 'matching_chars: '+str(matching_chars(w1, w2)))
 
 
 #:::::::::::::::::::::::::::::::::::::::: fin
+
+#   family: proxima-nova
+#   weight: 900
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 700
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 800
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 100
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 600
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 300
+#   style: normal
+#   ———————————————————
+#   family: proxima-nova
+#   weight: 500
+#   style: normal
+#   ———————————————————
+#   family: alta-california
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: sofachrome
+#   weight: 100
+#   style: normal
+#   ———————————————————
+#   family: asimovsans
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: bd-geminis
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: bdr-a3mik
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: news-gothic-std
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: cooper-black-std
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 500
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 500
+#   style: italic
+#   ———————————————————
+#   family: futura-pt
+#   weight: 700
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 700
+#   style: italic
+#   ———————————————————
+#   family: futura-pt
+#   weight: 300
+#   style: italic
+#   ———————————————————
+#   family: futura-pt
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 400
+#   style: italic
+#   ———————————————————
+#   family: futura-pt
+#   weight: 300
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 800
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 800
+#   style: italic
+#   ———————————————————
+#   family: futura-pt
+#   weight: 600
+#   style: normal
+#   ———————————————————
+#   family: futura-pt
+#   weight: 600
+#   style: italic
+#   ———————————————————
+#   family: acier-bat-noir
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: acier-bat-solid
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: acier-bat-outline
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: acier-bat-strokes
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: acier-bat-gris
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: fit-extra-wide
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: fit-compressed
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: fit-skyline
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: fit-wide
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: futura-pt-bold
+#   weight: 700
+#   style: normal
+#   ———————————————————
+#   family: futura-pt-bold
+#   weight: 700
+#   style: italic
+#   ———————————————————
+#   family: marshmallow-fluff
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: ff-folk-rough
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: active
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: nove
+#   weight: 400
+#   style: normal
+#   ———————————————————
+#   family: eight
+#   weight: 400
+#   style: normal
+#   ———————————————————
 

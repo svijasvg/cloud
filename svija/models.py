@@ -126,7 +126,7 @@ class Font(models.Model):
     adobe_url    = models.CharField(max_length=300, default='', verbose_name=_('adobe url'), blank=True)
     adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
 
-		# to rename
+    # to rename
     category = models.CharField(max_length=200, default='', verbose_name='tag', blank=True,)
 
     def __str__(self):
@@ -236,7 +236,7 @@ class Script(models.Model):
     name         = models.CharField(max_length=200, default='', verbose_name=_('script library name'),)
     enabled      = models.BooleanField(default=True, verbose_name=_('enabled'),)
     always       = models.BooleanField(default=False, verbose_name=_('always include'),)
-		# to rename
+    # to rename
     category     = models.CharField(max_length=100, default='', verbose_name='tag', blank=True,)
     url          = models.CharField(max_length=120, default='',blank=True,  verbose_name=_('instructions link'),)
 #   instructions = models.TextField(max_length=2000, default='', blank=True, verbose_name=_('instructions notes'),)
@@ -291,7 +291,7 @@ class Module(models.Model):
     always    = models.BooleanField(default=False, verbose_name=_('always include'),)
     screen    = models.ForeignKey(Screen, default=1, on_delete=models.PROTECT, verbose_name=_('screen size'),)
     section   = models.ForeignKey(Section, default=get_default_section, on_delete=models.PROTECT, verbose_name=_('section'))
-		# to rename
+    # to rename
     tag       = models.CharField(max_length=100, default='', verbose_name='tag', blank=True,)
     zindex    = models.SmallIntegerField(default=0, verbose_name=_('z index'),)
 
@@ -364,7 +364,7 @@ def get_default_robots_id():               # this is the problem
 
 class Settings(models.Model):
 
-		# https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
+    # https://stackoverflow.com/a/67298691/72958 & see section model for other necessary parts
     robots        = models.ForeignKey(Robots,  default=get_default_robots_id,  blank=True, on_delete=models.SET(get_default_robots),  verbose_name='robots.txt')
     #ection       = models.ForeignKey(Section, default=get_default_section, on_delete=get_default_section, verbose_name='default section')
     section       = models.ForeignKey(Section, default=get_sentinel_section_id, on_delete=models.SET(get_sentinel_section), verbose_name=_('default section'))
@@ -407,7 +407,7 @@ class Page(models.Model):
 #   url       = models.CharField(max_length=200, default='', verbose_name='address')
     url       = alphaLower(max_length=200, default='', verbose_name=_('address'),) 
 
-		# to rename
+    # to rename
     category  = models.CharField(max_length=200, default='', verbose_name='tag', blank=True,)
 
     # meta

@@ -50,9 +50,11 @@ Then for each site:
 6. `./manage.py migrate`
 7. `service uwsgi restart`
 
-How to change strings in templates? how to change strings in JS?
+Changes will take effect after `service uwsgi restart`
 
 Strings in templates: `{{ _('key_string') }}`
+
+how to change strings in JS?
 
 ---
 ### Useful Links

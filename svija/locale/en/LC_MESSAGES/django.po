@@ -359,15 +359,15 @@ msgstr "enabled"
 
 #: models.py:118
 msgid "adobe link"
-msgstr "Adobe link"
+msgstr "copied link"
 
 #: models.py:119
 msgid "adobe url"
-msgstr "Adobe font file URL"
+msgstr "font file URL"
 
 #: models.py:120
 msgid "adobe contents"
-msgstr "Adobe CSS"
+msgstr "CSS code"
 
 #: models.py:129
 msgid "font"
