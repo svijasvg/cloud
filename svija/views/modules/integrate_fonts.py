@@ -15,62 +15,6 @@ from django.db.models import Q
 from svija.models import Font
 import requests
 
-#———————————————————————————————————————— equivalency dictionaries
-
-adobe_weights = {
-  'extralight' : '200',
-  'extra-light': '200',
-  'extrabld'   : '800',
-  'extrabold'  : '800',
-  'extra-bld'  : '800',
-  'extra-bold' : '800',
-  'semibold'   : '600',
-  'semi-bold'  : '600',
-  'ultrablack' : '900',
-  'ultra-black': '900',
-  'demi'       : '600',
-  'thin'       : '100',
-  'light'      : '300',
-  'book'       : '400',
-  'regular'    : '400',
-  'heavy'      : '700',
-  'medium'     : '500',
-  'bold'       : '700',
-  'black'      : '900',
-  'default'    : '',
-}
-
-adobe_styles = {
-  'oblique'   : 'italic',
-  'obl'       : 'italic',
-  'italic'    : 'italic',
-  'book'      : 'normal',
-}
-
-google_weights = {
-  'Extralight' : '200',
-  'Extra-Light': '200',
-  'Semibold'   : '600',
-  'Semi-Bold'  : '600',
-  'Extrabold'  : '800',
-  'Extra-Bold' : '800',
-  'Thin'       : '100',
-  'Light'      : '300',
-  'Regular'    : '400',
-  'Medium'     : '500',
-  'Bold'       : '700',
-  'Black'      : '900',
-  'default'    : '400',
-}
-
-google_styles = {
-  'Cond'       : 'condensed',
-  'Oblique'    : 'italic',
-  'Obl'        : 'italic',
-  'Italic'     : 'italic',
-  'default'    : 'normal',
-}
-
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
@@ -143,8 +87,8 @@ def integrate_fonts():
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">      svija.dev
 #   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">  alt.svija.dev (1 font)
 
-  adobe_sheets       = {}
-  adobe_sheets_split = {}
+  adobe_sheets     = {}
+  adobe_font_lists = {}
 
   for this_font in adobe_fonts:
 
@@ -190,80 +134,33 @@ def integrate_fonts():
 
 #———————————————————————————————————————— ▲ get font list from file
 
-    adobe_sheets[adobe_id]       = css_str
-    adobe_sheets_split[adobe_id] = fonts_from_sheet(css_str)
+    adobe_sheets[adobe_id]     = css_str
+    adobe_font_lists[adobe_id] = fonts_from_adobe_sheet(css_str)
 
-    debug = ''
 
-    for f in adobe_sheets_split['jpl1zaz']:
-      debug += 'family: ' + f['family'] + '\n'
-      debug += 'weight: ' + f['weight'] + '\n'
-      debug += 'style: '  + f['style' ] + '\n'
-      debug += '———————————————————\n'
-
-  for this_font in adobe_fonts:
-    this_font.adobe_sheet = debug
-    this_font.save()
-
-  return True
- 
 #:::::::::::::::::::::::::::::::::::::::: font info
 
-#———————————————————————————————————————— correct font info COMBINE WITH FOLLOWING SECTION
-
-  for this_font in adobe_fonts:
-    this_font.weight = adobe_weight(this_font, adobe_weights)
-    this_font.style  = adobe_style(this_font, adobe_styles)
-    this_font.save()
-
-#———————————————————————————————————————— get font url and save css sheet
+#———————————————————————————————————————— ▼ get font url for each Adobe font
 
   for this_font in adobe_fonts:
 
-    adobe_id   = this_font.adobe_pasted[53:60]
-    candidates = adobe_sheets_split[adobe_id]
+#———————————————————————————————————————— get font url and save css sheet SHEET SAVING COMMENTED OUT
 
-#   this worked as expected
-#   if 'oope' in this_font.svg_ref:
-#     this_font.style = '⚠️ COOPER BL*CK'
+    adobe_id  = this_font.adobe_pasted[53:60]
+    font_list = adobe_font_lists[adobe_id]
+    this_font = adobe_font_from_list(this_font, font_list) 
 
-#     debug = ''
-#     for candidate in candidates:
-#       if candidate['family'][0:3] == 'coo':
-#          debug = simplified(this_font.svg_ref) +'\n' + simplified(candidate['family'])
-#          if  simplified(this_font.svg_ref) == simplified(candidate['family']):
-#            debug += '\nMATCHED'
-
-#     this_font.adobe_sheet = debug 
-#     this_font.save()
-#     return True
-
-
-    woff2_url    = url_from_font_list(this_font, candidates) 
-    if woff2_url == '':
-      this_font.style = 'URL not found' 
+    if this_font.adobe_url == '':
+      this_font.category = '⚠️ URL not found' 
       this_font.adobe_url = '⚠️ search CSS manually'
-    else:
-      this_font.adobe_url = woff2_url
 
-    this_font.adobe_sheet = adobe_sheets[adobe_id]
+#   this_font.adobe_sheet = adobe_sheets[adobe_id]
     this_font.save()
 
-
-#:::::::::::::::::::::::::::::::::::::::: debugging
+#———————————————————————————————————————— ▲ end loop and exit
 
   return True
 
-#:::::::::::::::::::::::::::::::::::::::: debugging
-
-  for this_font in adobe_fonts:
-    this_font.adobe_url = 'sheets length: '+str(len(adobe_sheets))
-    for this_id in adobe_sheets.keys():
-      this_font.adobe_sheet += this_id + ':'+str(len(adobe_sheets[this_id]))+'\n'
-
-    this_font.save()
-
-  return True
 
 #:::::::::::::::::::::::::::::::::::::::: legacy code
 
@@ -392,6 +289,30 @@ def integrate_fonts():
 #   src: url(https://fonts.gstatic.com/s/opensans/v35/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4taVQUwaEQbjB_mQ.woff) format('woff');
 #   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 
+google_weights = {
+  'Extralight' : '200',
+  'Extra-Light': '200',
+  'Semibold'   : '600',
+  'Semi-Bold'  : '600',
+  'Extrabold'  : '800',
+  'Extra-Bold' : '800',
+  'Thin'       : '100',
+  'Light'      : '300',
+  'Regular'    : '400',
+  'Medium'     : '500',
+  'Bold'       : '700',
+  'Black'      : '900',
+  'default'    : '400',
+}
+
+google_styles = {
+  'Cond'       : 'condensed',
+  'Oblique'    : 'italic',
+  'Obl'        : 'italic',
+  'Italic'     : 'italic',
+  'default'    : 'normal',
+}
+
 def interpret_google(svg_ref):
 
   # need to replace ExtraBlack with Extrablack — why? don't remember
@@ -436,66 +357,130 @@ def interpret_google(svg_ref):
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related methods
 
-#———————————————————————————————————————— url_from_font_list(this_font, candidates) 
-#
-#   need a dump of candidate list, something is wrong
+#———————————————————————————————————————— adobe_font_from_list(this_font, candidates) 
 
-def url_from_font_list(this_font, candidates):
+# 8-Heavy doesn't work, though everything seems to be correct
+
+def adobe_font_from_list(this_font, font_list):
+
+#———————————————————————————————————————— simplified values for testing
+
+  test_svg_ref = simplified(this_font.svg_ref)
+  test_family  = simplified(this_font.family )
+  test_weight  = simplified(this_font.weight )
+  test_style   = simplified(this_font.style  )
+
+  if test_weight == '': test_weight = derive_adobe_weight(this_font)
+  if test_style  == '': test_style  = derive_adobe_style(this_font)
+
+  if test_weight == '': test_weight = '400'
+  if test_style  == '': test_style  = 'normal'
+
+#———————————————————————————————————————— weight & style are correct + svg ref
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_weight == candidate['weight'] and test_style == candidate['style']:
+
+      if test_svg_ref == candidate['family']:
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
+
+        debug  = '410\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
+
+#———————————————————————————————————————— weight & style are correct + family
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_family == candidate['family']:
+      this_font.weight = test_weight
+      this_font.style  = test_style
+      this_font.adobe_url = candidate['url']
+
+      debug  = '422\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      this_font.adobe_sheet = debug
+      break
+
+#———————————————————————————————————————— style is correct + svg_ref
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_style == candidate['style']:
+
+      if test_svg_ref == candidate['family']:
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
+
+        debug  = '438\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
+
+#———————————————————————————————————————— style is correct + family
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_family == candidate['family']:
+      this_font.weight = test_weight
+      this_font.style  = test_style
+      this_font.adobe_url = candidate['url']
+
+      debug  = '450\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      this_font.adobe_sheet = debug
+      break
+
+#———————————————————————————————————————— weight is correct + svg_ref
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_weight == candidate['weight']:
+
+      if test_svg_ref == candidate['family']:
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
+
+        debug  = '455\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
+
+#———————————————————————————————————————— weight is correct + svg_ref
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_weight == candidate['weight']:
+
+      if test_family == candidate['family']:
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
+
+        debug  = '466\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
 
 
-  for x in range(len(candidates)):
-    candidate = candidates[x]
 
-    #f candidate['family'] == 'eight': return 'FOUND: '+str(simplified(this_font.family) == simplified('eight'))
+#———————————————————————————————————————— ▲ end loop and exit
 
-#———————————————————————————————————————— exact matches
+  return this_font
 
-    if this_font.weight == candidate['weight']:
-      if this_font.style == candidate['style']:
 
-        if simplified(this_font.svg_ref) == simplified(candidate['family']):
-          return candidate['url']
-
-        if simplified(this_font.family) == simplified(candidate['family']):
-          return candidate['url']
-
-#———————————————————————————————————————— style matches
-
-    if this_font.style == candidate['style']:
-
-      if simplified(this_font.svg_ref) == simplified(candidate['family']):
-        return candidate['url']
-
-      if simplified(this_font.family) == simplified(candidate['family']):
-        return candidate['url']
-
-#———————————————————————————————————————— weight matches
-
-    if this_font.weight == candidate['weight']:
-
-      if simplified(this_font.svg_ref) == simplified(candidate['family']):
-        return candidate['url']
-
-      if simplified(this_font.family) == simplified(candidate['family']):
-        return candidate['url']
-
-#———————————————————————————————————————— family matches
-
-#   if this_font.weight == candidate['weight']:
-
-#     if simplified(this_font.svg_ref) == simplified(candidate['family']):
-#       return candidate['url']
-
-#     if simplified(this_font.family) == simplified(candidate['family']):
-#       return candidate['url']
-
-  return ''
 
 # svg ref: FolkRoughOT
 # svg fam: Folk Rough OT
 # adb css: ff-folk-rough
 
-#———————————————————————————————————————— fonts_from_sheet(css_str)
+#———————————————————————————————————————— fonts_from_adobe_sheet(css_str)
 #
 #   extracts fonts from and Adobe typekit CSS sheet
 #
@@ -504,7 +489,7 @@ def url_from_font_list(this_font, candidates):
 #   returns a list of font dictionaries with
 #   family, weight, style and woff2 src URL
 
-def fonts_from_sheet(css_str):
+def fonts_from_adobe_sheet(css_str):
   css_str = css_str.split('@font-face', 1)[1]
   css_str = css_str.split('\n\n.tk-', 1)[0]
 
@@ -512,14 +497,14 @@ def fonts_from_sheet(css_str):
   blocks    = css_str.split('@font-face')
 
   for block in blocks:
-    lines = block.split('\n')
+    lines   = block.split('\n')
 
-    ffamily = lines[1][13:-2]
+    ffamily = simplified(lines[1][13:-2])
     furl    = lines[2].split('"')[1]
 
     finfo   = lines[3][29:-21]
-    fstyle  = finfo.split(';')[0]
-    fweight = finfo.split(':')[1]
+    fstyle  = simplified(finfo.split(';')[0])
+    fweight = simplified(finfo.split(':')[1])
 
     font = {'family': ffamily, 'weight': fweight, 'style': fstyle, 'url':furl}
     font_list.append(font)
@@ -531,9 +516,16 @@ def fonts_from_sheet(css_str):
 def find_font_in_sheet(this_font, css_sheet):
   return 'find_font_in_sheet()'
 
-#———————————————————————————————————————— fix_adobe_style(font, adobe_styles)
+#———————————————————————————————————————— derive_adobe_style(font)
 
-def adobe_style(font, adobe_styles):
+adobe_styles = {
+  'oblique'   : 'italic',
+  'obl'       : 'italic',
+  'italic'    : 'italic',
+  'book'      : 'normal',
+}
+
+def derive_adobe_style(font):
 
   svg_name   = font.svg_ref.lower()
   old_style = font.style
@@ -548,9 +540,32 @@ def adobe_style(font, adobe_styles):
   if old_style != '': return old_style
   return 'normal'
 
-#———————————————————————————————————————— fix_adobe_weight(font, adobe_weights)
+#———————————————————————————————————————— derive_adobe_weight(font, adobe_weights)
 
-def adobe_weight(font, adobe_weights):
+adobe_weights = {
+  'extralight' : '200',
+  'extra-light': '200',
+  'extrabld'   : '800',
+  'extrabold'  : '800',
+  'extra-bld'  : '800',
+  'extra-bold' : '800',
+  'semibold'   : '600',
+  'semi-bold'  : '600',
+  'ultrablack' : '900',
+  'ultra-black': '900',
+  'demi'       : '600',
+  'thin'       : '100',
+  'light'      : '300',
+  'book'       : '400',
+  'regular'    : '400',
+  'heavy'      : '700',
+  'medium'     : '500',
+  'bold'       : '700',
+  'black'      : '900',
+  'default'    : '',
+}
+
+def derive_adobe_weight(font):
 
   svg_name   = font.svg_ref.lower()
   old_weight = font.weight
@@ -1030,176 +1045,47 @@ print( 'matching_chars: '+str(matching_chars(w1, w2)))
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 
-#   family: proxima-nova
-#   weight: 900
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 700
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 800
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 100
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 600
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 300
-#   style: normal
-#   ———————————————————
-#   family: proxima-nova
-#   weight: 500
-#   style: normal
-#   ———————————————————
-#   family: alta-california
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: sofachrome
-#   weight: 100
-#   style: normal
-#   ———————————————————
-#   family: asimovsans
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: bd-geminis
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: bdr-a3mik
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: news-gothic-std
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: cooper-black-std
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 500
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 500
-#   style: italic
-#   ———————————————————
-#   family: futura-pt
-#   weight: 700
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 700
-#   style: italic
-#   ———————————————————
-#   family: futura-pt
-#   weight: 300
-#   style: italic
-#   ———————————————————
-#   family: futura-pt
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 400
-#   style: italic
-#   ———————————————————
-#   family: futura-pt
-#   weight: 300
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 800
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 800
-#   style: italic
-#   ———————————————————
-#   family: futura-pt
-#   weight: 600
-#   style: normal
-#   ———————————————————
-#   family: futura-pt
-#   weight: 600
-#   style: italic
-#   ———————————————————
-#   family: acier-bat-noir
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: acier-bat-solid
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: acier-bat-outline
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: acier-bat-strokes
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: acier-bat-gris
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: fit-extra-wide
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: fit-compressed
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: fit-skyline
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: fit-wide
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: futura-pt-bold
-#   weight: 700
-#   style: normal
-#   ———————————————————
-#   family: futura-pt-bold
-#   weight: 700
-#   style: italic
-#   ———————————————————
-#   family: marshmallow-fluff
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: ff-folk-rough
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: active
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: nove
-#   weight: 400
-#   style: normal
-#   ———————————————————
-#   family: eight
-#   weight: 400
-#   style: normal
-#   ———————————————————
+#   acierbatgris:400:normal
+#   acierbatnoir:400:normal
+#   acierbatoutline:400:normal
+#   acierbatsolid:400:normal
+#   acierbatstrokes:400:normal
+#   active:400:normal
+#   altacalifornia:400:normal
+#   asimovsans:400:normal
+#   bdgeminis:400:normal
+#   bdra3mik:400:normal
+#   cooperblackstd:400:normal
+#   eight:400:normal
+#   fffolkrough:400:normal
+#   fitcompressed:400:normal
+#   fitextrawide:400:normal
+#   fitskyline:400:normal
+#   fitwide:400:normal
+#   futurapt:300:italic
+#   futurapt:300:normal
+#   futurapt:400:italic
+#   futurapt:400:normal
+#   futurapt:500:italic
+#   futurapt:500:normal
+#   futurapt:600:italic
+#   futurapt:600:normal
+#   futurapt:700:italic
+#   futurapt:700:normal
+#   futurapt:800:italic
+#   futurapt:800:normal
+#   futuraptbold:700:italic
+#   futuraptbold:700:normal
+#   marshmallowfluff:400:normal
+#   newsgothicstd:400:normal
+#   nove:400:normal
+#   proximanova:100:normal
+#   proximanova:300:normal
+#   proximanova:400:normal
+#   proximanova:500:normal
+#   proximanova:600:normal
+#   proximanova:700:normal
+#   proximanova:800:normal
+#   proximanova:900:normal
+#   sofachrome:100:normal
 

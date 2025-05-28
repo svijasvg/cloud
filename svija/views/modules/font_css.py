@@ -104,13 +104,18 @@ def font_css():
 
   
   for this_font in adobe_fonts:
-    family = "font-family: '"+this_font.family + "'; "
-    weight = "font-weight: " + this_font.weight + "; "
-    style  = "font-style: " + this_font.style + "; "
+    weight = ''
+    style  = ''
+
+    if this_font.weight != '': weight = "font-weight: " + this_font.weight + "; "
+    if this_font.style  != '': style  = "font-style: "  + this_font.style + "; "
+
+    family = "font-family: '"+this_font.svg_ref+ "'; "
     url    = "src:url("+this_font.adobe_url+") format('woff2');"
+
     adobe_css += "\n@font-face { " + family + weight + style + url + " }"
-  if adobe_css != '':
-    adobe_css += '\n'
+
+  if adobe_css != '': adobe_css += '\n'
 
 #———————————————————————————————————————— generate google meta link
 
