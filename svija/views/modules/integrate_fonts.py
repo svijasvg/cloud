@@ -513,6 +513,27 @@ def adobe_font_from_list(this_font, font_list):
       this_font.adobe_sheet = debug
       return this_font
 
+#———————————————————————————————————————— difficult cases
+
+# broken fonts: folk rough ot, aciet bat families
+
+# the idea is to find the font whose candidate family matchs the most characters in the SVG reference
+
+  matching_chars = 0
+  final_font = font_list[0]
+
+  for x in range(len(font_list)):
+
+    candidate  = font_list[x]
+    test_chars = count_overlap(test_svg_ref, candidate['family']+candidate['style'])
+
+    if test_chars > matching_chars:
+      this_font.adobe_url = candidate['url']
+      this_font.category = 'matched chars: '+str(test_chars) + ':'+candidate['family']+candidate['style']
+      matching_chars = test_chars
+
+  return this_font
+
 #———————————————————————————————————————— ▲ end loop and exit
 
   this_font.adobe_url = ''
@@ -556,6 +577,67 @@ def adobe_font_from_list(this_font, font_list):
 
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related secondary methods
+
+#———————————————————————————————————————— count_overlap(str1, str2)
+
+#   slides two strings across each other and counts the
+#   number of matched strings of three or more characters
+
+#   "    longerstringxxx    "
+#   "shrtstr"
+
+#   we want to match 3 or more, so we add len(shrtstr)-3 spaces to either end of longerstringxxx
+#   then loop through len(shtrttr) sections on longerstring, removing one character at a time
+#   each time count contiguous matches (separate function)
+
+#   how many loops do we need? 
+
+match_precision = 3
+fifty_spaces    = '                                                  '
+
+def count_overlap(str1, str2):
+
+  if len(str1) > len(str2):
+    long_str = str1
+    shrt_str = str2
+  else:
+    long_str = str2
+    shrt_str = str1
+
+  extra_spaces = 0
+  if len(shrt_str) > 3:
+    extra_spaces = len(shrt_str) -3
+
+# return len(shrt_str)# 11 folkroughOT
+# return len(long_str)# 22 marshmallowfluffnormal
+# return extra_spaces # 8 for folkroughOT
+
+  long_str = fifty_spaces[0:extra_spaces] + long_str + fifty_spaces[0:extra_spaces] 
+
+
+
+
+
+
+
+
+
+
+  # START HERE TOMORROW — COMPARE THE SECTIONS (SEE LINE 590)
+
+
+
+
+
+
+
+
+# FolkRoughOT returned matched chars: 38:marshmallowfluff
+# marshmallowfluff is 16 chars
+# folkroughot is 11 chars
+
+  matched_chars = 0
+  return 12
 
 #———————————————————————————————————————— fonts_from_adobe_sheet(css_str)
 #
