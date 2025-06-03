@@ -7,6 +7,9 @@
 
 ### Knowledge Base
 
+### Fonts
+
+If a font family begins with a number (`8-Heavy`, Illustrator will add quotes to the name in the SVG CSS sheet.
 ### News Header
 
 To add a message to the cloud header, update the following html files:

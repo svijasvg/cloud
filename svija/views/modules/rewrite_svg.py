@@ -126,7 +126,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
       svg_ref_section, font_family = svg_lines[x].split(', ', 1)
 
-      svg_ref     = svg_ref_section.split('family: ')[1]
+      svg_ref     = svg_ref_section.split('family: ')[1].replace('"', '')
       font_family = font_family[0:-1]
 
       #———————————————————————————————————————— if font is already listed, skip the rest of the loop
