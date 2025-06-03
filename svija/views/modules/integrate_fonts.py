@@ -151,7 +151,7 @@ def integrate_fonts():
     this_font = adobe_font_from_list(this_font, font_list) 
 
     if this_font.adobe_url == '':
-      this_font.category = '⚠️ URL not found' 
+      this_font.category = '⚠️ no match found' 
       this_font.adobe_url = '⚠️ search CSS manually'
 
 #   this_font.adobe_sheet = adobe_sheets[adobe_id]
@@ -355,7 +355,7 @@ def interpret_google(svg_ref):
   return {'family':family, 'weight':weight, 'style':style, }
 
 
-#:::::::::::::::::::::::::::::::::::::::: adobe-related methods
+#:::::::::::::::::::::::::::::::::::::::: main adobe method
 
 #———————————————————————————————————————— adobe_font_from_list(this_font, candidates) 
 
@@ -374,10 +374,10 @@ def adobe_font_from_list(this_font, font_list):
 
   if test_weight == '': test_weight = derive_adobe_weight(this_font)
   if test_style  == '': test_style  = derive_adobe_style(this_font)
+  if test_style  == 'oblique': test_style = 'italic'
 
   if test_weight == '': test_weight = '400'
   if test_style  == '': test_style  = 'normal'
-
 
 #———————————————————————————————————————— weight & style match • svg ref matches candidate family
 
@@ -386,32 +386,33 @@ def adobe_font_from_list(this_font, font_list):
     if test_weight == candidate['weight'] and test_style == candidate['style']:
 
       if test_svg_ref == candidate['family']: #################################
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'WS-SVG ref'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
 #———————————————————————————————————————— weight & style match • test family matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
+
     if test_weight == candidate['weight'] and test_style == candidate['style']:
 
       if test_family == candidate['family']: #################################
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'WS-family'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
 #———————————————————————————————————————— style matches • svg_ref matchs candidate family
 
@@ -420,15 +421,15 @@ def adobe_font_from_list(this_font, font_list):
     if test_style == candidate['style']:
 
       if test_svg_ref == candidate['family']: #################################
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'S-SVG ref'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
 #———————————————————————————————————————— weight matches • svg ref matches candidate family
 
@@ -437,15 +438,15 @@ def adobe_font_from_list(this_font, font_list):
     if test_weight == candidate['weight']:
 
       if test_svg_ref == candidate['family']:
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'W-SVG-ref'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
 #———————————————————————————————————————— weight matches • test family matchs candidate family
 
@@ -454,67 +455,98 @@ def adobe_font_from_list(this_font, font_list):
     if test_weight == candidate['weight']:
 
       if test_family == candidate['family']:
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'W-family'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
-#———————————————————————————————————————— style matches • test family matchs candidate family
+#———————————————————————————————————————— style matches • test family matchs candidate family SHOULD MATCH 8-HEAVY
 
   for x in range(len(font_list)):
     candidate = font_list[x]
+   
     if test_style == candidate['style']:
 
       if test_family == candidate['family']:
-        this_font.weight = test_weight
-        this_font.style  = test_style
+        if this_font.weight == '': this_font.weight = test_weight
+        if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
         this_font.category = 'S-family'
-        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
-        break
+        return this_font
 
 #———————————————————————————————————————— svg ref matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
     if test_svg_ref == candidate['family']: ####################################
-      this_font.weight = test_weight
-      this_font.style  = test_style
+      if this_font.weight == '': this_font.weight = test_weight
+      if this_font.style  == '': this_font.style  = test_style
       this_font.adobe_url = candidate['url']
 
       this_font.category = 'SVG ref'
-      debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
       this_font.adobe_sheet = debug
-      break
+      return this_font
 
 #———————————————————————————————————————— test family matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
     if test_family == candidate['family']: ####################################
-      this_font.weight = test_weight
-      this_font.style  = test_style
+      if this_font.weight == '': this_font.weight = test_weight
+      if this_font.style  == '': this_font.style  = test_style
       this_font.adobe_url = candidate['url']
 
       this_font.category = 'family'
-      debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
       this_font.adobe_sheet = debug
-      break
+      return this_font
 
 #———————————————————————————————————————— ▲ end loop and exit
 
+  this_font.adobe_url = ''
   return this_font
 
+
+#   can these be fixed manually? How? Document it!
+
+#   font families with problems caused by Adobe's incoherence
+#   displays correctly; CSS gives wrong weight:
+#   if I can detect the problem, I can fix it by overriding weight
+
+#     svg: futuraptdemi:futurapt:300:normal
+#   sheet: futurapt:300:normal
+#     svg: futuraptdemiobl:futurapt:300:italic
+#   sheet: futurapt:300:italic
+#     svg: futuraptheavy:futurapt:800:normal
+#   sheet: futurapt:800:normal
+#     svg: futuraptheavyobl:futurapt:800:italic
+#   sheet: futurapt:800:italic
+#     svg: futuraptextrabold:futurapt:700:normal
+#   sheet: futurapt:700:normal
+#     svg: futuraptextraboldobl:futurapt:700:italic
+#   sheet: futurapt:700:italic
+#   svg: proximanovatthin:proximanova:200:normal
+#   sheet: proximanova:900:normal
+#   svg: proximanovablack:proximanova:800:normal
+#   sheet: proximanova:800:normal
+
+#   woff2 file is just not the same as the installed Illustrator file
+#   the problem is that Adobe defines both Futura PT Bold and Futura PT Heavy as 700 weight
+
+#   svg: futuraptboldobl:futurapt:700:oblique SHOULD MATCH WEIGHT STYLE & FAMILY
+#   sheet: futurapt:700:normal
 
 #———————————————————————————————————————— temporary notes
 
@@ -939,6 +971,8 @@ def css_file_from_tag(pasted_link):
 #:::::::::::::::::::::::::::::::::::::::: utility methods
 
 #———————————————————————————————————————— simplified(str)
+#
+#   has been tested, and 8 returns eight
 #
 #   lower case, no dashes or spaces
 #   to compare svg references to adobe css refs
