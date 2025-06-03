@@ -253,6 +253,17 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     if line[0:1] == '.':
       line = line.replace('.cls-', '.' + style_id + '-')
 
+    #———————————————————————————————————————— remove font-family extra definitions
+    # 
+    #   Adobe SVG's have double font family listings, and the second
+    #   - is unnecessary
+    #   - provokes display problems (8 font family, unquoted)
+    #   so we can slightly reduce file size and complexity by
+    #   removing the second family list
+
+    if 'font-family:' in line:
+      line = line.split(', ')[0] + ';'
+
     #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
 
     if line[0:16] == 'clip-path: url(#':

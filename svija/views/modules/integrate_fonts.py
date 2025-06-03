@@ -363,6 +363,8 @@ def interpret_google(svg_ref):
 
 def adobe_font_from_list(this_font, font_list):
 
+# tag needs to be what line was triggered
+
 #———————————————————————————————————————— simplified values for testing
 
   test_svg_ref = simplified(this_font.svg_ref)
@@ -376,7 +378,8 @@ def adobe_font_from_list(this_font, font_list):
   if test_weight == '': test_weight = '400'
   if test_style  == '': test_style  = 'normal'
 
-#———————————————————————————————————————— weight & style match + svg ref matches candidate family
+
+#———————————————————————————————————————— weight & style match • svg ref matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
@@ -387,26 +390,30 @@ def adobe_font_from_list(this_font, font_list):
         this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        debug  = '410\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        this_font.category = 'WS-SVG ref'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
         debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
         break
 
-#———————————————————————————————————————— weight & style match + test family matches candidate family
+#———————————————————————————————————————— weight & style match • test family matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
-    if test_family == candidate['family']: ####################################
-      this_font.weight = test_weight
-      this_font.style  = test_style
-      this_font.adobe_url = candidate['url']
+    if test_weight == candidate['weight'] and test_style == candidate['style']:
 
-      debug  = '422\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-      this_font.adobe_sheet = debug
-      break
+      if test_family == candidate['family']: #################################
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
 
-#———————————————————————————————————————— style matches        + svg_ref matchs candidate family
+        this_font.category = 'WS-family'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
+
+#———————————————————————————————————————— style matches • svg_ref matchs candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
@@ -417,26 +424,13 @@ def adobe_font_from_list(this_font, font_list):
         this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        debug  = '438\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        this_font.category = 'S-SVG ref'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
         debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
         break
 
-#———————————————————————————————————————— style matches        + test family matches candidate family
-
-  for x in range(len(font_list)):
-    candidate = font_list[x]
-    if test_family == candidate['family']: ####################################
-      this_font.weight = test_weight
-      this_font.style  = test_style
-      this_font.adobe_url = candidate['url']
-
-      debug  = '450\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-      this_font.adobe_sheet = debug
-      break
-
-#———————————————————————————————————————— weight matches       + svg_ref matches candidate family
+#———————————————————————————————————————— weight matches • svg ref matches candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
@@ -447,12 +441,13 @@ def adobe_font_from_list(this_font, font_list):
         this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        debug  = '455\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        this_font.category = 'W-SVG-ref'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
         debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
         break
 
-#———————————————————————————————————————— weight matches       + test family matchs candidate family
+#———————————————————————————————————————— weight matches • test family matchs candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
@@ -463,20 +458,72 @@ def adobe_font_from_list(this_font, font_list):
         this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        debug  = '466\n' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        this_font.category = 'W-family'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
         debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
         this_font.adobe_sheet = debug
         break
+
+#———————————————————————————————————————— style matches • test family matchs candidate family
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_style == candidate['style']:
+
+      if test_family == candidate['family']:
+        this_font.weight = test_weight
+        this_font.style  = test_style
+        this_font.adobe_url = candidate['url']
+
+        this_font.category = 'S-family'
+        debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+        debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+        this_font.adobe_sheet = debug
+        break
+
+#———————————————————————————————————————— svg ref matches candidate family
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_svg_ref == candidate['family']: ####################################
+      this_font.weight = test_weight
+      this_font.style  = test_style
+      this_font.adobe_url = candidate['url']
+
+      this_font.category = 'SVG ref'
+      debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      this_font.adobe_sheet = debug
+      break
+
+#———————————————————————————————————————— test family matches candidate family
+
+  for x in range(len(font_list)):
+    candidate = font_list[x]
+    if test_family == candidate['family']: ####################################
+      this_font.weight = test_weight
+      this_font.style  = test_style
+      this_font.adobe_url = candidate['url']
+
+      this_font.category = 'family'
+      debug  = test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
+      debug += candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
+      this_font.adobe_sheet = debug
+      break
 
 #———————————————————————————————————————— ▲ end loop and exit
 
   return this_font
 
 
+#———————————————————————————————————————— temporary notes
 
 # svg ref: FolkRoughOT
 # svg fam: Folk Rough OT
 # adb css: ff-folk-rough
+
+
+#:::::::::::::::::::::::::::::::::::::::: adobe-related secondary methods
 
 #———————————————————————————————————————— fonts_from_adobe_sheet(css_str)
 #
