@@ -12,21 +12,14 @@
 #———————————————————————————————————————— imports
 
 from django.db.models import Q
-from svija.models import Font
+from django.shortcuts import get_object_or_404
+from svija.models import Font, Settings
 import requests
 
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
 
 def integrate_fonts():
-
-#:::::::::::::::::::::::::::::::::::::::: WHILE DEBUGGING
-
-  all_fonts = Font.objects.filter(enabled=True)
-  for this_font in all_fonts:
-    this_font.adobe_pasted = '<link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">'
-    this_font.save()
-#   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">
 
 #———————————————————————————————————————— remove conflicts
 #
@@ -42,14 +35,14 @@ def integrate_fonts():
       this_font.woff = ''
       this_font.save()
       
-    if this_font.google and this_font.adobe_pasted != '': # worked
-      this_font.adobe_pasted = ''
+    if this_font.google and this_font.adobe: # worked
+      this_font.adobe = False
       this_font.adobe_url    = ''
       this_font.adobe_sheet  = ''
       this_font.save()
       
-    if this_font.woff != '' and this_font.adobe_pasted != '': # worked
-      this_font.adobe_pasted = ''
+    if this_font.woff != '' and this_font.adobe: # worked
+      this_font.adobe = False
       this_font.adobe_url    = ''
       this_font.adobe_sheet  = ''
       this_font.save()
@@ -68,7 +61,7 @@ def integrate_fonts():
 #                 (Q(family  = ''   ) | Q(weight='') | Q(style=''))
 #                )
 
-#———————————————————————————————————————— ▼ get Adobe stylesheets
+#———————————————————————————————————————— get Adobe stylesheets
 #
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
@@ -90,11 +83,25 @@ def integrate_fonts():
   adobe_sheets     = {}
   adobe_font_lists = {}
 
+  settings = get_object_or_404(Settings,enabled=True)
+  adobe_project = settings.adobe_project
+# if len(adobe_project) != 7 and len(adobe_project) != 66:
+#   settings.adobe_project = "⚠️ Pasted link is wrong format"
+#   settings.save()
+
+  if len(adobe_project) == 66:
+    adobe_project = adobe_project[53:60]
+    settings.adobe_project = adobe_project
+    settings.save()
+
+#———————————————————————————————————————— ▼ get Adobe stylesheet
+
   for this_font in adobe_fonts:
 
 #———————————————————————————————————————— verify pasted format & length
 
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+
 
     if this_font.adobe_pasted[0:22] != '<link rel="stylesheet"':
       this_font.adobe_url = "⚠️ Pasted link is wrong format"

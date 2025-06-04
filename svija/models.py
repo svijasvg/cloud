@@ -376,7 +376,7 @@ class Settings(models.Model):
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics id'),blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
-    adobe_project = models.CharField(max_length=66, default='', verbose_name=_('adobe project ID'),blank=True,)
+    adobe_project = models.CharField(max_length=66, default='', verbose_name=_('adobe web project ID'),blank=True,)
     # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
     # color settings
