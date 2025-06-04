@@ -578,6 +578,24 @@ def adobe_font_from_list(this_font, font_list):
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related secondary methods
 
+#———————————————————————————————————————— contiguous_matching_chars(str1, str2)
+
+def contiguous_matching_chars(str1, str2):
+
+  contiguous = 0
+  max        = 0
+
+  for x in range(len(str1)):
+
+    if str1[x:x+1] == str2[x:x+1]:
+      contiguous += 1
+
+    else:
+      if max < contiguous: max = contiguous
+      contiguous = 0
+
+  return max
+
 #———————————————————————————————————————— count_overlap(str1, str2)
 
 #   slides two strings across each other and counts the
@@ -593,51 +611,43 @@ def adobe_font_from_list(this_font, font_list):
 #   how many loops do we need? 
 
 match_precision = 3
-fifty_spaces    = '                                                  '
+spaces          = '                                                                                                    '
 
 def count_overlap(str1, str2):
 
   if len(str1) > len(str2):
     long_str = str1
-    shrt_str = str2
+    short_str = str2
   else:
     long_str = str2
-    shrt_str = str1
+    short_str = str1
 
   extra_spaces = 0
-  if len(shrt_str) > 3:
-    extra_spaces = len(shrt_str) -3
+  if len(short_str) > 3:
+    extra_spaces = len(short_str) -3
 
-# return len(shrt_str)# 11 folkroughOT
+# return len(short_str)# 11 folkroughOT
 # return len(long_str)# 22 marshmallowfluffnormal
 # return extra_spaces # 8 for folkroughOT
 
-  long_str = fifty_spaces[0:extra_spaces] + long_str + fifty_spaces[0:extra_spaces] 
+  long_str = spaces[0:extra_spaces] + long_str + spaces[0:extra_spaces] 
 
+#———————————————————————————————————————— slide the strings
 
+  total_matches = 0
 
+  for x in range(len(long_str) - len(short_str)):
 
+    comparison_str = long_str[x:len(short_str)]
+    matches = contiguous_matching_chars(short_str, long_str)
+    if matches > match_precision:
+      total_matches += matches
 
-
-
-
-
-
-  # START HERE TOMORROW — COMPARE THE SECTIONS (SEE LINE 590)
-
-
-
-
-
-
-
+  return total_matches
 
 # FolkRoughOT returned matched chars: 38:marshmallowfluff
 # marshmallowfluff is 16 chars
 # folkroughot is 11 chars
-
-  matched_chars = 0
-  return 12
 
 #———————————————————————————————————————— fonts_from_adobe_sheet(css_str)
 #

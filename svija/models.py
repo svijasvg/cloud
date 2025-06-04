@@ -375,7 +375,8 @@ class Settings(models.Model):
 
     analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics id'),blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
-    maps_api_key  = models.CharField(max_length=200, default='', verbose_name=_('maps api key'),blank=True,)
+    adobe_project = models.CharField(max_length=66, default='', verbose_name=_('adobe project ID'),blank=True,)
+    # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
     # color settings
     color_main     = models.CharField(max_length=80, default='rgb(70%, 100%, 0%)', verbose_name=_('main color'),blank=True,)
