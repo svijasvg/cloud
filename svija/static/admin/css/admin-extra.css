@@ -680,6 +680,25 @@ td.field-filename input:focus{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
 }
 
+/*———————————————————————————————————————— global font fields
+
+    they shouldn't be changed by user,
+    so are grayed-out & turn red on mouseover */
+
+div.fieldBox.field-family input#id_family,
+div.fieldBox.field-weight input#id_weight,
+div.fieldBox.field-style input#id_style{
+  opacity:0.5;
+}
+
+div.fieldBox.field-family input#id_family:hover,
+div.fieldBox.field-weight input#id_weight:hover,
+div.fieldBox.field-style input#id_style:hover{
+  opacity:1.0;
+  border-color:red;
+  color:red;
+}
+
 /*———————————————————————————————————————— adobe font fields
 
     they shouldn't be changed by user,
@@ -782,6 +801,7 @@ a#page_button:hover, a#page_button:active, a#module_button:hover, a#module_butto
 
 @media screen and ( max-width: 700px ){
 }
+
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
 

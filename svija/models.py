@@ -121,6 +121,7 @@ class Font(models.Model):
     woff         = models.CharField(max_length=100, default='', verbose_name=_('woff name'), blank=True)
 
     google       = models.BooleanField(default=False, verbose_name=_('google font'),)
+    adobe        = models.BooleanField(default=False, verbose_name=_('adobe font'),)
     enabled      = models.BooleanField(default=True, verbose_name=_('font enabled'),)
     adobe_pasted = models.CharField(max_length=300, default='', verbose_name=_('adobe link'), blank=True)
     adobe_url    = models.CharField(max_length=300, default='', verbose_name=_('adobe url'), blank=True)

@@ -12,6 +12,13 @@ admin.site.site_header = 'Main Settings List'   # was H1 in black bar, now title
 admin.site.site_title  = 'Svija Cloud'          # end of each admin page’s <title> (a string). By default, this is “Django site admin”.
 admin.site.index_title = 'Svija Cloud Settings' # top of the admin index page (a string). By default, this is “Site administration”.
 
+
+from .forms import MyModelForm
+
+# @admin.register(Settings)
+# class MyModelAdmin(admin.ModelAdmin):
+#   form = MyModelForm
+
 #———————————————————————————————————————— reused translations
 
 text = _('scripts')
@@ -104,14 +111,14 @@ class FontAdmin(admin.ModelAdmin):
     return obj.adobe_pasted[53:60]
 
   # display on parent page
-  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'google', 'adobe_id', 'woff', 'category',)
+  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'google', 'adobe', 'woff', 'category',)
   list_filter = ('category', 'google', 'enabled', )
   save_on_top = True
   save_as = True
 
   fieldsets = [ 
-    (_('settings'),  {'fields': [('enabled', 'google',), ('svg_ref', 'family',), ('woff', 'weight',), ('category', 'style',),], 'description':descFonts,}),
-    (_('adobe fonts'),  {'fields': [('adobe_pasted', 'adobe_url',), 'adobe_sheet', ], 'description':descAdobe,}),
+    (_('settings'),  {'fields': [('enabled', 'google','adobe', ), ('svg_ref', 'family',), ('woff', 'weight',), ('category', 'style',),], 'description':descFonts,}),
+    (_('adobe fonts'),  {'fields': [('adobe_url',), 'adobe_sheet', ], 'description':descAdobe,}),
 
   ]   
 
