@@ -43,7 +43,7 @@ def font_css():
 #———————————————————————————————————————— set up arrays
 
   woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
-  adobe_fonts  = Font.objects.filter(enabled=True).exclude(adobe_pasted='')
+  adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe = True)).order_by('family')
   google_fonts = Font.objects.filter(Q(enabled=True) & Q(google = True)).order_by('family')
   google_meta  = ''
 
