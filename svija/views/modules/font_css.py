@@ -31,9 +31,10 @@
 #
 #———————————————————————————————————————— imports
 
-from svija.models import Font
+from svija.models import Font, Settings
 import requests
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 #:::::::::::::::::::::::::::::::::::::::: main definition
@@ -99,9 +100,11 @@ def font_css():
 
   # get comments from first font in list
   if len(adobe_fonts) > 0:
-    adobe_css  = '/* adobe font css */\n\n'
-    adobe_css += first_comment(adobe_fonts[0].adobe_sheet)
 
+    settings = get_object_or_404(Settings,enabled=True)
+    adobe_sheet = settings.adobe_sheet
+
+    adobe_css = first_comment(adobe_sheet)
   
   for this_font in adobe_fonts:
     weight = ''

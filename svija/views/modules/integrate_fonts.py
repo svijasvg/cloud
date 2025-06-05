@@ -38,13 +38,11 @@ def integrate_fonts():
     if this_font.google and this_font.adobe: # worked
       this_font.adobe = False
       this_font.adobe_url    = ''
-      this_font.adobe_sheet  = ''
       this_font.save()
       
     if this_font.woff != '' and this_font.adobe: # worked
       this_font.adobe = False
       this_font.adobe_url    = ''
-      this_font.adobe_sheet  = ''
       this_font.save()
 
 #———————————————————————————————————————— initialize arrays WOFF & GOOGLE COMMENTED OUT ALL FONTS ARE ADOBE
@@ -62,19 +60,12 @@ def integrate_fonts():
 #                )
 
 
-#:::::::::::::::::::::::::::::::::::::::: adobe fonts
+#———————————————————————————————————————— adobe fonts
 
 #———————————————————————————————————————— initialization
 
-  adobe_sheet     = ''
-  adobe_font_list = []
-
-  settings = get_object_or_404(Settings,enabled=True)
-  adobe_project = settings.adobe_project
-
-#———————————————————————————————————————— verify adobe project link format in site settings
-
 #   in site settings:
+#
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 #
 #   there will only be a few different CSS sheets for Adobe Fonts —
@@ -92,59 +83,88 @@ def integrate_fonts():
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">      svija.dev
 #   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">  alt.svija.dev (1 font)
 
-  if len(adobe_project) != 7 and len(adobe_project) != 66:
-    settings.adobe_project = "adobe project wrong length"
-    settings.save()
+  adobe_sheet     = ''
+  adobe_font_list = []
 
-  if len(adobe_project) == 66:
-    adobe_project = adobe_project[53:60]
-    settings.adobe_project = adobe_project
-    settings.save()
+  settings = get_object_or_404(Settings,enabled=True)
+  adobe_project = settings.adobe_project
 
+#———————————————————————————————————————— "while True" enables "break" to skip following code
+
+  while True:
+
+#———————————————————————————————————————— if user posted Adobe link, extract adobe ID
+
+    if len(adobe_project) == 66:
+      adobe_project = adobe_project[53:60]
+      settings.adobe_project = adobe_project
+      settings.save()
+
+#———————————————————————————————————————— break: no new adobe fonts to treat
+
+    if len(new_adobe_fonts) == 0: break
+
+#———————————————————————————————————————— break: no adobe project ID
+
+    if adobe_project == '':
+      settings.adobe_sheet = "enter adobe project id"
+      settings.save()
+      break 
+
+#———————————————————————————————————————— break: Adobe ID is wrong length # 
+
+    if len(adobe_project) != 7 and len(adobe_project) != 66:
+      settings.adobe_sheet = "adobe project wrong length"
+      settings.save()
+      break 
+  
 #———————————————————————————————————————— get adobe css file
 
-  adobe_sheet_url = "https://use.typekit.net/" + adobe_project + ".css"
-  adobe_sheet     = file_from_url(adobe_sheet_url)
+    adobe_sheet_url = "https://use.typekit.net/" + adobe_project + ".css"
+    adobe_sheet     = file_from_url(adobe_sheet_url)
+  
+#———————————————————————————————————————— break: css file is empty
 
-  if adobe_sheet == '':
-    settings.adobe_project = "error getting URL"
+    if adobe_sheet == '':
+      settings.adobe_sheet = adobe_sheet_url + " returned empty file"
+      settings.save()
+      break
+
+#———————————————————————————————————————— get font list from css sheet
+
+    adobe_font_list = fonts_from_adobe_sheet(adobe_sheet)
+  
+#———————————————————————————————————————— break: no fonts in css sheet
+
+    if len(adobe_font_list) == 0:
+      settings.adobe_sheet = adobe_sheet_url + " contained no fonts"
+      settings.save()
+      break
+
+#———————————————————————————————————————— save Adobe sheet
+
+    settings.adobe_sheet = adobe_sheet
     settings.save()
-
-#———————————————————————————————————————— get font list from file
-
-  adobe_font_list = fonts_from_adobe_sheet(adobe_sheet)
-
-  if len(adobe_font_list) == 0:
-    settings.adobe_project = "invalid adobe project url"
-    settings.save()
-
 
 #———————————————————————————————————————— ▼▲ get font url for each Adobe font
 
-  for this_font in new_adobe_fonts:
+    for this_font in new_adobe_fonts:
+  
+      this_font = adobe_font_from_list(this_font, adobe_font_list) 
 
-    if len(adobe_font_list) == 0:
-      this_font.category  = 'no valid adobe project' 
-      this_font.adobe_url = 'no valid adobe project'
+      if this_font == None: continue
+  
+      if this_font.adobe_url == '':
+        this_font.adobe_url   = 'search CSS manually' 
+  
       this_font.save()
-      continue
-      
-#———————————————————————————————————————— get font url and save css sheet
 
-    this_font = adobe_font_from_list(this_font, adobe_font_list) 
+#———————————————————————————————————————— end "while True"
 
-    if this_font.adobe_url == '':
-      this_font.category  = 'no match found' 
-      this_font.adobe_url = 'search CSS manually'
-
-    this_font.save()
-
-#———————————————————————————————————————— ▲ end loop and exit
-
-  return True
+    break
 
 
-#:::::::::::::::::::::::::::::::::::::::: woff & google fonts
+#———————————————————————————————————————— woff & google fonts
 
 #———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
 #
@@ -271,11 +291,7 @@ def interpret_google(svg_ref):
 
 #———————————————————————————————————————— adobe_font_from_list(this_font, candidates) 
 
-# 8-Heavy doesn't work, though everything seems to be correct
-
 def adobe_font_from_list(this_font, font_list):
-
-# tag needs to be what line was triggered
 
 #———————————————————————————————————————— simplified values for testing
 
@@ -302,10 +318,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'WS-SVG ref'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— weight & style match • test family matches candidate family
@@ -320,10 +332,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'WS-family'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— style matches • svg_ref matchs candidate family
@@ -337,10 +345,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'S-SVG ref'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— weight matches • svg ref matches candidate family
@@ -354,10 +358,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'W-SVG-ref'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— weight matches • test family matchs candidate family
@@ -371,10 +371,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'W-family'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— style matches • test family matchs candidate family SHOULD MATCH 8-HEAVY
@@ -389,10 +385,6 @@ def adobe_font_from_list(this_font, font_list):
         if this_font.style  == '': this_font.style  = test_style
         this_font.adobe_url = candidate['url']
 
-        this_font.category = 'S-family'
-        debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-        debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-        this_font.adobe_sheet = debug
         return this_font
 
 #———————————————————————————————————————— svg ref matches candidate family
@@ -404,10 +396,6 @@ def adobe_font_from_list(this_font, font_list):
       if this_font.style  == '': this_font.style  = test_style
       this_font.adobe_url = candidate['url']
 
-      this_font.category = 'SVG ref'
-      debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-      this_font.adobe_sheet = debug
       return this_font
 
 #———————————————————————————————————————— test family matches candidate family
@@ -419,30 +407,25 @@ def adobe_font_from_list(this_font, font_list):
       if this_font.style  == '': this_font.style  = test_style
       this_font.adobe_url = candidate['url']
 
-      this_font.category = 'family'
-      debug  = 'svg: ' + test_svg_ref +':'+ test_family +':'+ test_weight +':'+ test_style+'\n'
-      debug += 'sheet: ' + candidate['family'] +':'+ candidate['weight'] +':'+ candidate['style']
-      this_font.adobe_sheet = debug
       return this_font
 
 #———————————————————————————————————————— difficult cases
 
 # broken fonts: folk rough ot, aciet bat families
 
-# the idea is to find the font whose candidate family matchs the most characters in the SVG reference
-
-  matching_chars = 0
-  final_font = font_list[0]
+  best_match = 0
+  final_font     = font_list[0]
 
   for x in range(len(font_list)):
 
     candidate  = font_list[x]
-    test_chars = count_overlap(test_svg_ref, candidate['family']+candidate['style'])
+    this_match = count_overlap(test_svg_ref, candidate['family']+candidate['style'])
 
-    if test_chars > matching_chars:
-      this_font.adobe_url = candidate['url']
-      this_font.category = 'matched chars: '+str(test_chars) + ':'+candidate['family']+candidate['style']
-      matching_chars = test_chars
+    if this_match > best_match:
+      final_font = candidate
+      best_match = this_match
+
+  this_font.adobe_url   = final_font['url']
 
   return this_font
 
@@ -490,7 +473,7 @@ def adobe_font_from_list(this_font, font_list):
 
 #:::::::::::::::::::::::::::::::::::::::: adobe-related secondary methods
 
-#———————————————————————————————————————— contiguous_matching_chars(str1, str2)
+#———————————————————————————————————————— contiguous_matching_chars(str1, str2) LOGIC PROBLEM
 
 def contiguous_matching_chars(str1, str2):
 
@@ -501,9 +484,9 @@ def contiguous_matching_chars(str1, str2):
 
     if str1[x:x+1] == str2[x:x+1]:
       contiguous += 1
+      if max < contiguous: max = contiguous
 
     else:
-      if max < contiguous: max = contiguous
       contiguous = 0
 
   return max
@@ -522,10 +505,10 @@ def contiguous_matching_chars(str1, str2):
 
 #   how many loops do we need? 
 
-match_precision = 3
-spaces          = '                                                                                                    '
-
 def count_overlap(str1, str2):
+
+  minimum_matches = 3
+  spaces          = '                                                                                                    '
 
   if len(str1) > len(str2):
     long_str = str1
@@ -534,32 +517,23 @@ def count_overlap(str1, str2):
     long_str = str2
     short_str = str1
 
-  extra_spaces = 0
-  if len(short_str) > 3:
-    extra_spaces = len(short_str) -3
+  if len(short_str) > minimum_matches:
+    spaces = spaces[0:len(short_str)-minimum_matches]
+  
+  long_str = spaces + long_str + spaces
 
-# return len(short_str)# 11 folkroughOT
-# return len(long_str)# 22 marshmallowfluffnormal
-# return extra_spaces # 8 for folkroughOT
-
-  long_str = spaces[0:extra_spaces] + long_str + spaces[0:extra_spaces] 
-
-#———————————————————————————————————————— slide the strings
+  # slide the strings
 
   total_matches = 0
 
   for x in range(len(long_str) - len(short_str)):
-
-    comparison_str = long_str[x:len(short_str)]
-    matches = contiguous_matching_chars(short_str, long_str)
-    if matches > match_precision:
+  
+    comparison_str = long_str[x:len(short_str)+x]
+    matches = contiguous_matching_chars(short_str, comparison_str)
+    if matches > minimum_matches:
       total_matches += matches
 
   return total_matches
-
-# FolkRoughOT returned matched chars: 38:marshmallowfluff
-# marshmallowfluff is 16 chars
-# folkroughot is 11 chars
 
 #———————————————————————————————————————— fonts_from_adobe_sheet(css_str)
 #
@@ -1026,8 +1000,7 @@ def file_from_url(url):
     response = requests.get(url, timeout=3)
     return response.text
   except Exception as e:
-    return ''
-    #eturn str(e)
+    return str(e)
 
 #———————————————————————————————————————— is_valid_integer(s):
 

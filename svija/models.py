@@ -125,7 +125,7 @@ class Font(models.Model):
     enabled      = models.BooleanField(default=True, verbose_name=_('font enabled'),)
     adobe_pasted = models.CharField(max_length=300, default='', verbose_name=_('adobe link'), blank=True)
     adobe_url    = models.CharField(max_length=300, default='', verbose_name=_('adobe url'), blank=True)
-    adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
+#   adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
 
     # to rename
     category = models.CharField(max_length=200, default='', verbose_name='tag', blank=True,)
