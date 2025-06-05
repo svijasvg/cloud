@@ -52,7 +52,7 @@ def integrate_fonts():
 #   I don't want to mess with information that may have been manualy modified
 
 
-  adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe_sheet='')).exclude(adobe_pasted='')
+  new_adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe=True) & Q(adobe_url=''))
 
 # woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
 # google_fonts = Font.objects.filter(
@@ -61,10 +61,22 @@ def integrate_fonts():
 #                 (Q(family  = ''   ) | Q(weight='') | Q(style=''))
 #                )
 
-#———————————————————————————————————————— get Adobe stylesheets
-#
-#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
+#:::::::::::::::::::::::::::::::::::::::: adobe fonts
+
+#———————————————————————————————————————— initialization
+
+  adobe_sheet     = ''
+  adobe_font_list = []
+
+  settings = get_object_or_404(Settings,enabled=True)
+  adobe_project = settings.adobe_project
+
+#———————————————————————————————————————— verify adobe project link format in site settings
+
+#   in site settings:
+#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+#
 #   there will only be a few different CSS sheets for Adobe Fonts —
 #   normally, there will only be one.
 #   
@@ -73,95 +85,58 @@ def integrate_fonts():
 #   and a list of associated fonts & URLS
 #   
 #   otherwise I'm duplicationg work for each font that doesn't have to be done
-
+#
 #   in admin.py:
 #   return obj.adobe_pasted[53:60]
-
+#
 #   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">      svija.dev
 #   <link rel="stylesheet" href="https://use.typekit.net/aav4onz.css">  alt.svija.dev (1 font)
 
-  adobe_sheets     = {}
-  adobe_font_lists = {}
-
-  settings = get_object_or_404(Settings,enabled=True)
-  adobe_project = settings.adobe_project
-# if len(adobe_project) != 7 and len(adobe_project) != 66:
-#   settings.adobe_project = "⚠️ Pasted link is wrong format"
-#   settings.save()
+  if len(adobe_project) != 7 and len(adobe_project) != 66:
+    settings.adobe_project = "adobe project wrong length"
+    settings.save()
 
   if len(adobe_project) == 66:
     adobe_project = adobe_project[53:60]
     settings.adobe_project = adobe_project
     settings.save()
 
-#———————————————————————————————————————— ▼ get Adobe stylesheet
+#———————————————————————————————————————— get adobe css file
 
-  for this_font in adobe_fonts:
+  adobe_sheet_url = "https://use.typekit.net/" + adobe_project + ".css"
+  adobe_sheet     = file_from_url(adobe_sheet_url)
 
-#———————————————————————————————————————— verify pasted format & length
+  if adobe_sheet == '':
+    settings.adobe_project = "error getting URL"
+    settings.save()
 
-#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
+#———————————————————————————————————————— get font list from file
+
+  adobe_font_list = fonts_from_adobe_sheet(adobe_sheet)
+
+  if len(adobe_font_list) == 0:
+    settings.adobe_project = "invalid adobe project url"
+    settings.save()
 
 
-    if this_font.adobe_pasted[0:22] != '<link rel="stylesheet"':
-      this_font.adobe_url = "⚠️ Pasted link is wrong format"
-      this_font.adobe_sheet = this_font.adobe_pasted[0:22]
+#———————————————————————————————————————— ▼▲ get font url for each Adobe font
+
+  for this_font in new_adobe_fonts:
+
+    if len(adobe_font_list) == 0:
+      this_font.category  = 'no valid adobe project' 
+      this_font.adobe_url = 'no valid adobe project'
       this_font.save()
-
-#     del this_font
       continue
+      
+#———————————————————————————————————————— get font url and save css sheet
 
-    if len(this_font.adobe_pasted) != 66:
-      this_font.adobe_url = "⚠️ Pasted link is wrong length"
-      this_font.adobe_sheet = this_font.adobe_pasted
-      this_font.save()
-
-#     del this_font
-      continue
-
-#———————————————————————————————————————— it it's already treated, continue
-
-    adobe_id = this_font.adobe_pasted[53:60]
-
-    if adobe_id in adobe_sheets: continue
-
-#———————————————————————————————————————— get associated CSS file
-
-    css_str = css_file_from_tag(this_font.adobe_pasted) # worked
-
-#———————————————————————————————————————— if empty, skip
-
-    if css_str == '':
-      this_font.adobe_url = '⚠️ Pasted link returned wrong content'
-      this_font.adobe_sheet = ''
-      this_font.save()
-
-      # remove this_font from adobe_fonts
-      continue
-
-#———————————————————————————————————————— ▲ get font list from file
-
-    adobe_sheets[adobe_id]     = css_str
-    adobe_font_lists[adobe_id] = fonts_from_adobe_sheet(css_str)
-
-
-#:::::::::::::::::::::::::::::::::::::::: font info
-
-#———————————————————————————————————————— ▼ get font url for each Adobe font
-
-  for this_font in adobe_fonts:
-
-#———————————————————————————————————————— get font url and save css sheet SHEET SAVING COMMENTED OUT
-
-    adobe_id  = this_font.adobe_pasted[53:60]
-    font_list = adobe_font_lists[adobe_id]
-    this_font = adobe_font_from_list(this_font, font_list) 
+    this_font = adobe_font_from_list(this_font, adobe_font_list) 
 
     if this_font.adobe_url == '':
-      this_font.category = '⚠️ no match found' 
-      this_font.adobe_url = '⚠️ search CSS manually'
+      this_font.category  = 'no match found' 
+      this_font.adobe_url = 'search CSS manually'
 
-#   this_font.adobe_sheet = adobe_sheets[adobe_id]
     this_font.save()
 
 #———————————————————————————————————————— ▲ end loop and exit
@@ -169,77 +144,7 @@ def integrate_fonts():
   return True
 
 
-#:::::::::::::::::::::::::::::::::::::::: legacy code
-
-#———————————————————————————————————————— add new Adobe fonts
-#
-#   <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
-#
-#   right now, the Adobe stylesheet is parsed again for each new font
-#   but generally, there will only be one stylesheet for a site
-# 
-#   so I could keep the contents and reuse it for each font
-#   but I need a way to track which sheets were integrated
-#   so that if someone uses two different adobe sheets
-#   it will still work
-#
-#   web project for dev.svija.love
-#   <link rel="stylesheet" href="https://use.typekit.net/ycw1wbc.css">
-
-
-  for this_font in adobe_fonts:
-
-    break
-
-    # check for valid link
-    if this_font.adobe_pasted[0] != '<':   # contents is not "<link rel..."
-      this_font.adobe_url = "⚠️ Error in pasted link"
-      this_font.adobe_sheet = ''
-      this_font.save()
-      continue
-
-    this_font.adobe_url = "⚠️  DEBUG INFO"
-    debug_str = ''
-    for x_font in font_list:
-      debug_str += x_font
-    this_font.adobe_sheet = stylesheet
-    this_font.save()
-
-    # get list of fonts in stylesheet
-    font_list, stylesheet = font_list_from_link(this_font.adobe_pasted)
-
-    if type(font_list) is str:
-      this_font.adobe_url = font_list
-      this_font.adobe_sheet = ''
-      this_font.save()
-      continue
-
-    # convert svg ref to [family, weight and style]
-    target_font = interpret_adobe(this_font.svg_ref) # family:eight, weight:600, style:normal
-
-    # find match between target_font and font_list
-    font = best_adobe_match(target_font, font_list)
-
-    # if match failed
-    if type(font) is str:
-      this_font.adobe_url = font
-      this_font.adobe_sheet = stylesheet
-      this_font.save()
-      continue
-
-    # all is good so save info
-    if this_font.family == '':
-      this_font.family      = font['family']
-    if this_font.weight == '':
-      this_font.weight      = font['weight']
-    if this_font. style == '':
-      this_font.style       = font['style']
-
-    this_font.adobe_url   = font['url']
-    this_font.adobe_sheet = stylesheet
-
-    this_font.save()
-
+#:::::::::::::::::::::::::::::::::::::::: woff & google fonts
 
 #———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
 #
@@ -666,6 +571,9 @@ def count_overlap(str1, str2):
 #   family, weight, style and woff2 src URL
 
 def fonts_from_adobe_sheet(css_str):
+  if css_str == '': return []
+  if '@font-face' not in css_str: return []
+
   css_str = css_str.split('@font-face', 1)[1]
   css_str = css_str.split('\n\n.tk-', 1)[0]
 
@@ -1057,15 +965,6 @@ def best_adobe_match(target_font, font_list):
 
   return chosen
   
-#———————————————————————————————————————— css_file_from_tag(pasted_link)
-
-def css_file_from_tag(pasted_link):
-
-  parts = pasted_link.split('"') # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
-  stylesheet = file_from_url(parts[3])
-  if stylesheet[0:2] != '/*': return ''
-  return stylesheet
-
 
 #:::::::::::::::::::::::::::::::::::::::: utility methods
 
@@ -1127,7 +1026,8 @@ def file_from_url(url):
     response = requests.get(url, timeout=3)
     return response.text
   except Exception as e:
-    return str(e)
+    return ''
+    #eturn str(e)
 
 #———————————————————————————————————————— is_valid_integer(s):
 
