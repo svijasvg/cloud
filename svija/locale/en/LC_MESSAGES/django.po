@@ -264,19 +264,19 @@ msgstr "Click the [↗] icon in the fonts section of the Creative Cloud app to c
 # ———————————————————————————————————————— robots
 #: admin.py:276
 msgid "descColors"
-msgstr "Change the colors of this interface by entering valid CSS colors"
+msgstr "Change the colors of this interface by entering valid CSS colors. Replace the logo in SYNC/SVIJA/Svija Cloud"
 
 #: admin.py:295
 msgid "website settings"
 msgstr "settings"
 
 #: admin.py:296
-msgid "Adobe Web Project"
-msgstr ""
+msgid "adobe web project"
+msgstr "Adobe web project"
 
 #: admin.py:297
-msgid "Svija Cloud colors"
-msgstr ""
+msgid "svija cloud colors"
+msgstr "Svija Cloud colors"
 
 #: admin.py:298
 msgid "email sending"
@@ -590,7 +590,7 @@ msgstr "accent color"
 
 #: models.py:386
 msgid "dark color"
-msgstr "dark color"
+msgstr "header and bars"
 
 #: models.py:389
 msgid "email username"

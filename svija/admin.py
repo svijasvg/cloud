@@ -293,8 +293,8 @@ class SettingsAdmin(admin.ModelAdmin):
 
   fieldsets = [ 
     (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id', 'tracking_on', ), 'section', 'robots',],'description': descSettings,}),
-    (_('Adobe Web Project'), {'fields': ['adobe_project', 'adobe_sheet',],'description': descAdobeProject,}),
-    (_('Svija Cloud colors'), {'fields': [('color_main', 'color_dark', 'color_accent',),],'description': descColors,}),
+    (_('adobe web project'), {'fields': ['adobe_project', 'adobe_sheet',],'description': descAdobeProject,}),
+    (_('svija cloud colors'), {'fields': [('color_main', 'color_dark', 'color_accent',),],'description': descColors,}),
     (_('email sending'   ), {'fields': [('mail_id', 'mail_pass'), ('mail_srv','mail_port','mail_tls'),'notes',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   

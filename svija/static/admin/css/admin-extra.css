@@ -164,7 +164,7 @@ html[data-theme="light"],
 /*———————————————————————————————————————— header bar */
 
 #header{
-  background-color:var(--bg-head);
+  background-color:var(--dark);
        border-bottom:1px solid var(--accent);
 }
 
@@ -195,7 +195,7 @@ html[data-theme="light"],
 /*———————————————————————————————————————— nav bar */
 
 div.breadcrumbs{
-    background-color:var(--bg-dark);
+    background-color:var(--dark);
                color:var(--text-med);
 }
 

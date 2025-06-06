@@ -267,19 +267,19 @@ msgstr "Cliquez sur l’icône [↗] dans la section des polices de l’applicat
 msgid "descColors"
 msgstr ""
 "Changer les couleurs de cette interface en renseignant des couleurs CSS "
-"valides"
+"valides. Remplacer le logo dans SYNC/SVIJA/Svija Cloud"
 
 #: admin.py:295
 msgid "website settings"
 msgstr "Paramètres du site"
 
 #: admin.py:296
-msgid "Adobe Web Project"
-msgstr ""
+msgid "adobe web project"
+msgstr "Projet web Adobe"
 
 #: admin.py:297
-msgid "Svija Cloud colors"
-msgstr ""
+msgid "svija cloud colors"
+msgstr "couleurs Svija Cloud"
 
 #: admin.py:298
 msgid "email sending"
@@ -593,7 +593,7 @@ msgstr "couleur d'accent"
 
 #: models.py:386
 msgid "dark color"
-msgstr "couleur foncée"
+msgstr "header et barres"
 
 #: models.py:389
 msgid "email username"

@@ -177,24 +177,24 @@ def integrate_fonts():
       this_font.woff = woff
       this_font.save()
 
-#———————————————————————————————————————— COMMENTED add new Google fonts
+#———————————————————————————————————————— add new Google fonts
 
 #   this is seemingly unnecessary — all the necessary information is already
 #   supplied via the SVG code
 
 #   https://tech.svija.com/reference/fonts/google-fonts
 
-# for this_font in new_google_fonts:
+  for this_font in new_google_fonts:
 
-#   font = interpret_google(this_font.svg_ref)
-#   if this_font.family == '':
-#     this_font.family      = font['family']
-#   if this_font.weight == '':
-#     this_font.weight      = font['weight']
-#   if this_font. style == '':
-#     this_font.style       = font['style']
+    font = interpret_google(this_font.svg_ref)
+    if this_font.family == '':
+      this_font.family      = font['family']
+    if this_font.weight == '':
+      this_font.weight      = font['weight']
+    if this_font. style == '':
+      this_font.style       = font['style']
 
-#   this_font.save()
+    this_font.save()
 
 
   return True
