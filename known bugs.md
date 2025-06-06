@@ -17,3 +17,9 @@ Futura PT Demi is exported witha  weight of 300, where it should be 600
 </svg>
 ```
 Additionally, only one of many oblique styles actually had `oblique` listed as a style.
+
+---
+
+Open Sans ExtraBold has the wrong weight (700) in the SVG. The bug is caused by Adobe Illustrator.
+
+It is not possible to fix the problem manually if Google Fonts are used.

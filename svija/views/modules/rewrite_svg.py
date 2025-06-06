@@ -261,8 +261,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     #   so we can slightly reduce file size and complexity by
     #   removing the second family list
 
-    if 'font-family:' in line:
-      line = line.split(', ')[0] + ';'
+#   if 'font-family:' in line:
+#     line = line.split(', ')[0] + ';'
 
     #———————————————————————————————————————— replace 'url(#linear-gradient-3);' style definitions at top of SVG √
 

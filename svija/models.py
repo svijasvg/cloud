@@ -133,7 +133,7 @@ class Font(models.Model):
     def __str__(self):
         return self.svg_ref
     class Meta:
-        ordering = ['-enabled', 'category', 'family', 'style', 'svg_ref',]
+        ordering = ['-enabled', 'category', 'family', 'weight', 'svg_ref',]
         verbose_name = _("font")
         verbose_name_plural = _("font model list")
 
