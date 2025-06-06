@@ -59,8 +59,12 @@ Changes will take effect after `service uwsgi restart`
 
 Strings in templates: `{{ _('key_string') }}`
 
-how to change strings in JS?
+#### localizing JavaScript
 
+In a template, JS can be localized by:
+```
+var myVar = '{% trans 'translation string' %}'
+```
 ---
 ### Useful Links
 
