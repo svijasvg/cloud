@@ -26,38 +26,33 @@ def integrate_fonts():
 #   if google is checked, can't add adobe or woff
 #   if woff is filled out, can't add adobe
 #
-#   google > woff > adobe
+#   adobe > google > woff
 
   all_fonts = Font.objects.filter(enabled=True)
 
   for this_font in all_fonts:
-    if this_font.google and this_font.woff != '':
+
+    if this_font.adobe:
+      this_font.google = False
+      this_font.woff   = ''
+      this_font.save()
+      
+    if this_font.google:
       this_font.woff = ''
       this_font.save()
-      
-    if this_font.google and this_font.adobe: # worked
-      this_font.adobe = False
-      this_font.adobe_url    = ''
-      this_font.save()
-      
-    if this_font.woff != '' and this_font.adobe: # worked
-      this_font.adobe = False
-      this_font.adobe_url    = ''
-      this_font.save()
 
-#———————————————————————————————————————— initialize arrays WOFF & GOOGLE COMMENTED OUT ALL FONTS ARE ADOBE
+#———————————————————————————————————————— initialize new font arrays
 
 #   I don't want to mess with information that may have been manualy modified
 
 
   new_adobe_fonts  = Font.objects.filter(Q(enabled=True) & Q(adobe=True) & Q(adobe_url=''))
+  new_woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
 
-# woff_fonts   = Font.objects.filter(enabled=True).exclude(woff='')
-# google_fonts = Font.objects.filter(
-#                  Q(enabled = True ) &
-#                  Q(google  =  True) &
-#                 (Q(family  = ''   ) | Q(weight='') | Q(style=''))
-#                )
+  new_google_fonts = Font.objects.filter(
+                      ( Q(enabled = True ) & Q(google = True)               ) &
+                      ( Q(family  = ''   ) | Q(weight = ''  ) | Q(style='') )
+                     )
 
 
 #———————————————————————————————————————— adobe fonts
@@ -166,30 +161,30 @@ def integrate_fonts():
 
 #———————————————————————————————————————— woff & google fonts
 
-#———————————————————————————————————————— COMMENTED OUT add new WOFF fonts
+#———————————————————————————————————————— add new WOFF fonts
 #
 #   this just means cleaning up path if someone
 #   dragged it from the finder
 
-# for this_font in woff_fonts:
+  for this_font in new_woff_fonts:
 
 #   # remove everything in beginning of path if necessary
 #   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/SYNC/SVIJA/Fonts/Woff Files/clarendon.woff
 
-#   woff = this_font.woff
-#   if woff.find('/') > -1:
-#     woff = woff.rpartition("/")[2]
-#     this_font.woff = woff
-#     this_font.save()
+    woff = this_font.woff
+    if woff.find('/') > -1:
+      woff = woff.rpartition("/")[2]
+      this_font.woff = woff
+      this_font.save()
 
-#———————————————————————————————————————— add new Google fonts COMMENTED OUT
+#———————————————————————————————————————— COMMENTED add new Google fonts
 
 #   this is seemingly unnecessary — all the necessary information is already
 #   supplied via the SVG code
 
 #   https://tech.svija.com/reference/fonts/google-fonts
 
-# for this_font in google_fonts:
+# for this_font in new_google_fonts:
 
 #   font = interpret_google(this_font.svg_ref)
 #   if this_font.family == '':
@@ -373,7 +368,7 @@ def adobe_font_from_list(this_font, font_list):
 
         return this_font
 
-#———————————————————————————————————————— style matches • test family matchs candidate family SHOULD MATCH 8-HEAVY
+#———————————————————————————————————————— style matches • test family matchs candidate family
 
   for x in range(len(font_list)):
     candidate = font_list[x]
