@@ -12,6 +12,11 @@
 - If a font family begins with a number (`8-Heavy`, Illustrator will add quotes to the name in the SVG CSS sheet
 - a font family must be quoted if it begins with a number (`8`)
 
+How fonts are managed by Svija Cloud:
+- `rewrite_svg` simply adds svg font references to DB that are used in page but not already listed
+- `integrate_fonts` does the heavy lifting, populating the DB with family, style and weight
+- `write_font_css` constructs the CSS at the top of the page based on the DB
+
 ### News Header
 
 To add a message to the cloud header, update the following html files:
@@ -39,13 +44,17 @@ function updateNews(txt){
 ### Localization
 
 Reused translations are listed at the top of `admin.py`.
+```
+cd svija
+workon djangoEnv
+```
 
 1. modifiy `models.py` etc. by adding `_( 'string' )`
    close the file
 2. in `svija` directory do `django-admin makemessages --all`
-3. `vi -O models.py locale/en/*/*.po`
+3. `vi -O locale/*/*/*.po`
 
-if necessary copy to the opposite language
+if necessary copy to the opposite language, then:
 
 4. `django-admin compilemessages`
 
