@@ -123,7 +123,7 @@ class Font(models.Model):
     google       = models.BooleanField(default=False, verbose_name=_('google font'),)
     adobe        = models.BooleanField(default=False, verbose_name=_('adobe font'),)
     enabled      = models.BooleanField(default=True, verbose_name=_('font enabled'),)
-    adobe_pasted = models.CharField(max_length=300, default='', verbose_name=_('adobe link'), blank=True)
+#   adobe_pasted = models.CharField(max_length=300, default='', verbose_name=_('adobe link'), blank=True)
     adobe_url    = models.CharField(max_length=300, default='', verbose_name=_('adobe url'), blank=True)
 #   adobe_sheet  = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
 
@@ -374,10 +374,10 @@ class Settings(models.Model):
     url           = models.CharField(max_length=200, default='', verbose_name=_('site url'),)
     p3_color      = models.BooleanField(default=True, verbose_name=_('display p3'),)
 
-    analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('analytics id'),blank=True,)
+    analytics_id  = models.CharField(max_length=200, default='', verbose_name=_('google analytics id'),blank=True,)
     tracking_on   = models.BooleanField(default=False, verbose_name=_('cookies allowed'),)
-    adobe_project = models.CharField(max_length=66, default='', verbose_name=_('project ID'),blank=True,)
-    adobe_sheet   = models.TextField(max_length=99000, default='', verbose_name=_('adobe contents'), blank=True,)
+    adobe_project = models.CharField(max_length=66, default='', verbose_name=_('adobe project id'),blank=True,)
+    adobe_sheet   = models.TextField(max_length=99000, default='', verbose_name=_('adobe stylesheet'), blank=True,)
     # <link rel="stylesheet" href="https://use.typekit.net/jpl1zaz.css">
 
     # color settings
