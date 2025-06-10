@@ -49,7 +49,7 @@ cd svija
 workon djangoEnv
 ```
 
-1. modifiy `models.py` etc. by adding `_( 'string' )`
+1. modify `models.py` etc. by adding `_( 'string' )`
    close the file
 2. in `svija` directory do `django-admin makemessages --all`
 3. `vi -O locale/*/*/*.po`

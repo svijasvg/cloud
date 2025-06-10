@@ -20,12 +20,16 @@
 #
 #   update font definitions
 #
+#———————————————————————————————————————— 
+
+
 #———————————————————————————————————————— import
 
 import os, re, io
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.utils.translation import gettext as _
 from svija.models import Font
 
 
@@ -99,8 +103,13 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
 #:::::::::::::::::::::::::::::::::::::::: old-format SVG NEED BETTER ERROR HANDLING
 
-  if not new_format:
-    return 'xxx', 0, 0, '<!-- ' + svg_id + ' is an old-style SVG -->'
+  if new_format:
+    err_msg_pre = '<pre class=svgError>'
+    err_msg_txt = _('was created with an unsupported Illustrator version')
+    err_msg_url = '<a href=https://tech.svija.com/illustrator-version target=_blank>tech.svija.com</a>'
+
+    err_msg_txt = err_msg_txt.replace('link', err_msg_url)
+    return 'xxx', 0, 0, err_msg_pre + raw_name + err_msg_txt + '</pre>'
 
 #:::::::::::::::::::::::::::::::::::::::: get font info for newly-used fonts
 

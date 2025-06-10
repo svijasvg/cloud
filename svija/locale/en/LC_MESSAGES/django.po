@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-06 13:05+0200\n"
+"POT-Creation-Date: 2025-06-10 17:21+0200\n"
 "PO-Revision-Date: 2025-04-10 10:19+0200\n"
 "Last-Translator: Andrew Swift <andy@svija.com>>\n"
 "Language-Team: LANGAGE <LL@li.org>\n"
@@ -124,8 +124,7 @@ msgstr "type"
 msgid "section"
 msgstr "Section"
 
-#: admin.py:43 admin.py:88 admin.py:109 admin.py:128 admin.py:173 admin.py:207
-#: admin.py:263
+#: admin.py:43 admin.py:88 admin.py:128 admin.py:173 admin.py:207 admin.py:263
 msgid "settings"
 msgstr "settings"
 
@@ -259,12 +258,16 @@ msgstr ""
 # ———————————————————————————————————————— redirect
 #: admin.py:275
 msgid "descAdobeProject"
-msgstr "Click the [↗] icon in the fonts section of the Creative Cloud app to create a web project"
+msgstr ""
+"Click the [↗] icon in the fonts section of the Creative Cloud app to create "
+"a web project"
 
 # ———————————————————————————————————————— robots
 #: admin.py:276
 msgid "descColors"
-msgstr "Change the colors of this interface by entering valid CSS colors. Replace the logo in SYNC/SVIJA/Svija Cloud"
+msgstr ""
+"Change the colors of this interface by entering valid CSS colors. Replace "
+"the logo in SYNC/SVIJA/Svija Cloud"
 
 #: admin.py:295
 msgid "website settings"
@@ -289,11 +292,11 @@ msgstr ""
 "Settings specific to this page · <a href=https://tech.svija.com/programs/"
 "cloud/pages target=_blank>documentation↑</a>"
 
-#: admin.py:372
+#: admin.py:376
 msgid "page setup"
 msgstr "page setup"
 
-#: admin.py:377
+#: admin.py:381
 msgid "more page settings"
 msgstr "More Settings"
 
@@ -770,6 +773,10 @@ msgstr "Adobe CSS file contains no fonts"
 #: views/modules/integrate_fonts.py:153
 msgid "search css manually"
 msgstr "check CSS in site settings"
+
+#: views/modules/rewrite_svg.py:108
+msgid "was created with an unsupported Illustrator version"
+msgstr ".ai\nwas created with an\nunsupported version of\nAdobe Illustrator\nvisit link for help"
 
 #~ msgid "adobe link"
 #~ msgstr "copied link"

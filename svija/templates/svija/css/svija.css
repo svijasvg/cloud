@@ -38,6 +38,7 @@ div#noscript, div#nocoukie, div#explorer{ display:none; }
   top:0;
   left:0;
 }
+
 /*———————————————————————————————————————— bug fixes */
 
 /* avoids flash when SVG is resized */
@@ -46,6 +47,31 @@ svg:first-of-type{ width: 100%; }
 /* smooth font scaling in Safari */
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {
   * { text-rendering: geometricPrecision; }
+}
+
+/*———————————————————————————————————————— SVG error message */
+
+.svgError, .svgError a:link, .svgError a:visited{
+  color:#eee;
+}
+
+.svgError{
+  padding:20rem;
+  background-color:red;
+  text-align:center;
+  font-family:Verdana;
+  font-size:18rem;
+  line-height:24rem;
+}
+
+.svgError a:link, .svgError a:visited{
+   text-decoration:none;
+   border-bottom: 1rem dotted #eee;
+}
+
+.svgError a:hover, .svgError a:active{
+  color:white;
+  border-bottom: 1rem solid #fff;
 }
 
 /*———————————————————————————————————————— fin */
