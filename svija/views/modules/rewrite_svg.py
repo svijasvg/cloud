@@ -74,7 +74,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
-  #———————————————————————————————————————— old or new format SVG? EXPLANATION
+  #———————————————————————————————————————— DOCUMENTATION: old or new format SVG?
   #
   # old format:
   # <?xml version="1.0" encoding="UTF-8"?>
@@ -217,12 +217,21 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     line = svg_lines[line_number]
     line = no_leading_space(line)
 
+    #———————————————————————————————————————— remove meta tab with AI-generated manifest
+
+# <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1500"><metadata><c2pa:manifest xmlns:c2pa="http://c2pa.org/manifest">AAA0RGp1bWIAAAAea+yT6MTKXSbeDEDLtPb5ABMN/TNxKIkmIk+MkI5SPjlr/AvLUhYXkk5e+7k3UPPdaz41gx0T</c2pa:manifest></metadata>
+
+    if line_number == 0:
+      if 'c2pa' in line:
+        before, sep, after = line.partition('<metadata')
+        line = before
+
     #———————————————————————————————————————— keep 1st line to replace ID when done
 
     if line_number == 0:
       first_line = line
 
-    #———————————————————————————————————————— get dimensions from viewbox value in svg tag √
+    #———————————————————————————————————————— get dimensions from viewbox value in svg tag
 
     # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="260.1px"
     # height="172.6px" viewBox="0 0 260.1 172.6" style="enable-background:new 0 0 260.1 172.6;" xml:space="preserve">
@@ -253,7 +262,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     if line[0:1] == '.':
       line = line.replace('.cls-', '.' + style_id + '-')
 
-    #———————————————————————————————————————— remove font-family extra definitions
+    #———————————————————————————————————————— COMMENTED OUT remove font-family extra definitions
     # 
     #   Adobe SVG's have double font family listings, and the second
     #   - is unnecessary
