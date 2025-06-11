@@ -20,9 +20,6 @@
 #
 #   update font definitions
 #
-#———————————————————————————————————————— 
-
-
 #———————————————————————————————————————— import
 
 import os, re, io
@@ -52,7 +49,8 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
   debug          = 'working'
   px_width       = 0
   px_height      = 0
-  new_format     = True       # is it saved "export" instead of "save as" in Svija Tools
+  new_format     = True       # x2F or data-name
+
   defs_section   = False      # are we in def section at top of SVG?
   image_ids      = {}         # image id's that are changed in defs section
                               # and need to be updated in rest of file
@@ -78,38 +76,74 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
-  #———————————————————————————————————————— DOCUMENTATION: old or new format SVG?
-  #
-  # old format:
-  # <?xml version="1.0" encoding="UTF-8"?>
-  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
-  #   <defs>
-  #     <style>
-  #       .cls-1 {
-  # 
-  #
-  # new format
-  # <?xml version="1.0" encoding="UTF-8"?>
-  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
-  #   <defs>
-  #     <style>
-  #       .cls-1 {
-  #
   #———————————————————————————————————————— delete first line if <?xml...
 
   if '<?xml'      in svg_lines[0]: svg_lines.pop(0)
   if 'Generator:' in svg_lines[0]: svg_lines.pop(0)
 
+  #———————————————————————————————————————— remove meta tab with AI-generated manifest
 
-#:::::::::::::::::::::::::::::::::::::::: old-format SVG NEED BETTER ERROR HANDLING
+# <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1500"><metadata><c2pa:manifest xmlns:c2pa="http://c2pa.org/manifest">AAA0RGp1bWIAAAAea+yT6MTKXSbeDEDLtPb5ABMN/TNxKIkmIk+MkI5SPjlr/AvLUhYXkk5e+7k3UPPdaz41gx0T</c2pa:manifest></metadata>
 
-  if new_format:
+  if 'c2pa' in svg_lines[0]:
+    before, sep, after = svg_lines[0].partition('<metadata')
+    svg_lines[0] = before
+
+
+#:::::::::::::::::::::::::::::::::::::::: exit if old-format SVG
+
+  #———————————————————————————————————————— DOCUMENTATION: old or new format SVG?
+  #
+  # original format (save as):
+  #
+  # <?xml version="1.0" encoding="utf-8"?>
+  # <!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+  # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  #    viewBox="0 0 1200 1200" style="enable-background:new 0 0 1200 1200;" xml:space="preserve">
+  # <style type="text/css">
+  #   .st0{fill:#FFFFFF;}
+  #   .st1{opacity:0;fill:#FF00AD;}
+  #
+  # old format (export):
+  #
+  # <?xml version="1.0" encoding="utf-8"?>
+  # <!-- Generator: Adobe Illustrator 27.9.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+  # <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+  #    viewBox="0 0 1200 1200" style="enable-background:new 0 0 1200 1200;" xml:space="preserve">
+  # <style type="text/css">
+  #   .st0{fill:#FFFFFF;}
+  #   .st1{font-family:'Verdana-Bold';}
+  #   .st2{font-size:21px;}
+  # </style>
+  #
+  # new format (export):
+  #
+  # <?xml version="1.0" encoding="UTF-8"?>
+  # <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 5110">
+  #   <defs>
+  #     <style>
+  #       .cls-1 {
+  #
+  #———————————————————————————————————————— test for x2F SVG
+  #
+  # data-name svg has <style> · x2F SVG has <style type="text/css">
+
+# either 5th line contains old style or 4th line contains new style
+
+  for x in range(1,4):
+    if 'style type' in svg_lines[x]:
+      new_format = False
+  
+  #———————————————————————————————————————— exit with error if x2F SVG
+
+  if not new_format:
     err_msg_pre = '<pre class=svgError>'
     err_msg_txt = _('was created with an unsupported Illustrator version')
     err_msg_url = '<a href=https://tech.svija.com/illustrator-version target=_blank>tech.svija.com</a>'
 
     err_msg_txt = err_msg_txt.replace('link', err_msg_url)
     return 'xxx', 0, 0, err_msg_pre + raw_name + err_msg_txt + '</pre>'
+
 
 #:::::::::::::::::::::::::::::::::::::::: get font info for newly-used fonts
 
@@ -224,16 +258,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     if line_number == lines_quantity: break # we're done
 
     line = svg_lines[line_number]
-    line = no_leading_space(line)
-
-    #———————————————————————————————————————— remove meta tab with AI-generated manifest
-
-# <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1500"><metadata><c2pa:manifest xmlns:c2pa="http://c2pa.org/manifest">AAA0RGp1bWIAAAAea+yT6MTKXSbeDEDLtPb5ABMN/TNxKIkmIk+MkI5SPjlr/AvLUhYXkk5e+7k3UPPdaz41gx0T</c2pa:manifest></metadata>
-
-    if line_number == 0:
-      if 'c2pa' in line:
-        before, sep, after = line.partition('<metadata')
-        line = before
+    line = remove_leading_space(line)
 
     #———————————————————————————————————————— keep 1st line to replace ID when done
 
@@ -436,7 +461,7 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
   return svg_id, px_width, px_height, first_line+final_svg
 
-#:::::::::::::::::::::::::::::::::::::::: methods
+#:::::::::::::::::::::::::::::::::::::::: functions
 
 #———————————————————————————————————————— css_range(lines)
 #
@@ -583,46 +608,6 @@ def get_xy_content(str):
 
   return x, y, rest, content
 
-#———————————————————————————————————————— def clean_tspans(line) COMMENTED OUT AT CALL
-# remove x & y coords from tspan
-
-# fixes problem where Safari cause text tspans to bump into each other
-# delete coords for <tspan x="400.88" y="147">some text</tspan>
-
-def clean_tspans(line):
-
-  tspans = line.split('<tspan ')
-  first_bit = tspans.pop(0)
-
-  tspans = ['<tspan {0}'.format(i) for i in tspans] # add tspans back to list
-
-  number_of_tspans = len(tspans)
-  output = ''
-
-  # go through tspans from last to 2nd (start, end, step)
-  # https://stackoverflow.com/questions/4504662/why-does-rangestart-end-not-include-end
-  # reverse range ends earlier than expected
-
-  for x in range (number_of_tspans-1, -1, -1):
-
-    this_x, this_y, this_rest, this_content = get_xy_content(tspans[x])
-
-    if this_content == "\t": continue # AI gives tabs an empty tspan
-
-    if x > 0 and this_x != 0:
-      prev_x, prev_y, prev_rest, prev_content  = get_xy_content(tspans[x-1])
-
-      # if the Y height is same as previous block, and there's no text separation
-      # we get rid of the x & y coordinates
-      if this_y == prev_y and prev_content != "\t":
-        tspans[x] = '<tspan ' + this_rest # strip coordinates from tspans[x]
-
-    # add a CR for debugging only — it causes Firefbx & Chrome to add whitespace
-    output = tspans[x] + "" + output
-
-  output = first_bit + "\n" + output
-  return output
-
 #———————————————————————————————————————— add_p3(orig_line)
 
 # adds definition after fill:#FFFFFF, stroke:#9537FF
@@ -694,9 +679,9 @@ def hex_to_int(raw_hex):
   p3 = round(p3/255,3)
   return str(p3)
 
-#———————————————————————————————————————— no_leading_space(text)
+#———————————————————————————————————————— remove_leading_space(text)
 
-def no_leading_space(text):
+def remove_leading_space(text):
   return re.sub(r"^\s+","",text)
 
 
