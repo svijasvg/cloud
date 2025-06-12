@@ -55,7 +55,7 @@ def construct_page(request, section_url, page_url, screen_code, status_code):
 
   vb = update_db()
   if vb != False:
-    return HttpResponse("<pre>" + vb)
+    return HttpResponse('<pre>' + vb + '<pre>')
 
 # if update_db():
 #   return HttpResponse("<pre>DATABASE UPDATED")

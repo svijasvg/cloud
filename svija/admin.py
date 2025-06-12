@@ -348,11 +348,13 @@ descPages  = _('descPages')
 
 # https://stackoverflow.com/questions/16014719/adding-a-jquery-script-to-the-django-admin-interface
 
-from .forms import ProductAdminForm
+from .forms import pageSectionSelectorForm
+from .models import Page, Screen
 
 class PageAdmin(admin.ModelAdmin):
 
-  form = ProductAdminForm
+  form = pageSectionSelectorForm
+
 
   class Media:
     js = ( 'admin/js/ifempty.js', )
