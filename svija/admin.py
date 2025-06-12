@@ -275,8 +275,11 @@ descSettings = _('descSettings')
 descAdobeProject= _('descAdobeProject')
 descColors= _('descColors')
 
+from .forms import settingsSectionSelectorForm
 from .models import Settings
 class SettingsAdmin(admin.ModelAdmin):
+
+  form = settingsSectionSelectorForm
 
   # prevent bulk deletion in list view except in debug mode
   # https://gaetangrond.me/posts/django/protecting-data-in-django-admin-preventing-accidental-deletions/
