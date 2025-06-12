@@ -7,7 +7,9 @@
 
 ### Svija: web sites with SVG instead of HTML
 
-This is the server component of a group of programs that enable the creation of rich web content with Adobe Illustrator.
+This is the server component of a suite of open-source programs that enable the creation of rich web content with Adobe Illustrator.
+
+You can use Svija without building your own server: see [svija.com](https://svija.com)
 
 For more information, please visit the main Github page: [github.com/svijasvg](https://github.com/svijasvg)
 
