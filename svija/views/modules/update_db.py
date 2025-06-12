@@ -33,11 +33,11 @@ def update_db():
 
     destination_section = Section.objects.get(pk=source_section.pk)  # new copy of source
 
-    destination_section.pk       = None  # creates a new object
-    destination_section.code     = '*'
-    destination_section.name     = _('All Sections')
-    destination_section.order    = 0
-    destination_section.language = False
+    destination_section.pk           = None  # creates a new object
+    destination_section.code         = '*'
+    destination_section.name         = _('All Sections')
+    destination_section.order        = 0
+    destination_section.language     = False
     destination_section.save()
   
 #———————————————————————————————————————— 2.3.3 reorder screens

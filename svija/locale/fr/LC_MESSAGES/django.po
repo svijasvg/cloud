@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-10 17:21+0200\n"
+"POT-Creation-Date: 2025-06-12 17:13+0200\n"
 "PO-Revision-Date: 2025-04-10 10:19+0200\n"
 "Last-Translator: Andrew Swift <andy@svija.com>>\n"
 "Language-Team: LANGAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 # :::::::::::::::::::::::::::::::::::::::: admin.py
 # ———————————————————————————————————————— multiple uses
-#: admin.py:17 admin.py:41 admin.py:192 admin.py:235 admin.py:338 models.py:502
+#: admin.py:17 admin.py:41 admin.py:192 admin.py:235 admin.py:341 models.py:502
 msgid "scripts"
 msgstr "scripts"
 
@@ -53,7 +53,7 @@ msgstr "polices"
 msgid "illustrator file"
 msgstr "fichier Illustrator"
 
-#: admin.py:25 admin.py:331 models.py:487
+#: admin.py:25 admin.py:334 models.py:487
 msgid "illustrator files"
 msgstr "Fichiers Illustrator"
 
@@ -96,7 +96,7 @@ msgstr "nom"
 msgid "screen size"
 msgstr "taille d'écran"
 
-#: admin.py:35 admin.py:191 admin.py:234 admin.py:337 models.py:501
+#: admin.py:35 admin.py:191 admin.py:234 admin.py:340 models.py:501
 msgid "script"
 msgstr "script"
 
@@ -108,11 +108,11 @@ msgstr "contenu"
 msgid "script name"
 msgstr "nom"
 
-#: admin.py:38 admin.py:322 models.py:252 models.py:467
+#: admin.py:38 admin.py:325 models.py:252 models.py:467
 msgid "script library"
 msgstr "bibliothèque de scripts"
 
-#: admin.py:39 admin.py:323
+#: admin.py:39 admin.py:326
 msgid "script libraries"
 msgstr "bibliothèques de scripts"
 
@@ -270,34 +270,34 @@ msgstr ""
 "Changer les couleurs de cette interface en renseignant des couleurs CSS "
 "valides. Remplacer le logo dans SYNC/SVIJA/Svija Cloud"
 
-#: admin.py:295
+#: admin.py:298
 msgid "website settings"
 msgstr "Paramètres du site"
 
-#: admin.py:296
+#: admin.py:299
 msgid "adobe web project"
 msgstr "Projet web Adobe"
 
-#: admin.py:297
+#: admin.py:300
 msgid "svija cloud colors"
 msgstr "couleurs Svija Cloud"
 
-#: admin.py:298
+#: admin.py:301
 msgid "email sending"
 msgstr "Envoi de mail"
 
 # ———————————————————————————————————————— page
-#: admin.py:343
+#: admin.py:346
 msgid "descPages"
 msgstr ""
 "Paramètres spécifiques à cette page · <a href=https://tech.svija.com/"
 "programs/cloud/pages target=_blank>documentation↑</a>"
 
-#: admin.py:376
+#: admin.py:381
 msgid "page setup"
 msgstr "paramètres"
 
-#: admin.py:381
+#: admin.py:386
 msgid "more page settings"
 msgstr "Autres paramètres"
 
@@ -775,9 +775,23 @@ msgstr "Fichier CSS Adobe ne contient aucune police"
 msgid "search css manually"
 msgstr "voir CSS dans paramètres du site"
 
-#: views/modules/rewrite_svg.py:108
+#: views/modules/rewrite_svg.py:141
 msgid "was created with an unsupported Illustrator version"
-msgstr ".ai\na été créé avec une\nversion non prise en charge\nd’Adobe Illustrator\nPlus d'infos sur link"
+msgstr ""
+".ai\n"
+"a été créé avec une\n"
+"version non prise en charge\n"
+"d’Adobe Illustrator\n"
+"Plus d'infos sur link"
+
+#: views/modules/update_db.py:38
+msgid "All Sections"
+msgstr "Toutes les sections"
+
+# ———————————————————————————————————————— screen
+#: views/modules/update_db.py:69
+msgid "All Screens"
+msgstr "Tous les écrans"
 
 #~ msgid "adobe link"
 #~ msgstr "lien copié"
