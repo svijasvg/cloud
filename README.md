@@ -10,11 +10,9 @@ Version 2.3.3
 A set of tools for building web sites using Adobe Illustrator.  
 Includes a CMS for managing pages and menus.
 
-![](images/divider.jpg "————————————————————————————————————————")
-
 Detailed documentation is available at **[tech.svija.love][1]**
 
----
+![](images/divider.jpg "————————————————————————————————————————")
 ### Updating to a New Version
 
 Please see the [cloud-update][2] repository.
