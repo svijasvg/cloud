@@ -17,11 +17,15 @@ For more information, please visit the main Github page: [github.com/svijasvg](h
 
 Svija Cloud is a Django program that serves SVG files in the form of a website.
 
+![](images/divider.jpg "————————————————————————————————————————")
+
 ### Requirements
 
 Svija Cloud expects a server with a specific virtual environment installed.
 
 To install Svija Cloud, please first set up a server according to the Svija [Server repository](https://github.com/svijasvg/server).
+
+![](images/divider.jpg "————————————————————————————————————————")
 
 ### Updating
 
