@@ -9,9 +9,9 @@
 
 This is the server component of a suite of open-source programs that enable the creation of rich web content with Adobe Illustrator.
 
-You can use Svija without building your own server: see [svija.com](https://svija.com)
+You can use Svija for free without building your own server: see [svija.com](https://svija.com)
 
-For more information, please visit the main Github page: [github.com/svijasvg](https://github.com/svijasvg)
+For more information about how to use this repository, please visit our main Github page: [github.com/svijasvg](https://github.com/svijasvg)
 
 ![](images/divider.jpg "————————————————————————————————————————")
 
@@ -21,14 +21,20 @@ Svija Cloud is a Django program that serves SVG files in the form of a website.
 
 ![](images/divider.jpg "————————————————————————————————————————")
 
+### Hosting
+
+We use [Linode/Akamai](https://cloud.linode.com) for our hosts. All the instructions you'll find in our repositories reflect this.
+
+![](images/divider.jpg "————————————————————————————————————————")
+
 ### Requirements
 
 Svija Cloud expects a server with a specific virtual environment installed.
 
-To install Svija Cloud, please first set up a server according to the Svija [Server repository](https://github.com/svijasvg/server).
+To install Svija Cloud, please first set up a server according to the [Svija Server repository](https://github.com/svijasvg/server).
 
 ![](images/divider.jpg "————————————————————————————————————————")
 
 ### Updating
 
-To update to a new version of Svija Cloud, refer to the [Cloud Update](https://github.com/svijasvg/cloud-update)
+To update to a new version of Svija Cloud, refer to the [Cloud Update](https://github.com/svijasvg/cloud-update) repository.
