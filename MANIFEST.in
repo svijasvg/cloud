@@ -1,6 +1,7 @@
 include LICENSE
 include README.md
 recursive-include svija/fixtures *
+recursive-include svija/locale *.po *.mo
 recursive-include svija/modules *
 recursive-include svija/static *
 recursive-include svija/templates *
