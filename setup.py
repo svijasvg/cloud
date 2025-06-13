@@ -12,6 +12,13 @@ setup(
     version='2.3.3',
     packages=find_packages(),
     include_package_data=True,
+    package_data={
+        'svija': [
+            'locale/*/LC_MESSAGES/*.mo',
+            'locale/*/LC_MESSAGES/*.po',
+        ]
+    },
+
 #   package_data={'fixtures': ['svija/fixtures/*.json']},
     license='MIT License',
     description='A CMS for web sites built with Adobe Illustrator pages.',
