@@ -16,8 +16,10 @@ svija/tests.py
 svija/urls.py
 svija/fixtures/help.json
 svija/fixtures/template.json
+svija/locale/en/LC_MESSAGES/.django.po.un~
 svija/locale/en/LC_MESSAGES/django.mo
 svija/locale/en/LC_MESSAGES/django.po
+svija/locale/fr/LC_MESSAGES/.django.po.un~
 svija/locale/fr/LC_MESSAGES/django.mo
 svija/locale/fr/LC_MESSAGES/django.po
 svija/migrations/0001_initial.py
