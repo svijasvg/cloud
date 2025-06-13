@@ -1,0 +1,78 @@
+/*———————————————————————————————————————— global css
+
+    https://www.toptal.com/developers/cssminifier */
+
+/*———————————————————————————————————————— global css */
+
+html{
+  font-size:1.6px;
+}
+
+html,body{  margin: 0px;
+           padding: env(safe-area-inset); /* https://stackoverflow.com/a/50475590/72958 */ 
+  background-color: #dbdbdb; } /* html color is what you seen when you pull down the page */
+
+body{ position:absolute; } /* necessary for module svg's with absolute positioning */
+
+svg{ 
+    position:relative; /* un-positioned elements draw first by default, screwing up z index */
+     display:block;    /* prevents space between adjacent SVG's */
+    overflow:hidden;   /* necessary for IE */
+}
+
+/* width & height include padding & borders */
+* { box-sizing: border-box; }
+
+/*———————————————————————————————————————— hide capture, links & accessibility */
+
+#captureSvija, #linksSvija, #accessSvija{
+ display:none;
+}
+
+/*———————————————————————————————————————— window management */
+
+div#noscript, div#nocoukie, div#explorer{ display:none; }
+
+#initial_scroll_div{
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+/*———————————————————————————————————————— bug fixes */
+
+/* avoids flash when SVG is resized */
+svg:first-of-type{ width: 100%; }
+
+/* smooth font scaling in Safari */
+@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+  * { text-rendering: geometricPrecision; }
+}
+
+/*———————————————————————————————————————— SVG error message */
+
+.svgError, .svgError a:link, .svgError a:visited{
+  color:#eee;
+}
+
+.svgError{
+  padding:20rem;
+  background-color:red;
+  text-align:center;
+  font-family:Verdana;
+  font-size:18rem;
+  line-height:24rem;
+}
+
+.svgError a:link, .svgError a:visited{
+   text-decoration:none;
+   border-bottom: 1rem dotted #eee;
+}
+
+.svgError a:hover, .svgError a:active{
+  color:white;
+  border-bottom: 1rem solid #fff;
+}
+
+/*———————————————————————————————————————— fin */
+

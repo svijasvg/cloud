@@ -1,6 +1,6 @@
 #———————————————————————————————————————— __init__.py
 
-version = '2.3.2'
+version = '2.3.3'
 import os, sys
 
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), './'))
@@ -13,6 +13,7 @@ if not path in sys.path: sys.path.insert(1, path)
 from .PageObject     import *
 from .PageView       import *
 
+from .CloudCSSView   import *
 from .MailView       import *
 from .ClearCacheView import *
 from .SendView       import *

@@ -1,0 +1,117 @@
+
+<style>
+
+/*———————————————————————————————————————— cloud_module.css */
+
+@font-face {
+  font-family:'cloudModuleFont';
+  src:url('/static/svija/woff/Montserrat-Medium.woff') format('woff');
+ }
+
+/*———————————————————————————————————————— size-independent */
+
+div#cloudModule{
+
+  position:fixed;
+  transition:0.5s;
+  background-clip: padding-box;
+
+/* left & width set by JS */
+
+  background-color:#404040;
+  color:#d0d0d0;
+
+  text-align:center;
+}
+
+
+
+/*———————————————————————————————————————— link appearance */
+
+div#cloudModule{
+  font-family:cloudModuleFont;
+  letter-spacing:0.20vw;
+}
+
+div#cloudModule a:link, div#cloudModule a:visited{
+  color:#fff;
+  opacity:0.8;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+
+div#cloudModule a:hover, div#cloudModule a:active{
+  opacity:1;
+  text-decoration:none;
+}
+
+/*———————————————————————————————————————— size-dependent SMALL */
+
+@media screen and ( max-width: 700px ){
+
+  div#cloudModule{
+    height:5.6vw;
+    top:-2.8vw;
+    left:15vw;
+    width:70vw;
+    padding-left:0;
+    padding-right:0;
+    background-color:#404040;
+    border-bottom:2vw solid #0000; /* easier to click */
+  }
+
+  div#cloudModule:hover{
+    top:0;
+  }
+
+  div#cloudModule{
+    padding-top:0.45vw;
+    font-size:2.2vw;
+  }
+
+  div#cloudModule img{
+    width:9.0vw;
+    margin-right:2vw;
+    vertical-align:-0.29vw; /* +up  -down */
+  }
+
+
+}
+
+/*———————————————————————————————————————— size-dependent LARGE */
+
+@media screen and ( min-width: 700px ){
+
+  div#cloudModule{
+    height:2.0vw;
+    top:-1.3vw;
+    left:29vw;
+    width:42vw;
+    padding-left:4vw;
+    padding-right:4vw;
+    background-color:#404040;
+    border-bottom:0.5vw solid #0000; /* easier to click */
+  }
+
+  div#cloudModule:hover{
+    top:0;
+  }
+
+  div#cloudModule{
+    font-size:0.7vw;
+    padding-top:0.24vw;
+  }
+
+  div#cloudModule img{
+    width:4.2vw;
+    margin-right:1.0vw;
+    vertical-align:-0.24vw; /* +up  -down */
+  }
+
+}
+
+
+/*———————————————————————————————————————— fin */
+
+</style>
+

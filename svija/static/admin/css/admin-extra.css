@@ -164,7 +164,7 @@ html[data-theme="light"],
 /*———————————————————————————————————————— header bar */
 
 #header{
-  background-color:var(--bg-head);
+  background-color:var(--dark);
        border-bottom:1px solid var(--accent);
 }
 
@@ -195,7 +195,7 @@ html[data-theme="light"],
 /*———————————————————————————————————————— nav bar */
 
 div.breadcrumbs{
-    background-color:var(--bg-dark);
+    background-color:var(--dark);
                color:var(--text-med);
 }
 
@@ -553,7 +553,7 @@ fieldset.module.collapse.collapsed{
 fieldset.module.collapse.collapsed h2{
   background:none;
   color:var(--text) !important;
-  text-transform:capitalize !important;
+  text-transform:none !important;
   margin-top:0px !important;
   margin-bottom:10px !important;
 	font-size:13px !important;
@@ -617,7 +617,7 @@ fieldset.module.aligned.collapse.collapsed{
 fieldset.module.aligned.collapse.collapsed h2{
   background:none;
   color:var(--text) !important;
-  text-transform:capitalize;
+  text-transform:none !important;
   margin:0px !important;
 	padding-top:5px !important;
 	letter-spacing:0 !important;
@@ -678,6 +678,25 @@ td.field-filename input{           /* page             */
 div.fieldBox.field-filename input:focus, /* module           */
 td.field-filename input:focus{           /* page             */
   border:3px solid #F9991F;        /* matches AI color */
+}
+
+/*———————————————————————————————————————— global font fields
+
+    they shouldn't be changed by user,
+    so are grayed-out & turn red on mouseover */
+
+div.fieldBox.field-family input#id_family,
+div.fieldBox.field-weight input#id_weight,
+div.fieldBox.field-style input#id_style{
+  opacity:0.5;
+}
+
+div.fieldBox.field-family input#id_family:hover,
+div.fieldBox.field-weight input#id_weight:hover,
+div.fieldBox.field-style input#id_style:hover{
+  opacity:1.0;
+  border-color:red;
+  color:red;
 }
 
 /*———————————————————————————————————————— adobe font fields
@@ -745,6 +764,42 @@ div.fieldBox input[type=checkbox]{
 div.fieldBox label.vCheckboxLabel {
     vertical-align: 3px;
     padding: 8px 0 5px 10px;
+}
+
+/*———————————————————————————————————————— page & module quick links */
+
+div#quick-links{
+  margin:auto auto auto 0;
+  padding-bottom:14px;
+}
+
+#page_button, #module_button{
+  display:inline-block;
+  opacity:50%;
+  height:24px;
+
+  margin:15px 0 0 30px;
+  padding:4px 20px 0px 20px;
+
+  border:1px solid var(--main);
+  border-radius:5px;
+
+  text-transform:uppercase;
+  font-weight:bold;
+}
+
+a#page_button:link, a#page_button:visited, a#module_button:link, a#module_button:visited{
+  text-decoration:none;
+  background:var(--bg-dark);
+  color:var(--main);
+}
+
+a#page_button:hover, a#page_button:active, a#module_button:hover, a#module_button:active{
+  transition:0.3s;
+  opacity:100%
+}
+
+@media screen and ( max-width: 700px ){
 }
 
 

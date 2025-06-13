@@ -28,8 +28,8 @@ from modules.generate_links import *
 from modules.generate_form_js import *
 from modules.generate_system_js import *
 from modules.get_accessible import *
-from modules.add_new_fonts import *
-from modules.get_font_css import *
+from modules.integrate_fonts import *
+from modules.font_css import *
 from modules.get_modules import *
 from modules.get_script_sets import *
 from modules.get_page_svgs import *
@@ -41,32 +41,45 @@ from modules.convert_modules import *
 from modules.convert_script_sets import *
 from modules.modules_dedupe import *
 from modules.script_sets_dedupe import *
+from modules.update_db import *
 
 #   different according to screen code because screen code
 #   has been appended to path
 
 @cache_per_user(60*60*24, False)
 @csrf_protect
-def construct_page(request, section_url, page_url, screen_code):
+def construct_page(request, section_url, page_url, screen_code, status_code):
 # return HttpResponse(section_url +' : '+ page_url +' : '+ screen_code)
+
+  #———————————————————————————————————————— do updates
+
+  vb = update_db()
+  if vb != False:
+    return HttpResponse('<pre>' + vb + '<pre>')
+
+# if update_db():
+#   return HttpResponse("<pre>DATABASE UPDATED")
 
   #———————————————————————————————————————— get page
 
   page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
+
+  if not page:
+    page = Page.objects.filter(Q(section__code='*') & Q(screen__code=screen_code) & Q(url=page_url) & Q(published=True)).first()
+
+  if not page:
+    page = Page.objects.filter(Q(section__code=section_url) & Q(screen__code='*') & Q(url=page_url) & Q(published=True)).first()
+
+  if not page:
+    page = Page.objects.filter(Q(section__code='*') & Q(screen__code='*') & Q(url=page_url) & Q(published=True)).first()
+
   if not page: raise Http404 # passed to file Error404.py
-
-  #———————————————————————————————————————— create version for other screens if necessary COMMENTED OUT
-
-# versions = Page.objects.filter(Q(section__code=section_url) & Q(url=page_url))
-
-# if (len(versions) < len(Screen.objects.all())):
-#   create_other_screens(page, screen_code)
 
   #———————————————————————————————————————— main settings
   # https://stackoverflow.com/questions/5123839/fastest-way-to-get-the-first-object-from-a-queryset-in-django
 
   settings         = Settings.objects.filter(enabled=True).first()
-  section          = Section.objects.filter(code=section_url).first()
+  section          = Section.objects.filter(Q(code=section_url) & Q(enabled=True)).first()
 
   # now called screen
   responsive       = Screen.objects.filter(code=screen_code).first()
@@ -77,7 +90,7 @@ def construct_page(request, section_url, page_url, screen_code):
   accessible       = get_accessibility(page.accessibility_text)
   links, capture   = generate_links(settings.url, Page.objects.all(), page)
   page_blocks      = []
-  component_blocks = []
+  module_blocks    = []
 
   if not page.default_dims: page_width = page.width
   else:          page_width = responsive.width
@@ -90,12 +103,20 @@ def construct_page(request, section_url, page_url, screen_code):
 
   #———————————————————————————————————————— metatags, system js & fonts
 
-  add_new_fonts()
-  google_font_meta, font_css = get_font_css()
+  language_code = ''
+
+  if section.language:
+    language_code = ' lang="'+ str(section.code) + '"'
+
+# return HttpResponse("<pre>&lt;html" + language_code+"&gt;")
+
+  integrate_fonts()
+  google_font_meta, font_cssx = font_css()
 
   screens = Screen.objects.order_by('pixels')
 
   system_js = generate_system_js(request.user, svija.views.version, settings, page, section_url, page_url, responsive, screens)
+
 
   #———————————————————————————————————————— page SVG's and scripts
 
@@ -136,40 +157,42 @@ def construct_page(request, section_url, page_url, screen_code):
 
   page_blocks.extend(script_sets)
 
-  #———————————————————————————————————————— component content
+  #———————————————————————————————————————— page modules
 
   # pagemodule CONTAIN modules, but are not modules
   # can't use get_modules to get them because the modules are INSIDE pagemodule
 
+  # list of page modules, a different object than a simple module
+  # connected by foreign keys
   page_modules = list(page.pagemodule_set.filter(enabled=True))
 
-  debug = ''
-
+  # filters out incompatible modules & extracts module objects from page_module objects
   all_modules = convert_modules(page_modules, section_url, screen_code) # list of "Module" objects
 
   # always-include modules
   if page.incl_modules:
-    default_modules = Module.objects.filter(Q(section__code=section_url) & Q(screen__code=screen_code) & Q(enabled=True) & Q(always=True))
+    default_modules = Module.objects.filter((Q(section__code=section_url)|Q(section__code='*'))  &  (Q(screen__code=screen_code)|Q(screen__code='*'))  &  Q(enabled=True)  &  Q(always=True))
 
     module_content = list(default_modules)
     all_modules.extend(module_content)
     all_modules = modules_dedupe(all_modules) 
 
+  # added after default modules so they can display on top
   page_modules = get_modules('page modules', all_modules, section_url, screen_code, page, page_width, use_p3)
 
-  component_blocks.extend(page_modules)
+  module_blocks.extend(page_modules)
 
   #———————————————————————————————————————— script set body JS
   # at end of everything, so Vibed will execute last
 
-  component_blocks.extend(script_sets_body_js)
+  module_blocks.extend(script_sets_body_js)
 
   #———————————————————————————————————————— combine content blocks
 
   # both contain head_js, css, body
 
   page_content      = combine_content(page_blocks,      'page')
-  component_content = combine_content(component_blocks, 'comp')
+  module_content = combine_content(module_blocks, 'comp')
 
   #———————————————————————————————————————— if form, add CSRF token
 
@@ -184,12 +207,13 @@ def construct_page(request, section_url, page_url, screen_code):
 
   context = {
     'comments'         : section.comment,
+    'language_code'    : language_code,
     'title'            : page.title + ' ' + section.title,
     'google_font_meta' : google_font_meta,
     'touch'            : section.touch,
     'system_js'        : system_js,
     'redirect_js'      : screen_redirect_js(ua),
-    'font_css'         : font_css,
+    'font_css'         : font_cssx,
     'accessible'       : accessible,
     'links'            : links,
     'capture'          : capture,
@@ -204,10 +228,10 @@ def construct_page(request, section_url, page_url, screen_code):
 #   pushes that dictionary onto the stack instead of an empty one.
 
   context.update(page_content)
-  context.update(component_content)
+  context.update(module_content)
 
 
-  return render(request, template, context)
+  return render(request, template, context, status=status_code)
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 

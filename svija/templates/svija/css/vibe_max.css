@@ -1,0 +1,128 @@
+
+/*:::::::::::::::::::::::::::::::::::::::: Vibe Data-Name.css */
+
+/*———————————————————————————————————————— notes
+
+  compatible AI 28.4.1 & AI 28.4.5
+
+  https://www.toptal.com/developers/cssminifier
+
+  github.com/svijalove/vibe
+  
+  ©Svija SAS, Cusset France */
+
+/*———————————————————————————————————————— EULA
+
+    Copyright (c) Svija
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    
+    The software is provided "as is", without warranty of any kind, express or
+    implied, including but not limited to the warranties of merchantability,
+    fitness for a particular purpose and noninfringement. In no event shall the
+    authors or copyright holders be liable for any claim, damages or other
+    liability, whether in an action of contract, tort or otherwise, arising from,
+    out of or in connection with the software or the use or other dealings in
+    the software.
+
+    svija.com · hello@svija.com*/
+
+
+/*:::::::::::::::::::::::::::::::::::::::: triggers */
+
+/* version 1.0.27 */
+
+/*———————————————————————————————————————— object list */
+
+/* https://stackoverflow.com/questions/5324415/select-elements-by-attribute-in-css */
+
+ circle[data-name^='time/'  ],  circle[data-name^='scroll/'],  circle[data-name^='mouse/' ],
+ellipse[data-name^='time/'  ], ellipse[data-name^='scroll/'], ellipse[data-name^='mouse/' ],
+      g[data-name^='time/'  ],       g[data-name^='scroll/'],       g[data-name^='mouse/' ],
+   path[data-name^='time/'  ],    path[data-name^='scroll/'],    path[data-name^='mouse/' ],
+polygon[data-name^='time/'  ], polygon[data-name^='scroll/'], polygon[data-name^='mouse/' ],
+   rect[data-name^='time/'  ],    rect[data-name^='scroll/'],    rect[data-name^='mouse/' ],
+
+/*———————————————————————————————————————— style directives */
+
+/* https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/ */
+
+#x{
+              opacity: 0;
+          user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: events */
+
+/*———————————————————————————————————————— click press down */
+
+ circle[data-name^='click/' ],  circle[data-name^='press/' ],  circle[data-name^='down/'  ],
+ellipse[data-name^='click/' ], ellipse[data-name^='press/' ], ellipse[data-name^='down/'  ],
+      g[data-name^='click/' ],       g[data-name^='press/' ],       g[data-name^='down/'  ],
+   path[data-name^='click/' ],    path[data-name^='press/' ],    path[data-name^='down/'  ],
+polygon[data-name^='click/' ], polygon[data-name^='press/' ], polygon[data-name^='down/'  ],
+   rect[data-name^='click/' ],    rect[data-name^='press/' ],    rect[data-name^='down/'  ],
+  image[data-name^='click/' ],   image[data-name^='press/' ],   image[data-name^='down/'  ],
+   text[data-name^='click/' ],    text[data-name^='press/' ],    text[data-name^='down/'  ],
+
+/*———————————————————————————————————————— over away ovaway */
+
+ circle[data-name^='over/'  ],  circle[data-name^='away/'  ],  circle[data-name^='ovaway/'],
+ellipse[data-name^='over/'  ], ellipse[data-name^='away/'  ], ellipse[data-name^='ovaway/'],
+      g[data-name^='over/'  ],       g[data-name^='away/'  ],       g[data-name^='ovaway/'],
+   path[data-name^='over/'  ],    path[data-name^='away/'  ],    path[data-name^='ovaway/'],
+polygon[data-name^='over/'  ], polygon[data-name^='away/'  ], polygon[data-name^='ovaway/'],
+   rect[data-name^='over/'  ],    rect[data-name^='away/'  ],    rect[data-name^='ovaway/'],
+  image[data-name^='over/'  ],   image[data-name^='away/'  ],   image[data-name^='ovaway/'],
+   text[data-name^='over/'  ],    text[data-name^='away/'  ],    text[data-name^='ovaway/'],
+
+/*———————————————————————————————————————— ovover */
+
+ circle[data-name^='ovover/'],
+ellipse[data-name^='ovover/'],
+      g[data-name^='ovover/'],
+   path[data-name^='ovover/'],
+polygon[data-name^='ovover/'],
+   rect[data-name^='ovover/'],
+  image[data-name^='ovover/'],
+   text[data-name^='ovover/'],
+
+/*———————————————————————————————————————— toggle delay zone */
+
+ circle[data-name^='toggle/'],  circle[data-name^='delay/' ],  circle[data-name^='zone/'  ],
+ellipse[data-name^='toggle/'], ellipse[data-name^='delay/' ], ellipse[data-name^='zone/'  ],
+      g[data-name^='toggle/'],       g[data-name^='delay/' ],       g[data-name^='zone/'  ],
+   path[data-name^='toggle/'],    path[data-name^='delay/' ],    path[data-name^='zone/'  ],
+polygon[data-name^='toggle/'], polygon[data-name^='delay/' ], polygon[data-name^='zone/'  ],
+   rect[data-name^='toggle/'],    rect[data-name^='delay/' ],    rect[data-name^='zone/'  ],
+  image[data-name^='toggle/'],   image[data-name^='delay/' ],   image[data-name^='zone/'  ],
+   text[data-name^='toggle/'],    text[data-name^='delay/' ],    text[data-name^='zone/'  ],
+
+/*———————————————————————————————————————— style directives */
+
+#x{ /* part of comma-separated list above */
+  pointer-events:none;
+  visibility:hidden;
+}
+
+svg{
+  pointer-events:none;
+}
+
+
+/*:::::::::::::::::::::::::::::::::::::::: fin */
+
+

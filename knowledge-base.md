@@ -7,6 +7,73 @@
 
 ### Knowledge Base
 
+### Fonts
+
+- If a font family begins with a number (`8-Heavy`, Illustrator will add quotes to the name in the SVG CSS sheet
+- a font family must be quoted if it begins with a number (`8`)
+
+How fonts are managed by Svija Cloud:
+- `rewrite_svg` simply adds svg font references to DB that are used in page but not already listed
+- `integrate_fonts` does the heavy lifting, populating the DB with family, style and weight
+- `write_font_css` constructs the CSS at the top of the page based on the DB
+
+### News Header
+
+To add a message to the cloud header, update the following html files:
+- `https://cloud.svija.com/en/`
+- `https://cloud.svija.com/fr/`
+
+All CSS needs to be included. Do not include head/body tags. SSH to `apache.svija.com` then:
+```
+vi -O */index.html
+```
+
+static/admin/js/fetch-remote.js` contains:
+```
+function getNews(code_lang){
+  if (code_lang != 'fr') code_lang = 'en'
+  getRemoteFile(`https://cloud.svija.com/${code_lang}/index.html`, updateNews)
+}
+
+function updateNews(txt){
+  document.getElementById('newsMessage').innerHTML = txt
+}
+```
+
+---
+### Localization
+
+Reused translations are listed at the top of `admin.py`.
+```
+cd svija
+workon djangoEnv
+```
+
+1. modify `models.py` etc. by adding `_( 'string' )`
+   close the file
+2. in `svija` directory do `django-admin makemessages --all`
+3. `vi -O locale/*/*/*.po`
+
+if necessary copy to the opposite language, then:
+
+4. `django-admin compilemessages`
+
+Then for each site:
+
+5. `./manage.py makemigrations`
+6. `./manage.py migrate`
+7. `service uwsgi restart`
+
+Changes will take effect after `service uwsgi restart`
+
+Strings in templates: `{{ _('key_string') }}`
+
+#### localizing JavaScript
+
+In a template, JS can be localized by:
+```
+var myVar = '{% trans 'translation string' %}'
+```
 ---
 ### Useful Links
 

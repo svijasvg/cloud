@@ -17,6 +17,11 @@
 #   from django.http import HttpResponse
 #   return HttpResponse("debugging message.")
 #
+#   urls.py
+#   path('',                                   views.PageView),   # prefix/slug
+#   path('<slug:section_url>',                 views.PageView),   # prefix/slug
+#   path('<slug:section_url>/<slug:page_url>', views.PageView),   # prefix/slug
+#
 #———————————————————————————————————————— imports
 
 from django.http import HttpResponse
@@ -28,29 +33,32 @@ from modules.cache_per_user import *
 from modules.construct_page import *
 
 
-def PageView(request, request_sect='', request_page=''):
+def PageView(request, section_url='', page_url=''):
 
-#———————————————————————————————————————— determine section
+#———————————————————————————————————————— if /page, correct section_url
+#                                         and _page_url
 
-  sections = Section.objects.filter(Q(code=request_sect))
+  if page_url == '' and section_url != '' :
+    sections = Section.objects.filter(Q(code=section_url) & Q(enabled=True))
 
-  if len(sections) > 0:
-    section     = sections.get(code=request_sect)
-    section_url = request_sect
+    if len(sections) == 0:
+      page_url    = section_url
+      section_url = ''
 
-  else:
+#———————————————————————————————————————— if section = '' get default
+
+  if section_url == '':
     section     = get_object_or_404(Settings, enabled=True).section
     section_url = section.code
 
-    if request_page == '':
-      request_page = request_sect
+#———————————————————————————————————————— get section or 404
 
-#———————————————————————————————————————— determine page
+  section = get_object_or_404(Section, code=section_url, enabled=True)
 
-  if request_page != '':
-    page_url = request_page
-  else:
-    page_url = section.default_page
+#———————————————————————————————————————— if page_url = '' get default
+
+  if page_url == '':
+    page_url = get_object_or_404(Section, code=section_url).default_page
 
 #———————————————————————————————————————— get screen code
 
@@ -59,15 +67,17 @@ def PageView(request, request_sect='', request_page=''):
   if screen_code is None:
     screen_code = 'xkcd'
 
-  screens = Screen.objects.filter(Q(code=screen_code))
+  screens = Screen.objects.filter(Q(code=screen_code)).exclude(code='*')
 
   if len(screens) == 0:
     screen_code = derived_screen(request.headers["User-Agent"])
 
-  request.screen_code = screen_code
+  request.screen_code = screen_code # needed by cache_per_user.py
 
 
-  return construct_page(request, section_url, page_url, screen_code)
+# return HttpResponse("<pre>"+str(screen_code))
+
+  return construct_page(request, section_url, page_url, screen_code, 200) # why code 200?
 
 #:::::::::::::::::::::::::::::::::::::::: functions
 
@@ -90,7 +100,7 @@ certain_cp  = [ 'x86_64',
 
 def derived_screen(user_agent):
 
-  all_screens = Screen.objects.all().order_by('pixels')
+  all_screens = Screen.objects.all().exclude(code='*').order_by('pixels')
 
   if len(all_screens) == 1:
     return all_screens[0].code

@@ -35,14 +35,14 @@ def generate_links(url, pages, page):
 
     # if we don't need to include section in url
     if page_section_code == default_code:
-      tag = '<a alt="{4}" href=http://{0}/{2}>{3}</a> · '       # exclude section
+      tag = '<a alt="{4}" href=https://{0}/{2}>{3}</a> · '       # exclude section
 
     # if we DO need to include section in url
     else:
-      tag = '<a alt="{4}" href="http://{0}/{1}{2}">{3}</a> · ' # include section
+      tag = '<a alt="{4}" href="https://{0}/{1}{2}">{3}</a> · ' # include section
 
     name = this_page.accessibility_name
-    if name == '': name = 'link'
+    if name == '': name = this_page.title
 
 #———————————————————————————————————————— add any pages that aren't dupes (cp/mb) or "missing"
 
@@ -61,7 +61,7 @@ def generate_links(url, pages, page):
 #———————————————————————————————————————— add capture
 
   capture = '/images/capture.jpg'
-  tag = '<a href=http://{0}><img src={1}></a>'
+  tag = '<a href=https://{0}><img src={1}></a>'
   capture_tag = tag.format(url,capture)
 
   return links, capture_tag

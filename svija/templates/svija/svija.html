@@ -5,7 +5,7 @@
 {{ comments }}
 
 
---><!DOCTYPE html><html><head><meta charset="utf-8" />
+--><!DOCTYPE html><html{{ language_code }}><head><meta charset="utf-8" />
   <title> {{ title }} </title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, viewport-fit=cover"/><!-- minimum scale is for mobile Chrome horz scrolling -->
@@ -21,18 +21,19 @@
 
 pageLoaded = false;
 
-{{ system_js                               }}
-{% include "svija/js/min_cookies.js"       %}
-{% include "svija/js/min_screens.js"       %}
-{{ redirect_js                             }}
-{% include "svija/js/min_window_mgmt.js"   %}
-{% include "svija/js/min_sections.js"      %}
-{% include "svija/js/min_tap_highlight.js" %}
-{{ page_head_js                            }}
-{{ comp_head_js                            }}
+{{ system_js                           }}
+{% include "svija/js/cookies_min.js"       %}
+{% include "svija/js/screens_min.js"       %}
+{{ redirect_js                         }}
+{% include "svija/js/window_mgmt_min.js"   %}
+{% include "svija/js/sections_min.js"      %}
+{% include "svija/js/tap_highlight_min.js" %}
+{{ page_head_js                        }}
+{{ comp_head_js                        }}
 </script>
 <style>
-{% include "svija/css/min_svija.css"       %}
+{% include "svija/css/svija_min.css"       %}
+{% include "svija/css/vibe_min.css"        %}
 {{ font_css }}
 {{ page_css }}
 {{ comp_css }}
@@ -57,7 +58,7 @@ pageLoaded = false;
 <div id="set_scroll_div"></div>
 
 <script>
-{% include "svija/js/min_scrollbars.js"     %}
+{% include "svija/js/scrollbars_min.js"     %}
 </script>
 
 {% block token%}{% endblock %}
@@ -71,15 +72,22 @@ pageLoaded = false;
 
 {{ comp_body }}
 
-{% include "svija/html/unsupported.html" %}
+{% include "svija/html/unsupported_min.html" %}
 
 <script>// page BG & scroll div
 
-  {% include "svija/js/min_page_background.js" %}
+  {% include "svija/js/page_background_min.js" %}
+  {% include "svija/js/vibe_min.js" %}
 
   document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;
 
 </script>
+
+{% if request.user.is_staff %}
+{% include  "svija/css/cloud_module_min.css"  %}
+{% include "svija/html/cloud_module_min.html" %}
+{% include   "svija/js/cloud_module_min.js"   %}
+{% endif %}
 
 </body></html>{% endautoescape %}

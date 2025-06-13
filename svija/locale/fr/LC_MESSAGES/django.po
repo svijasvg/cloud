@@ -1,0 +1,803 @@
+# Translations of the Svija App for building websites with Adobe Illustrator
+# Copyright (C) Svija SAS
+# This file is distributed under the same license as the Svija package.
+# Andrew Swift · andy@svija.com · 2025
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 2.3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-12 17:13+0200\n"
+"PO-Revision-Date: 2025-04-10 10:19+0200\n"
+"Last-Translator: Andrew Swift <andy@svija.com>>\n"
+"Language-Team: LANGAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# :::::::::::::::::::::::::::::::::::::::: admin.py
+# ———————————————————————————————————————— multiple uses
+#: admin.py:17 admin.py:41 admin.py:192 admin.py:235 admin.py:341 models.py:502
+msgid "scripts"
+msgstr "scripts"
+
+#: admin.py:18 models.py:239 models.py:292
+msgid "always include"
+msgstr "toujours inclure"
+
+#: admin.py:19 models.py:220 models.py:434
+msgid "artboard width"
+msgstr "largeur plan de travail"
+
+#: admin.py:20 models.py:343 models.py:494
+msgid "contents"
+msgstr "contenu"
+
+#: admin.py:21 models.py:175 models.py:217
+msgid "display order"
+msgstr "ordre d'affichage"
+
+#: admin.py:22 models.py:238 models.py:263 models.py:290 models.py:331
+#: models.py:407 models.py:456 models.py:468 models.py:482 models.py:496
+msgid "enabled"
+msgstr "activé"
+
+#: admin.py:23 templates/svija/html/cloud_module.html:9
+msgid "fonts"
+msgstr "polices"
+
+#: admin.py:24 models.py:300 models.py:486
+msgid "illustrator file"
+msgstr "fichier Illustrator"
+
+#: admin.py:25 admin.py:334 models.py:487
+msgid "illustrator files"
+msgstr "Fichiers Illustrator"
+
+#: admin.py:26 models.py:269 models.py:270 models.py:336
+msgid "included script"
+msgstr "script inclus"
+
+#: admin.py:27 models.py:337
+msgid "included scripts"
+msgstr "scripts inclus"
+
+#: admin.py:28 admin.py:208 admin.py:264
+msgid "instructions"
+msgstr "Instructions"
+
+#: admin.py:29 models.py:242 models.py:305
+msgid "instructions link"
+msgstr "lien"
+
+#: admin.py:30 models.py:244 models.py:307
+msgid "instructions notes"
+msgstr "notes"
+
+#: admin.py:31 admin.py:184
+msgid "link instructions"
+msgstr ""
+"Notes d’utilisation et lien vers les instructions sur <a href=https://tech."
+"svija.com target=_blank>tech.svija.com</a>"
+
+#: admin.py:32 models.py:262 models.py:330 models.py:495
+msgid "load order"
+msgstr "ordre de chargement"
+
+#: admin.py:33 models.py:171 models.py:216 models.py:289 models.py:342
+#: models.py:493
+msgid "name"
+msgstr "nom"
+
+#: admin.py:34 models.py:229 models.py:293 models.py:408
+msgid "screen size"
+msgstr "taille d'écran"
+
+#: admin.py:35 admin.py:191 admin.py:234 admin.py:340 models.py:501
+msgid "script"
+msgstr "script"
+
+#: admin.py:36 models.py:261 models.py:329
+msgid "script content"
+msgstr "contenu"
+
+#: admin.py:37 models.py:260 models.py:328
+msgid "script name"
+msgstr "nom"
+
+#: admin.py:38 admin.py:325 models.py:252 models.py:467
+msgid "script library"
+msgstr "bibliothèque de scripts"
+
+#: admin.py:39 admin.py:326
+msgid "script libraries"
+msgstr "bibliothèques de scripts"
+
+#: admin.py:40 models.py:259 models.py:327 models.py:492
+msgid "script type"
+msgstr "type"
+
+#: admin.py:42 models.py:208 models.py:294 models.py:409
+msgid "section"
+msgstr "Section"
+
+#: admin.py:43 admin.py:88 admin.py:128 admin.py:173 admin.py:207 admin.py:263
+msgid "settings"
+msgstr "paramètres"
+
+#: admin.py:44 models.py:177 models.py:421
+msgid "title"
+msgstr "titre"
+
+#: admin.py:45 models.py:221 models.py:435
+msgid "visible width"
+msgstr "largueur visible"
+
+#: admin.py:46 models.py:222 models.py:311 models.py:436
+msgid "x offset"
+msgstr "décalage X"
+
+#: admin.py:47 models.py:223 models.py:312 models.py:437
+msgid "y offset"
+msgstr "décalage Y"
+
+#: admin.py:48 models.py:297 models.py:455 models.py:481
+msgid "z index"
+msgstr "indice z"
+
+# ———————————————————————————————————————— redirect
+#: admin.py:76
+msgid "descRedirect"
+msgstr ""
+"Liens internes commencent par un <b>/ simple</b> · liens externes commencent "
+"par <b>https://</b> · <a href=https://tech.svija.com/programs/cloud/"
+"redirects target=_blank>documentation↑</a>"
+
+# ———————————————————————————————————————— font
+#: admin.py:97
+msgid "descFonts"
+msgstr ""
+"Les polices sont ajoutées ici lors du premier chargement de la page · <a "
+"href=https://fonts.adobe.com/my_fonts#web_projects-section "
+"target=_blank>polices Adobe↑</a> · <a href=https://fonts.google.com/ "
+"target=_blank>polices Google↑</a> · <a href=https://tech.svija.com/programs/"
+"cloud/fonts target=_blank>documentation↑</a>"
+
+#: admin.py:109
+msgid "font settings"
+msgstr "paramètres de police"
+
+# ———————————————————————————————————————— section
+#: admin.py:116
+msgid "descSection"
+msgstr ""
+"Sections disponibles ou langues prises en charge · <a href=https://tech."
+"svija.com/programs/cloud/sections target=_blank>documentation↑</a>"
+
+#: admin.py:129
+msgid "title iPhone icon"
+msgstr "Titre & icône iPhone"
+
+#: admin.py:130
+msgid "section email settings"
+msgstr "Paramètres de mail"
+
+#: admin.py:131
+msgid "contact form fields"
+msgstr "Étiquettes champs formulaire"
+
+#: admin.py:132
+msgid "status message alerts"
+msgstr "Messages de statut et alertes"
+
+#: admin.py:133
+msgid "section source message"
+msgstr "Message code source"
+
+# ———————————————————————————————————————— screen
+#: admin.py:140
+msgid "descScreens"
+msgstr ""
+"Tailles d'écran prises en charge · maximale=0 pour une largeur illimitée · "
+"<a href=https://tech.svija.com/programs/cloud/screens "
+"target=_blank>documentation↑</a>"
+
+#: admin.py:152
+msgid "screens details"
+msgstr "détails"
+
+#: admin.py:153
+msgid "pixel dimensions"
+msgstr "format en pixels"
+
+# ———————————————————————————————————————— robots
+#: admin.py:161
+msgid "descRobots"
+msgstr ""
+"Indique aux moteurs de recherche s'ils doivent ou non référencer le site · "
+"<a href=https://fr.wikipedia.org/wiki/Protocole_d%27exclusion_des_robots "
+"target=_blank>Wikipedia</a> · <a href=https://tech.svija.com/programs/cloud/"
+"robots target=_blank>documentation↑</a>"
+
+# ———————————————————————————————————————— script library
+#: admin.py:183
+msgid "descScript"
+msgstr ""
+"Les bibliothèques de scripts peuvent être incluses ici ou dans les <a href=/"
+"cloud/svija/page/ target=_blank>paramètres de page</a> · <a href=https://"
+"tech.svija.com/programs/cloud/script-sets target=_blank>documentation↑</a>"
+
+# ———————————————————————————————————————— module
+#: admin.py:217
+msgid "descModules"
+msgstr ""
+"Les modules peuvent être inclus ici ou dans les <a href=/cloud/svija/page/"
+">paramètres de page</a> · <a href=https://tech.svija.com/programs/cloud/"
+"modules target=_blank>documentation↑</a>"
+
+#: admin.py:219
+msgid "positdesc"
+msgstr ""
+"Superposé à la page Illustrator · décalage négatif = en haut / à gauche · "
+"décalage positif = en bas / à droite"
+
+#: admin.py:265
+msgid "placement"
+msgstr "positionnement"
+
+# ———————————————————————————————————————— settings
+#: admin.py:274
+msgid "descSettings"
+msgstr ""
+"Pour changer l'adresse de votre site web, visiter <a href=https://tech.svija."
+"com/url target=_blank>tech.svija.com/url</a> · <a href=https://tech.svija."
+"com/programs/cloud/settings target=_blank>documentation↑</a>"
+
+# ———————————————————————————————————————— redirect
+#: admin.py:275
+msgid "descAdobeProject"
+msgstr ""
+"Cliquez sur l’icône [↗] dans la section des polices de l’application "
+"Creative Cloud pour créer un projet web"
+
+# ———————————————————————————————————————— robots
+#: admin.py:276
+msgid "descColors"
+msgstr ""
+"Changer les couleurs de cette interface en renseignant des couleurs CSS "
+"valides. Remplacer le logo dans SYNC/SVIJA/Svija Cloud"
+
+#: admin.py:298
+msgid "website settings"
+msgstr "Paramètres du site"
+
+#: admin.py:299
+msgid "adobe web project"
+msgstr "Projet web Adobe"
+
+#: admin.py:300
+msgid "svija cloud colors"
+msgstr "couleurs Svija Cloud"
+
+#: admin.py:301
+msgid "email sending"
+msgstr "Envoi de mail"
+
+# ———————————————————————————————————————— page
+#: admin.py:346
+msgid "descPages"
+msgstr ""
+"Paramètres spécifiques à cette page · <a href=https://tech.svija.com/"
+"programs/cloud/pages target=_blank>documentation↑</a>"
+
+#: admin.py:381
+msgid "page setup"
+msgstr "paramètres"
+
+#: admin.py:386
+msgid "more page settings"
+msgstr "Autres paramètres"
+
+# :::::::::::::::::::::::::::::::::::::::: models.py
+# ———————————————————————————————————————— script types
+#: models.py:33
+msgid "css script"
+msgstr "CSS"
+
+#: models.py:34
+msgid "head js script"
+msgstr "JS head"
+
+#: models.py:35
+msgid "body js script"
+msgstr "JS body"
+
+#: models.py:36
+msgid "html script"
+msgstr "HTML"
+
+#: models.py:37
+msgid "form script"
+msgstr "formulaire"
+
+# ———————————————————————————————————————— redirect
+#: models.py:103
+msgid "redirect enabled"
+msgstr "activé"
+
+#: models.py:104
+msgid "from URL"
+msgstr "ancienne adresse"
+
+#: models.py:106
+msgid "to URL"
+msgstr "nouvelle adresse"
+
+#: models.py:111
+msgid "url redirect"
+msgstr "redirection"
+
+#: models.py:112
+msgid "url redirects model list"
+msgstr "3.2 · Redirections"
+
+# ———————————————————————————————————————— font
+#: models.py:117
+msgid "svg name"
+msgstr "nom SVG"
+
+#: models.py:118
+msgid "font family"
+msgstr "famille"
+
+#: models.py:119
+msgid "font weight"
+msgstr "poids"
+
+#: models.py:120
+msgid "font style"
+msgstr "style"
+
+#: models.py:121
+msgid "woff name"
+msgstr "fichier WOFF"
+
+#: models.py:123
+msgid "google font"
+msgstr "police Google"
+
+#: models.py:124
+msgid "adobe font"
+msgstr "police Adobe"
+
+#: models.py:125
+msgid "font enabled"
+msgstr "activé"
+
+#: models.py:127
+msgid "adobe url"
+msgstr "URL fichier WOFF2 Adobe"
+
+#: models.py:137
+msgid "font"
+msgstr "police"
+
+#: models.py:138
+msgid "font model list"
+msgstr "2.3 · Polices"
+
+# ———————————————————————————————————————— section
+#: models.py:168
+msgid "section address"
+msgstr "adresse"
+
+#: models.py:169
+msgid "language code"
+msgstr "code langue"
+
+#: models.py:170
+msgid "section enabled"
+msgstr "activé"
+
+#: models.py:173
+msgid "default page"
+msgstr "page par défaut"
+
+#: models.py:178
+msgid "iphone icon"
+msgstr "icône iPhone"
+
+#: models.py:180
+msgid "destination email"
+msgstr "destinataire"
+
+#: models.py:181
+msgid "bcc address"
+msgstr "adresse Cci"
+
+#: models.py:182
+msgid "email subject"
+msgstr "objet"
+
+#: models.py:184
+msgid "return address label"
+msgstr "étiquette de retour"
+
+#: models.py:187
+msgid "name label"
+msgstr "nom"
+
+#: models.py:188
+msgid "business label"
+msgstr "société"
+
+#: models.py:189
+msgid "email label"
+msgstr "adresse mail"
+
+#: models.py:190
+msgid "message label"
+msgstr "message"
+
+#: models.py:191
+msgid "send label"
+msgstr "bouton d'envoi"
+
+#: models.py:194
+msgid "initial status"
+msgstr "statut initial"
+
+#: models.py:195
+msgid "sending status"
+msgstr "pendant l'envoi"
+
+#: models.py:196
+msgid "sent status"
+msgstr "mail envoyé"
+
+#: models.py:199
+msgid "email sent alert"
+msgstr "mail envoyé (alerte)"
+
+#: models.py:200
+msgid "send failed alert"
+msgstr "échec d'envoi (alerte)"
+
+#: models.py:202
+msgid "source code message"
+msgstr "texte"
+
+#: models.py:209
+msgid "section model list"
+msgstr "1.3 · Sections"
+
+# ———————————————————————————————————————— screen
+#: models.py:215
+msgid "artboard code"
+msgstr "plan de travail"
+
+#: models.py:219
+msgid "break point"
+msgstr "point de rupture"
+
+#: models.py:230
+msgid "screen size model list"
+msgstr "1.2 · Tailles d'écrans"
+
+# ———————————————————————————————————————— script library
+#: models.py:237
+msgid "script library name"
+msgstr "nom"
+
+# ———————————————————————————————————————— script library
+#: models.py:253
+msgid "script library model list"
+msgstr "3.1 · Bibliothèques de Scripts"
+
+# ———————————————————————————————————————— module
+#: models.py:275
+msgid "position attached"
+msgstr "fixe"
+
+#: models.py:276
+msgid "position floating"
+msgstr "flottant"
+
+#: models.py:277
+msgid "position none"
+msgstr "aucun"
+
+#: models.py:281
+msgid "top left"
+msgstr "haut/gauche"
+
+#: models.py:282
+msgid "top right"
+msgstr "haut/droite"
+
+#: models.py:283
+msgid "bottom left"
+msgstr "bas/gauche"
+
+#: models.py:284
+msgid "bottom right"
+msgstr "bas/droite"
+
+#: models.py:299
+msgid "css id"
+msgstr "ID CSS"
+
+#: models.py:309
+msgid "floating attached"
+msgstr "fixe/flottant"
+
+#: models.py:310
+msgid "corner position"
+msgstr "coin"
+
+#: models.py:321
+msgid "module model list"
+msgstr "2.2 · Modules"
+
+# ———————————————————————————————————————— robots
+#: models.py:349
+msgid "robots.txt file"
+msgstr "robots.txt"
+
+#: models.py:350
+msgid "robots model list"
+msgstr "3.3 · Robots.txt"
+
+# ———————————————————————————————————————— settings
+#: models.py:371
+msgid "default section"
+msgstr "section par défaut"
+
+#: models.py:373
+msgid "on line"
+msgstr "en ligne"
+
+#: models.py:374
+msgid "site url"
+msgstr "URL du site"
+
+#: models.py:375
+msgid "display p3"
+msgstr "couleur \"Display P3\""
+
+#: models.py:377
+msgid "google analytics id"
+msgstr "ID Google Analytics"
+
+#: models.py:378
+msgid "cookies allowed"
+msgstr "cookies autorisés"
+
+#: models.py:379
+msgid "adobe project id"
+msgstr "ID projet web Adobe"
+
+#: models.py:380
+msgid "adobe stylesheet"
+msgstr "feuille de style Adobe"
+
+#: models.py:384
+msgid "main color"
+msgstr "couleur principale"
+
+#: models.py:385
+msgid "accent color"
+msgstr "couleur d'accent"
+
+#: models.py:386
+msgid "dark color"
+msgstr "header et barres"
+
+#: models.py:389
+msgid "email username"
+msgstr "identifiant"
+
+#: models.py:390
+msgid "email password"
+msgstr "mot de passe"
+
+#: models.py:391
+msgid "email server"
+msgstr "serveur SMTP"
+
+#: models.py:392
+msgid "email server port"
+msgstr "port"
+
+#: models.py:393
+msgid "use tls"
+msgstr "utiliser TLS"
+
+#: models.py:394
+msgid "notes"
+msgstr "notes"
+
+#: models.py:400
+msgid "website"
+msgstr "site web"
+
+#: models.py:401
+msgid "website settings model list"
+msgstr "1.1 · Paramètres du site"
+
+# ———————————————————————————————————————— page
+#: models.py:411
+msgid "address"
+msgstr "adresse"
+
+#: models.py:418
+msgid "publication date"
+msgstr "date de publication"
+
+#: models.py:424
+msgid "link name"
+msgstr "nom"
+
+#: models.py:425
+msgid "accessibility content"
+msgstr "contenus accessibilité"
+
+#: models.py:427
+msgid "default modules"
+msgstr "modules par défaut"
+
+#: models.py:428
+msgid "default scripts"
+msgstr "scripts par défaut"
+
+#: models.py:433
+msgid "default dimensions"
+msgstr "format par défaut"
+
+#: models.py:445
+msgid "page"
+msgstr "page"
+
+#: models.py:446
+msgid "page model list"
+msgstr "2.1 · Pages"
+
+# ———————————————————————————————————————— page models
+#: models.py:460
+msgid "link to module"
+msgstr "lien vers module"
+
+#: models.py:461
+msgid "links to modules"
+msgstr "liens vers modules"
+
+#: models.py:472
+msgid "link to script"
+msgstr "lien vers script"
+
+#: models.py:473
+msgid "links to script"
+msgstr "liens vers scripts"
+
+#: models.py:479
+msgid "file name"
+msgstr "nom"
+
+# ———————————————————————————————————————— template admin base_site
+#: templates/admin/base_site.html:6
+msgid "Django site admin"
+msgstr ""
+
+#: templates/admin/base_site.html:22
+msgid "Django administration"
+msgstr ""
+
+#: templates/admin/base_site.html:42
+msgid "cache cleared"
+msgstr "Le cache a été vidé."
+
+#: templates/admin/base_site.html:43
+msgid "unable to clear cache"
+msgstr "Impossible de vider le cache — êtes-vous connecté à Internet ?"
+
+#: templates/admin/base_site.html:53
+msgid "Visit site"
+msgstr ""
+
+#: templates/admin/base_site.html:55
+msgid "clear cache link"
+msgstr "vider cache"
+
+#: templates/admin/base_site.html:66
+msgid "Change password"
+msgstr ""
+
+#: templates/admin/base_site.html:68
+msgid "Log out"
+msgstr ""
+
+#: templates/admin/submit_line.html:4
+msgid "Save"
+msgstr ""
+
+#: templates/admin/submit_line.html:7
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/submit_line.html:9
+msgid "Save as new"
+msgstr ""
+
+#: templates/admin/submit_line.html:10
+msgid "Save and add another"
+msgstr ""
+
+#: templates/admin/submit_line.html:11
+msgid "Save and continue editing"
+msgstr ""
+
+#: templates/admin/submit_line.html:11
+msgid "Save and view"
+msgstr ""
+
+#: templates/admin/submit_line.html:12 templates/admin/submit_line.html:13
+msgid "Close"
+msgstr ""
+
+#: templates/registration/logged_out.html:6
+msgid "Thanks for using Svija."
+msgstr "Merci d'avoir choisi Svija."
+
+#: templates/registration/logged_out.html:7
+msgid "Log in again"
+msgstr ""
+
+#: views/modules/integrate_fonts.py:105
+msgid "enter adobe project id"
+msgstr "Coller la balise CSS Adobe copiée dans le champ ID de projet web Adobe"
+
+#: views/modules/integrate_fonts.py:112
+msgid "adobe project wrong length"
+msgstr "L’ID de projet web Adobe a une longueur incorrecte"
+
+#: views/modules/integrate_fonts.py:124
+msgid "returned empty file"
+msgstr "Fichier CSS Adobe vide"
+
+#: views/modules/integrate_fonts.py:135
+msgid "contained no fonts"
+msgstr "Fichier CSS Adobe ne contient aucune police"
+
+#: views/modules/integrate_fonts.py:153
+msgid "search css manually"
+msgstr "voir CSS dans paramètres du site"
+
+#: views/modules/rewrite_svg.py:141
+msgid "was created with an unsupported Illustrator version"
+msgstr ""
+".ai\n"
+"a été créé avec une\n"
+"version non prise en charge\n"
+"d’Adobe Illustrator\n"
+"Plus d'infos sur link"
+
+#: views/modules/update_db.py:38
+msgid "All Sections"
+msgstr "Toutes les sections"
+
+# ———————————————————————————————————————— screen
+#: views/modules/update_db.py:69
+msgid "All Screens"
+msgstr "Tous les écrans"
+
+#~ msgid "adobe link"
+#~ msgstr "lien copié"
+
+#~ msgid "maps api key"
+#~ msgstr "clé API Google Maps"
+
+#~ msgid "name filename"
+#~ msgstr "nom & fichier"

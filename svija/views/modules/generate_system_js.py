@@ -48,8 +48,10 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
 #———————————————————————————————————————— screens
 
     all_x_screens = []
+    # page.pagescript_set.filter(enabled=True).order_by('order')
     for one_screen in screens:
-        all_x_screens.append( str(one_screen.pixels) +  ', "' + one_screen.code +'"')
+      if one_screen.code != '*':
+        all_x_screens.append( str(one_screen.pixels) +  ', "' + one_screen.code +'"' +  ', "' + one_screen.name +'"')
 
     system_js += "var all_screens = [[" + '], ['.join(all_x_screens) + "]]\n" 
 
@@ -65,6 +67,8 @@ def generate_system_js(user, version, settings, page, section_code, request_slug
     system_js += "var page_url = '" + page_url + "'\n"
 
 #———————————————————————————————————————— admin signed in?
+
+    # doesn't work in Chrome
 
     if user.is_superuser:
       system_js += "var admin=true\n"

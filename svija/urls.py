@@ -33,6 +33,7 @@ urlpatterns = [
 
 #———————————————————————————————————————— exact addresses
 
+    path('cloud.css',   views.CloudCSSView  ),
     path('csync',       views.ClearCacheView),   # Sync + Admin top bar
     path('mail',        views.MailView      ),
     path('send',        views.SendView      ),   # send test mail to see what happens
@@ -52,9 +53,9 @@ urlpatterns = [
 
 #———————————————————————————————————————— SVG pages
 
-    path('',                                        views.PageView),   # prefix/slug
-    path('<slug:request_sect>',                     views.PageView),   # prefix/slug
-    path('<slug:request_sect>/<slug:request_page>', views.PageView),   # prefix/slug
+    path('',                                   views.PageView),   # prefix/slug
+    path('<slug:section_url>',                 views.PageView),   # prefix/slug
+    path('<slug:section_url>/<slug:page_url>', views.PageView),   # prefix/slug
 
 #———————————————————————————————————————— redirects
 

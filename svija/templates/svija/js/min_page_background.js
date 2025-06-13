@@ -1,1 +1,0 @@
-try{var e=document.body.getElementsByTagName("svg")[0],o=".st"+e.id+"0",r=document.querySelector(o),t=getComputedStyle(r).fill;"none"!=t&&(document.body.parentElement.style.backgroundColor=t,document.body.style.backgroundColor=t)}catch(l){var a=0}

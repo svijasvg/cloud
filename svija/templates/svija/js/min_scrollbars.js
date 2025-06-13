@@ -1,1 +1,0 @@
-envPrevWidth=zoomedWidthBody(),envPrevZoom=zoom();var rawPixel=zoomedWidthBody()/visible_width;function zoomedWidthBody(){return document.documentElement.clientWidth}aiPixel=rawPixel*zoom(),document.documentElement.style.fontSize=aiPixel+"px";
