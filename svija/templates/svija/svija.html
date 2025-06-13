@@ -22,18 +22,18 @@
 pageLoaded = false;
 
 {{ system_js                           }}
-{% include "svija/js/cookies_mxn.js"       %}
-{% include "svija/js/screens_mxn.js"       %}
+{% include "svija/js/cookies_min.js"       %}
+{% include "svija/js/screens_min.js"       %}
 {{ redirect_js                         }}
-{% include "svija/js/window_mgmt_mxn.js"   %}
-{% include "svija/js/sections_mxn.js"      %}
-{% include "svija/js/tap_highlight_mxn.js" %}
+{% include "svija/js/window_mgmt_min.js"   %}
+{% include "svija/js/sections_min.js"      %}
+{% include "svija/js/tap_highlight_min.js" %}
 {{ page_head_js                        }}
 {{ comp_head_js                        }}
 </script>
 <style>
-{% include "svija/css/svija_mxn.css"       %}
-{% include "svija/css/vibe_mxn.css"        %}
+{% include "svija/css/svija_min.css"       %}
+{% include "svija/css/vibe_min.css"        %}
 {{ font_css }}
 {{ page_css }}
 {{ comp_css }}
@@ -58,7 +58,7 @@ pageLoaded = false;
 <div id="set_scroll_div"></div>
 
 <script>
-{% include "svija/js/scrollbars_mxn.js"     %}
+{% include "svija/js/scrollbars_min.js"     %}
 </script>
 
 {% block token%}{% endblock %}
@@ -72,12 +72,12 @@ pageLoaded = false;
 
 {{ comp_body }}
 
-{% include "svija/html/unsupported_mxn.html" %}
+{% include "svija/html/unsupported_min.html" %}
 
 <script>// page BG & scroll div
 
-  {% include "svija/js/page_background_mxn.js" %}
-  {% include "svija/js/vibe_mxn.js" %}
+  {% include "svija/js/page_background_min.js" %}
+  {% include "svija/js/vibe_min.js" %}
 
   document.getElementById('set_scroll_div').outerHTML = '';
   pageLoaded = true;
@@ -85,9 +85,9 @@ pageLoaded = false;
 </script>
 
 {% if request.user.is_staff %}
-{% include  "svija/css/cloud_module_mxn.css"  %}
-{% include "svija/html/cloud_module_mxn.html" %}
-{% include   "svija/js/cloud_module_mxn.js"   %}
+{% include  "svija/css/cloud_module_min.css"  %}
+{% include "svija/html/cloud_module_min.html" %}
+{% include   "svija/js/cloud_module_min.js"   %}
 {% endif %}
 
 </body></html>{% endautoescape %}
