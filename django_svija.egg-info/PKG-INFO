@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: django-svija
-Version: 2.3.2
+Version: 2.3.3
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://docs.svija.love/
 Author: Andrew Swift
@@ -20,27 +20,45 @@ Classifier: Topic :: Internet :: WWW/HTTP
 Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
 License-File: LICENSE
 
-*Updated 20 April, 2023 ·  dev.svija.love*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
+*Note: we are in the process of making our repositories public. Some links may not yet be functional.*
+
 ### Svija: web sites with SVG instead of HTML
 
-Version 2.3.2
+This is the server component of a suite of open-source programs that enable the creation of rich web content with Adobe Illustrator.
 
-A set of tools for building web sites using Adobe Illustrator.  
-Includes a CMS for managing pages and menus.
+You can use Svija for free without building your own server: see [svija.com](https://svija.com)
 
-Detailed documentation is available at **[tech.svija.love][1]**
+For more information about how to use this repository, please visit our main Github page: [github.com/svijasvg](https://github.com/svijasvg)
 
----
-### Updating to a New Version
+![](images/divider.jpg "————————————————————————————————————————")
 
-Please see the [cloud-update][2] repository.
+### Description
 
-[1]: https://tech.svija.love "Visit the documentation site"
-[2]: https://github.com/svijalove/admin-update
+Svija Cloud is a Django program that serves SVG files in the form of a website.
+
+![](images/divider.jpg "————————————————————————————————————————")
+
+### Hosting
+
+We use [Linode/Akamai](https://cloud.linode.com) for our hosts. All the instructions you'll find in our repositories reflect this.
+
+![](images/divider.jpg "————————————————————————————————————————")
+
+### Requirements
+
+Svija Cloud expects a server with a specific virtual environment installed.
+
+To install Svija Cloud, please first set up a server according to the [Svija Server repository](https://github.com/svijasvg/server).
+
+![](images/divider.jpg "————————————————————————————————————————")
+
+### Updating
+
+To update to a new version of Svija Cloud, refer to the [Cloud Update](https://github.com/svijasvg/cloud-update) repository.
 
 
