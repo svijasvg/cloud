@@ -57,7 +57,9 @@ def send(settings, subject, body, frm, to, cc, bcc):
 
 
   ht  = settings.mail_srv
-  ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+
+# chatgpt 250811
+#  ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
 
 # gethostbyname returns IP address
 
