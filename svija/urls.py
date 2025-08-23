@@ -15,7 +15,7 @@ proj_folder = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 # for images in Links folder PREVIOUS
-#   image_folder = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+#   image_folder = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*Links'
 #   image_file = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
 # "../../Links/shadow drop.png"
