@@ -81,97 +81,53 @@ def MailView(request):
 
 #———————————————————————————————————————— section-dependent parameters
 
-  frm      = ''
-  to       = [section.email]
+  frm      = 'noreply@svija.dev'
+  to       = section.email
   cc       = []
-  bcc      = [section.bcc]
+  bcc      = section.bcc
   subject  = section.subject
 
 #———————————————————————————————————————— multiple recipients uniquely for our own domains
 # type python3 to get console
 
   # referrer = https://svija.dev/access
-  protocol, slash, realDomain, trash  = referrer.split('/',3)
+# protocol, slash, realDomain, trash  = referrer.split('/',3)
 
-  domains = ['svija.love', 'svija.dev', 'new.svija.dev', 'dev.svija.love', ]
-  authorized = False
-  
-  for thisDomain in domains:
-    if realDomain == thisDomain:
-      authorized = True
+# domains = ['svija.com', 'svija.love', 'svija.dev', 'new.svija.dev', 'dev.svija.love', ]
+# authorized = False
+# 
+# for thisDomain in domains:
+#   if realDomain == thisDomain:
+#     authorized = True
 
 
-  if authorized:
-    allLines = message.split('\n');
+# if authorized:
+  allLines = message.split('\n');
+  lastLine = allLines[-1]
+
+  while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:' or lastLine[:5]=='from:' or lastLine[:8]=='subject:':
+    try:
+      if   lastLine[:3] == 'to:': to      = [stripReturns(lastLine[3:])]
+      elif lastLine[:3] == 'fro': frm     = stripReturns(lastLine[5:])
+      elif lastLine[:3] == 'sub': subject = stripReturns(lastLine[8:])
+      elif lastLine[:3] == 'cc:': cc.append(stripReturns(lastLine[3:]))
+      elif lastLine[:3] == 'bcc': bcc.append(stripReturns(lastLine[4:]))
+
+    except:
+      nothing = 0 
+
+    del allLines[-1]
     lastLine = allLines[-1]
 
-    while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:' or lastLine[:5]=='from:' or lastLine[:8]=='subject:':
- 
-      try:
-        if   lastLine[:3] == 'to:': to      = [stripReturns(lastLine[3:])]
-        elif lastLine[:3] == 'fro': frm     = stripReturns(lastLine[5:])
-        elif lastLine[:3] == 'sub': subject = stripReturns(lastLine[8:])
-        elif lastLine[:3] == 'cc:': cc.append(stripReturns(lastLine[3:]))
-        elif lastLine[:3] == 'bcc': bcc.append(stripReturns(lastLine[4:]))
-
-      except:
-        nothing = 0 
-
-      del allLines[-1]
-      lastLine = allLines[-1]
-
-    message = '\n'.join(allLines)
+  message = '\n'.join(allLines)
 
 #———————————————————————————————————————— send message
 
-# message = stripQuotes(message) REMOVED TO ALLOW " in passwords
   response = send_mail.send(settings, subject, message, frm, to, cc, bcc,)
   return HttpResponse(response)
 
 
-#:::::::::::::::::::::::::::::::::::::::: main method
-
-#———————————————————————————————————————— send(settings, subject, body, frm, to, cc, bcc)
-
-# accepts subject, body, [to1, to2], [cc1, cc2], [bcc1, bcc2]
-# abstract to a module when done
-
-def sendx(settings, subject, body, frm, to, cc, bcc):
-
-  if frm == '': frm = settings.mail_id
-
-  email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
-
-  ht  = settings.mail_srv
-  ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
-  pt  = settings.mail_port
-  un  = settings.mail_id
-  pw  = settings.mail_pass
-  tls = settings.mail_tls
-
-  connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
-  response   = ''
-
-  try:
-    connection.open()
-    email.connection = connection
-    email.send()
-    connection.close()
-  except SMTPException as e:
-    response = e
-
-  return response
-
-
 #:::::::::::::::::::::::::::::::::::::::: utility methods
-
-#———————————————————————————————————————— stripQuotes(str)
-
-def stripQuotes(str):
-  str = re.sub('"', "''", str)
-  str = re.sub("'", "’" , str)
-  str = re.sub("`", "’" , str)
-  return str
 
 #———————————————————————————————————————— stripReturns(str)
 
@@ -181,4 +137,4 @@ def stripReturns(str):
   return str
 
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin
