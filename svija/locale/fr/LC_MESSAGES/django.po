@@ -606,7 +606,7 @@ msgstr "mot de passe"
 
 #: models.py:391
 msgid "email server"
-msgstr "serveur SMTP"
+msgstr "serveur mail"
 
 #: models.py:392
 msgid "email server port"

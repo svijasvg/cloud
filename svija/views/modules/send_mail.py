@@ -3,6 +3,8 @@
 
 #———————————————————————————————————————— modules/send_mail.py
 
+# sends "" on success else error message
+
 # https://www.sitepoint.com/django-send-email/
 
 # this is hard to debug — put it at end of MailView.py then
@@ -39,6 +41,7 @@ import ssl
 from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
 from django.core.mail import send_mail
+from svija.models import Settings
 
 #———————————————————————————————————————— program
 
@@ -79,29 +82,26 @@ def send(settings, subject, body, frm, to, cc, bcc):
 #   
 #     return response
 
-  #———————————————————— validate to address
+  #———————————————————— from address
 
-  to       = 'mail@acswift.com'
-
-
-  #———————————————————— organize content
-
-  from_email     = "noreply@mail.svija.dev"
+  settings  = Settings.objects.filter(enabled=True).first()
+  from_email     = "noreply@" + settings.mail_srv
 
   #———————————————————— 
 
   email = EmailMessage(
-      subject=subject,
-      body=body,
-      from_email=from_email,
-      to=[to],          # main recipients
-#     cc=[cc],          # optional
-      bcc=[bcc],        # hidden recipients
+    subject    = subject,
+    body       = body,
+    from_email = from_email,
+    to         = to,
+    cc         = cc,
+    bcc        = bcc,
   )
 
   #————————————————————
 
   response = email.send(fail_silently=False)
+# return str(response) + '\nto:'+to[0]+' / from:'+from_email+' / bcc:' + bcc[0]
   return response
 
 #———————————————————————————————————————— fin
