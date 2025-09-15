@@ -22,7 +22,7 @@ Here are the standard CSS files. Some are only loaded when needed:
 - `responsive.css`
 - `widgets.css`
 
-`base.css` contains the following sections:`
+`base.css` contains the following sections:
 - `VARIABLE DEFINITIONS`
 - `LINKS`
 - `GLOBAL DEFAULTS`
@@ -43,6 +43,8 @@ Here are the standard CSS files. Some are only loaded when needed:
 - `SIDEBAR`
 - `POPUP`
 - `PAGINATOR`
+
+It has been helpful to use a similar structure in `admin-extra.css`.
 
 </details><details><summary>Fonts</summary>
 
