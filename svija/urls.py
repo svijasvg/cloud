@@ -3,10 +3,18 @@
 #———————————————————————————————————————— imports
 
 from . import views
-from django.urls import path, re_path
+from django.contrib import admin
+from django.urls import path, re_path, include
 from django.views import static
 from django.views.static import serve # DO I NEED THIS?
 import os
+
+#———————————————————————————————————————— from home/xxx/urls.py
+
+handler404 = 'svija.views.Error404'
+
+admin.autodiscover()
+admin.site.enable_nav_sidebar = False
 
 #———————————————————————————————————————— variables
 
@@ -29,6 +37,10 @@ image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
 #:::::::::::::::::::::::::::::::::::::::: url patterns
 
 urlpatterns = [ 
+
+#———————————————————————————————————————— from /home/xxx/urls.py
+
+#   re_path(r'^', include('svija.urls', namespace="svija")),
 
 #———————————————————————————————————————— exact addresses
 
