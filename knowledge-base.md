@@ -12,7 +12,37 @@
 ### Customizing Svija Cloud CSS
 
 It helps to understand the structure of the CSS and page:
+- `admin-extra.css` in static files, is loaded (mostly) after standard css
+- when rules in custom CSS have the same weight as standard rules, add `body` before them to ensure precedence
 
+Here are the standard CSS files. Some are only loaded when needed:
+- `base.css`
+- `dark_mode.css`
+- `forms.css`
+- `responsive.css`
+- `widgets.css`
+
+`base.css` contains the following sections:`
+- `VARIABLE DEFINITIONS`
+- `LINKS`
+- `GLOBAL DEFAULTS`
+- `TEXT STYLES & MODIFIERS`
+- `TABLES`
+- `SORTABLE TABLES`
+- `FORM DEFAULTS`
+- `FORM BUTTONS`
+- `MODULES` - major page blocks
+- `MESSAGES & ERRORS`
+- `BREADCRUMBS` - menu at top of page
+- `ACTION ICONS`
+- `OBJECT TOOLS`
+- `OBJECT HISTORY`
+- `PAGE STRUCTURE`
+- `COLUMN TYPES`
+- `HEADER`
+- `SIDEBAR`
+- `POPUP`
+- `PAGINATOR`
 
 </details><details><summary>Fonts</summary>
 
