@@ -1,5 +1,5 @@
 
-*Updated 14 December, 2023 ·  dev.svija.love*
+*Updated 15 September, 2025 ·  dev.svija.com*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
@@ -26,15 +26,15 @@ How fonts are managed by Svija Cloud:
 - `integrate_fonts` does the heavy lifting, populating the DB with family, style and weight
 - `write_font_css` constructs the CSS at the top of the page based on the DB
 
-</details><details><summary>Fonts</summary>
+</details><details><summary>The News Header</summary>
 
-### News Header
+### The News Header
 
 To add a message to the cloud header, update the following html files:
-- `https://cloud.svija.com/en/`
-- `https://cloud.svija.com/fr/`
+- `https://cloud.svija.com/[version number]/en.html`
+- `https://cloud.svija.com/[version number]/fr.html`
 
-All CSS needs to be included. Do not include head/body tags. SSH to `apache.svija.com` then:
+All CSS needs to be included. Do not include head/body tags.
 ```
 vi -O */index.html
 ```
@@ -43,7 +43,7 @@ static/admin/js/fetch-remote.js` contains:
 ```
 function getNews(code_lang){
   if (code_lang != 'fr') code_lang = 'en'
-  getRemoteFile(`https://cloud.svija.com/${code_lang}/index.html`, updateNews)
+  getRemoteFile(`https://cloud.svija.com/${version}/${code_lang}.html`, updateNews)
 }
 
 function updateNews(txt){
@@ -52,7 +52,8 @@ function updateNews(txt){
 ```
 
 ---
-</details><details><summary>Fonts</summary>
+</details><details><summary>Localization</summary>
+
 ### Localization
 
 Reused translations are listed at the top of `admin.py`.
@@ -87,21 +88,11 @@ In a template, JS can be localized by:
 var myVar = '{% trans 'translation string' %}'
 ```
 ---
-### Useful Links
+</details><details><summary>Bug Fixes</summary>
 
-- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
-- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
-- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
-- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
-- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
-- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
-- [server hardening](https://news.ycombinator.com/item?id=37892028)
-
----
-</details><details><summary>Fonts</summary>
 ### Bug Fixes
 
-</details><details><summary>PostgreSQL Failure</summary>
+<details><summary>PostgreSQL Failure</summary>
 
 ----------------------------------------
 Link to fix: [github.com/docker-library](https://github.com/docker-library/postgres/issues/415)
@@ -188,6 +179,8 @@ The cause was that Django was using cookie values associated with the parent dom
 After refactoring the main page views, I got this error when I called CachedPageView.py from HomePageView.py
 
 **fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
+</details>
+
 </details>
 <details><summary>Horizontal Scrolling Code </summary>
 
@@ -306,34 +299,28 @@ the `position` css *is* necessary (the Antretoise footer was not at the bottom o
 it can also be in the specific stylesheet for the page.
 
 </details>
-<details><summary>label guidelines</summary>
-
----
-### Etiquette
-
----
-- colored labels designate category
-- black labels are ?
-- white labels are informational
-</details>
-<details><summary>funny license text about cat</summary>
-
-### For the Future
----
-This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? Pfft. Anything within the realms of common sense, really. I don't want to prescribe rigidly what people can and can't do with it, so I've decided on a benchmark. It's this: you're allowed to do with this page anything you wouldn't mind me doing with your cat. So yes, you can photoshop it for comedy effect, you can copy bits of it for illustrative purposes and so on, but you can't steal it and pass it off as your own."
-
-https://greem.co.uk/otherbits/jelly.html
-</details>
 <details><summary>share sheet icon</summary>
 
 ![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
 
 </details>
-
 <details><summary>Technical Resources</summary>
 
 ### Technical Resources
 
+<details><summary>Useful Links</summary>
+
+### Useful Links
+
+- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
+- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
+- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
+- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
+- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
+- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
+- [server hardening](https://news.ycombinator.com/item?id=37892028)
+
+</details>
 <details><summary>safari font-size info</summary>
 
 ---
@@ -728,3 +715,4 @@ See the various files for explanations.
 </details>
 
 </details>
+
