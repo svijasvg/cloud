@@ -11,7 +11,7 @@ def CloudCSSView(request):
     color_accent = settings.color_accent
     color_dark = settings.color_dark
 
-    response = "--main:{}; --accent:{}; --dark:{};"
+    response = "--user-bright:{}; --user-accent:{}; --user-bg:{};"
 
     response = response.format(color_main, color_accent, color_dark)
 
