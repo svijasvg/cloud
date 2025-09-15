@@ -41,7 +41,7 @@ import ssl
 from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
 from django.core.mail import send_mail
-from svija.models import Settings
+from svija.models import Control
 
 #———————————————————————————————————————— program
 
@@ -84,8 +84,11 @@ def send(settings, subject, body, frm, to, cc, bcc):
 
   #———————————————————— from address
 
-  settings  = Settings.objects.filter(enabled=True).first()
-  from_email     = "noreply@" + settings.mail_srv
+  server = Control.objects.first().mail_srv
+  if server == '':
+    return 'no server configured'
+
+  from_email     = "noreply@" + server
 
   #———————————————————— 
 

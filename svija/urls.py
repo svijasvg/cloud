@@ -11,8 +11,6 @@ import os
 
 #———————————————————————————————————————— from home/xxx/urls.py
 
-handler404 = 'svija.views.Error404'
-
 admin.autodiscover()
 admin.site.enable_nav_sidebar = False
 

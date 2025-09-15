@@ -66,7 +66,7 @@ class ControlAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),],}),
+    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),'mail_srv',],}),
   ]   
 
 admin.site.register(Control, ControlAdmin)
@@ -295,7 +295,7 @@ class SettingsAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id', 'tracking_on', ), 'section', ('robots','mail_srv',),],'description': descSettings,}),
+    (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id', 'tracking_on', ), 'section', ('robots',),],'description': descSettings,}),
     (_('adobe web project'), {'fields': ['adobe_project', 'adobe_sheet',],'description': descAdobeProject,}),
     (_('svija cloud colors'), {'fields': [('color_main', 'color_dark', 'color_accent',),],'description': descColors,}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
