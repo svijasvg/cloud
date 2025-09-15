@@ -265,9 +265,7 @@ msgstr ""
 # ———————————————————————————————————————— robots
 #: admin.py:276
 msgid "descColors"
-msgstr ""
-"Change the colors of this interface by entering valid CSS colors. Replace "
-"the logo in SYNC/SVIJA/Svija Cloud"
+msgstr "Change these interface colors with valid CSS colors. The logo image is in SYNC/SVIJA/Svija Cloud"
 
 #: admin.py:298
 msgid "website settings"

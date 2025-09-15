@@ -7,6 +7,15 @@
 
 ### Knowledge Base
 
+<details><summary>Customizing Svija Cloud CSS</summary>
+
+### Customizing Svija Cloud CSS
+
+It helps to understand the structure of the CSS and page:
+
+
+</details><details><summary>Fonts</summary>
+
 ### Fonts
 
 - If a font family begins with a number (`8-Heavy`, Illustrator will add quotes to the name in the SVG CSS sheet
@@ -16,6 +25,8 @@ How fonts are managed by Svija Cloud:
 - `rewrite_svg` simply adds svg font references to DB that are used in page but not already listed
 - `integrate_fonts` does the heavy lifting, populating the DB with family, style and weight
 - `write_font_css` constructs the CSS at the top of the page based on the DB
+
+</details><details><summary>Fonts</summary>
 
 ### News Header
 
@@ -41,6 +52,7 @@ function updateNews(txt){
 ```
 
 ---
+</details><details><summary>Fonts</summary>
 ### Localization
 
 Reused translations are listed at the top of `admin.py`.
@@ -86,9 +98,10 @@ var myVar = '{% trans 'translation string' %}'
 - [server hardening](https://news.ycombinator.com/item?id=37892028)
 
 ---
+</details><details><summary>Fonts</summary>
 ### Bug Fixes
 
-<details><summary>PostgreSQL Failure</summary>
+</details><details><summary>PostgreSQL Failure</summary>
 
 ----------------------------------------
 Link to fix: [github.com/docker-library](https://github.com/docker-library/postgres/issues/415)
@@ -176,82 +189,6 @@ After refactoring the main page views, I got this error when I called CachedPage
 
 **fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
 </details>
-
----
-### Etiquette
-
-<details><summary>label guidelines</summary>
-
----
-- colored labels designate category
-- black labels are ?
-- white labels are informational
-</details>
-
----
-### For the Future
-
-<details><summary>funny license text about cat</summary>
-
----
-This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? Pfft. Anything within the realms of common sense, really. I don't want to prescribe rigidly what people can and can't do with it, so I've decided on a benchmark. It's this: you're allowed to do with this page anything you wouldn't mind me doing with your cat. So yes, you can photoshop it for comedy effect, you can copy bits of it for illustrative purposes and so on, but you can't steal it and pass it off as your own."
-
-https://greem.co.uk/otherbits/jelly.html
-</details>
-<details><summary>share sheet icon</summary>
-
-![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
-
-</details>
-
----
-### Technical Resources
-
-<details><summary>safari font-size info</summary>
-
----
-- https://stackoverflow.com/questions/72903407/svg-text-textlength-not-working-on-mobile-safari
-- https://stackoverflow.com/questions/11768364/svg-scaling-issues-in-safari
-- https://bugs.webkit.org/show_bug.cgi?id=56543
-
-as of 230724:
-
-- 16.5.2 (WebKit 18615.2.9.11.10) · Ventura
-- 17.0 (WebKit 18616.1.22.1) · Safari Technology Preview · Release 174
-- 17.0 (WebKit 19616.1.20.11.3) · Sonoma
-
-</details>
-<details><summary>embedded SVG's</summary>
-
----
-https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
-
-"In contrast to HTML, SVG allows you to embed other svg elements seamlessly. This way you can also create new coordinate systems by utilizing the viewBox, width and height of the inner svg element."
-```
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
-  <svg width="100" height="100" viewBox="0 0 50 50">
-    <rect width="50" height="50" />
-  </svg>
-</svg>
-```
-
-</details>
-<details><summary>get/set scroll position</summary>
-
----
-https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
-
-The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
-</details>
-<details><summary>ozake loading times</summary>
-
-<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
-
-</details>
-
----
-### Code
-
 <details><summary>Horizontal Scrolling Code </summary>
 
 CSS
@@ -369,10 +306,75 @@ the `position` css *is* necessary (the Antretoise footer was not at the bottom o
 it can also be in the specific stylesheet for the page.
 
 </details>
+<details><summary>label guidelines</summary>
 
 ---
-### Triage
+### Etiquette
 
+---
+- colored labels designate category
+- black labels are ?
+- white labels are informational
+</details>
+<details><summary>funny license text about cat</summary>
+
+### For the Future
+---
+This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? Pfft. Anything within the realms of common sense, really. I don't want to prescribe rigidly what people can and can't do with it, so I've decided on a benchmark. It's this: you're allowed to do with this page anything you wouldn't mind me doing with your cat. So yes, you can photoshop it for comedy effect, you can copy bits of it for illustrative purposes and so on, but you can't steal it and pass it off as your own."
+
+https://greem.co.uk/otherbits/jelly.html
+</details>
+<details><summary>share sheet icon</summary>
+
+![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
+
+</details>
+
+<details><summary>Technical Resources</summary>
+
+### Technical Resources
+
+<details><summary>safari font-size info</summary>
+
+---
+- https://stackoverflow.com/questions/72903407/svg-text-textlength-not-working-on-mobile-safari
+- https://stackoverflow.com/questions/11768364/svg-scaling-issues-in-safari
+- https://bugs.webkit.org/show_bug.cgi?id=56543
+
+as of 230724:
+
+- 16.5.2 (WebKit 18615.2.9.11.10) · Ventura
+- 17.0 (WebKit 18616.1.22.1) · Safari Technology Preview · Release 174
+- 17.0 (WebKit 19616.1.20.11.3) · Sonoma
+
+</details>
+<details><summary>embedded SVG's</summary>
+
+---
+https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
+
+"In contrast to HTML, SVG allows you to embed other svg elements seamlessly. This way you can also create new coordinate systems by utilizing the viewBox, width and height of the inner svg element."
+```
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
+  <svg width="100" height="100" viewBox="0 0 50 50">
+    <rect width="50" height="50" />
+  </svg>
+</svg>
+```
+
+</details>
+<details><summary>get/set scroll position</summary>
+
+---
+https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
+</details>
+<details><summary>ozake loading times</summary>
+
+<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
+
+</details>
 <details><summary>list 1</summary>
 
 ---
@@ -725,3 +727,4 @@ See the various files for explanations.
 
 </details>
 
+</details>
