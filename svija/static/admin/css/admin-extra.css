@@ -1,807 +1,325 @@
-/*:::::::::::::::::::::::::::::::::::::::: static/admin/css/admin-extra.css */
+/*
+    admin-extra.css
 
-/*———————————————————————————————————————— notes
-    Development takes place in:
+   --user-bright: rgb(70%, 100%,  0%); in /cloud.css
+   --user-accent: rgb(87%, 100%, 60%);
+       --user-bg: rgb(15%,  15%, 15%); */
 
-      /home/dev/static/admin/css 
+/*:::::::::::::::::::::::::::::::::::::::: base.css */
 
-    when done copy back to:
-
-      /opt/cloud/svija/static/admin/css
-
-		don't forget to copy fonts as well!  */
-
-/*———————————————————————————————————————— colors */
-
-/* in SYNC/SVIJA/Svija Cloud/colors.css:
-
-  --main:
-  --accent:
-  --dark:     */
-
-:root { --bg-head:     hsl(0, 0%,  20%);
-        --bg-dark:     hsl(0, 0%,  20%);
-        --bg-med:      hsl(0, 0%,  90%);
-        --bg-bright:   hsl(0, 0%, 100%);
-        --text-dark:   hsl(0, 0%,  20%);
-        --text-med:    hsl(0, 0%,  70%);
-        --text-bright: hsl(0, 0%,  90%); }
-
-@media (prefers-color-scheme: dark) {
-
-        :root { --bg-head:     hsl(0, 0%,  20%);
-                --bg-dark:     hsl(0, 0%,  20%);
-                --bg-med:      hsl(0, 0%,  30%);
-                --bg-bright:   hsl(0, 0%,  12%);
-                --text-dark:   hsl(0, 0%,  80%);
-                --text-med:    hsl(0, 0%,  50%);
-                --text-bright: hsl(0, 0%,  50%);
-        
-                --body-bg:     hsl(0, 0%,  10%); }
-        
-        body { background-color:var(--bg-dark) !important; }
-        
-}
-
-
-:root { --link:        var(--text-dark); 
-        --link-hover:  var(--text-dark); }
-
-/*———————————————————————————————————————— fonts */
-
-@font-face { /* light */
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-Light.woff');
-    font-weight: 300; font-style: normal;
-}
-
-@font-face {
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-LightItalic.woff');
-    font-weight: 300; font-style: italic;
-}
-
-@font-face { /* regular */
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-Opt-X.woff');
-    font-weight: 400; font-style: normal;
-}
-
-@font-face {
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-RegularItalic.woff');
-    font-weight: 400; font-style: italic;
-}
-
-@font-face { /* semibold */
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-Semibold.woff');
-    font-weight: 600; font-style: normal;
-}
-
-@font-face {
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-SemiboldItalic.woff');
-    font-weight: 600; font-style: italic;
-}
-
-@font-face { /* bold */
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-Bold.woff');
-    font-weight: 700; font-style: normal;
-}
-
-@font-face {
-    font-family: Open Sans;
-    src: url('../fonts/OpenSans-BoldItalic.woff');
-    font-weight: 700; font-style: italic;
-}
- 
-@font-face {
-    font-family: IBM Plex Mono;
-    src: url('../fonts/IBMPlexMono-Regular.woff');
-    font-weight: 400; font-style: normal;
-}
-
-/* redefined defaults */
-body{
-	font-family:Open Sans !important;
-}
-
-strong, b,
-.required label, label.required {
-	font-weight: 600 !important;
-}
-
-
-var(--font-family-primary);
-:root { --bg-head:     hsl(0, 0%,  20%);
-        --bg-dark:     hsl(0, 0%,  20%);
-        --bg-med:      hsl(0, 0%,  90%);
-        --bg-bright:   hsl(0, 0%, 100%);
-        --text-dark:   hsl(0, 0%,  20%);
-        --text-med:    hsl(0, 0%,  70%);
-        --text-bright: hsl(0, 0%,  90%); }
-
+/* VARIABLE DEFINITIONS */
 html[data-theme="light"],
 :root {
-
-    --font-family-primary:
-        Open Sans,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        system-ui,
-        Roboto,
-        "Helvetica Neue",
-        Arial,
-        sans-serif,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji";
-    --font-family-monospace:
-        "IBM Plex Mono",
-        ui-monospace,
-        Menlo,
-        Monaco,
-        "Cascadia Mono",
-        "Segoe UI Mono",
-        "Roboto Mono",
-        "Oxygen Mono",
-        "Ubuntu Monospace",
-        "Source Code Pro",
-        "Fira Mono",
-        "Droid Sans Mono",
-        "Courier New",
-        monospace,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji";
+    --secondary: var(--button-bg);
+    --accent: var(--user-bright);
+    --header-color: var(--user-bright);
+    --header-bg: var(--user-bg);
+    --header-link-color: var(--user-bright);
+    --message-success-bg: var(--user-bright);
+    --breadcrumbs-fg: white;
+    --breadcrumbs-link-fg: var(--user-bright);
+    --breadcrumbs-bg: var(--user-bg);
+    --link-fg:hsl(0, 0%, 15%);
+    --link-hover-color:black;
+    --button-bg: var(--close-button-bg);
+    --button-hover-bg:var(--close-button-hover-bg);
+    --default-button-fg: var(--user-bright);
+    --default-button-bg: var(--user-bg);
+    --default-button-hover-fg: var(--user-bg);
+    --default-button-hover-bg: var(--user-bright);
+    color-scheme: light;
+    background: var(--button-hover-bg);
 }
 
-/*———————————————————————————————————————— header bar */
+@media (prefers-color-scheme: dark) {
+    :root {
+    --secondary: #417690;
+    --accent: var(--user-bright);
+    --header-color: var(--user-bright);
+    --header-bg: var(--user-bg);
+    --header-link-color: var(--user-bright);
+    --message-success-bg: var(--user-bg);
+    --breadcrumbs-fg: white;
+    --breadcrumbs-link-fg: var(--user-bright);
+    --breadcrumbs-bg: var(--user-bg);
+    --link-fg:hsl(0, 0%, 85%);
+    --link-hover-color: var(--user-bright);
+    --button-bg: var(--close-button-bg);
+    --button-hover-bg:var(--close-button-hover-bg);
+    --default-button-fg: var(--user-bg);
+    --default-button-bg: var(--user-bright);
+    --default-button-hover-fg: var(--user-bright);
+    --default-button-hover-bg: var(--user-bg);
+      color-scheme: dark;
+    }
+  }
 
-#header{
-  background-color:var(--dark);
-       border-bottom:1px solid var(--accent);
-}
+/* LINKS */
 
-#svija-admin-logo{
-  margin:5px 0 5px -12px;
-}
-
-/*———————————————————————————————————————— small text at right of header */
-
-#header div#user-tools { line-height:1.8em; } /* welcome */
-
-#header div#user-tools { color:var(--main);} /* welcome */
-#header strong         { color:var(--accent);} /* user name */
-
-#header div#user-tools a:link,                    /* user tools links */
-#header div#user-tools a:visited{
-    color:var(--main);
-    border-bottom:1px solid #0000;
+a:focus, a:hover {
     text-decoration:none;
+    border-bottom:1px solid var(--link-hover-color);
 }
 
-#header div#user-tools a:hover,
-#header div#user-tools a:active{
-    color: var(--text-bright);
-    border-bottom:1px solid var(--text-bright);
+/* middle links in main model list */
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) a:link,
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) a:visited{
+    color:var(--user-bg);
+}
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) a:hover,
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) a:active{
+    color:var(--user-bg);
 }
 
-/*———————————————————————————————————————— nav bar */
+/* FORM BUTTONS */
 
-div.breadcrumbs{
-    background-color:var(--dark);
-               color:var(--text-med);
+.button.default:focus, input[type=submit].default:focus,
+.button.default, input[type=submit].default, .submit-row input.default { /* save button */
+    border: none;
+    font-weight: 400;
+    color: var(--default-button-fg);
 }
 
-div.breadcrumbs a:link,
-div.breadcrumbs a:visited{
-
-    color:hsl(0,0%,70%);
-    border-bottom:1px solid hsla(0, 0%, 0%, 0);
-    text-decoration:none;
+.button.default:active, input[type=submit].default:active, /* save button */
+.button.default:hover, input[type=submit].default:hover {
+    color: var(--default-button-hover-fg);
 }
 
-div.breadcrumbs a:hover,
-div.breadcrumbs a:active{
-
-                         color:var(--text-bright);
-                         border-bottom:1px solid var(--text-bright);
+.button:active, input[type=submit]:active, input[type=button]:active,
+.button:focus, input[type=submit]:focus, input[type=button]:focus,
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+    background: var(--button-hover-bg);
 }
 
-/*———————————————————————————————————————— message bar under header (page updated) */
+/* MODULES */
 
-ul.messagelist li{
-    color:var(--bg-dark);
-    background:var(--main);
+/* title of mail model list */
+.module caption{
+  border-radius:4px;
 }
 
-ul.messagelist li a{
-    color: var(--bg-dark);
-    font-weight:600;
-}
-
-/*———————————————————————————————————————— top right "add page" bubble */
-
-.object-tools a.addlink,
-.object-tools a.historylink{
-            color:var(--main);
-       background:var(--bg-dark);
-    border-radius:5px;
-      padding-top:4px;
-    padding-right:10px;
-}
-
-/*———————————————————————————————————————— user permissions */
-
-div.selector-chosen h2{
-    background-color:var(--bg-dark);
-               color:var(--main);
-}
-
-/*———————————————————————————————————————— basic links & list of models */
-
-a:link, a:visited{
-  color: var(--link);
-  text-decoration: none;
-}
-
-a:hover, a:active{
-  color: var(--link-hover);
-  text-decoration: underline;
-}
-
-/*———————————————————————————————————————— help tip */
-
-div.description{
-               color:var(--dark);
-    background-color:var(--accent);
-             padding:5px 15px 5px 15px;
-         margin-left:10px;
-       margin-bottom:7px;
-       border-radius:0px 0px 2px 2px;
-             display:inline-block;
-           font-size:12px;
-}
-
-/* div.description::before{ content: '★ '; } */
-
-div.description a:link,
-div.description a:visited{
-    text-decoration:none;
-              color:var(--dark);
-              font-weight:600;
-      border-bottom:1px solid var(--dark);
-     padding-bottom:0;
-}
-
-div.description a:hover,
-div.description a:active{
-            color:var(--dark);
-    border-bottom:3px solid var(--dark);
-}
-
-/*———————————————————————————————————————— model list global */
-
-/* rounded corners on th (left) & td (right) · can't be used because
-   the cell above has a bottom border no matter what.                */
-
-/* tr th {border-radius:5px 0px 0px 5px;}
-   tr td:last-of-type {border-radius:0px 5px 5px 0px;} */
-
-/*———————————————————————————————————————— model list 1.x · global settings */
-
-tr.model-settings,
-tr.model-section,
-tr.model-screen{
-    background-color:var(--bg-med) !important;
-       border-radius:5px;
-}
-
-tr.model-settings a:link, tr.model-settings a:visited,
-tr.model-section a:link, tr.model-section a:visited,
-tr.model-screen   a:link, tr.model-screen   a:visited{
-              color:var(--text-dark);
-    text-decoration:none;
-}
-
-tr.model-settings a:hover, tr.model-settings a:active,
-tr.model-section a:hover, tr.model-section a:active,
-tr.model-screen   a:hover, tr.model-screen   a:active{
-              color:var(--text-dark);
-    text-decoration:underline;
-}
-
-/*———————————————————————————————————————— model list 2.x · modules, pages & fonts */
-
-tr.model-module,
-tr.model-page,
-tr.model-font{
-    background-color:var(--main);
-    border:1px solid var(--bg-med);
-}
-
-/* bottom borders */
-tr.model-module th, tr.model-module td, tr.model-module th,
-tr.model-page th, tr.model-page td, tr.model-page th{
-    border-bottom: 1px solid var(--bg-bright);
-}
-
-tr.model-module a:link, tr.model-module a:visited,
-tr.model-page   a:link, tr.model-page   a:visited,
-tr.model-font   a:link, tr.model-font   a:visited{
-              color:var(--dark);
-    text-decoration:none;
-}
-
-tr.model-module a:hover, tr.model-module a:active,
-tr.model-page   a:hover, tr.model-page   a:active,
-tr.model-font   a:hover, tr.model-font   a:active{
-              color:var(--dark);
-    text-decoration:underline;
-}
-
-/*———————————————————————————————————————— model list 3.x · accessory settings */
-
-tr.model-script,
-tr.model-redirect,
-tr.model-robots{
-    background-color:var(--bg-bright);
-    border:1px solid var(--bg-med);
-}
-
-tr.model-script a:link, tr.model-script a:visited,
-tr.model-redirect       a:link, tr.model-redirect       a:visited,
-tr.model-robots         a:link, tr.model-robots         a:visited{
-              color:var(--text-dark);
-    text-decoration:none;
-}
-
-tr.model-script a:hover, tr.model-script a:active,
-tr.model-redirect       a:hover, tr.model-redirect       a:active,
-tr.model-robots         a:hover, tr.model-robots         a:active{
-              color:var(--text-dark);
-    text-decoration:underline;
-}
-
-/*———————————————————————————————————————— model list hidden · control */
-
+/* hide "control" model */
 tr.model-control{ display:none; }
 
-/*———————————————————————————————————————— buttons */
+/* OBJECT TOOLS */
 
-.button,
-input[type=submit],
-input[type=button],
-.submit-row input,
-a.button{
-         color:var(--text-dark);
-    background:var(--bg-med);
+.object-tools a:link, .object-tools a:visited {
+    border-radius: 4px;
+    color: var(--user-bright);
+    background: var(--user-bg);
+}
+.object-tools a:focus, .object-tools a:hover {
+    color: var(--user-bg);
+    background-color: var(--user-bright);
+    border:none;
 }
 
-           .button:hover,
-input[type=submit]:hover,
-input[type=button]:hover,
- .submit-row input:hover,
-          a.button:hover{
-    color:var(--dark);
-     background:var(--main);
+/* BREADCRUMBS */
+
+/* line over breadcrumbs */
+div.breadcrumbs{
+  border-top:1px solid var(--user-accent);
 }
 
-/* delete are you sure › no take me back button */
-.delete-confirmation form .cancel-link:hover{
-    color: var(--button-fg);
-    background: var(--close-button-hover-bg);
+div.breadcrumbs a:focus, div.breadcrumbs a:hover {
+    border:none;
+}
+
+/* TABLES */
+
+/* row backgrounds in main model list */
+.module.current-app tr:nth-child(-n+3) {
+    background: var(--selected-bg);
+}
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) {
+    background: var(--user-bright);
+}
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) {
+    background: none;
+}
+
+/* HEADER */
+
+#header a:focus , #header a:hover {
+    border:none;
+}
+
+#user-tools {
+ line-height:1.8em;
+}
+
+#user-tools a, #logout-form button {
+    color: var(--header-link-color);
+    border:none;
+    cursor:pointer;
+}
+
+#user-tools a:active, #user-tools a:hover,
+#logout-form button:active, #logout-form button:active {
+    color:white;
+}
+
+/* MESSAGES & ERRORS */
+
+.description {  /* explanatory bar under black bars */
+    font-size: 0.8rem;
+    padding: 4px 15px 7px 15px;
+
+    color:var(--user-bg);
+    background-color:var(--user-accent);
+    margin-left: 30px;
+    margin-bottom: 7px;
+    border-radius: 0px 0px 4px 4px;
+    display: inline-block;
+}
+
+.description a{
+    color:var(--user-bg);
+    font-weight:bolder;
+}
+
+.description a:hover, .description a:active {
+    border-bottom:1px solid var(--user-bg);
 }
 
 
-/*———————————————————————————————————————— default buttons */
+/*:::::::::::::::::::::::::::::::::::::::: forms.css */
 
-.button.default,
-input[type=submit].default,
-.submit-row input.default{
-         color:var(--dark);
-    background:var(--main);
-       outline:0 !important;
-} /* blue accessibility outline around default button */
+/* FIELDSETS */
 
-.button.default:hover,
-input[type=submit].default:hover,
-.submit-row input.default:hover{
-         color:var(--main);
-    background:var(--dark);
-}
-
-.button.default:focus,
-input[type=submit].default:focus,
-.submit-row input.default:focus{
-         color:var(--dark);
-    background:var(--main);
-}
-
-/*———————————————————————————————————————— tiny original name text */
-
-td.original p{ display:none; }
-
-/*———————————————————————————————————————— date & time pickers */
-
-.calendar td.selected a { /* selected */
-    background: var(--accent) !important;
-}
-
-.calendar td a:focus, .timelist a:focus, /* mouseover */
-.calendar td a:hover, .timelist a:hover {
-    background: var(--accent) !important;
-}
-
-.clockbox h2{
-    background: var(--accent) !important;
-    color: rgb(51, 51, 51);
-    font-weight:bold;
-}
-
-/*———————————————————————————————————————— script boxes */
-
-textarea.vLargeTextField {
-    font-family: "IBM Plex Mono", Verdana, Arial, sans-serif;
-    font-weight: normal;
-    font-size: 0.8125rem;
-}
-
-
-/*:::::::::::::::::::::::::::::::::::::::: bars & collapsed fields */
-
-/*———————————————————————————————————————— black bars in middle of page */
-
-.module caption{ /* bars on admin page & app/svija page */
-  background-color:var(--bg-dark);
-             color:var(--main);
+fieldset .fieldset-heading,
+fieldset .inline-heading,
+:not(.inline-related) .collapse summary {
+    border: none;
+    border-radius:4px;
     text-transform:uppercase;
-     border-radius:5px;
 }
 
-/*———————————————————————————————————————— reset margins
+/* COLLAPSIBLE FIELDSETS */
 
-    because we're moving them to H2 instead of fieldset */
-
-fieldset.module{
-   margin:0    !important;
-  padding:0    !important;
-   border:none !important;
-  border-radius:5px !important;
+body summary::marker { /* get rid of "expand" triangles */
+  content: none;
 }
 
-div.js-inline-admin-formset.inline-group{
-	margin:0 !important;
+body :not(.inline-related) .collapse summary{ /* collapsed fieldset */
+    color:var(--button-fg);
+    background:var(--button-bg);
+    border-radius:4px;
+    width:400px;
+    border:none;
 }
 
-/*———————————————————————————————————————— regular inline models
-
-    fieldset module */
-
-fieldset.module{
-	margin:20px 0 10px 0 !important;
+body :not(.inline-related) .collapse summary:hover{
+    background: var(--button-hover-bg);
 }
 
-fieldset.module h2{
-  background-color:var(--dark);
-  border-radius:5px;
-  color: var(--main) !important;
+body :not(.inline-related) .collapse summary h2{
+    padding-left:10px;
+    padding-right:10px;
+    text-transform:none;
+    width:400px;
 }
 
-@media (prefers-color-scheme: dark) {
-    fieldset.module h2{
-      color:var(--dark) !important;
-      border-radius:5px;
-      background-color: var(--main);
-    }
+body fieldset.module.aligned.collapse:has(details[open]){ /* open fieldset */
+    border-radius:4px;
+    background: var(--darkened-bg);
 }
 
-/*———————————————————————————————————————— collapsible inline models
-
-    fieldset module.collapse */
-
-fieldset.module.collapse{
-  background-color:var(--bg-med) !important;
-  margin:20px 0px !important;
+body :not(.inline-related) .collapse details:open > summary { 
+    width:auto;
+    border:none;
+    color: var(--header-link-color);
+    border-radius:4px;
+    background-color:var(--header-bg);
 }
 
-fieldset.module.collapse h2{
-  background-color:var(--dark);
-  border-radius:5px;
-  color: var(--main) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    fieldset.module.collapse h2{
-      color:var(--dark) !important;
-      border-radius:5px;
-      background-color: var(--main);
-    }
-}
-
-fieldset.module.collapse h2 a.collapse-toggle:link{
-	color:var(--text-bright) !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    fieldset.module.collapse h2 a.collapse-toggle:link{
-    	color:var(--bg-med) !important;
-    }
-}
-
-fieldset.module.collapse a.collapse-toggle::before{
-	content: "◂ ";
-}
-
-fieldset.module.collapse a.collapse-toggle::after{
-	content: "";
-}
-
-/* ————— collapsed ————— */
-
-fieldset.module.collapse.collapsed{
-  background:none !important;
-      margin:0px 0px 0px 0px !important;
-}
-
-fieldset.module.collapse.collapsed h2{
-  background:none;
-  color:var(--text) !important;
-  text-transform:none !important;
-  margin-top:0px !important;
-  margin-bottom:10px !important;
-	font-size:13px !important;
-	padding:0px 0px 0px 10px !important;
-	letter-spacing:0 !important;
-}
-
-fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
-	color:var(--text-bright) !important;
-}
-
-fieldset.module.collapse.collapsed a.collapse-toggle::before{
-	content: "";
-}
-
-fieldset.module.collapse.collapsed a.collapse-toggle::after{
-	content: " ▸";
-}
-
-fieldset.module.collapse.collapsed h2 a.collapse-toggle:link{
-	color:var(--text) !important;
-}
-
-/*———————————————————————————————————————— regular models
-
-    fieldset module.aligned */
-
-fieldset.module.aligned h2{
-  background-color:var(--dark);
-  border-radius:5px;
-  color: var(--main) !important;
-  text-transform:uppercase;
-}
-
-/*———————————————————————————————————————— collapsible regular models
-
-    fieldset module.aligned.collapse */
-
-fieldset.module.aligned.collapse{
-  background-color:var(--bg-med) !important;
-  margin:20px 0px !important;
-}
-
-fieldset.module.aligned.collapse h2{
-  background-color:var(--dark);
-  border-radius:5px;
-  color: var(--main) !important;
-}
-
-fieldset.module.aligned.collapse h2 a.collapse-toggle:link{
-	color:var(--text-bright) !important;
-}
-
-/* ————— collapsed ————— */
-
-fieldset.module.aligned.collapse.collapsed{
-  background:none !important;
-      margin:0px 0px 8px 0px  !important;
-}
-
-fieldset.module.aligned.collapse.collapsed h2{
-  background:none;
-  color:var(--text) !important;
-  text-transform:none !important;
-  margin:0px !important;
-	padding-top:5px !important;
-	letter-spacing:0 !important;
-}
-
-/* fieldset.module.aligned.collapse.collapsed h2::before{
-	content: "▶ ";
-} */
-
-fieldset.module.aligned.collapse.collapsed h2 a.collapse-toggle:link{
-	color:var(--link) !important;
-}
-
-/*———————————————————————————————————————— right-column filter heading */
-
-div#changelist-filter h2{
-	background-color:var(--dark);
-  color:var(--main);
+body :not(.inline-related) .collapse details:open > summary h2{
+    text-transform:uppercase;
 }
 
 
-/*:::::::::::::::::::::::::::::::::::::::: specific */
+/*:::::::::::::::::::::::::::::::::::::::: widgets.css */
 
-/*———————————————————————————————————————— log-in logo */
+/* SELECTOR (FILTER INTERFACE) */
 
-h1#site-name{ margin:0; }
-
-/*———————————————————————————————————————— notes field COMMENTED OUT */
-
-/*  caused unwanted scrollbars: */
-
-/*  .colM .aligned .vLargeTextField, .colM .aligned .vXMLLargeTextField {
-        width: 821px !important;
-    } */
-
-/*———————————————————————————————————————— illustrator files */
-
-div#illustrator_fk-group fieldset.module h2{
-  color:#F9991F !important;
-  background-color:#310001 !important;
-  font-weight: 600 !important;
+body .selector-chosen-title { /* user permissions */
+    background: var(--button-bg);
+    color: var(--button-fg);
 }
 
-@media (prefers-color-scheme: dark) {
-
-div#illustrator_fk-group fieldset.module h2{
-  background-color:#F9991F !important;
-  color:#310001 !important;
-  font-weight: 600 !important;
-
-}
-}
-div.fieldBox.field-filename input, /* module           */
-td.field-filename input{           /* page             */
-  border:3px solid #F9991F;        /* matches AI color */
+body .aligned .selector-chosen-title label{ /* user permissions */
+    color: var(--button-fg);
 }
 
-div.fieldBox.field-filename input:focus, /* module           */
-td.field-filename input:focus{           /* page             */
-  border:3px solid #F9991F;        /* matches AI color */
+/* CALENDARS & CLOCKS */
+
+body .calendar td a:focus, body .timelist a:focus,
+body .calendar td a:hover, body .timelist a:hover {
+    background: var(--user-accent);
+    color: white;
+    border:none;
 }
 
-/*———————————————————————————————————————— global font fields
+/* DATE & TIME */
 
-    they shouldn't be changed by user,
-    so are grayed-out & turn red on mouseover */
-
-div.fieldBox.field-family input#id_family,
-div.fieldBox.field-weight input#id_weight,
-div.fieldBox.field-style input#id_style{
-  opacity:0.5;
+body .datetimeshortcuts a{
+  border:none;
 }
 
-div.fieldBox.field-family input#id_family:hover,
-div.fieldBox.field-weight input#id_weight:hover,
-div.fieldBox.field-style input#id_style:hover{
-  opacity:1.0;
+/*:::::::::::::::::::::::::::::::::::::::: changelists.css */
+
+body thead th a:link, body thead th a:visited {
+   border:none;
+}
+
+body #changelist-filter a {
+    background-color:lime;
+}
+
+/*:::::::::::::::::::::::::::::::::::::::: fixes */
+
+/* SUBMIT ROW */
+
+/* remove border added in "LINKS" */
+.submit-row a:focus, .submit-row a:hover {
+    border:none;
+}
+
+/* fix vertical alignment of delete button */
+.submit-row a.deletelink{
+  position: relative;
+  top: -3px;
+}
+
+/* right align save as new etc. buttons */
+.submit-row{
+  justify-content: flex-end;
+}
+
+/* move save button to right */
+.submit-row input[type=submit].default {
+  order: 99;
+}
+
+/* CUSTOM FORM FIELDS */
+
+/* red outline on "don't touch" fields */
+input#id_mail_srv:hover,
+input#id_svg_ref:hover,
+input#id_family:hover,
+input#id_weight:hover,
+input#id_adobe_url:hover,
+input#id_style:hover{
   border-color:red;
   color:red;
-}
-
-/*———————————————————————————————————————— adobe font fields
-
-    they shouldn't be changed by user,
-    so are grayed-out & turn red on mouseover */
-
-div.fieldBox.field-adobe_url input#id_adobe_url,
-div.form-row.field-adobe_sheet textarea#id_adobe_sheet{
-  opacity:0.5;
-}
-
-div.form-row.field-svg_ref input#id_svg_ref:hover,
-div.form-row.field-adobe_sheet textarea#id_adobe_sheet:hover,
-div.fieldBox.field-adobe_url input#id_adobe_url:hover{
-  opacity:1.0;
-  border-color:red;
-  color:red;
-}
-
-/*———————————————————————————————————————— fix broken submit row css */
-
-div.submit-row {
-    display:block;     /* flex */
-    text-align: right;
-}
-
-.submit-row input {
-    margin: 0 0 0 5px !important;
-	vertical-align:1px;
-}
-
-.button.default, input[type=submit].default, .submit-row input.default {
-    float: right;
-}
-
-.submit-row p.deletelink-box {
-    float: left;
-  margin:0px; /* fix misalignment */
-}
-
-.submit-row a.closelink {
-/*    display: block; */
-   display: inline-block;
-   margin: 0px 0 0 5px; /* 1px is to fix misalignment */
-}
-
-.submit-row input.default {
-    margin: 0 0 0 8px !important;
-}
-
-/*———————————————————————————————————————— fix checkbox height */
-
-/* Published */
-div.checkbox-row label.vCheckboxLabel {
-    padding: 2px 0px 3px 10px;
-}
-
-/* page › more settings */
-div.fieldBox input[type=checkbox]{
-  margin-top:8px;
-}
-
-/* page › more settings */
-div.fieldBox label.vCheckboxLabel {
-    vertical-align: 3px;
-    padding: 8px 0 5px 10px;
-}
-
-/*———————————————————————————————————————— page & module quick links */
-
-div#quick-links{
-  margin:auto auto auto 0;
-  padding-bottom:14px;
-}
-
-#page_button, #module_button{
-  display:inline-block;
-  opacity:50%;
-  height:24px;
-
-  margin:15px 0 0 30px;
-  padding:4px 20px 0px 20px;
-
-  border:1px solid var(--main);
-  border-radius:5px;
-
-  text-transform:uppercase;
-  font-weight:bold;
-}
-
-a#page_button:link, a#page_button:visited, a#module_button:link, a#module_button:visited{
-  text-decoration:none;
-  background:var(--bg-dark);
-  color:var(--main);
-}
-
-a#page_button:hover, a#page_button:active, a#module_button:hover, a#module_button:active{
-  transition:0.3s;
-  opacity:100%
-}
-
-@media screen and ( max-width: 700px ){
 }
 
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
 
+/*
+
+text in success bar is body color, so background of
+success bar has to be light or h
+
+*/

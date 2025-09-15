@@ -14,6 +14,7 @@
 It helps to understand the structure of the CSS and page:
 - `admin-extra.css` in static files, is loaded (mostly) after standard css
 - when rules in custom CSS have the same weight as standard rules, add `body` before them to ensure precedence
+- it is practical to edit the css in `/home/[site]/static/admin/css/admin-extra.css` rather than having to `collectstatic` to see changes
 
 Here are the standard CSS files. Some are only loaded when needed:
 - `base.css`
