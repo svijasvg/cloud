@@ -103,7 +103,7 @@ def MailView(request):
   # referrer = https://svija.dev/access
   protocol, slash, realDomain, trash  = referrer.split('/',3)
 
-  domains = ['acswift.com', 'svija.com', 'svija.dev', 'emayle.svija.com',]
+  domains = ['acswift.com', 'svija.com', 'svija.dev', ]
   authorized = False
   
   for thisDomain in domains:
@@ -111,27 +111,29 @@ def MailView(request):
       authorized = True
 
 
-  if authorized:
-    allLines = message.split('\n');
-    lastLine = allLines[-1]
+# if authorized:
+  allLines = message.split('\n');
+  lastLine = allLines[-1]
 
-    while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:' or lastLine[:8]=='subject:':
- 
+  while lastLine[:3]=='to:' or lastLine[:3]=='cc:' or lastLine[:4]=='bcc:' or lastLine[:8]=='subject:':
+
+    if authorized:
       try:
         if   lastLine[:3] == 'sub': subject =  stripReturns(lastLine[8:])
         elif lastLine[:3] == 'to:': to      = [stripReturns(lastLine[3:])]
         elif lastLine[:3] == 'cc:': cc.append (stripReturns(lastLine[3:]))
         elif lastLine[:3] == 'bcc': bcc.append(stripReturns(lastLine[4:]))
-
+  
       except:
         nothing = 0 
 
-      del allLines[-1]
-      lastLine = allLines[-1]
+    del allLines[-1]
+    lastLine = allLines[-1]
 
+  if authorized:
     bcc.append(section.email) # don't lose original "to" if a new one was used
 
-    message = '\n'.join(allLines)
+  message = '\n'.join(allLines)
 
 #———————————————————————————————————————— send message
 
