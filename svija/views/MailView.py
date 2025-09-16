@@ -64,8 +64,8 @@ def MailView(request):
   if message=='':
     return HttpResponse('E1')
 
-# if re.match(blacklist, message): # special characters needed for passwords
-#   return HttpResponse('E2')
+  if re.match(blacklist, message): # special characters needed for passwords
+    return HttpResponse('E2')
 
 #———————————————————————————————————————— get section from referrer
 
@@ -103,7 +103,7 @@ def MailView(request):
   # referrer = https://svija.dev/access
   protocol, slash, realDomain, trash  = referrer.split('/',3)
 
-  domains = ['acswift.com', 'svija.com', 'svija.dev', ]
+  domains = ['acswift.com', 'svija.com', 'svija.dev', 'emayle.svija.com',]
   authorized = False
   
   for thisDomain in domains:
