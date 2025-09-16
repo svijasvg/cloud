@@ -47,6 +47,9 @@ Here are the standard CSS files. Some are only loaded when needed:
 
 It has been helpful to use a similar structure in `admin-extra.css`.
 
+Minor note: the text in the success bar is "body color", so the background of the
+success bar has correspond.
+
 </details><details><summary>Fonts</summary>
 
 ### Fonts

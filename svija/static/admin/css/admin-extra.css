@@ -1,4 +1,4 @@
-/*
+/* 
     admin-extra.css
 
    --user-bright: rgb(70%, 100%,  0%); in /cloud.css
@@ -8,6 +8,7 @@
 /*:::::::::::::::::::::::::::::::::::::::: base.css */
 
 /* VARIABLE DEFINITIONS */
+
 html[data-theme="light"],
 :root {
     --secondary: var(--button-bg);
@@ -27,6 +28,10 @@ html[data-theme="light"],
     --default-button-bg: var(--user-bg);
     --default-button-hover-fg: var(--user-bg);
     --default-button-hover-bg: var(--user-bright);
+
+    --illustrator-bright: #f19f39;
+    --illustrator-dark: #2e0402;
+}
     color-scheme: light;
     background: var(--button-hover-bg);
 }
@@ -50,18 +55,60 @@ html[data-theme="light"],
     --default-button-bg: var(--user-bright);
     --default-button-hover-fg: var(--user-bright);
     --default-button-hover-bg: var(--user-bg);
+
+    --illustrator-bright: #F9991F;
+    --illustrator-dark: #310001;
       color-scheme: dark;
     }
   }
 
 /* LINKS */
 
+a:link, a:visited{
+    border-bottom:1px solid #0000; /* so it won't jump on mouseover */
+}
+
 a:focus, a:hover {
     text-decoration:none;
     border-bottom:1px solid var(--link-hover-color);
 }
 
-/* middle links in main model list */
+/* FORM BUTTONS */
+
+.button.default:focus, input[type=submit].default:focus,
+.button.default, input[type=submit].default, .submit-row input.default {
+    color: var(--default-button-fg);
+    border: none;
+}
+
+.button.default:active, input[type=submit].default:active,
+.button.default:focus, input[type=submit].default:focus,
+.button.default:hover, input[type=submit].default:hover {
+    color: var(--default-button-hover-fg);
+}
+
+/* MODULES */
+
+/* title of main model list */
+.module caption{
+  border-radius:4px;
+}
+
+.module.current-app tr:nth-child(-n+3) { /* rows 1-3 in main model list */
+    background: var(--selected-bg);
+}
+.module.current-app tr:nth-child(-n+3) a:link,
+.module.current-app tr:nth-child(-n+3) a:visited{
+    color:var(--body-fg);
+}
+.module.current-app tr:nth-child(-n+3) a:hover,
+.module.current-app tr:nth-child(-n+3) a:active{
+    border-bottom:1px solid var(--body-fg);
+}
+
+.module.current-app tr:nth-child(n+4):nth-child(-n+6) { /* rows 4-6 in main model list */
+    background: var(--user-bright);
+}
 .module.current-app tr:nth-child(n+4):nth-child(-n+6) a:link,
 .module.current-app tr:nth-child(n+4):nth-child(-n+6) a:visited{
     color:var(--user-bg);
@@ -71,31 +118,16 @@ a:focus, a:hover {
     color:var(--user-bg);
 }
 
-/* FORM BUTTONS */
-
-.button.default:focus, input[type=submit].default:focus,
-.button.default, input[type=submit].default, .submit-row input.default { /* save button */
-    border: none;
-    font-weight: 400;
-    color: var(--default-button-fg);
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) { /* rows 7-9 in main model list */
+    background: none;
 }
-
-.button.default:active, input[type=submit].default:active, /* save button */
-.button.default:hover, input[type=submit].default:hover {
-    color: var(--default-button-hover-fg);
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) a:link,
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) a:visited{
+    color:var(--body-fg);
 }
-
-.button:active, input[type=submit]:active, input[type=button]:active,
-.button:focus, input[type=submit]:focus, input[type=button]:focus,
-.button:hover, input[type=submit]:hover, input[type=button]:hover {
-    background: var(--button-hover-bg);
-}
-
-/* MODULES */
-
-/* title of mail model list */
-.module caption{
-  border-radius:4px;
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) a:hover,
+.module.current-app tr:nth-child(n+7):nth-child(-n+9) a:active{
+    border-bottom:1px solid var(--body-fg);
 }
 
 /* hide "control" model */
@@ -127,15 +159,8 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 /* TABLES */
 
-/* row backgrounds in main model list */
-.module.current-app tr:nth-child(-n+3) {
-    background: var(--selected-bg);
-}
-.module.current-app tr:nth-child(n+4):nth-child(-n+6) {
-    background: var(--user-bright);
-}
-.module.current-app tr:nth-child(n+7):nth-child(-n+9) {
-    background: none;
+body thead th a:link, body thead th a:visited {
+   border:none;
 }
 
 /* HEADER */
@@ -237,6 +262,14 @@ body :not(.inline-related) .collapse details:open > summary h2{
     text-transform:uppercase;
 }
 
+/* CUSTOM FORM FIELDS */
+
+.vLargeTextField,
+.vIntegerField,
+.vTextField {
+    font-family:var(--font-family-monospace);
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: widgets.css */
 
@@ -266,14 +299,11 @@ body .datetimeshortcuts a{
   border:none;
 }
 
+
 /*:::::::::::::::::::::::::::::::::::::::: changelists.css */
 
-body thead th a:link, body thead th a:visited {
-   border:none;
-}
-
 body #changelist-filter a {
-    background-color:lime;
+    border:none;
 }
 
 /*:::::::::::::::::::::::::::::::::::::::: fixes */
@@ -304,6 +334,7 @@ body #changelist-filter a {
 /* CUSTOM FORM FIELDS */
 
 /* red outline on "don't touch" fields */
+
 input#id_mail_srv:hover,
 input#id_svg_ref:hover,
 input#id_family:hover,
@@ -314,12 +345,66 @@ input#id_style:hover{
   color:red;
 }
 
+/* special colors for illustrator filename */
+
+#illustrator_fk-heading{ /* page settings */
+  color:var(--illustrator-bright);
+  background:var(--illustrator-dark);
+}
+
+#id_filename, /* module settings */
+#id_illustrator_fk-0-filename{ /* page settings */
+    border:3px solid var(--illustrator-bright);
+}
+
+/* PAGE & MODULE QUICK LINKS */
+
+/* they're in their own div before user tools:
+
+<div id="quick-links">
+  <a id=page_button href=/cloud/svija/page/>pages</a><a id=module_button href=/cloud/svija/module/>modules</a>
+</div>
+
+*/
+
+div#quick-links{
+    margin:auto auto auto 0; /* left align next to logo */
+    padding-bottom:0px;
+    border:1px solid #fff2;
+}
+
+#quick-links a:link, #quick-links a:visited{
+
+    display:inline-block;
+    margin-right:1px;
+    padding:3px 5px;
+  
+    border:1px solid var(--user-bright);
+    border-radius:0px;
+  
+    text-transform:uppercase;
+    font-weight:bolder;
+  
+    text-decoration:none;
+  
+    background:var(--user-bright);
+    color:var(--user-bg);
+    cursor:pointer;
+    transition:0.5s;
+}
+
+
+#quick-links a:hover, #quick-links a:active{
+    background:var(--user-bg);
+    color:var(--user-bright);
+}
+
+@media screen and ( max-width: 700px ){
+    div#quick-links{
+        display:none;
+    }
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: fin */
 
-/*
-
-text in success bar is body color, so background of
-success bar has to be light or h
-
-*/

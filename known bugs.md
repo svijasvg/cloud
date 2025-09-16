@@ -1,3 +1,9 @@
+### macOS Title Bar Coloring
+
+title bar coloring code doesn't function if there's a symbol
+
+### Font Weights
+
 Futura PT Demi is exported witha  weight of 300, where it should be 600
 ```
 <?xml version="1.0" encoding="UTF-8"?>
