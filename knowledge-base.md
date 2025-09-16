@@ -50,6 +50,47 @@ It has been helpful to use a similar structure in `admin-extra.css`.
 Minor note: the text in the success bar is "body color", so the background of the
 success bar has correspond.
 
+</details><details><summary>ifempty cloud inlines</summary>
+
+### `ifempty` Cloud Inlines
+
+This technique removes "collapse" class for fieldsets that contain data,
+so that users won't run into problems because scripts
+or modules aren't initially visible in page admin
+
+It's based on collapse code in `InlineModelAdmin.py`.
+
+It's loaded by the `PageAdmin` class in `admin.py`.
+
+Complete explanation at [Stack Overflow](https://stackoverflow.com/questions/73108883/is-there-a-way-to-make-a-collapsed-inline-initially-visible-in-django-admin-if).
+
+`/static/admin/js/ifempty.js` contains:
+```
+'use strict';
+{
+  window.addEventListener('load', function() {
+
+    // if there are "ifempty" elements on the page
+    const fieldsets = document.querySelectorAll('fieldset.ifempty');
+
+    // check if there are filled-out entries
+    for (const [i, elem] of fieldsets.entries()) {
+
+      // fieldsets
+      var bits = elem.querySelectorAll('input.vTextField')
+      for (var x=0; x<bits.length; x++)
+        if(bits[x].value != '')
+          elem.classList.remove('collapse')
+
+      // inlines
+      var bits = elem.querySelectorAll('tr.form-row.has_original')
+      if (bits.length > 0) {
+        elem.classList.remove('collapse');
+      }
+    }
+  });
+}
+```
 </details><details><summary>Fonts</summary>
 
 ### Fonts

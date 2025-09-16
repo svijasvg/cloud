@@ -338,7 +338,7 @@ class AdditionalScriptInline(admin.TabularInline):
   fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = _("script")
   verbose_name_plural = _("scripts")
-#   classes = ['collapse']
+# classes = ['collapse', 'ifempty']
 
 #———————————————————————————————————————— page
 
