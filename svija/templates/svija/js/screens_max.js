@@ -24,7 +24,6 @@
    var screen_code = "cp"
    var all_screens = {0:'cp', 400:'mb'} */
 
-
 correct_code = calculate_code(all_screens)
 first_visit  = false
 
@@ -60,6 +59,7 @@ recalculate: if (cookiesEnabled()){
     */
 
 function calculate_code(all_screens){
+
   var win_width = globalThis.outerWidth
   var      code = all_screens[0][1]
   var min_value = 999999

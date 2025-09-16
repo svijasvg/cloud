@@ -50,6 +50,39 @@ It has been helpful to use a similar structure in `admin-extra.css`.
 Minor note: the text in the success bar is "body color", so the background of the
 success bar has correspond.
 
+</details><details><summary>Blank Tabs in Chrome</summary>
+
+### Blank Tabs in Chrome
+
+[webmasters.stackexchange.com](https://webmasters.stackexchange.com/questions/132556/chrome-bug-headless-window-not-rendered-new-tab-in-background-if-outerwidth-i)
+
+The problem appears to be that the window.outerwidth value isn't defined until after the new window is drawn. Further, it appears that your script is executing before the new Window object is fully "initialized", at least in Chrome.
+
+Try this test:
+```
+<html><head><script>
+   document.documentElement.style.fontSize = (window.outerWidth/50) + 'px';
+    alert('The value of window.outerWidth/50 is: ' + (window.outerWidth) + 'px');
+    setTimeout(checkSizeAgain,5000);
+
+    function checkSizeAgain() {
+           alert('The value of window.outerwidth after delay is: ' + (window.outerWidth) + 'px');
+           document.documentElement.style.fontSize = (window.outerWidth/50) + 'px';
+        }
+
+
+</script></head><body><p>
+   Hello World
+</p></body></html>
+```
+When you click normally and the current page is redirected, the value displayed is correct because the window object was already drawn by the previous URL (you haven't left the tab that contains a fully initialized Window object).
+
+However, when you Ctrl+Click the value is shown to be zero because you're launching a new tab and the Window object doesn't have an outerwidth property yet. However, after just 5 second delay, the size is correct.
+
+It seems odd that Chrome would let you execute your script prior to the window object being fully initialized, but it appears to be the case.
+
+As you mentioned, the problem only appears to occur in Chrome.
+
 </details><details><summary>Relative Links in SVGs</summary>
 
 ### Relative Links in SVGs
