@@ -50,6 +50,19 @@ It has been helpful to use a similar structure in `admin-extra.css`.
 Minor note: the text in the success bar is "body color", so the background of the
 success bar has correspond.
 
+</details><details><summary>Relative Links in SVGs</summary>
+
+### Relative Links in SVGs
+
+It is not possible to use relative links in SVGs. A page at `/folder/pagename` containing:
+- `./otherpage`
+- `otherpage`
+will link to `/otherpage`, not to `/folder/otherpage`.
+
+This behavior is consistent between browsers and is not the result of a bug in Illustrator (the SVG file shows the correct link).
+
+It may be due to the outdated way that links are represented in Illustrator's SVG files.
+
 </details><details><summary>ifempty cloud inlines</summary>
 
 ### `ifempty` Cloud Inlines

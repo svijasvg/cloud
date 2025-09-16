@@ -270,6 +270,10 @@ body :not(.inline-related) .collapse details:open > summary h2{
     font-family:var(--font-family-monospace);
 }
 
+.inline-group .tabular td.original p { /* tiny text in left column */
+    display:none;
+}
+
 
 /*:::::::::::::::::::::::::::::::::::::::: widgets.css */
 
