@@ -772,8 +772,8 @@ msgid "search css manually"
 msgstr "check CSS in site settings"
 
 #: views/modules/rewrite_svg.py:82
-msgid "empty SVG: "
-msgstr ""
+msgid "empty SVG"
+msgstr "empty SVG: "
 
 #: views/modules/rewrite_svg.py:146
 msgid "was created with an unsupported Illustrator version"

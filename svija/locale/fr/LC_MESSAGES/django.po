@@ -773,8 +773,8 @@ msgid "search css manually"
 msgstr "voir CSS dans paramètres du site"
 
 #: views/modules/rewrite_svg.py:82
-msgid "SVG vide : "
-msgstr ""
+msgid "empty SVG"
+msgstr "SVG vide : "
 
 #: views/modules/rewrite_svg.py:146
 msgid "was created with an unsupported Illustrator version"

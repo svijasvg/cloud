@@ -100,8 +100,8 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
   # display on parent page · order is determined in model def
-  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'google', 'adobe', 'woff', 'category',)
-  list_filter = ('category', 'google', 'enabled', )
+  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'adobe', 'google', 'woff', 'category',)
+  list_filter = ('category', 'adobe', 'google', 'enabled', )
   save_on_top = True
   save_as = True
 
