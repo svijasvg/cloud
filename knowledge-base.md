@@ -202,13 +202,15 @@ Then for each site:
 
 Changes will take effect after `service uwsgi restart`
 
-Strings in templates: `{{ _('key_string') }}`
-
-#### localizing JavaScript
-
-In a template, JS can be localized by:
 ```
-var myVar = '{% trans 'translation string' %}'
+# python
+x = _('translation string')
+
+# javascript
+x = '{% trans 'translation string' %}'
+
+# template (python)
+{{ _('translation string') }}
 ```
 ---
 </details><details><summary>Bug Fixes</summary>
