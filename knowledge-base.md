@@ -1,11 +1,143 @@
 
-*Updated 14 December, 2023 ·  dev.svija.love*
+*Updated 15 September, 2025 ·  dev.svija.com*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
 [logo]: http://files.svija.love/github/readme-logo.png "Svija: SVG-based websites built in Adobe Illustrator"
 
 ### Knowledge Base
+
+<details><summary>Customizing Svija Cloud CSS</summary>
+
+### Customizing Svija Cloud CSS
+
+It helps to understand the structure of the CSS and page:
+- `admin-extra.css` in static files, is loaded (mostly) after standard css
+- when rules in custom CSS have the same weight as standard rules, add `body` before them to ensure precedence
+- it is practical to edit the css in `/home/[site]/static/admin/css/admin-extra.css` rather than having to `collectstatic` to see changes
+
+Here are the standard CSS files. Some are only loaded when needed:
+- `base.css`
+- `dark_mode.css`
+- `forms.css`
+- `responsive.css`
+- `widgets.css`
+
+`base.css` contains the following sections:
+- `VARIABLE DEFINITIONS`
+- `LINKS`
+- `GLOBAL DEFAULTS`
+- `TEXT STYLES & MODIFIERS`
+- `TABLES`
+- `SORTABLE TABLES`
+- `FORM DEFAULTS`
+- `FORM BUTTONS`
+- `MODULES` - major page blocks
+- `MESSAGES & ERRORS`
+- `BREADCRUMBS` - menu at top of page
+- `ACTION ICONS`
+- `OBJECT TOOLS`
+- `OBJECT HISTORY`
+- `PAGE STRUCTURE`
+- `COLUMN TYPES`
+- `HEADER`
+- `SIDEBAR`
+- `POPUP`
+- `PAGINATOR`
+
+It has been helpful to use a similar structure in `admin-extra.css`.
+
+Minor note: the text in the success bar is "body color", so the background of the
+success bar has correspond.
+
+</details><details><summary>Blank Tabs in Chrome</summary>
+
+### Blank Tabs in Chrome
+
+[webmasters.stackexchange.com](https://webmasters.stackexchange.com/questions/132556/chrome-bug-headless-window-not-rendered-new-tab-in-background-if-outerwidth-i)
+
+The problem appears to be that the window.outerwidth value isn't defined until after the new window is drawn. Further, it appears that your script is executing before the new Window object is fully "initialized", at least in Chrome.
+
+Try this test:
+```
+<html><head><script>
+   document.documentElement.style.fontSize = (window.outerWidth/50) + 'px';
+    alert('The value of window.outerWidth/50 is: ' + (window.outerWidth) + 'px');
+    setTimeout(checkSizeAgain,5000);
+
+    function checkSizeAgain() {
+           alert('The value of window.outerwidth after delay is: ' + (window.outerWidth) + 'px');
+           document.documentElement.style.fontSize = (window.outerWidth/50) + 'px';
+        }
+
+
+</script></head><body><p>
+   Hello World
+</p></body></html>
+```
+When you click normally and the current page is redirected, the value displayed is correct because the window object was already drawn by the previous URL (you haven't left the tab that contains a fully initialized Window object).
+
+However, when you Ctrl+Click the value is shown to be zero because you're launching a new tab and the Window object doesn't have an outerwidth property yet. However, after just 5 second delay, the size is correct.
+
+It seems odd that Chrome would let you execute your script prior to the window object being fully initialized, but it appears to be the case.
+
+As you mentioned, the problem only appears to occur in Chrome.
+
+</details><details><summary>Relative Links in SVGs</summary>
+
+### Relative Links in SVGs
+
+It is not possible to use relative links in SVGs. A page at `/folder/pagename` containing:
+- `./otherpage`
+- `otherpage`
+will link to `/otherpage`, not to `/folder/otherpage`.
+
+This behavior is consistent between browsers and is not the result of a bug in Illustrator (the SVG file shows the correct link).
+
+It may be due to the outdated way that links are represented in Illustrator's SVG files.
+
+</details><details><summary>ifempty cloud inlines</summary>
+
+### `ifempty` Cloud Inlines
+
+This technique removes "collapse" class for fieldsets that contain data,
+so that users won't run into problems because scripts
+or modules aren't initially visible in page admin
+
+It's based on collapse code in `InlineModelAdmin.py`.
+
+It's loaded by the `PageAdmin` class in `admin.py`.
+
+Complete explanation at [Stack Overflow](https://stackoverflow.com/questions/73108883/is-there-a-way-to-make-a-collapsed-inline-initially-visible-in-django-admin-if).
+
+`/static/admin/js/ifempty.js` contains:
+```
+'use strict';
+{
+  window.addEventListener('load', function() {
+
+    // if there are "ifempty" elements on the page
+    const fieldsets = document.querySelectorAll('fieldset.ifempty');
+
+    // check if there are filled-out entries
+    for (const [i, elem] of fieldsets.entries()) {
+
+      // fieldsets
+      var bits = elem.querySelectorAll('input.vTextField')
+      for (var x=0; x<bits.length; x++)
+        if(bits[x].value != '')
+          elem.classList.remove('collapse')
+
+      // inlines
+      var bits = elem.querySelectorAll('tr.form-row.has_original')
+      if (bits.length > 0) {
+        elem.classList.remove('collapse');
+      }
+    }
+  });
+}
+```
+</details><details><summary>Fonts</summary>
 
 ### Fonts
 
@@ -17,13 +149,15 @@ How fonts are managed by Svija Cloud:
 - `integrate_fonts` does the heavy lifting, populating the DB with family, style and weight
 - `write_font_css` constructs the CSS at the top of the page based on the DB
 
-### News Header
+</details><details><summary>The News Header</summary>
+
+### The News Header
 
 To add a message to the cloud header, update the following html files:
-- `https://cloud.svija.com/en/`
-- `https://cloud.svija.com/fr/`
+- `https://cloud.svija.com/[version number]/en.html`
+- `https://cloud.svija.com/[version number]/fr.html`
 
-All CSS needs to be included. Do not include head/body tags. SSH to `apache.svija.com` then:
+All CSS needs to be included. Do not include head/body tags.
 ```
 vi -O */index.html
 ```
@@ -32,7 +166,7 @@ static/admin/js/fetch-remote.js` contains:
 ```
 function getNews(code_lang){
   if (code_lang != 'fr') code_lang = 'en'
-  getRemoteFile(`https://cloud.svija.com/${code_lang}/index.html`, updateNews)
+  getRemoteFile(`https://cloud.svija.com/${version}/${code_lang}.html`, updateNews)
 }
 
 function updateNews(txt){
@@ -41,6 +175,8 @@ function updateNews(txt){
 ```
 
 ---
+</details><details><summary>Localization</summary>
+
 ### Localization
 
 Reused translations are listed at the top of `admin.py`.
@@ -66,26 +202,19 @@ Then for each site:
 
 Changes will take effect after `service uwsgi restart`
 
-Strings in templates: `{{ _('key_string') }}`
-
-#### localizing JavaScript
-
-In a template, JS can be localized by:
 ```
-var myVar = '{% trans 'translation string' %}'
+# python
+x = _('translation string')
+
+# javascript
+x = '{% trans 'translation string' %}'
+
+# template (python)
+{{ _('translation string') }}
 ```
 ---
-### Useful Links
+</details><details><summary>Bug Fixes</summary>
 
-- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
-- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
-- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
-- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
-- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
-- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
-- [server hardening](https://news.ycombinator.com/item?id=37892028)
-
----
 ### Bug Fixes
 
 <details><summary>PostgreSQL Failure</summary>
@@ -177,81 +306,7 @@ After refactoring the main page views, I got this error when I called CachedPage
 **fix:** include CachedPageView in __init__.py before calling it from HomePageView.py
 </details>
 
----
-### Etiquette
-
-<details><summary>label guidelines</summary>
-
----
-- colored labels designate category
-- black labels are ?
-- white labels are informational
 </details>
-
----
-### For the Future
-
-<details><summary>funny license text about cat</summary>
-
----
-This page is copyright 2005 by Graeme Cole. What are you allowed to do with it? Pfft. Anything within the realms of common sense, really. I don't want to prescribe rigidly what people can and can't do with it, so I've decided on a benchmark. It's this: you're allowed to do with this page anything you wouldn't mind me doing with your cat. So yes, you can photoshop it for comedy effect, you can copy bits of it for illustrative purposes and so on, but you can't steal it and pass it off as your own."
-
-https://greem.co.uk/otherbits/jelly.html
-</details>
-<details><summary>share sheet icon</summary>
-
-![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
-
-</details>
-
----
-### Technical Resources
-
-<details><summary>safari font-size info</summary>
-
----
-- https://stackoverflow.com/questions/72903407/svg-text-textlength-not-working-on-mobile-safari
-- https://stackoverflow.com/questions/11768364/svg-scaling-issues-in-safari
-- https://bugs.webkit.org/show_bug.cgi?id=56543
-
-as of 230724:
-
-- 16.5.2 (WebKit 18615.2.9.11.10) · Ventura
-- 17.0 (WebKit 18616.1.22.1) · Safari Technology Preview · Release 174
-- 17.0 (WebKit 19616.1.20.11.3) · Sonoma
-
-</details>
-<details><summary>embedded SVG's</summary>
-
----
-https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
-
-"In contrast to HTML, SVG allows you to embed other svg elements seamlessly. This way you can also create new coordinate systems by utilizing the viewBox, width and height of the inner svg element."
-```
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
-  <svg width="100" height="100" viewBox="0 0 50 50">
-    <rect width="50" height="50" />
-  </svg>
-</svg>
-```
-
-</details>
-<details><summary>get/set scroll position</summary>
-
----
-https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
-
-The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
-</details>
-<details><summary>ozake loading times</summary>
-
-<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
-
-</details>
-
----
-### Code
-
 <details><summary>Horizontal Scrolling Code </summary>
 
 CSS
@@ -369,10 +424,69 @@ the `position` css *is* necessary (the Antretoise footer was not at the bottom o
 it can also be in the specific stylesheet for the page.
 
 </details>
+<details><summary>share sheet icon</summary>
+
+![share sheet site icon](https://user-images.githubusercontent.com/74959853/155168567-871d1a5d-7e4a-447c-9b28-1f33400f3b62.png)
+
+</details>
+<details><summary>Technical Resources</summary>
+
+### Technical Resources
+
+<details><summary>Useful Links</summary>
+
+### Useful Links
+
+- [good tips for webapps on iPhone](https://firt.dev/pwa-design-tips/#notch-and-iphone-x-support)
+- [HN security suggestions](https://news.ycombinator.com/item?id=34098369)
+- [HN accessibiility tips](https://news.ycombinator.com/item?id=33302783)
+- [HN password requirements link](https://news.ycombinator.com/item?id=34098369)
+- [ecommerce Django packages](https://djangopackages.org/grids/g/ecommerce/)
+- [page progress bar](https://www.city-journal.org/html/dodging-trump-bullet-10850.html)
+- [server hardening](https://news.ycombinator.com/item?id=37892028)
+
+</details>
+<details><summary>safari font-size info</summary>
 
 ---
-### Triage
+- https://stackoverflow.com/questions/72903407/svg-text-textlength-not-working-on-mobile-safari
+- https://stackoverflow.com/questions/11768364/svg-scaling-issues-in-safari
+- https://bugs.webkit.org/show_bug.cgi?id=56543
 
+as of 230724:
+
+- 16.5.2 (WebKit 18615.2.9.11.10) · Ventura
+- 17.0 (WebKit 18616.1.22.1) · Safari Technology Preview · Release 174
+- 17.0 (WebKit 19616.1.20.11.3) · Sonoma
+
+</details>
+<details><summary>embedded SVG's</summary>
+
+---
+https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Transformations
+
+"In contrast to HTML, SVG allows you to embed other svg elements seamlessly. This way you can also create new coordinate systems by utilizing the viewBox, width and height of the inner svg element."
+```
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100" height="100">
+  <svg width="100" height="100" viewBox="0 0 50 50">
+    <rect width="50" height="50" />
+  </svg>
+</svg>
+```
+
+</details>
+<details><summary>get/set scroll position</summary>
+
+---
+https://stackoverflow.com/questions/4096863/how-to-get-and-set-the-current-web-page-scroll-position
+
+The currently accepted answer is incorrect - document.documentElement.scrollTop always returns 0 on Chrome. This is because WebKit uses body for keeping track of scrolling, whereas Firefox and IE use html.
+</details>
+<details><summary>ozake loading times</summary>
+
+<img width="760" alt="next generation image formats" src="https://user-images.githubusercontent.com/74959853/155168435-2d547890-4591-406c-abec-5cbf391f273b.png">
+
+</details>
 <details><summary>list 1</summary>
 
 ---
@@ -722,6 +836,8 @@ See the various files for explanations.
 - /modules/meta_canonical.py does not handle more than two resolutions             
 - main urls.py fr en de etc. (check for existing language rather than just FR)     
 - & fr & fm are hardcoded in responsive.js & responsive.js in ozake.com/scripts has hard-coded languages
+
+</details>
 
 </details>
 

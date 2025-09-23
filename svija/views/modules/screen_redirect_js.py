@@ -1,41 +1,48 @@
 
+# vim: set foldmethod=marker fmr=#—,##:
+
 #:::::::::::::::::::::::::::::::::::::::: views/modules/screen_redirect_js.py
 
 #———————————————————————————————————————— notes
 #
-#   will include JS to reload page is screen size is wrong
+#   defined in system js at top of page:
+#  
+#   var screen_code = "cp"
+#   var all_screens = {0:'cp', 400:'mb'}
 #
-#   ONLY if user agent doesn't contain 'google'
+#   correct_code: set by screens_max.js
 #
+#   —————————————————————————————————————
+#
+#   three related scripts:
+#
+#   1. templates/svija/js/screens_max.js
+#
+#   2. views/modules/screen_redirect_js.py
+#
+#      if it's a fresh start & page doesn't match
+#      correct code, reload page (if not google)
+#
+#   3. templates/svija/js/cloud_module_max.js 
+#
+#      sets cookie & localStorage to new screen code 
+#      to enable visiting a page with "wrong" code
+##
 #———————————————————————————————————————— imports
 
 import re
+##
 
 #:::::::::::::::::::::::::::::::::::::::: definition
 
 def screen_redirect_js(ua):
 
-  str = 'google'
+  if re.search('google', ua, re.IGNORECASE): return ''
 
-  if re.search(str, ua, re.IGNORECASE):
-    return ''
-
-  code = 'if (first_visit) if (screen_code != correct_code) window.location.replace(document.URL)'
+  # new visitor to wrong version (correct cookie has been set)
+  code = 'if (fresh_start){ if (screen_code != correct_code) window.location.replace(document.URL) }'
 
   return code
 
-#:::::::::::::::::::::::::::::::::::::::: functions
-
-
-
-def not_google(ua):
-
-  # https://stackoverflow.com/questions/6579876/how-to-match-a-substring-in-a-string-ignoring-case
-
-  if re.search('google', ua, re.IGNORECASE):
-    return 'false'
-
-  return 'true'
-
-
 #:::::::::::::::::::::::::::::::::::::::: fin
+

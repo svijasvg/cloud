@@ -3,6 +3,8 @@
 
 #———————————————————————————————————————— modules/send_mail.py
 
+# sends "" on success else error message
+
 # https://www.sitepoint.com/django-send-email/
 
 # this is hard to debug — put it at end of MailView.py then
@@ -38,48 +40,71 @@ import socket
 import ssl
 from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
-
+from django.core.mail import send_mail
+from svija.models import Control
 
 #———————————————————————————————————————— program
 
 #ef send(settings, subject, to, bcc, body):
 def send(settings, subject, body, frm, to, cc, bcc):
 
-  if frm == '': frm = settings.mail_id
+#     if frm == '': frm = settings.mail_id
+#   
+#     email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
+#   
+#   # https://www.pythonanywhere.com/forums/topic/291/
+#   
+#   # context = ssl.create_default_context()
+#   # context.check_hostname = False
+#   # context.verify_mode = ssl.CERT_NONE
+#   
+#   
+#     ht  = settings.mail_srv
+#   # ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+#   
+#   # gethostbyname returns IP address
+#   
+#     pt  = settings.mail_port
+#     un  = settings.mail_id
+#     pw  = settings.mail_pass
+#     tls = settings.mail_tls
+#   
+#     connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
+#     response   = ''
+#   
+#     try:
+#       connection.open()
+#       email.connection = connection
+#       email.send()
+#       connection.close()
+#     except SMTPException as e:
+#       response = e
+#   
+#     return response
 
-  email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
+  #———————————————————— from address
 
-# https://www.pythonanywhere.com/forums/topic/291/
+  server = Control.objects.first().mail_srv
+  if server == '':
+    return 'no server configured'
 
-# context = ssl.create_default_context()
-# context.check_hostname = False
-# context.verify_mode = ssl.CERT_NONE
+  from_email     = "noreply@" + server
 
+  #———————————————————— 
 
-  ht  = settings.mail_srv
+  email = EmailMessage(
+    subject    = subject,
+    body       = body,
+    from_email = from_email,
+    to         = to,
+    cc         = cc,
+    bcc        = bcc,
+  )
 
-# chatgpt 250811
-#  ht  = socket.gethostbyname(ht) # https://stackoverflow.com/questions/31663454/django-send-mail-through-gmail-very-slow
+  #————————————————————
 
-# gethostbyname returns IP address
-
-  pt  = settings.mail_port
-  un  = settings.mail_id
-  pw  = settings.mail_pass
-  tls = settings.mail_tls
-
-  connection = get_connection(host=ht,port=pt,username=un,password=pw,use_tls=tls)
-  response   = ''
-
-  try:
-    connection.open()
-    email.connection = connection
-    email.send()
-    connection.close()
-  except SMTPException as e:
-    response = e
-
+  response = email.send(fail_silently=False)
+# return str(response) + '\nto:'+to[0]+' / from:'+from_email+' / bcc:' + bcc[0]
   return response
-
 
 #———————————————————————————————————————— fin

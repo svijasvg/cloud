@@ -90,6 +90,7 @@ class Control(models.Model):
     cached   = models.BooleanField(default=False, verbose_name='cache active',)
     cached_h = models.BooleanField(default=False, verbose_name='cache active',)
     password = models.CharField(max_length=20, default='', verbose_name='password')
+    mail_srv = models.CharField(max_length=200, default='svija.site', verbose_name=_('email server'),      blank=True,)
 
     def __str__(self):
         return "Site Configuration"

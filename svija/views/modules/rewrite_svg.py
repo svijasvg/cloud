@@ -76,6 +76,11 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
     raw_svg = f.read()
     svg_lines = raw_svg.split('\n')
 
+  #———————————————————————————————————————— check if empty page
+
+  if len(svg_lines) < 4:
+    return 'xxx', 0, 0, '<!-- ' + _('empty SVG') + svg_path + ' -->'
+
   #———————————————————————————————————————— delete first line if <?xml...
 
   if '<?xml'      in svg_lines[0]: svg_lines.pop(0)

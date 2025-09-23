@@ -105,7 +105,11 @@ def cache_per_user(ttl=None, cache_post=False):
 #———————————————————————————————————————— cache_key(request):
 
 def cache_key(request):
-    q = getattr(request, request.method)
+    method = request.method
+    if method == 'HEAD':
+        method = 'GET'
+    q = getattr(request, method)
+#   q = getattr(request, request.method)
     q.lists()
     urlencode = q.urlencode(safe='()')
 

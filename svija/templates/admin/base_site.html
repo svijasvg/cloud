@@ -10,7 +10,8 @@
   <link rel="stylesheet" type="text/css" href="/cloud.css" />
   <link rel="stylesheet" type="text/css" href="{% static "admin/css/admin-extra.css" %}" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-title" content="Admin">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <meta name="apple-mobile-web-app-title" content="Cloud">
   <script src="{% static "admin/js/fetch-remote.js" %}"></script>
   <script src="{% static "admin/js/same-page.js" %}"></script>
   <script>
@@ -54,7 +55,7 @@
     {% endif %}
     <a href="javascript:clearCache()">{% trans "clear cache link" %}</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
-    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.3</a><br>
+    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.4</a><br>
 
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}
@@ -65,7 +66,10 @@
     {% if user.has_usable_password %}
     <a href="{% url 'admin:password_change' %}">{% trans "Change password" %}</a> ∴
     {% endif %}
-    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+        {% csrf_token %}
+        <button type="submit">{% translate 'Log out' %}</button>
+    </form>
     
   {% endblock %}
 

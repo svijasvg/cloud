@@ -66,7 +66,7 @@ class ControlAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),],}),
+    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),'mail_srv',],}),
   ]   
 
 admin.site.register(Control, ControlAdmin)
@@ -100,8 +100,8 @@ from .models import Font
 class FontAdmin(admin.ModelAdmin):
 
   # display on parent page · order is determined in model def
-  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'google', 'adobe', 'woff', 'category',)
-  list_filter = ('category', 'google', 'enabled', )
+  list_display = ('svg_ref', 'enabled', 'family', 'weight', 'style', 'adobe', 'google', 'woff', 'category',)
+  list_filter = ('category', 'adobe', 'google', 'enabled', )
   save_on_top = True
   save_as = True
 
@@ -295,10 +295,9 @@ class SettingsAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id', 'tracking_on', ), 'section', 'robots',],'description': descSettings,}),
+    (_('website settings'), {'fields': [('url', 'enabled', 'p3_color',), ('analytics_id', 'tracking_on', ), 'section', ('robots',),],'description': descSettings,}),
     (_('adobe web project'), {'fields': ['adobe_project', 'adobe_sheet',],'description': descAdobeProject,}),
     (_('svija cloud colors'), {'fields': [('color_main', 'color_dark', 'color_accent',),],'description': descColors,}),
-    (_('email sending'   ), {'fields': [('mail_id', 'mail_pass'), ('mail_srv','mail_port','mail_tls'),'notes',], 'classes': ['collapse']}),
 #     ('backup preferences', {'fields': ['backup_interval', 'backup_next', ], 'classes': ['collapse']}),
   ]   
 
@@ -339,7 +338,7 @@ class AdditionalScriptInline(admin.TabularInline):
   fields = ('enabled', 'name', 'type', 'order', 'content',)
   verbose_name = _("script")
   verbose_name_plural = _("scripts")
-#   classes = ['collapse']
+# classes = ['collapse', 'ifempty']
 
 #———————————————————————————————————————— page
 

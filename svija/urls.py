@@ -3,9 +3,16 @@
 #———————————————————————————————————————— imports
 
 from . import views
-from django.urls import path, re_path
+from django.contrib import admin
+from django.urls import path, re_path, include
 from django.views import static
+from django.views.static import serve # DO I NEED THIS?
 import os
+
+#———————————————————————————————————————— from home/xxx/urls.py
+
+admin.autodiscover()
+admin.site.enable_nav_sidebar = False
 
 #———————————————————————————————————————— variables
 
@@ -14,22 +21,24 @@ proj_folder = os.path.abspath(os.path.dirname(__name__))
 app_name = 'svija'
 
 # for images in Links folder PREVIOUS
-#   image_folder = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*links'
+#   image_folder = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.\/-]*Links'
 #   image_file = '[A-Za-z0-9À-ÖØ-öø-ÿ_ \.-]+\.(jpeg|jpg|png|gif)'
 
 # "../../Links/shadow drop.png"
 
-image_folder = '.*links'                  # image folder
+image_folder = '.*Links'                  # image folder
 image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
 
 # https://www.regular-expressions.info/modifiers.html
-
-# (?i) makes regex case insensitive
 
 
 #:::::::::::::::::::::::::::::::::::::::: url patterns
 
 urlpatterns = [ 
+
+#———————————————————————————————————————— from /home/xxx/urls.py
+
+#   re_path(r'^', include('svija.urls', namespace="svija")),
 
 #———————————————————————————————————————— exact addresses
 
@@ -42,14 +51,14 @@ urlpatterns = [
 
 #———————————————————————————————————————— images in Links folder
 #
-#   accepts any path ending in links › / › any path ending in .jpg etc.
+#   accepts any path ending in Links › / › any path ending in .jpg etc.
 #
 #   at top of this file:
 #
-#   image_folder = '.*links'                  # image folder
+#   image_folder = '.*Links'                  # image folder
 #   image_file = '.*\.(jpeg|jpg|png|gif)'   # image file
 
-    re_path(r'^(?P<request_prefix>' + image_folder + ')/(?P<img_file>' + image_file + ')$(?i)', views.LinksView),
+    re_path(r'^(?P<request_prefix>' + image_folder + ')/(?P<img_file>' + image_file + ')$', views.LinksView),
 
 #———————————————————————————————————————— SVG pages
 
@@ -64,11 +73,10 @@ urlpatterns = [
 
 #———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^customization/(?P<path>.*)$(?i)', static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Svija Cloud"      }),
-    re_path(r'^fonts/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Fonts/WOFF Files" }),
-    re_path(r'^files/(?P<path>.*)$(?i)',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Shared Files"     }),
-    re_path(r'^images/(?P<path>.*)$(?i)',        static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Images"           }),
-
+    re_path(r'^customization/(?P<path>.*)$', static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Svija Cloud"      }),
+    re_path(r'^fonts/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Fonts/WOFF Files" }),
+    re_path(r'^files/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Shared Files"     }),
+    re_path(r'^images/(?P<path>.*)$',        static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Images"           }),
 
 ]
 

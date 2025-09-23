@@ -1,12 +1,11 @@
 Metadata-Version: 2.1
 Name: django-svija
-Version: 2.3.3
+Version: 2.3.4
 Summary: A CMS for web sites built with Adobe Illustrator pages.
-Home-page: https://tech.svija.com/
+Home-page: https://docs.svija.love/
 Author: Andrew Swift
-Author-email: hello@svija.com
-License: MIT License
-Platform: UNKNOWN
+Author-email: andrew@svija.love
+License: BSD License
 Classifier: Environment :: Web Environment
 Classifier: Framework :: Django
 Classifier: Framework :: Django :: 2.2.1
@@ -20,6 +19,8 @@ Classifier: Topic :: Internet :: WWW/HTTP
 Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
 License-File: LICENSE
 
+
+*Modified 12 August · debian server*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
@@ -60,5 +61,3 @@ To install Svija Cloud, please first set up a server according to the [Svija Ser
 ### Updating
 
 To update to a new version of Svija Cloud, refer to the [Cloud Update](https://github.com/svijasvg/cloud-update) repository.
-
-

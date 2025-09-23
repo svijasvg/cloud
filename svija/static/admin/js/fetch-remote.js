@@ -1,6 +1,8 @@
 
 //:::::::::::::::::::::::::::::::::::::::: fetch-remote.js
 
+var version = "2.3.4"
+
 /*———————————————————————————————————————— notes
 
     Empties the cache when the user clicks on the link
@@ -20,7 +22,7 @@
 
 function getNews(code_lang){
   if (code_lang != 'fr') code_lang = 'en'
-  getRemoteFile(`https://cloud.svija.com/${code_lang}/index.html`, updateNews)
+  getRemoteFile(`https://cloud.svija.com/${version}/${code_lang}.html`, updateNews)
 }
 
 function updateNews(txt){
