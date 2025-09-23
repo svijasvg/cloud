@@ -1,12 +1,9 @@
 
 /* vim: set foldmethod=marker fmr=/*—,///: */  
 
-//:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
-/*
-https://www.toptal.com/developers/javascript-minifier
-*/
+/*:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
 
-//alert('window_mgmt.js\n'+screen_code)
+    https://www.toptal.com/developers/javascript-minifier */
 
 /*———————————————————————————————————————— notes
 
@@ -45,19 +42,19 @@ var IS_FIREFOX = navigator.userAgent.indexOf('Firefox')>0;
 
 // real screen width, for firefox
 if (IS_FIREFOX && getCookie('screenWidth') != '')
-  var REAL_SCREEN_WIDTH = getCookie('screenWidth');
+  var REAL_SCREEN_WIDTH = SCREEN_DIMENSIONS.width
 else{
-  var REAL_SCREEN_WIDTH = globalThis.screen.availWidth;
+  var REAL_SCREEN_WIDTH = SCREEN_DIMENSIONS.height
   setCookie('screenWidth', REAL_SCREEN_WIDTH, 7);
 }
 
 // real screen height, for iPhone
 if (getCookie('screenHeight') == ''){
-  var REAL_SCREEN_HEIGH = globalThis.screen.availHeight;
-  setCookie('screenHeight', REAL_SCREEN_HEIGH, 7);
+  var REAL_SCREEN_HEIGHT = SCREEN_DIMENSIONS.height
+  setCookie('screenHeight', REAL_SCREEN_HEIGHT, 7);
 }
 else
-  var REAL_SCREEN_HEIGH = getCookie('screenHeight');
+  var REAL_SCREEN_HEIGHT = getCookie('screenHeight');
 ///
 /*———————————————————————————————————————— environmental variables */
 
@@ -86,7 +83,7 @@ var top_margin_px  = page_offsety * aiPixel;
 var X_INIT = Math.round(left_margin_px);
 var Y_INIT = Math.round(top_margin_px);
 
-// this can't work because this script is in head
+// this v can't work because this script is in head
 //setScroll(); setTimeout(setScroll, 1);
 ///
 
@@ -125,8 +122,8 @@ function areDifferent(a, b){
 function zoom(){
 
   // android screen was rotated
-  if (globalThis.screen.availWidth == REAL_SCREEN_HEIGH){
-    REAL_SCREEN_HEIGH = globalThis.screen.availHeight;
+  if (globalThis.screen.availWidth == REAL_SCREEN_HEIGHT){
+    REAL_SCREEN_HEIGHT = globalThis.screen.availHeight;
     REAL_SCREEN_WIDTH  = globalThis.screen.availWidth;
   }
 
@@ -157,7 +154,7 @@ function resize(){
   // page was just made longer
   if (zoomedWidth() == PREVIOUS_WIDTH) {return true;}
   
-  if (globalThis.innerWidth != REAL_SCREEN_HEIGH)
+  if (globalThis.innerWidth != REAL_SCREEN_HEIGHT)
     zoomFactor = zoom();
 
   else
@@ -183,12 +180,12 @@ function globalThisOuterWidth(){
   var r;
 
   // iPhone rotated to landscape
-  if (window.innerWidth == REAL_SCREEN_HEIGH){
+  if (window.innerWidth == REAL_SCREEN_HEIGHT){
     r = window.innerWidth;
   }
 
   // iPhone rotated to portrait
-  else if (globalThis.outerWidth == REAL_SCREEN_HEIGH){
+  else if (globalThis.outerWidth == REAL_SCREEN_HEIGHT){
     r = window.innerWidth;
   }
 

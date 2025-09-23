@@ -57,12 +57,12 @@ if (typeof localStorage.screen_code != 'undefined')
     alert('invalid screen code unset')
   }
 ///
-/*———————————————————————————————————————— */
+/*———————————————————————————————————————— determine correct screen code*/
 
 correct_code = determine_code(all_screens)
 
 ///
-/*———————————————————————————————————————— prolong cookie if set DELETING THIS BLOCK FIXES PROBLEM */
+/*———————————————————————————————————————— prolong cookie if set */
 
 fresh_start  = false
 
@@ -79,6 +79,25 @@ recalculate: if (cookiesEnabled()){
   setCookie('screen_code', correct_code, 7)
   fresh_start = true
 
+}
+///
+
+/*:::::::::::::::::::::::::::::::::::::::: global functions */
+
+/*———————————————————————————————————————— SCREEN_DIMENSIONS()
+
+    getting real window size has been a recurring problem, so any
+    need for the real dimensions should use this function.
+
+    DO NOT RECALCULATE WIDTH/HEIGHT ELSEWHERE
+
+    this must work in <head> so don't use globalThis */
+
+function SCREEN_DIMENSIONS(){
+  let w = window.innerWidth || document.documentElement.clientWidth
+  let h = window.innerHeight || document.documentElement.clientHeight
+  let res = {'width':w, 'height':h}
+  return res
 }
 ///
 
