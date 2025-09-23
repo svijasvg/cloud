@@ -39,8 +39,8 @@ def screen_redirect_js(ua):
 
   if re.search('google', ua, re.IGNORECASE): return ''
 
-  # new visitor to wrong version
-  code = 'if (fresh_start) if (screen_code != correct_code) window.location.replace(document.URL)'
+  # new visitor to wrong version (correct cookie has been set)
+  code = 'if (fresh_start){ if (screen_code != correct_code) window.location.replace(document.URL) }'
 
   return code
 

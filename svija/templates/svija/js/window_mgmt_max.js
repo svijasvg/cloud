@@ -1,4 +1,6 @@
 
+/* vim: set foldmethod=marker fmr=/*—,///: */  
+
 //:::::::::::::::::::::::::::::::::::::::: template: window_mgmt.js
 /*
 https://www.toptal.com/developers/javascript-minifier
@@ -24,17 +26,17 @@ https://www.toptal.com/developers/javascript-minifier
     1. calculates the REM size
     2. sets the scroll position if there's an offset in Svija Cloud
     3. adds a listener to redo the rem size if something changes */
-
-//———————————————————————————————————————— variables
+///
+/*———————————————————————————————————————— variables */
 
 // var visible_width = 1200;   // supplied by system JS
 
 var MIN_DIFF = 5;            // percent difference needed to count as a zoom
-
-//———————————————————————————————————————— is it Firefox?
+///
+/*———————————————————————————————————————— is it Firefox? */
 
 var IS_FIREFOX = navigator.userAgent.indexOf('Firefox')>0;
-
+///
 /*———————————————————————————————————————— get real screen size for FF & iPhone
 
     This has the potential problem of firefox retaining the zoom level, then
@@ -56,27 +58,27 @@ if (getCookie('screenHeight') == ''){
 }
 else
   var REAL_SCREEN_HEIGH = getCookie('screenHeight');
-
-//———————————————————————————————————————— environmental variables
+///
+/*———————————————————————————————————————— environmental variables */
 
 var PREVIOUS_WIDTH = zoomedWidth();   // used in resize();
 var PREVIOUS_ZOOM  = zoom();          // used in resize();
 
 if (areDifferent(zoom(), 1)) var LOADED_ZOOMED = true;
                         else var LOADED_ZOOMED = false;
-
-//———————————————————————————————————————— set the rem unit
+///
+/*———————————————————————————————————————— set the rem unit */
 
 var rawPixel = zoomedWidth() / visible_width; // ⚠️  USED BY OTHER SCRIPTS
 var  aiPixel = rawPixel * zoom();
 
 document.documentElement.style.fontSize = aiPixel + 'px';
+///
+/*———————————————————————————————————————— resize listener */
 
-//———————————————————————————————————————— resize listener
-
-  var resizeListener = window.addEventListener('resize', resize);
-
-//———————————————————————————————————————— set scroll position per Cloud params
+var resizeListener = window.addEventListener('resize', resize);
+///
+/*———————————————————————————————————————— set scroll position per Cloud params */
 
 var left_margin_px = page_offsetx * aiPixel;
 var top_margin_px  = page_offsety * aiPixel;
@@ -86,26 +88,26 @@ var Y_INIT = Math.round(top_margin_px);
 
 // this can't work because this script is in head
 //setScroll(); setTimeout(setScroll, 1);
-
+///
 
 //:::::::::::::::::::::::::::::::::::::::: methods
 
-//———————————————————————————————————————— zoomedWidth()
+/*———————————————————————————————————————— zoomedWidth() */
 
 function zoomedWidth(){
   var r = globalThis.innerWidth;
   return r;
 }
-
-//———————————————————————————————————————— setScroll()
+///
+/*———————————————————————————————————————— setScroll() */
 
 function setScroll(){
   if (LOADED_ZOOMED) return true;
   window.scrollTo(X_INIT, Y_INIT);
   console.log('init values: '+X_INIT+':'+ Y_INIT);
 }
-
-//———————————————————————————————————————— areDifferent(a, b);
+///
+/*———————————————————————————————————————— areDifferent(a, b); */
 
 //    returns % difference between two numbers like 1.1, 1
 /*  used to compensate for minor differences in zoom() caused by the presence of scrollbars in PC browsers */
@@ -115,7 +117,7 @@ function areDifferent(a, b){
   if (d > MIN_DIFF) return  true;
                  else return false;
 }
-
+///
 /*———————————————————————————————————————— zoom(w)
 
     close values mean scrollbars, so we return 1 */
@@ -142,7 +144,7 @@ function zoom(){
 
   return z;
 }
-
+///
 /*———————————————————————————————————————— resize()
 
     called when a resize event is triggered */
@@ -170,7 +172,7 @@ function resize(){
 
   return true;
 };
-
+///
 /*———————————————————————————————————————— globalThisOuterWidth()
 
     called by zoom()
@@ -194,6 +196,7 @@ function globalThisOuterWidth(){
 
   return r;
 }
+///
 
+/*:::::::::::::::::::::::::::::::::::::::: fin */
 
-//:::::::::::::::::::::::::::::::::::::::: fin

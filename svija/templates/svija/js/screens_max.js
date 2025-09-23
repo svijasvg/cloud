@@ -6,20 +6,6 @@
     https://www.toptal.com/developers/javascript-minifier */
 
 /*———————————————————————————————————————— notes
-
-    this script checks the current window width against supported
-    resolutions and redirects if there's a better fit.
-
-    if cookies are not enabled, nothing is done — the version
-    of the page that was loaded is shown.
-
-    if a screen code exists in localStorage or a cookie,
-    the cookie is renewed and localStorage is set
-
-    if no cookie or localStorage, the correct screen is determined
-    and the screen code is stored in localStorage and a cookie. */
-///
-/*———————————————————————————————————————— notes
   
     defined in system js at top of page:
    
@@ -74,8 +60,9 @@ if (typeof localStorage.screen_code != 'undefined')
 /*———————————————————————————————————————— */
 
 correct_code = determine_code(all_screens)
+
 ///
-/*———————————————————————————————————————— prolong cookie if set */
+/*———————————————————————————————————————— prolong cookie if set DELETING THIS BLOCK FIXES PROBLEM */
 
 fresh_start  = false
 
