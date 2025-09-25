@@ -1,4 +1,6 @@
 
+<!-- vim: set foldmethod=marker fmr=###,--- :-->
+
 *Updated 15 September, 2025 ·  dev.svija.com*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
@@ -840,4 +842,74 @@ See the various files for explanations.
 </details>
 
 </details>
+
+### • Create Fixtures
+
+<details><summary>• expand if needed</summary>
+
+---
+
+</details><details><summary>x</summary>
+
+**fixtures note:** keep track of fixture ID's so that they can be _replaced_ by future updates rather than having two of the same module (for example).
+
+#### A. creating the fixture
+
+If you are adding the fixture after making backups, **MAKE SURE TO RE-CLONE THE REPO** before updating the servers.
+
+To make searching for records easier, go to Svija Cloud and add "fixture" (or another uniques string) to the included scripts for each module to be copied.
+
+**NOTE**: fixture cannot have trailing commas in lists: `['a', 'b', 'c',]` will **fail**.
+
+On the **dev server**:
+```
+workon djangoEnv
+cd /home/svijadev
+./manage.py dumpdata --indent 2 > sync/fixture.json
+```
+According to [this Stack Overflow page](https://stackoverflow.com/questions/1113096/django-dump-data-for-a-single-model), I can get data for specific models by appending the app and model names:
+```
+workon djangoEnv
+cd /home/svijadev
+./manage.py dumpdata --indent 2 svija.Module > sync/fixture-module.json
+./manage.py dumpdata --indent 2 svija.ModuleScript > sync/fixture-modulescript.json
+```
+This worked as expected.
+
+#### B. preparing the fixture
+
+- download the JSON file via Svija Sync
+- move it to this repo
+- edit it to delete unused data
+```
+cd ~/Documents/cloud-update
+vi -O fixture*.json
+```
+The parent model's private key is listed in the child model under "fields", so it's easy to find the correct children.
+
+First delete unused data from both (or all) fixtures.
+
+To relink them, change the parent PK to the current date + existing PK, and modify the children accordingly.
+
+Then modify the child PK's and set them to null.
+
+According to [this page](https://stackoverflow.com/questions/9436954/excluding-primary-key-in-django-dumpdata-with-natural-keys), you can just set the PK to null to avoid conflicts.
+
+The long-term solution is to use [natural keys](https://docs.djangoproject.com/en/dev/topics/serialization/#natural-keys) in models.py
+
+#### C. using the fixture
+
+- add it to this repository, with a **descriptive name**
+- remove the comments from update.sh and update the file name (near line 36):
+- add the fixtures to `update.sh`, making sure that they appear in the **correct order**
+```
+vi update.sh
+```
+</details>
+
+---
+
+
+</details>
+
 
