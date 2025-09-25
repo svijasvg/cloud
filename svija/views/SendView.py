@@ -1,6 +1,11 @@
+
+# vim: set foldmethod=marker fmr=\#—,\#\#\#:
+
 #———————————————————————————————————————— SendView.py
 
 #———————————————————————————————————————— comments
+#
+#   must be logged in to Svija Cloud to use
 #
 #   /send?to=andrew@svija.love&bcc=camrias@free.fr
 #

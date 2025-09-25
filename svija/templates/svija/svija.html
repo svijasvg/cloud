@@ -85,9 +85,9 @@ pageLoaded = false;
 </script>
 
 {% if request.user.is_staff %}
-{% include  "svija/css/cloud_module_min.css"  %}
-{% include "svija/html/cloud_module_min.html" %}
-{% include   "svija/js/cloud_module_min.js"   %}
+<style>  {% include  "svija/css/cloud_module_min.css"  %} </style>
+         {% include "svija/html/cloud_module_min.html" %}
+<script> {% include   "svija/js/cloud_module_min.js"   %} </script>
 {% endif %}
 
 </body></html>{% endautoescape %}
