@@ -22,7 +22,7 @@ var version = "2.3.5"
 
 function getNews(code_lang){
   if (code_lang != 'fr') code_lang = 'en'
-  getRemoteFile(`https://cloud.svija.com/${version}/${code_lang}.html`, updateNews)
+  getRemoteFile(`https://msg.svija.com/cloud/${version}/${code_lang}.html`, updateNews)
 }
 
 function updateNews(txt){
