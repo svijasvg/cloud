@@ -268,7 +268,7 @@ msgstr ""
 msgid "descColors"
 msgstr ""
 "Change these interface colors with valid CSS colors. The logo image is in "
-"SYNC/SVIJA/Svija Cloud"
+"SYNC/CONFIG/Cloud"
 
 #: admin.py:298
 msgid "website settings"
@@ -280,7 +280,7 @@ msgstr "Adobe web project"
 
 #: admin.py:300
 msgid "svija cloud colors"
-msgstr "Svija Cloud colors"
+msgstr "Pwika Cloud colors"
 
 # ———————————————————————————————————————— page
 #: admin.py:345
@@ -744,8 +744,8 @@ msgid "Close"
 msgstr ""
 
 #: templates/registration/logged_out.html:6
-msgid "Thanks for using Svija."
-msgstr "Thanks for using Svija."
+msgid "Thanks for using Pwika."
+msgstr "Thanks for using Pwika."
 
 #: templates/registration/logged_out.html:7
 msgid "Log in again"

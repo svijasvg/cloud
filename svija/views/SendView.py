@@ -5,7 +5,7 @@
 
 #———————————————————————————————————————— comments
 #
-#   must be logged in to Svija Cloud to use
+#   must be logged in to Cloud to use
 #
 #   /send?to=andrew@svija.love&bcc=camrias@free.fr
 #
