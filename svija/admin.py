@@ -1,4 +1,7 @@
 
+# vim: set foldmethod=marker fmr=\#—,\#\# :
+##
+
 #:::::::::::::::::::::::::::::::::::::::: admin.py
 
 #———————————————————————————————————————— import
@@ -11,7 +14,7 @@ from urllib.parse import quote
 admin.site.site_header = 'Main Settings List'   # was H1 in black bar, now title attribute of logo image
 admin.site.site_title  = 'Pwika Cloud'          # end of each admin page’s <title> (a string). By default, this is “Django site admin”.
 admin.site.index_title = 'Pwika Cloud Settings' # top of the admin index page (a string). By default, this is “Site administration”.
-
+##
 #———————————————————————————————————————— reused translations
 
 text = _('scripts')
@@ -46,7 +49,7 @@ text = _('visible width')
 text = _('x offset')
 text = _('y offset')
 text = _('z index')
-
+##
 #———————————————————————————————————————— control · no dependencies
 
 from .models import Control
@@ -70,7 +73,7 @@ class ControlAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Control, ControlAdmin)
-
+##
 #———————————————————————————————————————— redirect · no dependencies
 
 descRedirect = _("descRedirect")
@@ -89,7 +92,7 @@ class RedirectAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Redirect, RedirectAdmin)
-
+##
 #———————————————————————————————————————— font · no dependencies
 
 # https://stackoverflow.com/questions/15285740/make-django-admin-to-display-no-more-than-100-characters-in-list-results
@@ -110,7 +113,7 @@ class FontAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Font, FontAdmin)
-
+##
 #———————————————————————————————————————— section · no dependencies
 
 descSection  = _('descSection')
@@ -134,7 +137,7 @@ class SectionAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Section, SectionAdmin)
-
+##
 #———————————————————————————————————————— screen · no dependencies
 
 descScreens    = _('descScreens')
@@ -155,7 +158,7 @@ class ScreenAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Screen, ScreenAdmin)
-
+##
 #———————————————————————————————————————— robots · no dependencies
 
 descRobots = _('descRobots')
@@ -177,7 +180,7 @@ class RobotsAdmin(admin.ModelAdmin):
   verbose_name_plural = "robots.txt"
 
 admin.site.register(Robots, RobotsAdmin)
-
+##
 #———————————————————————————————————————— script library · no dependencies
 
 descScript = _('descScript')
@@ -211,7 +214,7 @@ class ScriptAdmin(admin.ModelAdmin):
   inlines = [ScriptScriptsInline]
 
 admin.site.register(Script, ScriptAdmin)
-
+##
 #———————————————————————————————————————— module · no dependencies
 
 descModules  = _('descModules') 
@@ -220,7 +223,7 @@ positdesc    = _('positdesc')
 #escModules = "Modules can be included here or in <b><a href='/cloud/svija/page/'>Page Settings</a></b> · <a href=https://tech.svija.love/programs/cloud/modules target=_blank>documentation↑</a>"
 #escDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 #ositdesc = 'Superimposed on Illustrator page · negative = up ↖ left · positive = down ↘ right'
-
+##
 #———————————————————————————————————————— Module inline
 
 # my SO question & answer
@@ -268,7 +271,7 @@ class ModuleAdmin(admin.ModelAdmin):
   inlines = [ModuleScriptInline]
 
 admin.site.register(Module, ModuleAdmin)
-
+##
 #———————————————————————————————————————— settings · depends on robots
 
 descSettings = _('descSettings')
@@ -302,7 +305,7 @@ class SettingsAdmin(admin.ModelAdmin):
   ]   
 
 admin.site.register(Settings, SettingsAdmin)
-
+##
 #———————————————————————————————————————— page inlines
 
 from .models import Page, Illustrator
@@ -339,7 +342,7 @@ class AdditionalScriptInline(admin.TabularInline):
   verbose_name = _("script")
   verbose_name_plural = _("scripts")
 # classes = ['collapse', 'ifempty']
-
+##
 #———————————————————————————————————————— page
 
 descPages  = _('descPages')
@@ -398,7 +401,7 @@ class PageAdmin(admin.ModelAdmin):
   inlines = [IllustratorInlinePage, AdditionalScriptInline, ModuleInlinePage, ScriptInlinePage, ]
 
 admin.site.register(Page, PageAdmin)
-
+##
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 
