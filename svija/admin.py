@@ -224,7 +224,7 @@ positdesc    = _('positdesc')
 #escDefaultY = "Link to instructions at <a href=\"https://tech.svija.love\">tech.svija.love</a> and usage notes"
 #ositdesc = 'Superimposed on Illustrator page · negative = up ↖ left · positive = down ↘ right'
 ##
-#———————————————————————————————————————— Module inline
+#———————————————————————————————————————— module inline
 
 # my SO question & answer
 # https://stackoverflow.com/questions/73108883/is-there-a-way-to-make-a-collapsed-inline-initially-visible-in-django-admin-if
@@ -365,7 +365,7 @@ class PageAdmin(admin.ModelAdmin):
     js = ( 'admin/js/ifempty.js', )
 
   # display on parent page
-  list_display = ('url', 'title', 'published', 'section', 'screen', 'illustrator_file', 'incl_modules', 'category',)
+  list_display = ('url', 'illustrator_file', 'title', 'published', 'section', 'screen', 'incl_modules', 'category',)
   list_filter = ('section', 'screen', 'published', 'category', )
   save_on_top = True
   save_as = True

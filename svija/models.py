@@ -1,4 +1,7 @@
 
+# vim: set foldmethod=marker fmr=\#—,\#\# :
+##
+
 #:::::::::::::::::::::::::::::::::::::::: models.py
 
 # model names are SINGULAR
@@ -9,7 +12,7 @@
 # changing model names implies changing static/admin_extra.css
 
 # on_delete: stackoverflow.com/questions/38388423/what-does-on-delete-do-on-django-models
-
+##
 #———————————————————————————————————————— imports
 
 import datetime
@@ -26,7 +29,7 @@ from datetime import datetime
 
 # for stripping chars from page › url
 import re                                                                         
-
+##
 #———————————————————————————————————————— array: script types
 
 script_types = (
@@ -36,7 +39,7 @@ script_types = (
     ('HTML',    _('html script')),
     ('form',    _('form script')),
     )
-
+##
 #———————————————————————————————————————— functions to correct input
 
 # https://stackoverflow.com/questions/36330677/django-model-set-default-charfield-in-lowercase/49181581#49181581
@@ -77,7 +80,7 @@ class slashOrHTTPS(models.CharField):         # for redirects
         if value[0:4] != 'http' and value[0:1] != '/':
           value = '/' + value
         return value.lower()
-
+##
 #———————————————————————————————————————— control · no dependencies
 
 # _h fields are not in admin, but are updated when password is correct by cache_per_user module
@@ -97,7 +100,7 @@ class Control(models.Model):
     class Meta:
         verbose_name = "control"
         verbose_name_plural = "Control"
-
+##
 #———————————————————————————————————————— redirect · no dependencies
 
 class Redirect(models.Model): 
@@ -111,7 +114,7 @@ class Redirect(models.Model):
     class Meta:
         verbose_name = _("url redirect")
         verbose_name_plural = _("url redirects model list")
-
+##
 #———————————————————————————————————————— font · no dependencies TR
 
 class Font(models.Model): 
@@ -137,7 +140,7 @@ class Font(models.Model):
         ordering = ['-enabled', 'category', 'family', 'weight', 'svg_ref',]
         verbose_name = _("font")
         verbose_name_plural = _("font model list")
-
+##
 #———————————————————————————————————————— section · no dependencies
 
 # Create or retrieve a placeholder
@@ -208,7 +211,7 @@ class Section(models.Model):
         ordering = ['order']
         verbose_name = _("section")
         verbose_name_plural = _("section model list")
-
+##
 #———————————————————————————————————————— screen · no dependencies
 
 class Screen(models.Model):
@@ -229,7 +232,7 @@ class Screen(models.Model):
         ordering = ['order', 'width']
         verbose_name = _("screen size")
         verbose_name_plural = _("screen size model list")
-
+##
 #———————————————————————————————————————— script library · no dependencies
 
 # to rename
@@ -252,7 +255,7 @@ class Script(models.Model):
         ordering = ['-enabled', 'category', 'name', ]
         verbose_name = _("script library")
         verbose_name_plural = _("script library model list")
-
+##
 #———————————————————————————————————————— script library scripts · script
 
 class ScriptScripts(models.Model):
@@ -269,7 +272,7 @@ class ScriptScripts(models.Model):
         # only seen when deleting a script library, as a dependency
         verbose_name = _("included script")
         verbose_name_plural = _("included script")
-
+##
 #———————————————————————————————————————— module· no dependencies
 
 positions = (
@@ -320,7 +323,7 @@ class Module(models.Model):
         ordering = ['-enabled', 'name', 'section', 'screen', ]
         verbose_name = "module"
         verbose_name_plural = _("module model list")
-
+##
 #———————————————————————————————————————— module scripts · no dependencies
 
 class ModuleScript(models.Model):
@@ -336,7 +339,7 @@ class ModuleScript(models.Model):
         ordering = ["order"]
         verbose_name = _("included script")
         verbose_name_plural = _("included scripts")
-
+###
 #———————————————————————————————————————— robots · no dependencies
 
 class Robots(models.Model):
@@ -349,7 +352,7 @@ class Robots(models.Model):
         ordering = ['name']
         verbose_name = _("robots.txt file")
         verbose_name_plural = _("robots model list")
-
+##
 #———————————————————————————————————————— settings · section & robots
 
 def get_sentinel_robots():                                                        # deprecated, need to delete
@@ -400,8 +403,8 @@ class Settings(models.Model):
     class Meta:
         verbose_name = _("website")
         verbose_name_plural = _("website settings model list")
-
-#———————————————————————————————————————— Page · uses template & prefix
+##
+#———————————————————————————————————————— page · uses template & prefix
 
 class Page(models.Model): 
 
@@ -446,8 +449,8 @@ class Page(models.Model):
         verbose_name_plural = _("page")
         verbose_name_plural = _("page model list")
     eache_reset   = models.BooleanField(default=False, verbose_name='delete cache (or visit example.com/c)',)
-
-#———————————————————————————————————————— Page models
+##
+#———————————————————————————————————————— page models
 
 # foreignkey, available sitewide
 class PageModule(models.Model):
@@ -501,7 +504,7 @@ class AdditionalScript(models.Model):
         ordering = ["order"]
         verbose_name = _("script")
         verbose_name_plural = _("scripts")
-
+##
 
 #:::::::::::::::::::::::::::::::::::::::: fin
 
