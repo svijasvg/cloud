@@ -169,7 +169,7 @@ def integrate_fonts():
   for this_font in new_woff_fonts:
 
 #   # remove everything in beginning of path if necessary
-#   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/SYNC/CONFIG/Fonts/Woff Files/clarendon.woff
+#   # /Users/Main/Library/Mobile Documents/com~apple~CloudDocs/Desktop/svija.dev/SYNC/SYSTEM/Fonts/Woff Files/clarendon.woff
 
     woff = this_font.woff
     if woff.find('/') > -1:

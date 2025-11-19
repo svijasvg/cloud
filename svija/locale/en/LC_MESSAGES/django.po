@@ -268,7 +268,7 @@ msgstr ""
 msgid "descColors"
 msgstr ""
 "Change these interface colors with valid CSS colors. The logo image is in "
-"SYNC/CONFIG/Cloud"
+"SYNC/SYSTEM/Cloud"
 
 #: admin.py:298
 msgid "website settings"

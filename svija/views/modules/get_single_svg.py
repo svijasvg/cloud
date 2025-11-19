@@ -52,7 +52,7 @@ def get_single_svg(parent_obj, screen_code, page_width, use_p3, is_page, object_
 
   svg_name = raw_name + '_' + screen_code + '.svg'
 
-  svija_path = '/SYNC/CONFIG/SVG Files/'
+  svija_path = '/SYNC/SYSTEM/SVG Files/'
   abs_path = os.path.abspath(os.path.dirname(__name__))
 
   svg_path = abs_path + svija_path + svg_name

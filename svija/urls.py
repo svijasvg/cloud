@@ -73,10 +73,10 @@ urlpatterns = [
 
 #———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^customization/(?P<path>.*)$', static.serve, {'document_root': proj_folder + "/SYNC/CONFIG/Cloud"            }),
-    re_path(r'^fonts/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/CONFIG/Fonts/WOFF Files" }),
-    re_path(r'^files/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/CONFIG/Shared Files"     }),
-    re_path(r'^images/(?P<path>.*)$',        static.serve, {'document_root': proj_folder + "/SYNC/CONFIG/Images"           }),
+    re_path(r'^customization/(?P<path>.*)$', static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Cloud"            }),
+    re_path(r'^fonts/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Fonts/WOFF Files" }),
+    re_path(r'^files/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Shared Files"     }),
+    re_path(r'^images/(?P<path>.*)$',        static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Images"           }),
 
 ]
 

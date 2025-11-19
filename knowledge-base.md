@@ -177,6 +177,7 @@ function updateNews(txt){
 ```
 
 ---
+
 </details><details><summary>Localization</summary>
 
 ### Localization
@@ -196,14 +197,14 @@ if necessary copy to the opposite language, then:
 
 4. `django-admin compilemessages`
 
-Then for each site:
+If models were changed:
 
 5. `./manage.py makemigrations`
 6. `./manage.py migrate`
-7. `service uwsgi restart`
 
 Changes will take effect after `service uwsgi restart`
 
+7. `service uwsgi restart`
 ```
 # python
 x = _('translation string')
@@ -215,6 +216,7 @@ x = '{% trans 'translation string' %}'
 {{ _('translation string') }}
 ```
 ---
+
 </details><details><summary>Bug Fixes</summary>
 
 ### Bug Fixes
