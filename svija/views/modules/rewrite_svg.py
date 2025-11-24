@@ -22,7 +22,7 @@
 #
 #———————————————————————————————————————— import
 
-import unicodedata
+#mport unicodedata
 import os, re, io
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -75,7 +75,6 @@ def rewrite_svg(raw_name, svg_path, settings_id, use_p3, is_page, object_name):
 
   with open(svg_path, 'r', encoding='utf-8') as f:
     raw_svg = f.read()
-    raw_svg = unicodedata.normalize("NFD", raw_svg)
     svg_lines = raw_svg.split('\n')
 
   #———————————————————————————————————————— check if empty page

@@ -12,16 +12,25 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from os.path import exists
 from svija.models import Settings
+from urllib.parse import unquote
 
-import os
+import unicodedata, os
 
 def LinksView(request, request_prefix, img_file):
 
+  request_prefix = unquote(request_prefix)
+  img_file = unquote(img_file)
 
 #———————————————————————————————————————— path
 
   sync_folder = os.path.abspath(os.path.dirname(__name__)) + '/SYNC/'
-  img_path    = sync_folder + request_prefix + '/' + img_file
+  img_path    = request_prefix + '/' + img_file
+
+#———————————————————————————————————————— normalize for accents
+
+  path_parts     = img_path.split('/')
+  path_parts_nfd = [unicodedata.normalize("NFD", p) for p in path_parts]
+  img_path = os.path.join(sync_folder, *path_parts_nfd)
 
 #———————————————————————————————————————— does file exist?
 # see also Error404.py
@@ -43,3 +52,4 @@ def LinksView(request, request_prefix, img_file):
 
 
 #———————————————————————————————————————— fin
+
