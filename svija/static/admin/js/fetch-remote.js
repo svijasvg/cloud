@@ -1,7 +1,7 @@
 
 //:::::::::::::::::::::::::::::::::::::::: fetch-remote.js
 
-var version = "2.3.4"
+var version = "2.3.5"
 
 /*———————————————————————————————————————— notes
 
@@ -22,7 +22,7 @@ var version = "2.3.4"
 
 function getNews(code_lang){
   if (code_lang != 'fr') code_lang = 'en'
-  getRemoteFile(`https://cloud.svija.com/${version}/${code_lang}.html`, updateNews)
+  getRemoteFile(`https://msg.pwika.com/cloud/${version}/${code_lang}.html`, updateNews)
 }
 
 function updateNews(txt){

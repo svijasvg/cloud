@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block branding %}
-  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img title="{{ site_header|default:_('Django administration') }}" id="svija-cloud-logo" src="/customization/svija-cloud.png" %} width=225 height=60></a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}svija/"><img title="{{ site_header|default:_('Django administration') }}" id="cloud-logo" src="/images/cloud-logo.png" %} width=225 height=60></a></h1>
 {% endblock %}
 
 
@@ -55,7 +55,7 @@
     {% endif %}
     <a href="javascript:clearCache()">{% trans "clear cache link" %}</a> ∴ 
     <a href=https://tech.svija.love target=_blank>Documentation</a> ∴&nbsp;
-    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.4</a><br>
+    <a href="https://tech.svija.love/programs/cloud/changelog" target=_blank>v2.3.5</a><br>
 
     {% if user.is_active and user.is_staff %}
       {% url 'django-admindocs-docroot' as docsroot %}

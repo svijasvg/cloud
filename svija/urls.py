@@ -73,10 +73,9 @@ urlpatterns = [
 
 #———————————————————————————————————————— fonts, icons & scripts
 
-    re_path(r'^customization/(?P<path>.*)$', static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Svija Cloud"      }),
-    re_path(r'^fonts/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Fonts/WOFF Files" }),
-    re_path(r'^files/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Shared Files"     }),
-    re_path(r'^images/(?P<path>.*)$',        static.serve, {'document_root': proj_folder + "/SYNC/SVIJA/Images"           }),
+    re_path(r'^fonts/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Fonts/WOFF Files" }),
+    re_path(r'^files/(?P<path>.*)$',         static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Shared Files"     }),
+    re_path(r'^images/(?P<path>.*)$',        static.serve, {'document_root': proj_folder + "/SYNC/SYSTEM/Images"           }),
 
 ]
 

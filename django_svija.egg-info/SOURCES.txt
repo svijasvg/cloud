@@ -374,7 +374,7 @@ svija/static/svija/img/ff0000.gif
 svija/static/svija/img/ff0000.jpeg
 svija/static/svija/img/ff0000.jpg
 svija/static/svija/img/ff0000.png
-svija/static/svija/js/min_gsap.js
+svija/static/svija/js/gsap.min.js
 svija/static/svija/svg/cloudModuleLogo.svg
 svija/static/svija/woff/Montserrat-Medium.woff
 svija/templates/admin/base_site.html

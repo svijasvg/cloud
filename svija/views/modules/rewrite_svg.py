@@ -22,6 +22,7 @@
 #
 #———————————————————————————————————————— import
 
+#mport unicodedata
 import os, re, io
 
 from django.core.exceptions import ObjectDoesNotExist

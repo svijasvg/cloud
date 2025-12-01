@@ -1,7 +1,7 @@
 # Translations of the Svija App for building websites with Adobe Illustrator
 # Copyright (C) Svija SAS
 # This file is distributed under the same license as the Svija package.
-# Andrew Swift · andy@svija.com · 2025
+# Andrew Swift · andy@pwika.com · 2025
 #
 #, fuzzy
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-22 17:07+0200\n"
 "PO-Revision-Date: 2025-04-10 10:19+0200\n"
-"Last-Translator: Andrew Swift <andy@svija.com>>\n"
+"Last-Translator: Andrew Swift <andy@pwika.com>\n"
 "Language-Team: LANGAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgstr "notes"
 msgid "link instructions"
 msgstr ""
 "Notes d’utilisation et lien vers les instructions sur <a href=https://tech."
-"svija.com target=_blank>tech.svija.com</a>"
+"svija.com target=_blank>tech.pwika.com</a>"
 
 #: admin.py:32 models.py:263 models.py:331 models.py:496
 msgid "load order"
@@ -154,7 +154,7 @@ msgstr "indice z"
 msgid "descRedirect"
 msgstr ""
 "Liens internes commencent par un <b>/ simple</b> · liens externes commencent "
-"par <b>https://</b> · <a href=https://tech.svija.com/programs/cloud/"
+"par <b>https://</b> · <a href=https://tech.pwika.com/programs/cloud/"
 "redirects target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— font
@@ -164,7 +164,7 @@ msgstr ""
 "Les polices sont ajoutées ici lors du premier chargement de la page · <a "
 "href=https://fonts.adobe.com/my_fonts#web_projects-section "
 "target=_blank>polices Adobe↑</a> · <a href=https://fonts.google.com/ "
-"target=_blank>polices Google↑</a> · <a href=https://tech.svija.com/programs/"
+"target=_blank>polices Google↑</a> · <a href=https://tech.pwika.com/programs/"
 "cloud/fonts target=_blank>documentation↑</a>"
 
 #: admin.py:109
@@ -203,7 +203,7 @@ msgstr "Message code source"
 msgid "descScreens"
 msgstr ""
 "Tailles d'écran prises en charge · maximale=0 pour une largeur illimitée · "
-"<a href=https://tech.svija.com/programs/cloud/screens "
+"<a href=https://tech.pwika.com/programs/cloud/screens "
 "target=_blank>documentation↑</a>"
 
 #: admin.py:152
@@ -220,7 +220,7 @@ msgid "descRobots"
 msgstr ""
 "Indique aux moteurs de recherche s'ils doivent ou non référencer le site · "
 "<a href=https://fr.wikipedia.org/wiki/Protocole_d%27exclusion_des_robots "
-"target=_blank>Wikipedia</a> · <a href=https://tech.svija.com/programs/cloud/"
+"target=_blank>Wikipedia</a> · <a href=https://tech.pwika.com/programs/cloud/"
 "robots target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— script library
@@ -229,14 +229,14 @@ msgid "descScript"
 msgstr ""
 "Les bibliothèques de scripts peuvent être incluses ici ou dans les <a href=/"
 "cloud/svija/page/ target=_blank>paramètres de page</a> · <a href=https://"
-"tech.svija.com/programs/cloud/script-sets target=_blank>documentation↑</a>"
+"tech.pwika.com/programs/cloud/script-sets target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— module
 #: admin.py:217
 msgid "descModules"
 msgstr ""
 "Les modules peuvent être inclus ici ou dans les <a href=/cloud/svija/page/"
-">paramètres de page</a> · <a href=https://tech.svija.com/programs/cloud/"
+">paramètres de page</a> · <a href=https://tech.pwika.com/programs/cloud/"
 "modules target=_blank>documentation↑</a>"
 
 #: admin.py:219
@@ -254,7 +254,7 @@ msgstr "positionnement"
 msgid "descSettings"
 msgstr ""
 "Pour changer l'adresse de votre site web, visiter <a href=https://tech.svija."
-"com/url target=_blank>tech.svija.com/url</a> · <a href=https://tech.svija."
+"com/url target=_blank>tech.pwika.com/url</a> · <a href=https://tech.svija."
 "com/programs/cloud/settings target=_blank>documentation↑</a>"
 
 # ———————————————————————————————————————— redirect
@@ -269,7 +269,7 @@ msgstr ""
 msgid "descColors"
 msgstr ""
 "Changer ces couleurs d'interface avec des couleurs CSS valides. L'image du "
-"logo est dans SYNC/SVIJA/Svija Cloud"
+"logo est dans SYNC/SYSTEM/Cloud"
 
 #: admin.py:298
 msgid "website settings"
@@ -281,13 +281,13 @@ msgstr "Projet web Adobe"
 
 #: admin.py:300
 msgid "svija cloud colors"
-msgstr "couleurs Svija Cloud"
+msgstr "couleurs Pwika Cloud"
 
 # ———————————————————————————————————————— page
 #: admin.py:345
 msgid "descPages"
 msgstr ""
-"Paramètres spécifiques à cette page · <a href=https://tech.svija.com/"
+"Paramètres spécifiques à cette page · <a href=https://tech.pwika.com/"
 "programs/cloud/pages target=_blank>documentation↑</a>"
 
 #: admin.py:380
@@ -745,8 +745,8 @@ msgid "Close"
 msgstr ""
 
 #: templates/registration/logged_out.html:6
-msgid "Thanks for using Svija."
-msgstr "Merci d'avoir choisi Svija."
+msgid "Thanks for using Pwika."
+msgstr "Merci d'avoir choisi Pwika."
 
 #: templates/registration/logged_out.html:7
 msgid "Log in again"
