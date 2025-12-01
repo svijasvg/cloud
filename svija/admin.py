@@ -69,7 +69,7 @@ class ControlAdmin(admin.ModelAdmin):
   save_as = True
 
   fieldsets = [ 
-    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'password',),'mail_srv',],}),
+    ('site settings',   {'fields': [('limit', 'cached'), ('used', 'mail_srv',),'password',],}),
   ]   
 
 admin.site.register(Control, ControlAdmin)
