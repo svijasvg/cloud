@@ -1,7 +1,10 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#———————————————————————————————————————— modules/send_mail.py
+# vim: set foldmethod=marker fmr=\#—,\#\# :
+##
+
+#:::::::::::::::::::::::::::::::::::::::: modules/send_mail.py
 
 # sends "" on success else error message
 
@@ -9,7 +12,7 @@
 
 # this is hard to debug — put it at end of MailView.py then
 # copy back to this module when done
-
+##
 #———————————————————————————————————————— notes
 #
 #   see also:
@@ -24,7 +27,7 @@
 #   E1 failed whitelist address
 #   E2 failed blacklist name
 #   E3 failed blacklist body
-#
+##
 #———————————————————————————————————————— imports
 
 #mport sys
@@ -42,13 +45,13 @@ from smtplib import SMTPException
 from django.core.mail import get_connection, EmailMessage
 from django.core.mail import send_mail
 from svija.models import Control
+##
 
-#———————————————————————————————————————— program
+#:::::::::::::::::::::::::::::::::::::::: main definition
 
-#ef send(settings, subject, to, bcc, body):
 def send(settings, subject, body, frm, to, cc, bcc):
 
-#     if frm == '': frm = settings.mail_id
+#——   if frm == '': frm = settings.mail_id
 #   
 #     email = EmailMessage(subject, body, from_email=frm, to=to, cc=cc, bcc=bcc)
 #   
@@ -80,17 +83,19 @@ def send(settings, subject, body, frm, to, cc, bcc):
 #     except SMTPException as e:
 #       response = e
 #   
-#     return response
+##    return response
 
-  #———————————————————— from address
+#———————————————————— from address
 
   server = Control.objects.first().mail_srv
   if server == '':
     return 'no server configured'
 
-  from_email     = "noreply@" + server
+  if frm == '': frm = server
 
-  #———————————————————— 
+  from_email     = frm + ' <noreply@' + server + '>'
+##
+#———————————————————— compose array
 
   email = EmailMessage(
     subject    = subject,
@@ -100,11 +105,10 @@ def send(settings, subject, body, frm, to, cc, bcc):
     cc         = cc,
     bcc        = bcc,
   )
-
-  #————————————————————
+##
 
   response = email.send(fail_silently=False)
-# return str(response) + '\nto:'+to[0]+' / from:'+from_email+' / bcc:' + bcc[0]
   return response
 
-#———————————————————————————————————————— fin
+#:::::::::::::::::::::::::::::::::::::::: fin
+
