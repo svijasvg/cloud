@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: django-svija
-Version: 2.3.5
+Version: 2.3.6
 Summary: A CMS for web sites built with Adobe Illustrator pages.
 Home-page: https://tech.svija.com/
 Author: Andrew Swift
@@ -20,7 +20,7 @@ Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
 License-File: LICENSE
 
 
-*Modified 12 August · debian server*
+*Modified 5 January 2026 · debian server*
 
 ![Svija: SVG-based websites built in Adobe Illustrator][logo]
 
