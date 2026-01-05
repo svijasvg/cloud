@@ -14,6 +14,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from svija.models import Font, Settings
+from django.utils.translation import gettext as _
 import requests
 
 
